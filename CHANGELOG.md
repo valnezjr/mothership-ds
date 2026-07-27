@@ -4,6 +4,19 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Alterado
+
+- **`BentoGrid`/`BentoTile`**: layout mais orgânico — o grid ganha
+  `grid-auto-flow: dense` (preenche buracos deixados por spans
+  irregulares) e os tiles **sem** `rowSpan` não esticam mais pra uma
+  altura uniforme (`align-items: start`), ficando só do tamanho do
+  próprio conteúdo; um tile com `rowSpan` continua preenchendo a área
+  toda que ocupa. `rowSpan` ganha a opção `3` (era só `2`). Resultado:
+  bordas que não fecham numa linha reta entre tiles vizinhos, sem JS
+  medindo nada.
+
 ## [1.2.0] — 2026-07-27
 
 ### Adicionado

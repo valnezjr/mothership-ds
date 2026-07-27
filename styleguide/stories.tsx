@@ -918,7 +918,7 @@ export const STORIES: Story[] = [
     id: "bento",
     group: "Componentes",
     title: "Bento grid",
-    subtitle: "Tiles de vidro com tamanhos variáveis e contorno reativo",
+    subtitle: "Tiles de vidro com tamanhos variáveis, empacotamento denso e bordas orgânicas",
     render: () => (
       <BentoGrid>
         <BentoTile
@@ -934,13 +934,25 @@ export const STORIES: Story[] = [
           description="Sem framework de UI, sem biblioteca de animação, sem CSS-in-JS. Só React e as folhas de estilo do próprio sistema."
         />
         <BentoTile
+          colSpan={2}
           icon={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" />
             </svg>
           }
           title="Tokens antes de valores"
-          description="Nenhum componente escreve 15px ou uma cor solta."
+          description="Nenhum componente escreve 15px ou uma cor solta — sempre var(--token)."
+        />
+        <BentoTile
+          rowSpan={2}
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          }
+          title="Acessibilidade não é opcional"
+          description="Estado marcado com aria-*, nunca só com cor. Foco visível em todo controle, contraste e daltonismo validados em cada cor de dado nova."
         />
         <BentoTile
           icon={
@@ -954,16 +966,6 @@ export const STORIES: Story[] = [
         <BentoTile
           icon={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6z" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
-          }
-          title="Acessibilidade não é opcional"
-          description="Estado marcado com aria-*, nunca só com cor."
-        />
-        <BentoTile
-          icon={
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 2 2 7l10 5 10-5-10-5z" />
               <path d="m2 17 10 5 10-5" />
               <path d="m2 12 10 5 10-5" />
@@ -971,6 +973,27 @@ export const STORIES: Story[] = [
           }
           title="A biblioteca não invade o app"
           description="Sem reset global, sem estilos fora de .ms-page."
+        />
+        <BentoTile
+          colSpan={3}
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          }
+          title="Styleguide gerado da própria biblioteca"
+          description="Cada bloco desta página importa o componente real de src/ — não existe catálogo paralelo que possa divergir do código."
+        />
+        <BentoTile
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" />
+            </svg>
+          }
+          title="Contorno reativo"
+          description="O anel gira acompanhando o mouse — o mesmo utilitário por trás do hover deste tile."
         />
       </BentoGrid>
     ),

@@ -198,7 +198,7 @@ export interface BentoTileProps extends Omit<Div, "title"> {
   /** Quantas colunas ocupa no grid de 4. Padrão 1. */
   colSpan?: 2 | 3 | 4;
   /** Quantas linhas ocupa. Padrão 1. */
-  rowSpan?: 2;
+  rowSpan?: 2 | 3;
   icon?: React.ReactNode;
   title?: React.ReactNode;
   description?: React.ReactNode;
@@ -212,6 +212,14 @@ export interface BentoTileProps extends Omit<Div, "title"> {
  * tamanho. Já nasce com o contorno reativo (`interactive`, padrão
  * `true`). Abaixo de 720px o grid vira uma coluna e todo tile volta a
  * 1×1 — nenhum bloco fica maior que outro numa lista vertical.
+ *
+ * O grid usa `grid-auto-flow: dense` e não estica os tiles pra uma
+ * altura uniforme (`align-items: start` no `BentoGrid`) — cada um fica
+ * só tão alto quanto o próprio conteúdo mais o `rowSpan`, então dois
+ * tiles vizinhos com quantidades de texto diferentes naturalmente
+ * terminam em alturas diferentes. É o que dá o ar orgânico, sem JS
+ * medindo nada: quanto mais variar `colSpan`/`rowSpan`/tamanho de
+ * conteúdo entre os tiles de um mesmo `BentoGrid`, mais perceptível.
  */
 export function BentoTile({
   colSpan,
