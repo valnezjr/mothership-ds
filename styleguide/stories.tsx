@@ -157,11 +157,12 @@ function SplashDemo() {
           borderRadius: "var(--radius-md)",
           overflow: "hidden",
           maxWidth: 640,
+          margin: "0 auto",
         }}
       >
         <Splash key={key} inline persistent ready={ready} />
       </div>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginTop: 16 }}>
         <Button inline size="sm" variant="solid" onClick={() => setReady(true)}>
           Concluir carregamento
         </Button>
@@ -314,13 +315,13 @@ function LoaderDemo() {
         superfície ondulada, que desliza continuamente. O olho pisca de tempos em tempos,
         como na splash. Sem a prop <code>value</code>, o nível oscila sozinho (indeterminado).
       </p>
-      <div style={{ display: "flex", gap: 40, alignItems: "flex-end", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 40, alignItems: "flex-end", justifyContent: "center", flexWrap: "wrap" }}>
         <Loader value={value} size={120} label="carregando" showValue />
         <Loader size={72} label="indeterminado" />
         <Loader value={value} size={48} />
         <Loader value={value} size={120} color="var(--color-violet)" label="outra cor" />
       </div>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginTop: 24, alignItems: "center" }}>
         <Button inline size="sm" variant="solid" onClick={() => { setValue(0); setRunning(true); }}>
           Simular carregamento
         </Button>
@@ -358,7 +359,7 @@ export const STORIES: Story[] = [
           As semânticas mudam com o tema (alterne na navbar); as de marca são fixas.
         </p>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Semânticas</h3>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 24 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginBottom: 24 }}>
           <Swatch token="--color-text" label="Texto" />
           <Swatch token="--color-text-muted" label="Texto secundário" />
           <Swatch token="--color-border" label="Borda" />
@@ -366,7 +367,7 @@ export const STORIES: Story[] = [
           <Swatch token="--color-surface-hover" label="Superfície hover" />
         </div>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Marca</h3>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 24 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginBottom: 24 }}>
           <Swatch token="--color-accent" label="Accent" />
           <Swatch token="--color-highlight" label="Highlight" />
           <Swatch token="--color-success" label="Success" />
@@ -579,7 +580,7 @@ export const STORIES: Story[] = [
     title: "Breadcrumbs",
     subtitle: "Trilha em pills com separadores",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "flex-start" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "center" }}>
         <Breadcrumbs
           items={[
             { label: "Início", href: "#" },
@@ -601,12 +602,12 @@ export const STORIES: Story[] = [
     title: "Botões",
     subtitle: "Glass / sólido / ghost, 3 tamanhos, disabled",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
         <ButtonLink href="#">Padrão (glass)</ButtonLink>
         <ButtonLink href="#" variant="solid">Sólido — accent</ButtonLink>
         <ButtonLink href="#" variant="ghost">Ghost — só borda</ButtonLink>
         <Button disabled>Desabilitado</Button>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
           <ButtonLink href="#" inline size="sm">Pequeno</ButtonLink>
           <ButtonLink href="#" inline>Médio</ButtonLink>
           <ButtonLink href="#" inline size="lg">Grande</ButtonLink>
@@ -620,7 +621,7 @@ export const STORIES: Story[] = [
     title: "Lista de links",
     subtitle: "Padrão linktree da página original",
     render: () => (
-      <LinkList style={{ maxWidth: 420 }}>
+      <LinkList style={{ maxWidth: 420, margin: "0 auto" }}>
         <li><ButtonLink href="#">Whatsapp</ButtonLink></li>
         <li><ButtonLink href="#">E-mail</ButtonLink></li>
         <li><ButtonLink href="#">Portfólio</ButtonLink></li>
@@ -685,7 +686,7 @@ export const STORIES: Story[] = [
     title: "Campos de formulário",
     subtitle: "Input, textarea, foco e disabled",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
         <Field label="E-mail (foco = borda accent)"><Input placeholder="voce@exemplo.com" /></Field>
         <Field label="Desabilitado"><Input placeholder="Indisponível" disabled /></Field>
@@ -699,7 +700,7 @@ export const STORIES: Story[] = [
     title: "Cards",
     subtitle: "Superfície de vidro, com e sem contorno reativo",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 460 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Card de vidro">
           <CardText>Superfície translúcida, borda suave, raio de 10px e blur de 20px.</CardText>
         </Card>
@@ -759,7 +760,7 @@ export const STORIES: Story[] = [
     render: () => (
       <>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Padrão (vários abertos)</h3>
-        <div style={{ maxWidth: 520, marginBottom: 24 }}>
+        <div style={{ maxWidth: 520, margin: "0 auto 24px" }}>
           <Accordion
             items={[
               { title: "O que é o Mothership DS?", content: "Design system extraído do Agrupador de links e contatos.", defaultOpen: true },
@@ -769,7 +770,7 @@ export const STORIES: Story[] = [
           />
         </div>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Exclusivo (<code>single</code>)</h3>
-        <div style={{ maxWidth: 520 }}>
+        <div style={{ maxWidth: 520, margin: "0 auto" }}>
           <Accordion
             single
             items={[
@@ -845,7 +846,7 @@ export const STORIES: Story[] = [
     title: "Gráfico de linhas",
     subtitle: "Eixos x/y, 2 séries, grade recessiva e hover",
     render: () => (
-      <div style={{ maxWidth: 640 }}>
+      <div>
         <LineChart
           labels={["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago"]}
           unit="k"
@@ -864,7 +865,7 @@ export const STORIES: Story[] = [
     title: "Barras de progresso",
     subtitle: "Horizontais, cor por entidade, valor rotulado",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 460 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Meter label="UI Design" value={82} slot={1} />
         <Meter label="Front-end" value={74} slot={2} />
         <Meter label="Branding" value={61} slot={3} />
@@ -878,7 +879,7 @@ export const STORIES: Story[] = [
     title: "Gráfico de pizza",
     subtitle: "Fatias com respiro, rótulos diretos e legenda",
     render: () => (
-      <div style={{ maxWidth: 440 }}>
+      <div style={{ maxWidth: 440, margin: "0 auto" }}>
         <PieChart
           slices={[
             { label: "UI Design", value: 38, slot: 1 },
@@ -896,7 +897,7 @@ export const STORIES: Story[] = [
     title: "Anel de progresso",
     subtitle: "Número-herói no centro, qualquer tamanho",
     render: () => (
-      <div style={{ display: "flex", gap: 32, alignItems: "center", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 32, alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
         <ProgressRing value={72} caption="concluído" />
         <ProgressRing value={48} caption="meta anual" size={110} thickness={10} slot={3} />
         <ProgressRing value={91} caption="uptime" size={90} thickness={8} slot={2} />
