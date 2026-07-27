@@ -1,0 +1,23 @@
+{
+  "name": "mothership-ds-exemplo-next",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Landing page de exemplo do Mothership DS — também publicada no GitHub Pages via workflow da raiz do repo.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "mothership-ds": "file:../..",
+    "next": "^16.2.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^6.0.3"
+  }
+}

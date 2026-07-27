@@ -28,6 +28,19 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run styleguide
 
+      - name: Instalar dependências do exemplo Next.js
+        working-directory: examples/next-app
+        run: npm install --no-audit --no-fund
+
+      - name: Build estático do exemplo Next.js
+        working-directory: examples/next-app
+        run: npm run build
+        env:
+          GITHUB_PAGES: "true"
+
+      - name: Anexar o exemplo ao styleguide publicado
+        run: cp -r examples/next-app/out styleguide/dist/exemplo
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

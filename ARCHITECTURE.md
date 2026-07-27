@@ -102,9 +102,27 @@ notificação disparada com um diálogo aberto precisa continuar visível.
 catálogo paralelo que possa divergir do código. Build via `esbuild`
 puro (`styleguide/build.mjs`), sem Storybook: zero dependência extra
 de runtime, artefato estático que o GitHub Pages serve sem
-configuração. Publicado automaticamente a cada push em `main`
+configuração. Publicado automaticamente a cada push em `master`
 (`.github/workflows/pages.yml`).
 
 Documentar um componente novo = uma entrada em
 `styleguide/stories.tsx` (ver COMPONENT_GUIDELINES.md); navegação,
 índice e âncoras se montam a partir do array `STORIES`.
+
+## Topologia do GitHub Pages
+
+Um repositório tem um único site de Pages, então o styleguide e o
+exemplo de landing page dividem a mesma implantação por subcaminho:
+
+```
+valnezjr.github.io/mothership-ds/           ← styleguide/dist (esbuild)
+valnezjr.github.io/mothership-ds/exemplo/   ← examples/next-app/out (Next export estático)
+```
+
+O workflow builda os dois e copia `examples/next-app/out/` para
+`styleguide/dist/exemplo/` antes de um único `upload-pages-artifact`.
+`examples/next-app` só ativa `output: "export"` e `basePath: "/exemplo"`
+quando a env `GITHUB_PAGES=true` está setada (só o workflow define
+isso) — copiar os arquivos do exemplo para outro projeto não herda
+esse comportamento. Ao trocar o subcaminho, atualizar `basePath` em
+`examples/next-app/next.config.js` junto com os links no README.

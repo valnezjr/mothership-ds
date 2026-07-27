@@ -54,7 +54,7 @@ styleguide/
   stories.tsx             # catálogo do styleguide — uma entrada por componente novo
   build.mjs               # build com esbuild puro, sem Storybook
 docs/                     # documentação pública em pt-br (tokens, componentes, arquitetura, movimento)
-examples/next-app/        # exemplo de integração completa com Next.js App Router
+examples/next-app/        # landing page de exemplo, buildável — export estático publicado em /exemplo
 ```
 
 ## Regras que não se negociam

@@ -17,3 +17,4 @@ styleguide/dist/
 .next/
 .turbo/
 *.tsbuildinfo
+out/

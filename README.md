@@ -13,7 +13,8 @@ fundo animado e uma identidade de movimento própria.
 ![React 18+](https://img.shields.io/badge/react-18%2B-61dafb)
 ![TypeScript](https://img.shields.io/badge/typescript-5-3178c6)
 
-[**Ver o styleguide →**](https://valnezjr.github.io/mothership-ds/)
+[**Ver o styleguide →**](https://valnezjr.github.io/mothership-ds/) ·
+[**Ver a landing page de exemplo →**](https://valnezjr.github.io/mothership-ds/exemplo/)
 
 <img src="assets/cover.jpg" alt="Styleguide do Mothership DS" width="880">
 
@@ -101,7 +102,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-Há um exemplo completo de landing page em [`examples/next-app`](examples/next-app).
+Há um exemplo completo de landing page em [`examples/next-app`](examples/next-app) —
+[veja funcionando →](https://valnezjr.github.io/mothership-ds/exemplo/).
 
 ### Vite / React SPA
 
