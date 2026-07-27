@@ -87,6 +87,36 @@ export default function Home() {
                 description: "Página de captura com hero flutuante.",
                 categories: ["web"],
               },
+              {
+                image: "linear-gradient(135deg,#004357,#6b4796)",
+                title: "App Constelação",
+                description: "Interface mobile com navegação em pill.",
+                categories: ["ui"],
+              },
+              {
+                image: "linear-gradient(135deg,#ff4d6d,#63256b)",
+                title: "Campanha Propulsão",
+                description: "Do manual de marca ao site.",
+                categories: ["branding", "web"],
+              },
+              {
+                image: "linear-gradient(135deg,#00a7da,#00d68f)",
+                title: "Kit Aurora",
+                description: "Biblioteca de componentes com escalas 100–900.",
+                categories: ["ui"],
+              },
+              {
+                image: "linear-gradient(135deg,#6f61d6,#d4708f)",
+                title: "Loja Nébula",
+                description: "E-commerce completo com carrinho e checkout.",
+                categories: ["web"],
+              },
+              {
+                image: "linear-gradient(135deg,#f26f35,#8b8b9e)",
+                title: "Ícone Pulsar",
+                description: "Sistema de ícones e identidade para o app.",
+                categories: ["ui", "branding"],
+              },
             ]}
           />
         </section>

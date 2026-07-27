@@ -199,8 +199,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   color: var(--color-text);
   font-family: var(--font-family);
   font-size: var(--text-md);
@@ -230,8 +230,8 @@
 
 .ms-button--ghost {
   background: transparent;
-  backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 .ms-button--ghost:hover { background: var(--color-surface); }
 
@@ -331,8 +331,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-soft));
   -webkit-backdrop-filter: blur(var(--blur-soft));
+  backdrop-filter: blur(var(--blur-soft));
 }
 
 @keyframes ms-slide-in {
@@ -402,8 +402,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   color: var(--color-text);
   font-family: var(--font-family);
   font-size: var(--text-md);
@@ -434,8 +434,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .ms-card__title {
@@ -482,8 +482,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-accent);
   border-radius: var(--radius-md);
   background: var(--color-accent-soft);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   font-size: var(--text-sm);
 }
 
@@ -630,8 +630,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   animation: ms-toast-in 0.25s ease;
 }
 
@@ -725,8 +725,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .ms-carousel__track {
@@ -770,8 +770,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   color: #ffffff !important;
   font-size: 20px;
   cursor: pointer;
@@ -851,8 +851,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   animation: ms-gallery-in 0.35s var(--ease-bounce);
 }
 
@@ -901,8 +901,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   overflow: hidden;
 }
 
@@ -974,8 +974,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .ms-navbar::-webkit-scrollbar { display: none; }
@@ -1107,8 +1107,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   opacity: 0;
   /* visibility (e não só opacity) tira os links do foco e dos leitores
      de tela enquanto o menu está fechado */
@@ -1428,8 +1428,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   /* Mesma receita de vidro dos cards — o backdrop não usa filtro,
      então o blur do modal funciona de fato */
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
   animation: ms-modal-in 0.4s var(--ease-bounce);
 }
@@ -1621,8 +1621,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 /* ---------- Dados: tooltip ---------- */
@@ -1635,8 +1635,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
   font-size: var(--text-xs);
   white-space: pre-line;
   opacity: 0;
@@ -1834,8 +1834,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .ms-stat__label {
