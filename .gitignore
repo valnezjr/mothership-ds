@@ -1,0 +1,19 @@
+# dependências
+node_modules/
+.pnp.*
+.yarn/*
+
+# build do styleguide
+styleguide/dist/
+
+# ambientes e editores
+.env*
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# caches
+.next/
+.turbo/
+*.tsbuildinfo

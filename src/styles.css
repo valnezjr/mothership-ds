@@ -1,0 +1,4 @@
+/* Mothership DS — folha única: tokens + componentes.
+   Importe uma vez na raiz da aplicação. */
+@import "./styles/tokens.css";
+@import "./styles/components.css";

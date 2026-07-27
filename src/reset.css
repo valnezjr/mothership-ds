@@ -1,0 +1,13 @@
+/* Mothership DS — reset opcional.
+   Importe SÓ se quiser o reset global no seu app; os componentes não
+   dependem dele (o necessário já está escopado em .ms-page). */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { background: #111114; }
+html.light { background: #ffffff; }

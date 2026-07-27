@@ -1,0 +1,1881 @@
+/* ============================================================
+   MOTHERSHIP DS — Componentes
+   Requer tokens.css. Prefixo de classe: ms-
+   ============================================================ */
+
+/* ---------- Base ----------
+   Nada de reset global aqui: uma biblioteca não deve reescrever o CSS
+   da aplicação que a instala. O box-sizing e a zeragem de margens valem
+   apenas dentro de .ms-page. Quem quiser o reset completo pode importar
+   `mothership-ds/reset.css`. */
+.ms-page,
+.ms-page *,
+.ms-page *::before,
+.ms-page *::after {
+  box-sizing: border-box;
+}
+
+.ms-page h1, .ms-page h2, .ms-page h3, .ms-page h4,
+.ms-page p, .ms-page figure, .ms-page blockquote,
+.ms-page dl, .ms-page dd, .ms-page ul, .ms-page ol {
+  margin: 0;
+  padding: 0;
+}
+
+.ms-page ul, .ms-page ol { list-style: none; }
+
+.ms-page {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image: var(--bg-page);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  line-height: var(--line-height-base);
+}
+
+/* Herança em vez de força bruta: os controles nativos não herdam cor e
+   fonte sozinhos, então só eles precisam ser instruídos. Isso é o que
+   permite ao consumidor colorir o próprio conteúdo dentro da página. */
+.ms-page :where(input, textarea, select, button, a) {
+  color: inherit;
+  font-family: inherit;
+}
+
+.ms-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: var(--space-7) auto 0;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Barra de rolagem ----------
+   Segue a linguagem do sistema: trilho invisível, polegar em pill de
+   vidro que clareia no hover. Firefox usa scrollbar-color; os demais,
+   os pseudo-elementos ::-webkit-scrollbar. */
+/* Onde os pseudo-elementos não existem (Firefox), usa as propriedades
+   padrão. Definir scrollbar-width no Chrome desativaria a estilização
+   detalhada abaixo, por isso a consulta de suporte. */
+@supports not selector(::-webkit-scrollbar) {
+  .ms-page,
+  .ms-page * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+}
+
+.ms-page ::-webkit-scrollbar,
+.ms-page::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.ms-page ::-webkit-scrollbar-track,
+.ms-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ms-page ::-webkit-scrollbar-thumb,
+.ms-page::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  /* o border transparente + clip afina o polegar sem encostar na borda */
+  background-clip: content-box;
+  transition: background var(--transition-slow);
+}
+
+.ms-page ::-webkit-scrollbar-thumb:hover,
+.ms-page::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+  background-clip: content-box;
+}
+
+.ms-page ::-webkit-scrollbar-corner,
+.ms-page::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---------- Foco visível ----------
+   Sobre as superfícies de vidro escuras o anel padrão some. Um único
+   anel accent, aplicado só na navegação por teclado. */
+.ms-page :is(a, button, input, textarea, select, [tabindex]):focus-visible,
+.ms-modal :is(a, button, input, textarea, select, [tabindex]):focus-visible,
+.ms-navbar__menu :is(a, button):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+.ms-page .ms-switch__thumb:focus-visible,
+.ms-page .ms-icon-button:focus-visible,
+.ms-page .ms-navbar__bell:focus-visible,
+.ms-page .ms-navbar__burger:focus-visible,
+.ms-page .ms-carousel__arrow:focus-visible,
+.ms-page .ms-alert__close:focus-visible,
+.ms-modal__close:focus-visible {
+  border-radius: var(--radius-full);
+}
+
+.ms-page .ms-button:focus-visible,
+.ms-page .ms-gallery__filter:focus-visible,
+.ms-page .ms-navbar__link:focus-visible,
+.ms-page .ms-carousel__bullet:focus-visible,
+.ms-modal__dot:focus-visible {
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- Tipografia utilitária ---------- */
+.ms-h1 { font-size: var(--text-2xl); font-weight: var(--font-weight-medium); }
+.ms-h2 { font-size: var(--text-xl);  font-weight: var(--font-weight-medium); }
+.ms-h3 { font-size: var(--text-lg);  font-weight: var(--font-weight-medium); }
+.ms-text-sm { font-size: var(--text-sm); }
+.ms-text-xs { font-size: var(--text-xs); }
+.ms-text-muted { color: var(--color-text-muted) !important; }
+
+/* ---------- Utilitário: contorno reativo no hover ----------
+   Adicione .ms-hover-edge a qualquer superfície (card, widget, item de
+   galeria) para: crescer levemente, projetar sombra suave e trocar a
+   borda por um anel em degradê que GIRA acompanhando o mouse.
+
+   Parametrize por elemento:
+     --ms-edge-a / --ms-edge-b   cores do degradê (as cores vivas do
+                                 próprio conteúdo: série do gráfico,
+                                 verde de lucro, vermelho de prejuízo…)
+     --ms-edge-radius            raio do anel (padrão --radius-md)
+     --ms-edge-lift              deslocamento vertical (padrão -4px)
+     --ms-edge-scale             escala no hover (padrão 1.03)
+   O ângulo (--ms-grad-angle) é atualizado por scripts/hover-edge.js. */
+.ms-hover-edge,
+.ms-gallery__item {
+  position: relative;
+  transition: transform 0.3s var(--ease-bounce),
+              box-shadow 0.3s ease,
+              border-color var(--transition-slow);
+}
+
+.ms-hover-edge::after,
+.ms-gallery__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--ms-edge-radius, var(--radius-md));
+  padding: 2px;
+  background: linear-gradient(
+    var(--ms-grad-angle, 135deg),
+    var(--ms-edge-a, var(--color-accent)),
+    var(--ms-edge-b, var(--color-accent-300))
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  pointer-events: none;
+}
+
+.ms-hover-edge:hover,
+.ms-gallery__item:hover {
+  transform: translateY(var(--ms-edge-lift, -4px)) scale(var(--ms-edge-scale, 1.03));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  border-color: transparent;
+}
+
+.ms-hover-edge:hover::after,
+.ms-gallery__item:hover::after { opacity: 1; }
+
+/* ---------- Botão (glassmorphism, herdado dos links da página) ---------- */
+.ms-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-slow), border var(--transition-slow);
+}
+
+.ms-button:hover {
+  background: var(--color-surface-hover);
+  border: 1.5px solid var(--color-border-strong);
+}
+
+/* Variantes */
+.ms-button--solid {
+  background: var(--color-accent);
+  border-color: transparent;
+}
+.ms-button--solid,
+.ms-button--solid:hover { color: #ffffff; }
+.ms-button--solid:hover {
+  background: var(--color-accent);
+  border-color: transparent;
+  filter: brightness(1.15);
+}
+
+.ms-button--ghost {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.ms-button--ghost:hover { background: var(--color-surface); }
+
+/* Tamanhos */
+.ms-button--sm { padding: var(--space-2) var(--space-4); font-size: var(--text-sm); }
+.ms-button--lg { padding: 20px var(--space-6); font-size: 18px; }
+
+/* Largura natural (fora de listas de links) */
+.ms-button--inline { display: inline-flex; width: auto; }
+
+/* Estado desabilitado */
+.ms-button:disabled,
+.ms-button--disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ---------- Lista de links (layout da página) ---------- */
+.ms-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  text-align: center;
+  padding: var(--space-5) 0;
+}
+
+/* ---------- Botão de ícone (redes sociais) ---------- */
+.ms-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-slow);
+}
+
+.ms-icon-button:hover { background: var(--color-surface-hover); }
+
+.ms-icon-button svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+  fill: currentColor;
+}
+
+.ms-icon-button--sm { padding: 10px; font-size: 18px; }
+.ms-icon-button--lg { padding: 20px; font-size: 28px; }
+
+.ms-icon-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+}
+
+/* ---------- Switch de tema ---------- */
+.ms-switch {
+  width: var(--switch-width);
+  position: relative;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.ms-switch__thumb {
+  cursor: pointer;
+  width: var(--switch-thumb);
+  height: var(--switch-thumb);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-thumb) var(--icon-switch) no-repeat center;
+  animation: ms-slide-out var(--transition-base);
+  transition: outline var(--transition-fast);
+}
+
+.ms-switch__thumb:hover { outline: 8px solid var(--color-border); }
+
+.light .ms-switch__thumb {
+  animation: ms-slide-in var(--transition-base) forwards;
+}
+
+.ms-switch__track {
+  display: block;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-soft));
+  -webkit-backdrop-filter: blur(var(--blur-soft));
+}
+
+@keyframes ms-slide-in {
+  from { left: 0; }
+  to   { left: 50%; }
+}
+
+@keyframes ms-slide-out {
+  from { left: 50%; }
+  to   { left: 0; }
+}
+
+/* ---------- Avatar & Perfil ---------- */
+.ms-avatar {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.ms-avatar--md { width: 80px; height: 80px; }
+.ms-avatar--sm { width: 48px; height: 48px; }
+
+/* Placeholder de avatar (sem foto) */
+.ms-avatar--placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(0, 167, 218, 0.8), transparent 70%),
+    linear-gradient(135deg, #3b1d6e, #0b1023);
+  color: #ffffff !important;
+  font-weight: var(--font-weight-medium);
+  font-size: calc(var(--avatar-size) / 3.2);
+  border: 2px solid var(--color-border);
+}
+.ms-avatar--md.ms-avatar--placeholder { font-size: 25px; }
+.ms-avatar--sm.ms-avatar--placeholder { font-size: 15px; }
+
+.ms-profile {
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.ms-profile__handle {
+  margin-top: var(--space-2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+/* ---------- Campos de formulário ---------- */
+.ms-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-align: left;
+}
+
+.ms-field__label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  transition: border var(--transition-slow), background var(--transition-slow);
+}
+
+.ms-input::placeholder { color: var(--color-text-muted); }
+
+.ms-input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* borda destacada sem mudar a espessura (que deslocaria o conteúdo) */
+.ms-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.ms-input:disabled { opacity: 0.4; }
+
+textarea.ms-input { min-height: 96px; resize: vertical; }
+
+/* ---------- Card ---------- */
+.ms-card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.ms-card__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-2);
+}
+
+.ms-card__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Badge ---------- */
+.ms-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-badge--accent    { background: var(--color-accent-soft);    border-color: var(--color-accent); }
+.ms-badge--highlight { background: var(--color-highlight-soft); border-color: var(--color-highlight); }
+.ms-badge--success   { background: var(--color-success-soft);   border-color: var(--color-success); }
+.ms-badge--danger    { background: var(--color-danger-soft);    border-color: var(--color-danger); }
+.ms-badge--violet    { background: var(--color-violet-soft);    border-color: var(--color-violet); }
+.ms-badge--pink      { background: var(--color-pink-soft);      border-color: var(--color-pink); }
+.ms-badge--orange    { background: var(--color-orange-soft);    border-color: var(--color-orange); }
+.ms-badge--gray      { background: var(--color-gray-soft);      border-color: var(--color-gray); }
+
+/* ---------- Alerta ---------- */
+/* Segue o color code das badges: fundo suave + borda colorida completa,
+   com bloco de ícone à esquerda em cor sólida (a mesma da borda) */
+.ms-alert {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  font-size: var(--text-sm);
+}
+
+.ms-alert__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0 var(--space-3);
+  background: var(--color-accent);
+}
+
+.ms-alert__icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  color: #ffffff;
+}
+
+.ms-alert__body {
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-4);
+}
+
+.ms-alert--neutral   { background: var(--color-surface);        border-color: var(--color-border); }
+.ms-alert--highlight { background: var(--color-highlight-soft); border-color: var(--color-highlight); }
+.ms-alert--success   { background: var(--color-success-soft);   border-color: var(--color-success); }
+.ms-alert--danger    { background: var(--color-danger-soft);    border-color: var(--color-danger); }
+.ms-alert--violet    { background: var(--color-violet-soft);    border-color: var(--color-violet); }
+.ms-alert--pink      { background: var(--color-pink-soft);      border-color: var(--color-pink); }
+.ms-alert--orange    { background: var(--color-orange-soft);    border-color: var(--color-orange); }
+.ms-alert--gray      { background: var(--color-gray-soft);      border-color: var(--color-gray); }
+
+.ms-alert--neutral   .ms-alert__icon { background: var(--color-border); }
+.ms-alert--highlight .ms-alert__icon { background: var(--color-highlight); }
+.ms-alert--success   .ms-alert__icon { background: var(--color-success); }
+.ms-alert--danger    .ms-alert__icon { background: var(--color-danger); }
+.ms-alert--violet    .ms-alert__icon { background: var(--color-violet); }
+.ms-alert--pink      .ms-alert__icon { background: var(--color-pink); }
+.ms-alert--orange    .ms-alert__icon { background: var(--color-orange); }
+.ms-alert--gray      .ms-alert__icon { background: var(--color-gray); }
+
+/* Amarelo pede ícone escuro para manter contraste */
+.ms-alert--highlight .ms-alert__icon svg { color: #1a1a2e; }
+
+/* ---------- Alertas como notificação (toast) ----------
+   Uso via JS: MsAlerts.notify({ title, message, variant, duration })
+   (scripts/alerts.js). Entrada suave, 20s de vida por padrão e barra
+   decrescente mostrando o tempo restante. */
+/* Acima do modal (500): notificações disparadas com um diálogo aberto
+   precisam continuar visíveis. */
+.ms-toast-stack {
+  position: fixed;
+  top: 88px;
+  right: var(--space-5);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: min(380px, calc(100vw - 48px));
+}
+
+.ms-alert--toast {
+  position: relative;
+  animation: ms-toast-in 0.35s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.ms-alert--toast .ms-alert__body {
+  flex: 1;
+  padding-bottom: calc(var(--space-4) + 3px);
+}
+
+/* Botão de dispensar a notificação */
+.ms-alert__close {
+  align-self: flex-start;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: var(--space-2) var(--space-2) 0 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted) !important;
+  cursor: pointer;
+  transition: background var(--transition-slow), color var(--transition-slow);
+}
+
+.ms-alert__close:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text) !important;
+}
+
+.ms-alert__close svg { width: 14px; height: 14px; display: block; }
+
+.ms-alert__timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  transform-origin: left;
+  background: var(--color-accent);
+  animation: ms-timer-decay 20s linear forwards;
+}
+
+.ms-alert--neutral   .ms-alert__timer { background: var(--color-border); }
+.ms-alert--violet    .ms-alert__timer { background: var(--color-violet); }
+.ms-alert--pink      .ms-alert__timer { background: var(--color-pink); }
+.ms-alert--orange    .ms-alert__timer { background: var(--color-orange); }
+.ms-alert--gray      .ms-alert__timer { background: var(--color-gray); }
+.ms-alert--highlight .ms-alert__timer { background: var(--color-highlight); }
+.ms-alert--success   .ms-alert__timer { background: var(--color-success); }
+.ms-alert--danger    .ms-alert__timer { background: var(--color-danger); }
+
+.ms-alert--leaving { animation: ms-toast-out 0.3s ease forwards; }
+
+@keyframes ms-toast-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ms-toast-out {
+  to { opacity: 0; transform: translateX(24px); }
+}
+
+@keyframes ms-timer-decay {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* ---------- Painel de histórico de alertas ---------- */
+.ms-alert-history {
+  position: fixed;
+  top: 80px;
+  right: var(--space-5);
+  z-index: 610;
+  width: min(380px, calc(100vw - 48px));
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  animation: ms-toast-in 0.25s ease;
+}
+
+.ms-alert-history[hidden] { display: none; }
+
+.ms-alert-history__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.ms-alert-history__title { font-weight: var(--font-weight-medium); }
+
+.ms-alert-history__clear {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--text-xs);
+  text-decoration: underline;
+}
+
+.ms-alert-history__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.ms-alert-history__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.ms-alert-history__time {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted) !important;
+  white-space: nowrap;
+}
+
+.ms-alert strong { font-weight: var(--font-weight-medium); }
+
+/* ---------- Hero ---------- */
+.ms-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: calc(var(--space-7) * 1.5) var(--space-5) var(--space-7);
+  text-align: center;
+}
+
+.ms-hero__title {
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.15;
+  max-width: 720px;
+}
+
+/* Palavra em destaque no título — gradiente da escala accent */
+.ms-hero__highlight {
+  background: linear-gradient(90deg, var(--color-accent-300), var(--color-accent-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.ms-hero__subtitle {
+  max-width: 560px;
+  color: var(--color-text-muted) !important;
+}
+
+.ms-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ---------- Carrossel ---------- */
+.ms-carousel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.ms-carousel__track {
+  display: flex;
+  transition: transform 0.5s var(--ease-bounce);
+}
+
+.ms-carousel__slide {
+  flex: 0 0 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  background: var(--ms-photo, linear-gradient(135deg, var(--bg-glow-1), var(--bg-glow-2)));
+  background-size: cover;
+  background-position: center;
+}
+
+.ms-carousel__caption {
+  width: 100%;
+  padding: var(--space-3) var(--space-5) calc(var(--space-5) + 20px);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  color: #ffffff !important;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+}
+
+.ms-carousel__caption * { color: #ffffff !important; }
+
+.ms-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  color: #ffffff !important;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background var(--transition-slow);
+}
+
+.ms-carousel__arrow:hover { background: rgba(255, 255, 255, 0.4); }
+.ms-carousel__arrow--prev { left: var(--space-3); }
+.ms-carousel__arrow--next { right: var(--space-3); }
+.ms-carousel__arrow svg { width: 18px; height: 18px; }
+
+/* Bullets — o ativo se alonga em pill, mostrando qual está em destaque */
+.ms-carousel__bullets {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-3);
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.ms-carousel__bullet {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
+}
+
+.ms-carousel__bullet--active {
+  width: 24px;
+  background: #ffffff;
+}
+
+/* ---------- Galeria com filtros ---------- */
+.ms-gallery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.ms-gallery__filter {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background var(--transition-slow), border var(--transition-slow);
+}
+
+.ms-gallery__filter:hover { background: var(--color-surface-hover); }
+
+.ms-gallery__filter--active {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.ms-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.ms-gallery__item {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  animation: ms-gallery-in 0.35s var(--ease-bounce);
+}
+
+.ms-gallery__item.is-hidden { display: none; }
+
+@keyframes ms-gallery-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ms-gallery__photo {
+  aspect-ratio: 4 / 3;
+  background: var(--ms-photo, linear-gradient(135deg, var(--bg-glow-2), var(--bg-glow-3)));
+  background-size: cover;
+  background-position: center;
+}
+
+.ms-gallery__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.ms-gallery__title { font-weight: var(--font-weight-medium); }
+
+.ms-gallery__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.ms-gallery__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted) !important;
+}
+
+/* ---------- Accordion ---------- */
+.ms-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ms-accordion__item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  overflow: hidden;
+}
+
+.ms-accordion__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  transition: background var(--transition-slow);
+}
+
+.ms-accordion__header:hover { background: var(--color-surface); }
+
+.ms-accordion__chevron {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--ease-bounce);
+}
+
+.ms-accordion__item--open .ms-accordion__chevron { transform: rotate(180deg); }
+
+/* Expansão animada via grid-template-rows (0fr → 1fr) com easing
+   de bounce: leve overshoot na abertura e no fechamento. */
+.ms-accordion__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s var(--ease-bounce);
+}
+
+.ms-accordion__item--open .ms-accordion__body { grid-template-rows: 1fr; }
+
+.ms-accordion__inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.ms-accordion__content {
+  padding: 0 var(--space-5) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Navbar flutuante ---------- */
+.ms-navbar {
+  position: fixed;
+  top: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  width: calc(100vw - 48px);
+  max-width: 1100px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.ms-navbar::-webkit-scrollbar { display: none; }
+
+/* Variante em fluxo (para demonstração/documentação) */
+.ms-navbar--static {
+  position: static;
+  transform: none;
+  width: 100%;
+}
+
+.ms-navbar__brand {
+  margin-right: auto; /* empurra os itens de navegação pra direita */
+  padding: var(--space-2) var(--space-4);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ms-navbar__link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-slow), border var(--transition-slow);
+}
+
+.ms-navbar__link:hover { background: var(--color-surface-hover); }
+
+.ms-navbar__link--active {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.ms-navbar .ms-switch { margin: 0 var(--space-1); flex-shrink: 0; }
+
+/* Sem marca, os itens de navegação ficam centralizados */
+.ms-navbar:not(:has(.ms-navbar__brand)) { justify-content: center; }
+
+/* Sino de notificações (histórico de alertas) */
+.ms-navbar__bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-slow);
+}
+
+.ms-navbar__bell:hover { background: var(--color-surface-hover); }
+
+.ms-navbar__bell svg { width: 20px; height: 20px; display: block; }
+
+.ms-navbar__bell-badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-danger);
+  color: #ffffff !important;
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-navbar__bell-badge[hidden] { display: none; }
+
+/* Botão hamburguer — só aparece em viewports estreitas */
+.ms-navbar__burger {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-slow);
+}
+
+.ms-navbar__burger:hover { background: var(--color-surface-hover); }
+
+.ms-navbar__burger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-text);
+  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+}
+
+/* Hamburguer ⇄ X: barras externas giram, a do meio some */
+.ms-navbar--open .ms-navbar__burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ms-navbar--open .ms-navbar__burger span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.ms-navbar--open .ms-navbar__burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menu que abre logo abaixo do header — mesma receita de vidro dos
+   demais painéis do sistema (surface + blur + borda). Vive no <body>
+   (o JS o posiciona sob a navbar), porque backdrop-filter aninhado
+   dentro da navbar não se aplica. */
+.ms-navbar__menu {
+  position: fixed;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  opacity: 0;
+  /* visibility (e não só opacity) tira os links do foco e dos leitores
+     de tela enquanto o menu está fechado */
+  visibility: hidden;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity var(--transition-slow), transform 0.35s var(--ease-bounce),
+              visibility 0s linear var(--transition-slow);
+}
+
+.ms-navbar__menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.ms-navbar__menu .ms-navbar__link {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Responsivo: em telas estreitas os links saem da barra e vão pro menu —
+   mas SÓ em navbars que têm o botão hamburguer. Sem ele, os links
+   permanecem visíveis (a pill rola horizontalmente se faltar espaço). */
+@media (max-width: 720px) {
+  /* tudo sob :has(): sem suporte, links e hambúrguer não aparecem juntos */
+  .ms-navbar:has(.ms-navbar__burger) { overflow: visible; }
+  .ms-navbar:has(.ms-navbar__burger) > .ms-navbar__link { display: none; }
+  .ms-navbar:has(.ms-navbar__burger) .ms-navbar__burger { display: inline-flex; }
+}
+
+@media (min-width: 720.001px) {
+  .ms-navbar__menu { display: none; }
+}
+
+/* Âncoras não somem atrás da navbar fixa (escopado à página do DS) */
+.ms-page [id] { scroll-margin-top: 96px; }
+
+/* ---------- Splash screen (logo Mothership) ----------
+   Fase 1 (carregando): só o olho + sorriso, centralizados e ampliados,
+   com piscadas ocasionais. Fase 2 (--ready): o rosto volta ao lugar,
+   as letras se revelam a partir dele e o dirigível chega voando e
+   pousa. Fase 3 (--done): a tela se dissolve revelando a página. */
+.ms-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  /* linhas/colunas fixas na área disponível: sem isso o max-height:100%
+     do logo resolveria contra uma faixa de altura automática (circular) */
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--space-5);
+  background-color: var(--bg-base);
+  background-image: var(--bg-page);
+  background-repeat: no-repeat;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.ms-splash--done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Volta imediata ao estado inicial (usado por MsSplash.reset) */
+.ms-splash--instant,
+.ms-splash--instant * { transition: none !important; }
+
+/* Variante presa ao container (demonstração) */
+.ms-splash--inline { position: absolute; }
+.ms-splash--inline.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  border-radius: 0;
+}
+
+.ms-splash__logo {
+  width: min(78vw, 560px);
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Branco da logo vira tinta escura no tema claro */
+/* Cores da logo — antes viviam num <style> dentro do SVG, que não é
+   escopado e vazava as classes .fil* para o documento inteiro. */
+.ms-logo .fil1 { fill: var(--ms-logo-ink, #fefefe); }
+.ms-logo .fil13 { fill: #00aeed; }
+.light .ms-splash,
+.light .ms-logo { --ms-logo-ink: #191933; }
+
+.ms-splash__word,
+.ms-splash__letter,
+.ms-splash__blimp,
+.ms-splash__eye,
+.ms-splash__blimp-in {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* --- O wordmark começa com o OLHO no centro da tela, ampliado (fase 1).
+   Ao revelar, percorre três momentos: se abre como palavra centralizada
+   na tela ("o nome se centraliza a partir do O"), segura enquanto o
+   dirigível se aproxima e, por fim, assenta na composição completa. --- */
+.ms-splash__word { transform: translate(4459px, -2180px) scale(2.4); }
+
+@keyframes ms-word-settle {
+  0% {
+    transform: translate(4459px, -2180px) scale(2.4);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.64, 1);
+  }
+  34% {
+    transform: translate(5px, -1875px) scale(1.25);
+    animation-timing-function: linear;
+  }
+  52% {
+    transform: translate(5px, -1875px) scale(1.25);
+    animation-timing-function: cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  100% { transform: none; }
+}
+
+.ms-splash--ready .ms-splash__word {
+  animation: ms-word-settle 3.5s forwards;
+}
+
+.ms-splash--instant .ms-splash__word { animation: none !important; }
+
+/* Piscada ocasional (dupla) */
+@keyframes ms-blink {
+  0%, 86%, 100% { transform: scaleY(1); }
+  88%           { transform: scaleY(0.08); }
+  90%           { transform: scaleY(1); }
+  93%           { transform: scaleY(0.08); }
+  95%           { transform: scaleY(1); }
+}
+
+.ms-splash__eye { animation: ms-blink 4.6s infinite; }
+
+/* --- Fase 2: letras se revelam a partir do olho --- */
+.ms-splash__letter {
+  opacity: 0;
+  transform: translateY(180px) scale(0.85);
+  transition: opacity 0.45s ease, transform 0.6s var(--ease-bounce);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+.ms-splash--ready .ms-splash__letter {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Fase 3: só depois do nome pronto, o dirigível chega voando --- */
+.ms-splash__blimp {
+  opacity: 0;
+  transform: translate(-6200px, -1100px) rotate(-7deg);
+  transition: opacity 0.5s ease 1.6s,
+              transform 1.9s cubic-bezier(0.28, 0.86, 0.3, 1) 1.6s;
+}
+
+.ms-splash--ready .ms-splash__blimp {
+  opacity: 1;
+  transform: none;
+}
+
+/* Flutuação contínua depois do pouso */
+@keyframes ms-blimp-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-110px) rotate(1.1deg); }
+}
+
+.ms-splash--ready .ms-splash__blimp-in {
+  animation: ms-blimp-float 6s ease-in-out 3.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-splash__eye,
+  .ms-splash--ready .ms-splash__blimp-in { animation: none; }
+  .ms-splash__word,
+  .ms-splash__letter,
+  .ms-splash__blimp { transition-duration: 0.3s; }
+  .ms-splash svg animateTransform { display: none; }
+}
+
+/* ---------- Loader (rosto da marca enchendo de líquido) ----------
+   A base é vidro — a mesma superfície translúcida do resto do sistema —
+   e o líquido a preenche de baixo para cima. A máscara tem duas camadas:
+   uma controla o NÍVEL (translateY, ligado ao progresso) e a outra faz a
+   onda deslizar continuamente no eixo X, dando o movimento de líquido. */
+.ms-loader {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ms-loader__mark {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Base: vidro translúcido com a borda do sistema */
+.ms-loader__glass {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 12;
+}
+
+/* Piscada ocasional — a mesma da splash */
+.ms-loader__eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ms-blink 4.6s infinite;
+}
+
+.ms-loader__liquid { stroke: none; }
+
+/* Nível do líquido: 0% deixa tudo abaixo da forma, 100% cobre o topo */
+.ms-loader__level {
+  transform: translateY(var(--ms-loader-level, 100%));
+  transition: transform 0.7s var(--ease-bounce);
+}
+
+/* Onda deslizando: um ciclo completo, em loop sem emenda */
+.ms-loader__wave {
+  animation: ms-liquid-wave 2.6s linear infinite;
+}
+
+@keyframes ms-liquid-wave {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-738px); } /* = um ciclo (largura do viewBox) */
+}
+
+/* Sem valor definido, o nível oscila sozinho */
+.ms-loader--indeterminate .ms-loader__level {
+  animation: ms-liquid-idle 2.8s ease-in-out infinite;
+  transition: none;
+}
+
+@keyframes ms-liquid-idle {
+  0%, 100% { transform: translateY(72%); }
+  50%      { transform: translateY(38%); }
+}
+
+.ms-loader__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted) !important;
+}
+
+.ms-loader__value {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-loader__eye,
+  .ms-loader__wave,
+  .ms-loader--indeterminate .ms-loader__level { animation: none; }
+}
+
+/* ---------- Modal / popup ---------- */
+.ms-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--space-5);
+  background: rgba(0, 0, 0, 0.55);
+  animation: ms-backdrop-in 0.25s ease;
+}
+
+.light .ms-modal-backdrop { background: rgba(20, 20, 40, 0.3); }
+
+.ms-modal-backdrop--closing { animation: ms-backdrop-out 0.2s ease forwards; }
+
+@keyframes ms-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ms-backdrop-out {
+  to { opacity: 0; }
+}
+
+.ms-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: 100%;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  /* Mesma receita de vidro dos cards — o backdrop não usa filtro,
+     então o blur do modal funciona de fato */
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  animation: ms-modal-in 0.4s var(--ease-bounce);
+}
+
+.ms-modal--sm { width: min(480px, 100%); }
+.ms-modal--lg { width: min(880px, 100%); }
+
+.ms-modal-backdrop--closing .ms-modal { animation: ms-modal-out 0.2s ease forwards; }
+
+@keyframes ms-modal-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ms-modal-out {
+  to { opacity: 0; transform: translateY(10px) scale(0.97); }
+}
+
+.ms-modal__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.ms-modal__title {
+  flex: 1;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-modal__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px -4px 0 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted) !important;
+  cursor: pointer;
+  transition: background var(--transition-slow), color var(--transition-slow);
+}
+
+.ms-modal__close:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text) !important;
+}
+
+.ms-modal__close svg { width: 16px; height: 16px; display: block; }
+
+.ms-modal__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* reserva o espaço da barra vertical: o conteúdo não desloca quando ela aparece */
+  scrollbar-gutter: stable;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.ms-modal__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.ms-modal__footer--end { justify-content: flex-end; }
+
+/* Etapas: todos os painéis ocupam a MESMA célula da grade, então o
+   corpo do modal já nasce com a altura da etapa mais alta — trocar de
+   etapa não muda o tamanho nem faz a barra de rolagem piscar. */
+.ms-modal__steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  /* O painel que entra desliza no eixo X e transbordaria para fora.
+     `clip` corta esse excesso SEM criar área rolável (ao contrário de
+     `hidden`) e, por ser aplicado aqui — e não no corpo, que rola no
+     eixo Y — mantém `overflow-y: visible`, deixando a rolagem vertical
+     a cargo de .ms-modal__body. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.ms-modal__step {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.ms-modal__step[data-active="false"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ms-modal__step[data-active="true"] { animation: ms-step-in 0.35s var(--ease-bounce); }
+.ms-modal__steps[data-dir="back"] .ms-modal__step[data-active="true"] {
+  animation-name: ms-step-in-back;
+}
+
+@keyframes ms-step-in {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ms-step-in-back {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Indicador de etapa — mesma linguagem dos bullets do carrossel */
+.ms-modal__dots {
+  display: flex;
+  gap: var(--space-2);
+  margin-right: auto;
+}
+
+.ms-modal__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  cursor: pointer;
+  transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
+}
+
+.ms-modal__dot--active {
+  width: 24px;
+  background: var(--color-text);
+}
+
+.ms-modal__dot--done { background: var(--color-text-muted); }
+
+.ms-modal__count {
+  margin-right: auto;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-modal,
+  .ms-modal__step,
+  .ms-modal-backdrop { animation-duration: 0.01s; }
+}
+
+/* ---------- Breadcrumbs ---------- */
+.ms-breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.ms-breadcrumbs a {
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: background var(--transition-slow), border var(--transition-slow);
+}
+
+.ms-breadcrumbs a:hover { background: var(--color-surface-hover); }
+
+.ms-breadcrumbs__sep {
+  display: inline-flex;
+  color: var(--color-text-muted) !important;
+}
+
+.ms-breadcrumbs__sep svg { width: 14px; height: 14px; }
+
+.ms-breadcrumbs__current {
+  padding: 4px 10px;
+  color: var(--color-text-muted) !important;
+}
+
+/* Variante em pill de vidro (mesma linguagem da navbar) */
+.ms-breadcrumbs--glass {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+/* ---------- Dados: tooltip ---------- */
+.ms-tooltip {
+  position: fixed;
+  z-index: 700;
+  pointer-events: none;
+  max-width: 260px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  font-size: var(--text-xs);
+  white-space: pre-line;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.ms-tooltip--show { opacity: 1; }
+
+/* ---------- Dados: estrutura de gráfico ---------- */
+.ms-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ms-chart svg { display: block; width: 100%; height: auto; }
+
+.ms-chart svg text {
+  fill: var(--color-text-muted);
+  font-family: var(--font-family);
+  font-size: 11px;
+}
+
+.ms-chart [data-tip] { cursor: pointer; }
+
+/* Marcas SVG não aceitam ::after com máscara, então o destaque no hover
+   é feito com escala + halo (drop-shadow na própria cor) — o mesmo
+   vocabulário de "cresce e ganha sombra" do contorno reativo. */
+.ms-chart__dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.25s var(--ease-bounce), filter var(--transition-slow);
+}
+
+/* pointer-events: all — um fill transparente não conta como "pintado",
+   então sem isso o alvo invisível não capturaria o ponteiro */
+.ms-chart__dot-hit {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+/* o alvo transparente maior é quem captura o ponteiro; o grupo inteiro
+   responde ao hover */
+.ms-chart__dot:hover {
+  transform: scale(2.1);
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Fatias da pizza crescem a partir do centro do gráfico (destaque
+   radial) e ganham halo na própria cor. */
+.ms-pie__slice {
+  transform-box: view-box;
+  transform-origin: var(--ms-pie-origin, 50% 50%);
+  transition: transform 0.3s var(--ease-bounce), filter var(--transition-slow);
+}
+
+.ms-pie__slice:hover {
+  transform: scale(1.06);
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
+}
+
+/* ---------- Dados: legenda ---------- */
+.ms-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted) !important;
+}
+
+.ms-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted) !important;
+}
+
+.ms-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ---------- Dados: barras horizontais / progresso ---------- */
+.ms-meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ms-meter__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.ms-meter__value { font-weight: var(--font-weight-medium); }
+
+.ms-meter__track {
+  height: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  overflow: hidden;
+  /* o contorno reativo usa o raio da própria pill */
+  --ms-edge-radius: var(--radius-pill);
+  --ms-edge-lift: -2px;
+  --ms-edge-scale: 1.02;
+}
+
+/* Preenchimento em degradê: da cor da série para uma versão mais clara
+   e quase luminosa na ponta. No hover, o brilho aumenta. */
+.ms-meter__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    90deg,
+    var(--ms-fill, var(--chart-1)),
+    color-mix(in srgb, var(--ms-fill, var(--chart-1)) 45%, white)
+  );
+  transition: width 0.6s var(--ease-bounce), filter var(--transition-slow),
+              box-shadow var(--transition-slow);
+}
+
+.ms-meter__track:hover .ms-meter__fill {
+  filter: brightness(1.15) saturate(1.1);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--ms-fill, var(--chart-1)) 55%, transparent);
+}
+
+/* ---------- Dados: anel de progresso ---------- */
+.ms-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* o contorno reativo (e a sombra) acompanham o formato circular */
+  border-radius: var(--radius-full);
+  --ms-edge-radius: var(--radius-full);
+  --ms-edge-lift: -3px;
+  --ms-edge-scale: 1.04;
+}
+
+/* overflow visible: sem isso o drop-shadow do hover é cortado no
+   limite do viewport do SVG */
+.ms-ring svg { display: block; transform: rotate(-90deg); overflow: visible; }
+
+.ms-ring__track {
+  fill: none;
+  stroke: var(--chart-grid);
+}
+
+/* O traço usa um degradê (cor da série → versão clara e luminosa)
+   definido no próprio SVG; no hover o brilho sobe. */
+.ms-ring__value {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s var(--ease-bounce), filter var(--transition-slow);
+}
+
+.ms-ring:hover .ms-ring__value {
+  filter: brightness(1.15) drop-shadow(0 0 8px currentColor);
+}
+
+.ms-ring__label {
+  position: absolute;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.ms-ring__number {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-medium);
+  display: block;
+}
+
+.ms-ring__caption {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted) !important;
+}
+
+/* ---------- Dados: widgets de dashboard (stat tiles) ---------- */
+.ms-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.ms-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.ms-stat__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted) !important;
+}
+
+.ms-stat__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.1;
+}
+
+.ms-stat__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-stat__delta svg { width: 12px; height: 12px; }
+
+.ms-stat__delta--up,
+.ms-stat__delta--up * { color: var(--color-success) !important; }
+
+.ms-stat__delta--down,
+.ms-stat__delta--down * { color: var(--color-danger) !important; }
+
+.ms-stat__delta--flat,
+.ms-stat__delta--flat * { color: var(--color-text-muted) !important; }
+
+.ms-stat__spark { margin-top: auto; }
+.ms-stat__spark svg { display: block; width: 100%; height: 28px; }
+
+/* ---------- Rodapé ---------- */
+.ms-footer {
+  padding: var(--space-4);
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.ms-footer a {
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-slow);
+}
+
+.ms-footer a:hover { color: var(--color-accent) !important; }
+
+.ms-footer .ms-flash { color: var(--color-highlight) !important; }

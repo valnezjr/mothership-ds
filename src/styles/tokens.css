@@ -1,0 +1,243 @@
+/* ============================================================
+   MOTHERSHIP DS — Design Tokens
+   Extraído de "Agrupador de links e contatos" (valnezjr)
+   Tema escuro é o padrão (:root); tema claro via .light no <html>
+   ============================================================ */
+
+:root {
+  /* ---------- Tipografia ---------- */
+  --font-family: "Outfit", sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  --text-xs: 12px;
+  --text-sm: 14px;   /* rodapé */
+  --text-md: 16px;   /* corpo */
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+
+  --line-height-tight: 24px; /* handle do perfil */
+  --line-height-base: 1.5;
+
+  /* ---------- Espaçamento (escala observada na página) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 56px;  /* margem superior do container */
+
+  /* ---------- Raios ---------- */
+  --radius-md: 10px;     /* botões, cards, container */
+  --radius-pill: 50px;   /* trilho do switch, badges */
+  --radius-full: 50%;    /* avatar, botões de ícone */
+
+  /* ---------- Efeitos ---------- */
+  --blur-glass: 20px;    /* glassmorphism dos botões/cards */
+  --blur-soft: 4px;      /* trilho do switch */
+
+  --transition-fast: 0.1s;   /* outline do switch */
+  --transition-base: 0.2s;   /* deslize do switch */
+  --transition-slow: 0.3s;   /* backgrounds e cores */
+
+  /* Easing com leve bounce (overshoot) — accordion e microinterações */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---------- Larguras ---------- */
+  --container-max: 588px;
+  --avatar-size: 112px;
+  --switch-width: 64px;
+  --switch-height: 24px;
+  --switch-thumb: 32px;
+
+  /* ---------- Cores de marca (fixas nos dois temas) ---------- */
+  --color-accent: rgb(0, 167, 218);     /* ciano — hover de links do rodapé */
+  --color-highlight: rgb(255, 208, 0);  /* amarelo — ícone "flash" */
+  --color-success: rgb(0, 214, 143);
+  --color-danger: rgb(255, 77, 109);
+
+  /* Ampliação da paleta: violeta e rosa vindos dos gráficos,
+     laranja do gradiente da logo e um cinza para status neutros. */
+  --color-violet: rgb(111, 97, 214);
+  --color-pink: rgb(212, 112, 143);
+  --color-orange: rgb(242, 111, 53);
+  --color-gray: rgb(139, 139, 158);
+
+  --color-accent-soft: rgba(0, 167, 218, 0.2);
+  --color-highlight-soft: rgba(255, 208, 0, 0.2);
+  --color-success-soft: rgba(0, 214, 143, 0.2);
+  --color-danger-soft: rgba(255, 77, 109, 0.2);
+  --color-violet-soft: rgba(111, 97, 214, 0.2);
+  --color-pink-soft: rgba(212, 112, 143, 0.2);
+  --color-orange-soft: rgba(242, 111, 53, 0.2);
+  --color-gray-soft: rgba(139, 139, 158, 0.2);
+
+  /* ---------- Escalas de marca (100 claro → 900 escuro; 500 = base) ---------- */
+  --color-accent-100: #d9f2f9;
+  --color-accent-200: #b2e5f4;
+  --color-accent-300: #80d3ec;
+  --color-accent-400: #40bde3;
+  --color-accent-500: #00a7da;
+  --color-accent-600: #008eb9;
+  --color-accent-700: #007599;
+  --color-accent-800: #005c78;
+  --color-accent-900: #004357;
+
+  --color-highlight-100: #fff8d9;
+  --color-highlight-200: #fff1b2;
+  --color-highlight-300: #ffe880;
+  --color-highlight-400: #ffdc40;
+  --color-highlight-500: #ffd000;
+  --color-highlight-600: #d9b100;
+  --color-highlight-700: #b29200;
+  --color-highlight-800: #8c7200;
+  --color-highlight-900: #665300;
+
+  --color-success-100: #d9f9ee;
+  --color-success-200: #b2f3dd;
+  --color-success-300: #80eac7;
+  --color-success-400: #40e0ab;
+  --color-success-500: #00d68f;
+  --color-success-600: #00b67a;
+  --color-success-700: #009664;
+  --color-success-800: #00764f;
+  --color-success-900: #005639;
+
+  --color-danger-100: #ffe4e9;
+  --color-danger-200: #ffcad3;
+  --color-danger-300: #ffa6b6;
+  --color-danger-400: #ff7a92;
+  --color-danger-500: #ff4d6d;
+  --color-danger-600: #d9415d;
+  --color-danger-700: #b2364c;
+  --color-danger-800: #8c2a3c;
+  --color-danger-900: #661f2c;
+
+  --color-violet-100: #e9e7f9;
+  --color-violet-200: #d4d0f3;
+  --color-violet-300: #b7b0ea;
+  --color-violet-400: #9388e0;
+  --color-violet-500: #6f61d6;
+  --color-violet-600: #5e52b6;
+  --color-violet-700: #4e4496;
+  --color-violet-800: #3d3576;
+  --color-violet-900: #2c2756;
+
+  --color-pink-100: #f9eaee;
+  --color-pink-200: #f2d4dd;
+  --color-pink-300: #eab8c7;
+  --color-pink-400: #df94ab;
+  --color-pink-500: #d4708f;
+  --color-pink-600: #b45f7a;
+  --color-pink-700: #944e64;
+  --color-pink-800: #753e4f;
+  --color-pink-900: #552d39;
+
+  --color-orange-100: #fde9e1;
+  --color-orange-200: #fbd4c2;
+  --color-orange-300: #f8b79a;
+  --color-orange-400: #f59368;
+  --color-orange-500: #f26f35;
+  --color-orange-600: #ce5e2d;
+  --color-orange-700: #a94e25;
+  --color-orange-800: #853d1d;
+  --color-orange-900: #612c15;
+
+  --color-gray-100: #eeeef0;
+  --color-gray-200: #dcdce2;
+  --color-gray-300: #c5c5ce;
+  --color-gray-400: #a8a8b6;
+  --color-gray-500: #8b8b9e;
+  --color-gray-600: #767686;
+  --color-gray-700: #61616f;
+  --color-gray-800: #4c4c57;
+  --color-gray-900: #38383f;
+
+  /* ---------- Cores de dados (gráficos) ----------
+     Categóricas em ORDEM FIXA (1 ciano · 2 ouro · 3 violeta · 4 magenta),
+     derivadas da paleta da marca e validadas por modo contra daltonismo
+     (ΔE CVD ≥ 8), visão normal (ΔE ≥ 15) e contraste ≥ 3:1 com o fundo.
+     Nunca cicle nem reordene; success/danger ficam reservadas p/ status. */
+  --chart-1: #0096c8;
+  --chart-2: #b29200;
+  --chart-3: #6f61d6;
+  --chart-4: #d4708f;
+  --chart-grid: rgba(255, 255, 255, 0.14);
+
+  /* ---------- Cores — TEMA ESCURO (padrão) ---------- */
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.7);
+  --color-border: rgba(255, 255, 255, 0.5);
+  --color-border-strong: #ffffff;
+  --color-surface: rgba(255, 255, 255, 0.1);
+  --color-surface-hover: rgba(255, 255, 255, 0.5);
+  --color-thumb: #ffffff;
+
+  /* ---------- Fundo (recriação em CSS dos assets/bg-*.jpg) ----------
+     O fundo é composto por uma cor base + 4 "glows" (manchas de luz).
+     Cada glow tem um token de COR (--bg-glow-N) e um de POSIÇÃO
+     (--bg-glow-N-pos) — troque a cor, mova a posição, ou anime via JS
+     (ex.: scripts/glow-reactive.js aplica um parallax sutil que
+     reage ao movimento do mouse, mantendo cada glow no lugar). */
+  --bg-base: #111114;
+  --bg-glow-1: #6b4796;      /* violeta — canto superior direito */
+  --bg-glow-2: #63256b;      /* magenta — centro-direita */
+  --bg-glow-3: #2e3f5e;      /* azul — borda esquerda */
+  --bg-glow-4: #5d2562;      /* roxo — canto inferior esquerdo */
+
+  --bg-glow-1-pos: 102% -2%;
+  --bg-glow-2-pos: 72% 15%;
+  --bg-glow-3-pos: -4% 48%;
+  --bg-glow-4-pos: -4% 104%;
+
+  /* Tamanho de cada glow (largura altura da elipse) — também animável:
+     scripts/glow-reactive.js pulsa esses valores pra dar a "respiração"
+     de lava lamp. */
+  --bg-glow-1-size: 45% 42%;
+  --bg-glow-2-size: 58% 50%;
+  --bg-glow-3-size: 38% 46%;
+  --bg-glow-4-size: 46% 46%;
+
+  /* A composição é definida uma única vez: os temas trocam apenas
+     os tokens de cor/posição acima. */
+  --bg-page:
+    radial-gradient(ellipse var(--bg-glow-1-size) at var(--bg-glow-1-pos), var(--bg-glow-1), transparent 78%),
+    radial-gradient(ellipse var(--bg-glow-2-size) at var(--bg-glow-2-pos), var(--bg-glow-2), transparent 82%),
+    radial-gradient(ellipse var(--bg-glow-3-size) at var(--bg-glow-3-pos), var(--bg-glow-3), transparent 80%),
+    radial-gradient(ellipse var(--bg-glow-4-size) at var(--bg-glow-4-pos), var(--bg-glow-4), transparent 80%);
+
+  /* Ícone do switch (lua) — SVG embutido */
+  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a1a2e'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z'/%3E%3Ccircle cx='17' cy='5' r='1'/%3E%3Ccircle cx='20.5' cy='9' r='0.8'/%3E%3C/svg%3E");
+}
+
+/* ---------- Cores — TEMA CLARO ---------- */
+.light {
+  transition: var(--transition-slow);
+
+  /* Cores de dados do tema claro — mesmos matizes, passos próprios,
+     validados contra superfície branca */
+  --chart-1: #008eb9;
+  --chart-2: #9c8100;
+  --chart-3: #6f52b8;
+  --chart-4: #c2537f;
+  --chart-grid: rgba(0, 0, 0, 0.12);
+
+  --color-text: #000000;
+  --color-text-muted: rgba(0, 0, 0, 0.7);
+  --color-border: rgba(0, 0, 0, 0.5);
+  --color-border-strong: #000000;
+  --color-surface: rgba(0, 0, 0, 0.05);
+  --color-surface-hover: rgba(0, 0, 0, 0.15);
+  --color-thumb: #ffffff;
+
+  --bg-base: #ffffff;
+  --bg-glow-1: #bb93e6;      /* lilás — canto superior direito */
+  --bg-glow-2: #f2b3ed;      /* rosa — centro-direita */
+  --bg-glow-3: #c9d9f7;      /* azul claro — borda esquerda */
+  --bg-glow-4: #e9aeec;      /* rosa-lilás — canto inferior esquerdo */
+
+  /* Ícone do switch (sol) — SVG embutido */
+  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23ffd000' stroke='none'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4'/%3E%3C/svg%3E");
+}
