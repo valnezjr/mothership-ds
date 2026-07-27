@@ -33,7 +33,7 @@ const html = `<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styleguide.css">
-<style>html{scroll-behavior:smooth}body{margin:0}</style>
+<style>body{margin:0}@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}</style>
 </head>
 <body class="ms-page">
 <div id="root"></div>
