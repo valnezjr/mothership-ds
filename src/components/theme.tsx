@@ -129,7 +129,7 @@ export function useLivingBackground(config: Partial<Record<number, GlowConfig>> 
     const root = document.documentElement;
     const cs = getComputedStyle(root);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const conf: Record<number, GlowConfig> = { ...defaultGlowConfig, ...config };
+    const conf = { ...defaultGlowConfig, ...config } as Record<number, GlowConfig>;
 
     if (!homeRef.current) {
       homeRef.current = [1, 2, 3, 4].map((n) => {
@@ -245,7 +245,7 @@ export function useEdgeAngle() {
   }, []);
 }
 
-export interface HoverEdgeProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface HoverEdgeProps extends React.HTMLAttributes<HTMLElement> {
   /** Cores do anel — use as cores vivas do próprio conteúdo. */
   colors?: [string, string];
   /** Raio do anel (padrão: --radius-md). */
@@ -275,7 +275,7 @@ export function HoverEdge({
 }: HoverEdgeProps) {
   const setAngle = useEdgeAngle();
   const handleMove = React.useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
+    (e: React.PointerEvent<HTMLElement>) => {
       setAngle(e);
       onPointerMove?.(e);
     },

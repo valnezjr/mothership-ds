@@ -203,7 +203,7 @@ export function LineChart({
 
 /* ---------- Barras horizontais / progresso ---------- */
 
-export interface MeterProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MeterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   label: React.ReactNode;
   /** 0–100. */
   value: number;
@@ -280,7 +280,7 @@ export function PieChart({ slices, className, ...rest }: PieChartProps) {
       } 1 ${p2[0].toFixed(1)},${p2[1].toFixed(1)} Z`,
       lx,
       ly,
-      anchor: Math.cos(mid) >= -0.05 ? "start" : "end",
+      anchor: (Math.cos(mid) >= -0.05 ? "start" : "end") as "start" | "end",
       pct: Math.round((s.value / total) * 100),
     };
   });
@@ -327,7 +327,7 @@ export function PieChart({ slices, className, ...rest }: PieChartProps) {
 
 /* ---------- Anel de progresso ---------- */
 
-export interface ProgressRingProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProgressRingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   /** 0–100. */
   value: number;
   caption?: React.ReactNode;
@@ -452,7 +452,7 @@ export function StatGrid({ className, ...rest }: React.HTMLAttributes<HTMLDivEle
   return <div className={["ms-stats", className].filter(Boolean).join(" ")} {...rest} />;
 }
 
-export interface StatTileProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StatTileProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   /** Opcionais: omita ambos para montar o conteúdo livremente via children. */
   label?: React.ReactNode;
   value?: React.ReactNode;
