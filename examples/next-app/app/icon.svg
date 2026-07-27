@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Favicon da landing page de exemplo: mesma composição do favicon do
+     styleguide (assets/favicon.svg), mas com o fundo no degradê de
+     marca (mesmas cores/paradas do gradiente id0 em assets/logo.svg,
+     recalculado pra cobrir o quadrado inteiro em vez de uma fatia
+     quase sólida) e o sorriso em branco em vez do coral. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1870.33 5750.00 1255.53 1255.53">
+  <defs>
+    <linearGradient id="ms-favicon-bg" gradientUnits="userSpaceOnUse" x1="3125.85" y1="6377.77" x2="1870.33" y2="6377.77">
+      <stop offset="0" stop-color="#00AFEF"/>
+      <stop offset="0.6" stop-color="#ED2D66"/>
+      <stop offset="1" stop-color="#F26F35"/>
+    </linearGradient>
+  </defs>
+  <rect x="1870.33" y="5750.00" width="1255.53" height="1255.53" rx="276.2" fill="url(#ms-favicon-bg)"/>
+  <path fill="#FEFEFE" d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z"/>
+  <path fill="#00AEED" d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z"/>
+  <path fill="#FEFEFE" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z"/>
+</svg>
