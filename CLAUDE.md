@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 36 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 37 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -28,9 +28,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 `valnezjr.github.io/mothership-ds/`, exemplo de landing page em
 `valnezjr.github.io/mothership-ds/exemplo/`.
 
-### v1.2 em andamento
-
-Expansão em componentes de "marketing" (landing page), um de cada vez:
+### v1.2.0 — lançada em 2026-07-27
 
 - [x] `PricingCard` (`src/components/marketing.tsx`)
 - [x] `TestimonialCard` (`src/components/marketing.tsx`)
@@ -44,6 +42,14 @@ Expansão em componentes de "marketing" (landing page), um de cada vez:
       já era exata. Escalas 100–900 recalculadas com a mesma fórmula de
       mix já usada (branco/preto, mesmos pesos). `--chart-3`/`--chart-4`
       não seguem — já validados nos valores antigos, seguem soltos.
+- [x] `Marquee` (`src/components/marquee.tsx`) — primitive de scroll
+      horizontal infinito, animação 100% CSS (duas cópias do conteúdo,
+      translate3d de -50%). Único arquivo do repo com `"use client"`
+      só por causa do `inert` (React 18 descarta `inert=""` via JSX;
+      precisa setar a propriedade DOM via ref) — a animação em si
+      dispensaria a diretiva. `LogoMarquee`/`TechMarquee`/`IconMarquee`/
+      `TestimonialMarquee` ficam como composições futuras, documentadas
+      mas não implementadas.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

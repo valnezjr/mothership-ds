@@ -165,6 +165,16 @@ de glow muda o clima da página inteira sem tocar em nenhum componente.
 --ms-grad-angle             /* atualizado em runtime pelo componente, não editar */
 ```
 
+## Scroll infinito (`Marquee`)
+
+```css
+--ms-marquee-duration   /* padrão 40s; slow=60s, fast=20s via classe modificadora */
+--ms-marquee-gap        /* padrão --space-5; sm=--space-4, lg=--space-6 via classe */
+```
+
+O fade lateral (`fade`) usa `mask-image` com `var(--space-7)` como
+largura da transição — nenhum valor novo, reaproveita o espaçamento.
+
 ## Trocando a marca (rebrand)
 
 Redefinir tokens depois de importar o CSS — nenhum componente precisa

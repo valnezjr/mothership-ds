@@ -259,6 +259,30 @@ Filtra por categoria; cada item ganha o contorno reativo com as cores das
 suas categorias — dois tons quando há duas categorias, a escala 300→600
 quando há uma só.
 
+### `Marquee`
+
+Primitive de scroll horizontal infinito — aceita qualquer `children`,
+não só logos.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `children` | `ReactNode` | — | |
+| `direction` | `"left" \| "right"` | `"left"` | |
+| `speed` | `"slow" \| "normal" \| "fast" \| number` | `"normal"` | número = segundos exatos |
+| `pauseOnHover` | `boolean` | `false` | |
+| `fade` | `boolean` | `false` | máscara CSS nas laterais, com tokens de espaçamento |
+| `gap` | `"sm" \| "md" \| "lg"` | `"md"` | |
+
+Sem prop `loop`: o loop é sempre contínuo — o conteúdo é duplicado uma
+vez (a cópia leva `aria-hidden` + `inert`) e a animação desliza
+exatamente metade da faixa, sem costura. Toda a animação é CSS puro
+(`@keyframes` + `animation-play-state`); nenhum JS move o elemento.
+Empilhe vários `<Marquee>` para linhas independentes.
+
+Ainda não implementadas — só composições futuras do mesmo primitive,
+sem lógica própria: `LogoMarquee`, `TechMarquee`, `IconMarquee`,
+`TestimonialMarquee`.
+
 ### `Modal` · `StepModal`
 
 | Prop | Tipo | Padrão | |

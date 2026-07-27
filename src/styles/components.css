@@ -2242,6 +2242,73 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   text-align: center;
 }
 
+/* ---------- Marquee (scroll horizontal infinito) ----------
+   Duas cópias idênticas do conteúdo lado a lado (track) — a
+   animação desliza exatamente metade da largura da track, então a
+   segunda cópia encaixa sem costura onde a primeira começou. Só CSS:
+   nada de requestAnimationFrame, nada de timer, nada de JS medindo
+   largura. */
+.ms-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.ms-marquee__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ms-marquee-scroll var(--ms-marquee-duration, 40s) linear infinite;
+}
+
+.ms-marquee__track--reverse { animation-direction: reverse; }
+
+@keyframes ms-marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Cada grupo carrega, além do gap entre os itens, um respiro à
+   direita do mesmo tamanho — assim as duas cópias (grupo real +
+   grupo aria-hidden) têm exatamente a mesma largura, e -50% da track
+   sempre cai no início da segunda cópia. */
+.ms-marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--ms-marquee-gap, var(--space-5));
+  padding-right: var(--ms-marquee-gap, var(--space-5));
+}
+
+.ms-marquee--gap-sm { --ms-marquee-gap: var(--space-4); }
+.ms-marquee--gap-md { --ms-marquee-gap: var(--space-5); }
+.ms-marquee--gap-lg { --ms-marquee-gap: var(--space-6); }
+
+.ms-marquee--slow   { --ms-marquee-duration: 60s; }
+.ms-marquee--normal { --ms-marquee-duration: 40s; }
+.ms-marquee--fast   { --ms-marquee-duration: 20s; }
+
+.ms-marquee--pause-on-hover:hover .ms-marquee__track {
+  animation-play-state: paused;
+}
+
+/* Máscara nas laterais — tokens de espaçamento, não um valor solto. */
+.ms-marquee--fade {
+  -webkit-mask-image: linear-gradient(
+    to right, transparent, black var(--space-7), black calc(100% - var(--space-7)), transparent
+  );
+  mask-image: linear-gradient(
+    to right, transparent, black var(--space-7), black calc(100% - var(--space-7)), transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-marquee__track { animation: none; }
+  /* Sem animação, mostrar as duas cópias lado a lado ficaria
+     redundante (mesmo conteúdo, duas vezes, parado) — some a cópia
+     decorativa e sobra uma linha estática normal. */
+  .ms-marquee__group[aria-hidden] { display: none; }
+}
+
 /* ---------- Rodapé ---------- */
 .ms-footer {
   padding: var(--space-4);

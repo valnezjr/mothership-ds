@@ -4,7 +4,7 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado] — 1.2.0
+## [1.2.0] — 2026-07-27
 
 ### Adicionado
 
@@ -40,6 +40,19 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   de tamanho variável (`colSpan`/`rowSpan`), como `StatGrid`/`StatTile`.
   Já nasce com o contorno reativo (`interactive`, padrão `true`).
   Abaixo de 720px vira uma coluna e todo tile volta a 1×1.
+- **`Marquee`** — primitive de scroll horizontal infinito para
+  qualquer `children` (não só logos): `direction` (`left`/`right`),
+  `speed` (`slow`/`normal`/`fast` ou um número de segundos exato),
+  `pauseOnHover`, `fade` (máscara CSS com token de espaçamento) e
+  `gap`. Animação 100% CSS — duas cópias do conteúdo (a segunda com
+  `aria-hidden` + `inert`) deslizando -50% via `translate3d`, sem
+  `requestAnimationFrame` nem timer. Sem `loop`: o loop é sempre
+  contínuo, já que desligá-lo exigiria medir a largura real do
+  conteúdo via JS. Sob `prefers-reduced-motion`, a rolagem para e a
+  cópia duplicada some, sobrando uma linha estática normal.
+  `LogoMarquee`/`TechMarquee`/`IconMarquee`/`TestimonialMarquee`
+  ficam documentados como composições futuras do mesmo primitive,
+  ainda não implementadas.
 
 ### Alterado
 

@@ -9,7 +9,7 @@ import {
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
-  Navbar, Accordion, Carousel, Gallery,
+  Navbar, Accordion, Carousel, Gallery, Marquee,
   // marketing
   PricingCard, TestimonialCard, BentoGrid, BentoTile,
   // alertas
@@ -1080,6 +1080,71 @@ export const STORIES: Story[] = [
         ]}
       />
     ),
+  },
+  {
+    id: "marquee",
+    group: "Componentes",
+    title: "Marquee",
+    subtitle: "Scroll horizontal infinito — primitive para qualquer conteúdo, não só logos",
+    render: () => {
+      const chips = ["Design Systems", "Tokens", "Glassmorphism", "Acessibilidade", "Movimento", "Performance"];
+      const techs = ["React", "TypeScript", "Next.js", "Tailwind", "Node", "Figma", "Storybook"];
+      const Chip = ({ children }: { children: React.ReactNode }) => <Badge tone="accent">{children}</Badge>;
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          <div>
+            <h3 className="ms-h3" style={{ marginBottom: 12 }}>Velocidades</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {(["slow", "normal", "fast"] as const).map((speed) => (
+                <div key={speed}>
+                  <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 8 }}>
+                    speed=&quot;{speed}&quot;
+                  </p>
+                  <Marquee speed={speed} fade>
+                    {chips.map((c) => <Chip key={c}>{c}</Chip>)}
+                  </Marquee>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="ms-h3" style={{ marginBottom: 12 }}>Direção</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div>
+                <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 8 }}>direction=&quot;left&quot; (padrão)</p>
+                <Marquee fade>{chips.map((c) => <Chip key={c}>{c}</Chip>)}</Marquee>
+              </div>
+              <div>
+                <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 8 }}>direction=&quot;right&quot;</p>
+                <Marquee direction="right" fade>{chips.map((c) => <Chip key={c}>{c}</Chip>)}</Marquee>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="ms-h3" style={{ marginBottom: 12 }}>pauseOnHover, sem fade</h3>
+            <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 8 }}>
+              Passe o mouse para pausar. Sem <code>fade</code>, as bordas cortam sem transição.
+            </p>
+            <Marquee pauseOnHover gap="lg">
+              {chips.map((c) => <Chip key={c}>{c}</Chip>)}
+            </Marquee>
+          </div>
+
+          <div>
+            <h3 className="ms-h3" style={{ marginBottom: 12 }}>Playground — stack tecnológico</h3>
+            <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 8 }}>
+              Qualquer <code>children</code> funciona — nenhum código de logo aqui, só as
+              tecnologias deste próprio projeto (e do exemplo Next.js) como chips.
+            </p>
+            <Marquee speed="slow" fade pauseOnHover gap="lg">
+              {techs.map((t) => <Chip key={t}>{t}</Chip>)}
+            </Marquee>
+          </div>
+        </div>
+      );
+    },
   },
   {
     id: "rodape",

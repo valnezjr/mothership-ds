@@ -76,9 +76,29 @@ Tudo que anima respeita `prefers-reduced-motion: reduce`:
 - `Splash`: piscada do olho e flutuação do dirigível desligam.
 - `Loader`: onda do preenchimento desliga.
 - `Modal` / `Splash`: transições encurtadas.
+- `Marquee`: a rolagem para completamente (`animation: none`), e a
+  cópia duplicada (existe só pra fechar o loop sem costura) some —
+  sem isso, o usuário veria o mesmo conteúdo duas vezes, parado, o
+  que pareceria um bug, não uma acomodação de acessibilidade.
 - **Exceção deliberada**: o parallax do mouse no fundo **permanece**
   mesmo com `reduce` — é resposta direta a uma ação do usuário, não
   uma animação ambiente.
+
+## Conteúdo duplicado (loop sem costura)
+
+`Marquee` duplica os `children` uma vez pra fechar o loop visual sem
+emenda. A cópia precisa sumir de **duas** trilhas de acessibilidade
+diferentes, não só uma:
+
+- **Leitor de tela**: `aria-hidden="true"` — sem isso, todo o conteúdo
+  seria anunciado duas vezes.
+- **Navegação por teclado**: se os `children` tiverem algo focável
+  (ex. um logo que é link), `aria-hidden` sozinho não tira do Tab em
+  todo navegador — por isso a cópia também leva `inert`. React 18
+  descarta `inert=""` passado via JSX (não está no mapa de atributos
+  DOM da versão), então é setado como propriedade do elemento via
+  `ref` + `useEffect` — o único uso de `"use client"` no componente,
+  já que a rolagem em si é puro CSS.
 
 Componente novo com animação: testar com
 `prefers-reduced-motion: reduce` ligado (DevTools → Rendering → Emulate
