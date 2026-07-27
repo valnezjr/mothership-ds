@@ -37,6 +37,8 @@ Expansão em componentes de "marketing" (landing page), um de cada vez:
 - [x] `Table` (`src/components/table.tsx`) — pronta para CRUD: 1ª coluna
       status, última ações (editar/excluir), ordenação por coluna
 - [ ] Bento grid
+- [ ] Ajustar as cores de marca (`--color-accent`, `--color-pink`, etc.)
+      para seguir mais de perto as cores reais de `assets/logo.svg`
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
