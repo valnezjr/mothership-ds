@@ -13,6 +13,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   excluídos, nunca só cor) e ação fixada no rodapé do card. `badge`
   ou `highlighted` aplicam a borda e o glow de destaque do plano
   recomendado. Combina com `HoverEdge`, como o `Card`.
+- **Marketing**: `TestimonialCard` — depoimento com aspas
+  decorativas, estrelas de avaliação opcionais (`rating`, com
+  `aria-label` equivalente em texto) e identidade (avatar + nome +
+  cargo) sempre fixada no rodapé. `highlighted` para o depoimento em
+  foco. Combina com `HoverEdge`, como o `Card`.
 
 ## [1.0.1] — 2026-07-27
 

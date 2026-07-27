@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **32 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **33 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -162,7 +162,7 @@ export default function Home() {
 
 **Marketing**
 
-`PricingCard`
+`PricingCard` · `TestimonialCard`
 
 </td><td valign="top" width="33%">
 
@@ -233,7 +233,7 @@ npm run styleguide       # gera styleguide/dist/
 npm run styleguide:dev   # servidor local com watch
 ```
 
-Ele é publicado automaticamente no GitHub Pages a cada push na `main`.
+Ele é publicado automaticamente no GitHub Pages a cada push na `master`.
 
 ## Princípios
 

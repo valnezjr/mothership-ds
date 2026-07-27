@@ -581,6 +581,88 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   padding-top: var(--space-5);
 }
 
+/* ---------- Marketing: card de depoimentos ---------- */
+.ms-testimonial {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  overflow: hidden;
+  transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
+}
+
+.ms-testimonial--highlighted {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+/* Aspas grandes de fundo — puramente decorativas, por isso aria-hidden
+   no elemento e nenhuma informação carregada só por ela. */
+.ms-testimonial__quote-mark {
+  position: absolute;
+  top: -0.2em;
+  left: var(--space-4);
+  font-size: 96px;
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.ms-testimonial__rating {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--space-3);
+}
+
+.ms-testimonial__star {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  color: var(--color-highlight);
+}
+
+.ms-testimonial__star--empty { color: var(--color-border); }
+
+.ms-testimonial__star svg { width: 100%; height: 100%; }
+
+.ms-testimonial__quote {
+  position: relative;
+  margin: 0 0 var(--space-5);
+  color: var(--color-text);
+  font-size: var(--text-md);
+  line-height: var(--line-height-base);
+}
+
+.ms-testimonial__footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+}
+
+.ms-testimonial__identity {
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-testimonial__author {
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-testimonial__role {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
 /* ---------- Alerta ---------- */
 /* Segue o color code das badges: fundo suave + borda colorida completa,
    com bloco de ícone à esquerda em cor sólida (a mesma da borda) */

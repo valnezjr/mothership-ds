@@ -98,3 +98,69 @@ export function PricingCard({
     </div>
   );
 }
+
+/* ---------- Card de depoimentos ---------- */
+
+const StarIcon = (
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.6l-6.1 3.4 1.5-6.8-5.2-4.7 6.9-.7z" />
+  </svg>
+);
+
+export interface TestimonialCardProps extends Omit<Div, "role"> {
+  /** Depoimento em si. */
+  quote: React.ReactNode;
+  /** Nome de quem depõe. */
+  author: React.ReactNode;
+  /** Cargo e/ou empresa, abaixo do nome. */
+  role?: React.ReactNode;
+  /** Normalmente um `<Avatar>`. */
+  avatar?: React.ReactNode;
+  /** 0–5. Omita para não mostrar estrelas. */
+  rating?: number;
+  /** Contorno e glow de destaque, para o depoimento em foco. */
+  highlighted?: boolean;
+}
+
+/**
+ * Card de depoimento: aspas decorativas, estrelas opcionais, texto e
+ * a identidade de quem depôs (avatar + nome + cargo) fixada no
+ * rodapé do card. Combine com `<HoverEdge>`, como o `<Card>`.
+ */
+export function TestimonialCard({
+  quote,
+  author,
+  role,
+  avatar,
+  rating,
+  highlighted,
+  className,
+  ...rest
+}: TestimonialCardProps) {
+  return (
+    <div className={cx("ms-testimonial", highlighted && "ms-testimonial--highlighted", className)} {...rest}>
+      <span className="ms-testimonial__quote-mark" aria-hidden="true">&#8220;</span>
+      {rating != null && (
+        <div className="ms-testimonial__rating" role="img" aria-label={`${rating} de 5 estrelas`}>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <span
+              key={n}
+              className={cx("ms-testimonial__star", n > rating && "ms-testimonial__star--empty")}
+              aria-hidden="true"
+            >
+              {StarIcon}
+            </span>
+          ))}
+        </div>
+      )}
+      <p className="ms-testimonial__quote">{quote}</p>
+      <div className="ms-testimonial__footer">
+        {avatar}
+        <div className="ms-testimonial__identity">
+          <div className="ms-testimonial__author">{author}</div>
+          {role != null && <div className="ms-testimonial__role">{role}</div>}
+        </div>
+      </div>
+    </div>
+  );
+}

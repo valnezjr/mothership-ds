@@ -11,7 +11,7 @@ import {
   // interativos
   Navbar, Accordion, Carousel, Gallery,
   // marketing
-  PricingCard,
+  PricingCard, TestimonialCard,
   // alertas
   Alert, NotificationBell, useAlerts,
   // dados
@@ -769,6 +769,41 @@ export const STORIES: Story[] = [
             { text: "Suporte prioritário" },
           ]}
           cta={<ButtonLink href="#" inline variant="ghost">Falar com vendas</ButtonLink>}
+        />
+      </div>
+    ),
+  },
+  {
+    id: "depoimentos",
+    group: "Componentes",
+    title: "Card de depoimentos",
+    subtitle: "Aspas decorativas, estrelas opcionais e identidade no rodapé",
+    render: () => (
+      <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch" }}>
+        <TestimonialCard
+          style={{ flex: "1 1 260px" }}
+          rating={5}
+          quote="Trocamos o CSS solto por tokens em uma tarde. O styleguide gerado da própria lib fez toda a diferença na revisão."
+          author="Marina Alves"
+          role="Lead Frontend, Órbita"
+          avatar={<Avatar size="sm" initials="MA" alt="Marina Alves" />}
+        />
+        <TestimonialCard
+          style={{ flex: "1 1 260px" }}
+          highlighted
+          rating={5}
+          quote="O contorno reativo e o fundo vivo deram uma identidade própria pro produto sem escrever uma linha de animação."
+          author="Diego Nascimento"
+          role="Founder, Nebulosa"
+          avatar={<Avatar size="sm" initials="DN" alt="Diego Nascimento" />}
+        />
+        <TestimonialCard
+          style={{ flex: "1 1 260px" }}
+          rating={4}
+          quote="Documentação densa o suficiente pra eu não precisar perguntar nada — só ler o ARCHITECTURE.md antes de mexer."
+          author="Cauê Ribeiro"
+          role="UI Engineer, Constelação"
+          avatar={<Avatar size="sm" initials="CR" alt="Cauê Ribeiro" />}
         />
       </div>
     ),

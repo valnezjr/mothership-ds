@@ -185,6 +185,21 @@ Blocos de conversão pra landing pages — adicionados na v1.5.
 
 Combine com `<HoverEdge>` para o contorno reativo, como o `<Card>`.
 
+### `TestimonialCard`
+
+| Prop | Tipo | |
+|---|---|---|
+| `quote` | `ReactNode` | o depoimento |
+| `author` | `ReactNode` | nome de quem depõe |
+| `role` | `ReactNode` | cargo e/ou empresa, abaixo do nome |
+| `avatar` | `ReactNode` | normalmente um `<Avatar size="sm">` |
+| `rating` | `number` | 0–5; omita para não mostrar estrelas |
+| `highlighted` | `boolean` | borda e glow accent, para o depoimento em foco |
+
+Aspas decorativas no topo e identidade (avatar + nome + cargo) sempre
+no rodapé do card, independente do tamanho do texto. Combine com
+`<HoverEdge>`, como o `<Card>`.
+
 ---
 
 ## Interativos
