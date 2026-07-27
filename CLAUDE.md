@@ -19,13 +19,28 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 31 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 32 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
 Autor: Valnez Júnior (Mothership Studios). Repo:
 `github.com/valnezjr/mothership-ds`. Styleguide publicado em
-`valnezjr.github.io/mothership-ds/`.
+`valnezjr.github.io/mothership-ds/`, exemplo de landing page em
+`valnezjr.github.io/mothership-ds/exemplo/`.
+
+### v1.5 em andamento
+
+Expansão em componentes de "marketing" (landing page), um de cada vez:
+
+- [x] `PricingCard` (`src/components/marketing.tsx`)
+- [ ] Card de depoimentos de clientes
+- [ ] Tabelas
+- [ ] Bento grid
+
+Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
+decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
+só recomendação; componentes que precisam de ícone aceitam `ReactNode`
+(nunca importam um ícone específico).
 
 ## Comandos
 
@@ -33,7 +48,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 npm install
 npm run typecheck        # tsc --noEmit — rodar antes de qualquer commit
 npm run styleguide:dev   # bancada de trabalho: renderiza src/ ao vivo, localhost:8000
-npm run styleguide       # gera styleguide/dist/ (publicado no GitHub Pages a cada push em main)
+npm run styleguide       # gera styleguide/dist/ (publicado no GitHub Pages a cada push em master)
 ```
 
 Não existe `npm run build` nem suíte de testes automatizada. O pacote

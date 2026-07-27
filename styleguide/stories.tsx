@@ -10,6 +10,8 @@ import {
   ThemeSwitch, HoverEdge,
   // interativos
   Navbar, Accordion, Carousel, Gallery,
+  // marketing
+  PricingCard,
   // alertas
   Alert, NotificationBell, useAlerts,
   // dados
@@ -716,6 +718,58 @@ export const STORIES: Story[] = [
             <CardText>Passe o mouse — o anel gira acompanhando o cursor.</CardText>
           </Card>
         </HoverEdge>
+      </div>
+    ),
+  },
+  {
+    id: "precificacao",
+    group: "Componentes",
+    title: "Card de precificação",
+    subtitle: "Plano em destaque, recursos com check e ação",
+    render: () => (
+      <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch", paddingTop: 20 }}>
+        <PricingCard
+          style={{ flex: "1 1 240px" }}
+          title="Starter"
+          description="Pra começar sozinho"
+          price="R$0"
+          period="/mês"
+          features={[
+            { text: "1 projeto" },
+            { text: "Componentes básicos" },
+            { text: "Suporte por e-mail", included: false },
+            { text: "Domínio próprio", included: false },
+          ]}
+          cta={<ButtonLink href="#" inline variant="ghost">Começar grátis</ButtonLink>}
+        />
+        <PricingCard
+          style={{ flex: "1 1 240px" }}
+          badge="Popular"
+          title="Pro"
+          description="Pra times em produção"
+          price="R$49"
+          period="/mês"
+          features={[
+            { text: "Projetos ilimitados" },
+            { text: "Todos os componentes" },
+            { text: "Suporte por e-mail" },
+            { text: "Domínio próprio" },
+          ]}
+          cta={<ButtonLink href="#" inline variant="solid">Assinar Pro</ButtonLink>}
+        />
+        <PricingCard
+          style={{ flex: "1 1 240px" }}
+          title="Empresa"
+          description="Pra escala e governança"
+          price="Sob consulta"
+          features={[
+            { text: "Tudo do Pro" },
+            { text: "SSO e permissões" },
+            { text: "SLA dedicado" },
+            { text: "Suporte prioritário" },
+          ]}
+          cta={<ButtonLink href="#" inline variant="ghost">Falar com vendas</ButtonLink>}
+        />
       </div>
     ),
   },

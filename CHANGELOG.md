@@ -4,6 +4,16 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado] — 1.5.0
+
+### Adicionado
+
+- **Marketing**: `PricingCard` — card de precificação com preço,
+  período, lista de recursos (com ícone de check ou traço para
+  excluídos, nunca só cor) e ação fixada no rodapé do card. `badge`
+  ou `highlighted` aplicam a borda e o glow de destaque do plano
+  recomendado. Combina com `HoverEdge`, como o `Card`.
+
 ## [1.0.1] — 2026-07-27
 
 ### Corrigido

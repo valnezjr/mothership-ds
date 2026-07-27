@@ -5,8 +5,9 @@ atributos HTML nativos do elemento que renderizam, então `id`,
 `data-*`, `style` e handlers funcionam como você espera.
 
 Índice: [Providers](#providers) · [Layout](#layout-e-navegação) ·
-[Controles](#controles-e-superfícies) · [Interativos](#interativos) ·
-[Alertas](#alertas) · [Dados](#dados) · [Marca](#marca)
+[Controles](#controles-e-superfícies) · [Marketing](#marketing) ·
+[Interativos](#interativos) · [Alertas](#alertas) · [Dados](#dados) ·
+[Marca](#marca)
 
 ---
 
@@ -162,6 +163,27 @@ Botão circular. `href` e `aria-label` são **obrigatórios** — um `<a>` sem
 
 Interruptor claro/escuro. Renderiza um `<button role="switch">` com
 `aria-checked` — o estado é anunciado, não só visual.
+
+---
+
+## Marketing
+
+Blocos de conversão pra landing pages — adicionados na v1.5.
+
+### `PricingCard`
+
+| Prop | Tipo | |
+|---|---|---|
+| `title` | `ReactNode` | nome do plano |
+| `description` | `ReactNode` | frase curta abaixo do nome |
+| `price` | `ReactNode` | valor já formatado — `"R$49"`, `"Grátis"` |
+| `period` | `ReactNode` | unidade ao lado do preço — `"/mês"` |
+| `features` | `{ text, included? }[]` | `included: false` risca o texto e troca o check por um traço |
+| `cta` | `ReactNode` | ação — normalmente um `<ButtonLink>`, fica sempre no rodapé do card |
+| `badge` | `ReactNode` | rótulo acima do card (ex. `"Popular"`) — implica `highlighted` |
+| `highlighted` | `boolean` | borda e glow accent, sem depender de `badge` |
+
+Combine com `<HoverEdge>` para o contorno reativo, como o `<Card>`.
 
 ---
 

@@ -21,6 +21,12 @@ leitores de tela e falha para daltonismo.
 Ao adicionar um componente com estado visual novo, pergunte: "que
 `aria-*` marca isso?" antes de estilizar.
 
+O mesmo princípio vale para conteúdo estático, não só estado
+interativo: em `PricingCard`, um recurso não incluído no plano troca o
+ícone de check por um traço (forma, não só cor) **e** risca o texto —
+dois sinais redundantes, igual à validação de daltonismo das cores de
+dado (ver [Cor](#cor)).
+
 ## Foco
 
 - **Foco sempre visível.** Anel accent em `:focus-visible` — o anel

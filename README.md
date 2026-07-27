@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **31 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **32 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -160,6 +160,10 @@ export default function Home() {
 
 `Accordion` · `Carousel` · `Gallery` · `Modal` · `StepModal` · `HoverEdge`
 
+**Marketing**
+
+`PricingCard`
+
 </td><td valign="top" width="33%">
 
 **Alertas**
@@ -175,6 +179,38 @@ export default function Home() {
 </table>
 
 A referência completa de props está em [`docs/componentes.md`](docs/componentes.md).
+
+## Ícones
+
+O sistema não embute uma biblioteca de ícones — não tem dependência de
+runtime além do próprio React, e um conjunto de ícones é peso e opinião
+demais pra impor a todo mundo. Os poucos ícones que a biblioteca usa
+(seta do accordion, chevron do breadcrumb, X do modal…) são SVGs
+inline, do mesmo jeito que qualquer ícone que você for passar como
+`children`.
+
+Pra ícones de produto (features, navegação, ações), a recomendação é
+[**Lucide**](https://lucide.dev) (`lucide-react`, MIT). Traço de 2px
+consistente em todos os ~1500 ícones — combina com a estética fina de
+vidro do sistema — e cada ícone é importado à parte, então só o que
+você usa entra no bundle.
+
+```tsx
+import { Check, ArrowRight } from "lucide-react";
+import { Button, PricingCard } from "mothership-ds";
+
+<PricingCard
+  title="Pro"
+  price="R$49"
+  period="/mês"
+  features={[{ text: <>Suporte prioritário <Check size={16} /></> }]}
+  cta={<Button>Assinar <ArrowRight size={16} /></Button>}
+/>
+```
+
+Qualquer ícone SVG funciona do mesmo jeito — `IconButton`, `Button` e
+`PricingCard` só esperam `ReactNode`, nunca importam um ícone
+específico por conta própria.
 
 ## Documentação
 

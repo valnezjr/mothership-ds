@@ -471,6 +471,116 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-badge--orange    { background: var(--color-orange-soft);    border-color: var(--color-orange); }
 .ms-badge--gray      { background: var(--color-gray-soft);      border-color: var(--color-gray); }
 
+/* ---------- Marketing: card de precificação ---------- */
+.ms-pricing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
+}
+
+/* Destaque do plano recomendado: borda accent + glow, sem depender só
+   da cor — o badge acima do card carrega o texto ("Popular" etc). */
+.ms-pricing--highlighted {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+.ms-pricing__badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.ms-pricing__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-pricing__description {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.ms-pricing__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin: var(--space-5) 0;
+}
+
+.ms-pricing__price-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-medium);
+}
+
+.ms-pricing__price-period {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.ms-pricing__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.ms-pricing__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+/* Estado "não incluído": ícone muda de forma (traço em vez de check) e
+   o texto ganha risco — nunca só a cor, que falharia para daltonismo. */
+.ms-pricing__feature--excluded {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.ms-pricing__feature-icon {
+  display: flex;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--color-success);
+}
+
+.ms-pricing__feature--excluded .ms-pricing__feature-icon {
+  color: var(--color-text-muted);
+}
+
+.ms-pricing__feature-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ms-pricing__cta {
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
 /* ---------- Alerta ---------- */
 /* Segue o color code das badges: fundo suave + borda colorida completa,
    com bloco de ícone à esquerda em cor sólida (a mesma da borda) */
