@@ -27,7 +27,7 @@ import {
    atualizam sozinhos.
    ============================================================ */
 
-export type Group = "Fundações" | "Componentes" | "Dados" | "Exemplos";
+export type Group = "Fundações" | "Componentes" | "Dados";
 
 export interface Story {
   id: string;
@@ -553,7 +553,7 @@ export const STORIES: Story[] = [
             <Navbar
               variant="static"
               responsive={false}
-              links={[{ href: "#", label: "Fundações" }, { href: "#", label: "Componentes" }, { href: "#", label: "Exemplos" }]}
+              links={[{ href: "#", label: "Fundações" }, { href: "#", label: "Componentes" }, { href: "#", label: "Dados" }]}
             />
           </div>
           <div>
@@ -760,7 +760,7 @@ export const STORIES: Story[] = [
     render: () => (
       <>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Padrão (vários abertos)</h3>
-        <div style={{ maxWidth: 520, margin: "0 auto 24px" }}>
+        <div style={{ marginBottom: 24 }}>
           <Accordion
             items={[
               { title: "O que é o Mothership DS?", content: "Design system extraído do Agrupador de links e contatos.", defaultOpen: true },
@@ -770,7 +770,7 @@ export const STORIES: Story[] = [
           />
         </div>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Exclusivo (<code>single</code>)</h3>
-        <div style={{ maxWidth: 520, margin: "0 auto" }}>
+        <div>
           <Accordion
             single
             items={[
@@ -789,7 +789,7 @@ export const STORIES: Story[] = [
     title: "Carrossel",
     subtitle: "Fotos com bullets indicando o destaque",
     render: () => (
-      <div style={{ maxWidth: 640 }}>
+      <div>
         <Carousel
           autoplay={5000}
           slides={[
@@ -939,9 +939,9 @@ export const STORIES: Story[] = [
     title: "Sparkline & Legenda",
     subtitle: "Miniaturas de série e identificação",
     render: () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 300 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {[1, 2, 3, 4].map((slot) => (
-          <Sparkline key={slot} data={[8, 14, 9, 18, 16, 24, 21, 30]} slot={slot as 1 | 2 | 3 | 4} width={280} height={40} />
+          <Sparkline key={slot} data={[8, 14, 9, 18, 16, 24, 21, 30]} slot={slot as 1 | 2 | 3 | 4} width={280} height={40} style={{ width: "100%" }} />
         ))}
         <Legend
           items={[
@@ -954,43 +954,12 @@ export const STORIES: Story[] = [
       </div>
     ),
   },
-
-  /* ============ Exemplos ============ */
-  {
-    id: "pagina",
-    group: "Exemplos",
-    title: "Página completa",
-    subtitle: "O agrupador de links remontado com o sistema",
-    render: () => (
-      <div style={{ maxWidth: 588, margin: "0 auto" }}>
-        <Profile handle=".valnezJunior()">
-          <Avatar initials="VJ" alt="Valnez Júnior" />
-        </Profile>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <ThemeSwitch />
-        </div>
-        <LinkList>
-          <li><ButtonLink href="#">Whatsapp</ButtonLink></li>
-          <li><ButtonLink href="#">E-mail</ButtonLink></li>
-        </LinkList>
-        <IconRow>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-        </IconRow>
-        <Footer>
-          <p>Made by <Flash /> <a href="#">Mothership Studios</a></p>
-        </Footer>
-      </div>
-    ),
-  },
 ];
 
-export const GROUPS: Group[] = ["Fundações", "Componentes", "Dados", "Exemplos"];
+export const GROUPS: Group[] = ["Fundações", "Componentes", "Dados"];
 
 export const GROUP_IDS: Record<Group, string> = {
   Fundações: "g-fundacoes",
   Componentes: "g-componentes",
   Dados: "g-dados",
-  Exemplos: "g-exemplos",
 };
