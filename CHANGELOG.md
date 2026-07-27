@@ -4,7 +4,7 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado] — 1.5.0
+## [Não lançado] — 1.2.0
 
 ### Adicionado
 

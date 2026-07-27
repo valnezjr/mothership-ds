@@ -4,7 +4,7 @@ import React from "react";
 import { useEdgeAngle } from "./theme";
 
 /* ============================================================
-   Marketing — blocos de conversão para landing pages (v1.5):
+   Marketing — blocos de conversão para landing pages (v1.2):
    precificação, depoimentos, bento grid. TestimonialCard usa o
    contorno reativo no hover (useEdgeAngle + onPointerMove), por isso
    o arquivo leva "use client" — PricingCard, puramente visual, vai

@@ -168,7 +168,7 @@ Interruptor claro/escuro. Renderiza um `<button role="switch">` com
 
 ## Marketing
 
-Blocos de conversão pra landing pages — adicionados na v1.5.
+Blocos de conversão pra landing pages — adicionados na v1.2.
 
 ### `PricingCard`
 

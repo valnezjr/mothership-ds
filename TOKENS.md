@@ -115,7 +115,7 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 | `--color-gray` | cinza — status neutro |
 
 `accent`/`pink`/`orange` são as três paradas exatas do gradiente da
-logo (realinhado na v1.5). `--chart-3`/`--chart-4` não seguem
+logo (realinhado na v1.2). `--chart-3`/`--chart-4` não seguem
 `violet`/`pink` automaticamente — já validados contra daltonismo nos
 valores antigos, ficam soltos por design.
 

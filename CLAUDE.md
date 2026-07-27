@@ -28,7 +28,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 `valnezjr.github.io/mothership-ds/`, exemplo de landing page em
 `valnezjr.github.io/mothership-ds/exemplo/`.
 
-### v1.5 em andamento
+### v1.2 em andamento
 
 Expansão em componentes de "marketing" (landing page), um de cada vez:
 

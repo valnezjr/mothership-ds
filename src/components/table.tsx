@@ -4,7 +4,7 @@ import React from "react";
 import { Badge, type Tone } from "./primitives";
 
 /* ============================================================
-   Tabela — preparada para o esquema CRUD (v1.5): primeira coluna
+   Tabela — preparada para o esquema CRUD (v1.2): primeira coluna
    sempre uma badge de status, última sempre os ícones de ação
    (editar/excluir). Colunas marcadas `sortable` ganham alternância
    de ordenação no cabeçalho. Usa estado (ordenação), por isso
