@@ -101,7 +101,7 @@ export default function Home() {
             <StatTile label="Projetos ativos" value="27" trend="flat" delta="estável"
               sparkline={[25, 26, 24, 27, 27, 26, 27, 27]} slot={3} />
           </StatGrid>
-          <div style={{ marginTop: 24, maxWidth: 640 }}>
+          <div style={{ marginTop: 24 }}>
             <LineChart
               labels={["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"]}
               unit="k"
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="sobre" style={{ marginTop: 56, maxWidth: 640 }}>
+        <section id="sobre" style={{ marginTop: 56 }}>
           <h2 className="ms-h2" style={{ marginBottom: 24 }}>Sobre</h2>
           <Carousel
             autoplay={5000}
