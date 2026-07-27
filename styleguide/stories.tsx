@@ -15,7 +15,7 @@ import {
   // alertas
   Alert, NotificationBell, useAlerts,
   // dados
-  LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend,
+  LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend, Table,
   // sobreposições
   Modal, StepModal,
   // marca
@@ -337,6 +337,69 @@ function LoaderDemo() {
         <span className="ms-text-sm ms-text-muted">{value}%</span>
       </div>
     </>
+  );
+}
+
+interface DemoUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  joined: string;
+  statusKey: "active" | "pending" | "inactive";
+}
+
+const DEMO_USERS: DemoUser[] = [
+  { id: 1, name: "Marina Alves", email: "marina@orbita.dev", role: "Lead Frontend", joined: "2024-02-10", statusKey: "active" },
+  { id: 2, name: "Diego Nascimento", email: "diego@nebulosa.co", role: "Founder", joined: "2023-11-03", statusKey: "active" },
+  { id: 3, name: "Cauê Ribeiro", email: "caue@constelacao.io", role: "UI Engineer", joined: "2025-01-22", statusKey: "pending" },
+  { id: 4, name: "Renata Souza", email: "renata@aurora.dev", role: "Design Systems Lead", joined: "2022-06-15", statusKey: "active" },
+  { id: 5, name: "Felipe Tanaka", email: "felipe@kitaurora.com", role: "CTO", joined: "2021-09-30", statusKey: "inactive" },
+];
+
+const STATUS_TONE: Record<DemoUser["statusKey"], { label: string; tone: "success" | "highlight" | "gray" }> = {
+  active: { label: "Ativo", tone: "success" },
+  pending: { label: "Pendente", tone: "highlight" },
+  inactive: { label: "Inativo", tone: "gray" },
+};
+
+function TableDemo() {
+  const { notify } = useAlerts();
+  return (
+    <Table<DemoUser>
+      rows={DEMO_USERS}
+      rowKey={(row) => row.id}
+      status={(row) => STATUS_TONE[row.statusKey]}
+      onEdit={(row) => notify({ title: "Editar", message: `Editando ${row.name}.`, tone: "accent" })}
+      onDelete={(row) => notify({ title: "Excluir", message: `${row.name} removido.`, tone: "danger" })}
+      columns={[
+        {
+          key: "name",
+          header: "Nome",
+          sortable: true,
+          sortValue: (row) => row.name,
+          cell: (row) => row.name,
+        },
+        {
+          key: "email",
+          header: "E-mail",
+          cell: (row) => row.email,
+        },
+        {
+          key: "role",
+          header: "Cargo",
+          cell: (row) => row.role,
+        },
+        {
+          key: "joined",
+          header: "Desde",
+          sortable: true,
+          sortValue: (row) => row.joined,
+          align: "end",
+          cell: (row) => new Date(row.joined).toLocaleDateString("pt-BR"),
+        },
+      ]}
+    />
   );
 }
 
@@ -1085,6 +1148,13 @@ export const STORIES: Story[] = [
         />
       </div>
     ),
+  },
+  {
+    id: "tabela",
+    group: "Dados",
+    title: "Tabela",
+    subtitle: "Pronta para CRUD: status na 1ª coluna, ações na última, ordenação por coluna",
+    render: () => <TableDemo />,
   },
 ];
 

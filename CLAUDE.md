@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 33 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 34 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -34,7 +34,8 @@ Expansão em componentes de "marketing" (landing page), um de cada vez:
 
 - [x] `PricingCard` (`src/components/marketing.tsx`)
 - [x] `TestimonialCard` (`src/components/marketing.tsx`)
-- [ ] Tabelas
+- [x] `Table` (`src/components/table.tsx`) — pronta para CRUD: 1ª coluna
+      status, última ações (editar/excluir), ordenação por coluna
 - [ ] Bento grid
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —

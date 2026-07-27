@@ -12,6 +12,7 @@ export * from "./components/navbar";
 export * from "./components/disclosure";
 export * from "./components/charts";
 export * from "./components/marketing";
+export * from "./components/table";
 export { Modal, StepModal } from "./components/Modal";
 export type { ModalProps, StepModalProps, ModalStep } from "./components/Modal";
 export { Loader } from "./components/Loader";

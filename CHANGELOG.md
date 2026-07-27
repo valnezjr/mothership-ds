@@ -29,6 +29,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   do branco fixo pensado para foto. Nova prop `arrows` (padrão
   `true`) esconde as setas, deixando a navegação só nos bullets.
   Navegável por arraste horizontal (toque ou mouse) em qualquer modo.
+- **Dados**: `Table` — pronta para o esquema CRUD: primeira coluna
+  sempre a badge de `status`, última sempre os ícones de ação
+  (`onEdit`/`onDelete`, mais `actions` para extras), nenhuma das duas
+  configurável via `columns` — pra toda tabela do sistema nascer
+  consistente. Colunas `sortable` ganham alternância `asc → desc →
+  ordem original` no cabeçalho, com `aria-sort` no `<th>`.
+  `overflow-x: auto` no wrapper cobre telas estreitas.
 
 ## [1.0.1] — 2026-07-27
 

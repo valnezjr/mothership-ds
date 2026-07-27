@@ -378,6 +378,43 @@ diretos e legenda. No hover a fatia cresce a partir do centro do gráfico.
 No hover, o anel combina a cor da série com a do indicador: verde na
 alta, vermelho na queda.
 
+### `Table`
+
+Pronta para o esquema CRUD — a primeira coluna e a última **não** são
+configuráveis via `columns`, pra toda tabela do sistema nascer
+consistente:
+
+| Prop | Tipo | |
+|---|---|---|
+| `columns` | `{ key, header, cell, sortable?, sortValue?, align? }[]` | colunas do meio |
+| `rows` | `T[]` | |
+| `rowKey` | `(row) => Key` | |
+| `status` | `(row) => { label, tone? }` | **1ª coluna**, sempre — badge de status |
+| `onEdit` | `(row) => void` | ícone de editar na última coluna; omita para não mostrar |
+| `onDelete` | `(row) => void` | ícone de excluir na última coluna; omita para não mostrar |
+| `actions` | `(row) => ReactNode` | ações extras, na mesma última coluna |
+| `emptyState` | `ReactNode` | exibido quando `rows` está vazio |
+
+Colunas com `sortable` (e `sortValue`, o valor comparável) ganham um
+botão no cabeçalho que alterna `asc → desc → ordem original`. O `<th>`
+correspondente leva `aria-sort`, então leitor de tela anuncia a
+direção sem depender do ícone. `overflow-x: auto` no wrapper cobre
+telas estreitas sem quebrar o layout.
+
+```tsx
+<Table<Usuario>
+  rows={usuarios}
+  rowKey={(u) => u.id}
+  status={(u) => ({ label: u.ativo ? "Ativo" : "Inativo", tone: u.ativo ? "success" : "gray" })}
+  onEdit={(u) => abrirEdicao(u)}
+  onDelete={(u) => excluir(u)}
+  columns={[
+    { key: "nome", header: "Nome", sortable: true, sortValue: (u) => u.nome, cell: (u) => u.nome },
+    { key: "email", header: "E-mail", cell: (u) => u.email },
+  ]}
+/>
+```
+
 ---
 
 ## Marca

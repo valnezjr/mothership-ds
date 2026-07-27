@@ -17,6 +17,7 @@ leitores de tela e falha para daltonismo.
 | `Navbar` (hambúrguer) | menu aberto/fechado | `aria-expanded` |
 | `StepModal` / `Breadcrumbs` | etapa/item atual | `aria-current` |
 | `ThemeSwitch` | ligado/desligado | `aria-checked` (é `role="switch"`, não checkbox nativo) |
+| `Table` (coluna `sortable`) | ordenação asc/desc/nenhuma | `aria-sort` no `<th>` — nativo de tabela, não `aria-label` |
 
 Ao adicionar um componente com estado visual novo, pergunte: "que
 `aria-*` marca isso?" antes de estilizar.
