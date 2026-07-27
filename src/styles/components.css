@@ -1181,8 +1181,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-splash--instant,
 .ms-splash--instant * { transition: none !important; }
 
-/* Variante presa ao container (demonstração) */
-.ms-splash--inline { position: absolute; }
+/* Variante presa ao container: aqui a splash é conteúdo da página, e
+   não uma sobreposição — por isso sai da camada de overlay e passa a
+   ficar abaixo da navbar (que é fixa e precisa continuar por cima). */
+.ms-splash--inline {
+  position: absolute;
+  z-index: 1;
+}
 .ms-splash--inline.is-fullscreen {
   position: fixed;
   inset: 0;
@@ -1395,7 +1400,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   animation: ms-backdrop-in 0.25s ease;
 }
 
-.light .ms-modal-backdrop { background: rgba(20, 20, 40, 0.3); }
+/* No tema claro o véu é CLARO: o modal (vidro sobre fundo claro, texto
+   escuro) precisa de um entorno mais claro que ele para se destacar —
+   um véu escuro atravessaria o vidro e derrubaria o contraste do texto. */
+.light .ms-modal-backdrop { background: rgba(244, 246, 252, 0.72); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out 0.2s ease forwards; }
 

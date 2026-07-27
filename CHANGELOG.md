@@ -4,6 +4,18 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] — 2026-07-27
+
+### Corrigido
+
+- **Modal no tema claro**: o véu do fundo era escuro, o que atravessava o
+  vidro do diálogo e derrubava o contraste do texto escuro. Agora é claro
+  no tema claro (e continua escuro no escuro).
+- **Splash embutida**: a variante `inline` herdava a camada de
+  sobreposição (z-index 1000) e passava por cima de headers fixos. Como
+  nessa variante ela é conteúdo da página, e não overlay, saiu da camada
+  de overlay.
+
 ## [1.0.0] — 2026-07-26
 
 Primeira versão pública. O sistema nasceu da engenharia reversa de uma
