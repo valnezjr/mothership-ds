@@ -15,6 +15,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   (`align-items: start`, tiles do tamanho do próprio conteúdo) pra um
   ar mais orgânico, mas revertido — linhas alinhadas ficaram melhores;
   só o tamanho (`colSpan`/`rowSpan`) varia entre os tiles agora.
+- **Exemplo do bento grid no styleguide**: o grid de 7 tiles deixava
+  2 células vazias no canto inferior direito (a soma dos spans não
+  fechava as 4×4 células do grid). Novo tile (`rowSpan={2}`) preenche
+  exatamente esse buraco via `dense`, e o tile "Styleguide gerado da
+  própria biblioteca" deixa de sobrar sozinho com espaço vazio ao lado.
 
 ## [1.2.0] — 2026-07-27
 
