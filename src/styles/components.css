@@ -136,10 +136,12 @@
 .ms-text-xs { font-size: var(--text-xs); }
 .ms-text-muted { color: var(--color-text-muted) !important; }
 
-/* ---------- Utilitário: contorno reativo no hover ----------
+/* ---------- Utilitário: contorno reativo no hover/active ----------
    Adicione .ms-hover-edge a qualquer superfície (card, widget, item de
    galeria) para: crescer levemente, projetar sombra suave e trocar a
-   borda por um anel em degradê que GIRA acompanhando o mouse.
+   borda por um anel em degradê que GIRA acompanhando o mouse. Dispara
+   em :hover e também em :active, pra dar feedback de toque em telas
+   sem hover de verdade.
 
    Parametrize por elemento:
      --ms-edge-a / --ms-edge-b   cores do degradê (as cores vivas do
@@ -180,14 +182,18 @@
 }
 
 .ms-hover-edge:hover,
-.ms-gallery__item:hover {
+.ms-hover-edge:active,
+.ms-gallery__item:hover,
+.ms-gallery__item:active {
   transform: translateY(var(--ms-edge-lift, -4px)) scale(var(--ms-edge-scale, 1.03));
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
   border-color: transparent;
 }
 
 .ms-hover-edge:hover::after,
-.ms-gallery__item:hover::after { opacity: 1; }
+.ms-hover-edge:active::after,
+.ms-gallery__item:hover::after,
+.ms-gallery__item:active::after { opacity: 1; }
 
 /* ---------- Botão (glassmorphism, herdado dos links da página) ---------- */
 .ms-button {
@@ -593,27 +599,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  overflow: hidden;
   transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
 }
 
 .ms-testimonial--highlighted {
   border-color: var(--color-accent);
   box-shadow: 0 12px 40px color-mix(in srgb, var(--color-accent) 22%, transparent);
-}
-
-/* Aspas grandes de fundo — puramente decorativas, por isso aria-hidden
-   no elemento e nenhuma informação carregada só por ela. */
-.ms-testimonial__quote-mark {
-  position: absolute;
-  top: -0.2em;
-  left: var(--space-4);
-  font-size: 96px;
-  line-height: 1;
-  font-weight: var(--font-weight-medium);
-  color: var(--color-accent);
-  opacity: 0.14;
-  pointer-events: none;
 }
 
 .ms-testimonial__rating {
@@ -634,7 +625,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-testimonial__star svg { width: 100%; height: 100%; }
 
 .ms-testimonial__quote {
-  position: relative;
   margin: 0 0 var(--space-5);
   color: var(--color-text);
   font-size: var(--text-md);
@@ -642,7 +632,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-testimonial__footer {
-  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -1001,6 +990,28 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   width: 24px;
   background: #ffffff;
 }
+
+/* Modo "conteúdo" do carrossel (prop `items`): página livre em vez de
+   foto — sem aspect-ratio fixo, sem fundo de imagem, e setas/bullets
+   passam a usar as cores do tema em vez do branco fixo pensado pra
+   foto (que ficaria invisível sobre o vidro no tema claro). */
+.ms-carousel__slide--content {
+  aspect-ratio: auto;
+  align-items: stretch;
+  background: none;
+  padding: var(--space-6) var(--space-7) calc(var(--space-5) + 20px);
+}
+
+.ms-carousel--content .ms-carousel__arrow {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text) !important;
+}
+
+.ms-carousel--content .ms-carousel__arrow:hover { background: var(--color-surface-hover); }
+
+.ms-carousel--content .ms-carousel__bullet { background: var(--color-border); }
+.ms-carousel--content .ms-carousel__bullet--active { background: var(--color-accent); }
 
 /* ---------- Galeria com filtros ---------- */
 .ms-gallery__filters {

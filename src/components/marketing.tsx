@@ -1,9 +1,15 @@
+"use client";
+
 import React from "react";
+import { useEdgeAngle } from "./theme";
 
 /* ============================================================
    Marketing — blocos de conversão para landing pages (v1.5):
-   precificação, depoimentos, bento grid. Puramente apresentacionais,
-   sem estado; por isso este arquivo não leva "use client".
+   precificação, depoimentos, bento grid. TestimonialCard usa o
+   contorno reativo no hover (useEdgeAngle + onPointerMove), por isso
+   o arquivo leva "use client" — PricingCard, puramente visual, vai
+   junto pela mesma razão que primitives.tsx documenta: um arquivo é
+   uma unidade só de client/server, não por export.
    ============================================================ */
 
 type Div = React.HTMLAttributes<HTMLDivElement>;
@@ -120,12 +126,15 @@ export interface TestimonialCardProps extends Omit<Div, "role"> {
   rating?: number;
   /** Contorno e glow de destaque, para o depoimento em foco. */
   highlighted?: boolean;
+  /** Contorno reativo no hover/active, como o `StatTile`. Padrão: `true`. */
+  interactive?: boolean;
 }
 
 /**
- * Card de depoimento: aspas decorativas, estrelas opcionais, texto e
- * a identidade de quem depôs (avatar + nome + cargo) fixada no
- * rodapé do card. Combine com `<HoverEdge>`, como o `<Card>`.
+ * Card de depoimento: estrelas opcionais, texto e a identidade de
+ * quem depôs (avatar + nome + cargo) fixada no rodapé do card. Já
+ * nasce com o contorno reativo do sistema (`interactive`, padrão
+ * `true`) — não precisa envolver com `<HoverEdge>`.
  */
 export function TestimonialCard({
   quote,
@@ -134,12 +143,26 @@ export function TestimonialCard({
   avatar,
   rating,
   highlighted,
+  interactive = true,
   className,
   ...rest
 }: TestimonialCardProps) {
+  const setAngle = useEdgeAngle();
+  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (interactive) setAngle(e);
+  };
+
   return (
-    <div className={cx("ms-testimonial", highlighted && "ms-testimonial--highlighted", className)} {...rest}>
-      <span className="ms-testimonial__quote-mark" aria-hidden="true">&#8220;</span>
+    <div
+      className={cx(
+        "ms-testimonial",
+        highlighted && "ms-testimonial--highlighted",
+        interactive && "ms-hover-edge",
+        className
+      )}
+      onPointerMove={handleMove}
+      {...rest}
+    >
       {rating != null && (
         <div className="ms-testimonial__rating" role="img" aria-label={`${rating} de 5 estrelas`}>
           {[1, 2, 3, 4, 5].map((n) => (

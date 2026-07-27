@@ -13,11 +13,20 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   excluídos, nunca só cor) e ação fixada no rodapé do card. `badge`
   ou `highlighted` aplicam a borda e o glow de destaque do plano
   recomendado. Combina com `HoverEdge`, como o `Card`.
-- **Marketing**: `TestimonialCard` — depoimento com aspas
-  decorativas, estrelas de avaliação opcionais (`rating`, com
-  `aria-label` equivalente em texto) e identidade (avatar + nome +
-  cargo) sempre fixada no rodapé. `highlighted` para o depoimento em
-  foco. Combina com `HoverEdge`, como o `Card`.
+- **Marketing**: `TestimonialCard` — depoimento com estrelas de
+  avaliação opcionais (`rating`, com `aria-label` equivalente em
+  texto) e identidade (avatar + nome + cargo) sempre fixada no
+  rodapé. Já nasce com o contorno reativo do sistema (`interactive`,
+  padrão `true`, hover **e** active) — não precisa envolver com
+  `HoverEdge`. `highlighted` para o depoimento em foco.
+- **Utilitário `.ms-hover-edge`**: passa a disparar também em
+  `:active`, não só `:hover` — feedback de toque em telas sem hover
+  de verdade. Beneficia todo mundo que já usa a classe (`Card`,
+  `StatTile`, itens da `Gallery`).
+- **`Carousel`**: nova prop `items` (`ReactNode[]`) para paginar
+  conteúdo livre em vez de fotos — ex. grupos de `TestimonialCard`.
+  Setas e bullets passam a usar as cores do tema nesse modo, em vez
+  do branco fixo pensado para foto.
 
 ## [1.0.1] — 2026-07-27
 

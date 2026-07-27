@@ -777,36 +777,79 @@ export const STORIES: Story[] = [
     id: "depoimentos",
     group: "Componentes",
     title: "Card de depoimentos",
-    subtitle: "Aspas decorativas, estrelas opcionais e identidade no rodapé",
-    render: () => (
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch" }}>
-        <TestimonialCard
-          style={{ flex: "1 1 260px" }}
-          rating={5}
-          quote="Trocamos o CSS solto por tokens em uma tarde. O styleguide gerado da própria lib fez toda a diferença na revisão."
-          author="Marina Alves"
-          role="Lead Frontend, Órbita"
-          avatar={<Avatar size="sm" initials="MA" alt="Marina Alves" />}
+    subtitle: "Contorno reativo no hover/active, dentro de um carrossel de páginas",
+    render: () => {
+      const testimonials = [
+        {
+          rating: 5,
+          quote: "Trocamos o CSS solto por tokens em uma tarde. O styleguide gerado da própria lib fez toda a diferença na revisão.",
+          author: "Marina Alves",
+          role: "Lead Frontend, Órbita",
+          initials: "MA",
+        },
+        {
+          rating: 5,
+          highlighted: true,
+          quote: "O contorno reativo e o fundo vivo deram uma identidade própria pro produto sem escrever uma linha de animação.",
+          author: "Diego Nascimento",
+          role: "Founder, Nebulosa",
+          initials: "DN",
+        },
+        {
+          rating: 4,
+          quote: "Documentação densa o suficiente pra eu não precisar perguntar nada — só ler o ARCHITECTURE.md antes de mexer.",
+          author: "Cauê Ribeiro",
+          role: "UI Engineer, Constelação",
+          initials: "CR",
+        },
+        {
+          rating: 5,
+          quote: "Migramos de Storybook pro styleguide gerado da própria lib e nunca mais divergiu do código de verdade.",
+          author: "Renata Souza",
+          role: "Design Systems Lead, Aurora",
+          initials: "RS",
+        },
+        {
+          rating: 4,
+          quote: "O contorno reativo virou a assinatura visual do nosso dashboard — clientes comentam sem eu precisar apontar.",
+          author: "Felipe Tanaka",
+          role: "CTO, Kit Aurora",
+          initials: "FT",
+        },
+        {
+          rating: 5,
+          quote: "Zero dependência de runtime foi o que fechou a decisão — não precisei justificar mais um pacote pro time.",
+          author: "Bianca Ferraz",
+          role: "Staff Engineer, Constelação",
+          initials: "BF",
+        },
+      ];
+      const pageSize = 2;
+      const pages = [];
+      for (let i = 0; i < testimonials.length; i += pageSize) {
+        pages.push(testimonials.slice(i, i + pageSize));
+      }
+      return (
+        <Carousel
+          items={pages.map((page, p) => (
+            <div key={p} style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch" }}>
+              {page.map((t) => (
+                <TestimonialCard
+                  key={t.author}
+                  style={{ flex: "1 1 260px" }}
+                  highlighted={t.highlighted}
+                  rating={t.rating}
+                  quote={t.quote}
+                  author={t.author}
+                  role={t.role}
+                  avatar={<Avatar size="sm" initials={t.initials} alt={t.author} />}
+                />
+              ))}
+            </div>
+          ))}
         />
-        <TestimonialCard
-          style={{ flex: "1 1 260px" }}
-          highlighted
-          rating={5}
-          quote="O contorno reativo e o fundo vivo deram uma identidade própria pro produto sem escrever uma linha de animação."
-          author="Diego Nascimento"
-          role="Founder, Nebulosa"
-          avatar={<Avatar size="sm" initials="DN" alt="Diego Nascimento" />}
-        />
-        <TestimonialCard
-          style={{ flex: "1 1 260px" }}
-          rating={4}
-          quote="Documentação densa o suficiente pra eu não precisar perguntar nada — só ler o ARCHITECTURE.md antes de mexer."
-          author="Cauê Ribeiro"
-          role="UI Engineer, Constelação"
-          avatar={<Avatar size="sm" initials="CR" alt="Cauê Ribeiro" />}
-        />
-      </div>
-    ),
+      );
+    },
   },
   {
     id: "badges",

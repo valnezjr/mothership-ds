@@ -27,9 +27,9 @@ interativo: em `PricingCard`, um recurso não incluído no plano troca o
 dois sinais redundantes, igual à validação de daltonismo das cores de
 dado (ver [Cor](#cor)).
 
-Ícones puramente decorativos (as aspas do `TestimonialCard`, os ícones
-de check/traço acima) levam `aria-hidden="true"` — a informação já
-está no texto ao lado, repeti-la para leitor de tela seria ruído. Já
+Ícones puramente decorativos (os ícones de check/traço acima) levam
+`aria-hidden="true"` — a informação já está no texto ao lado,
+repeti-la para leitor de tela seria ruído. Já
 um valor visual sem texto equivalente, como as estrelas de avaliação
 do `TestimonialCard`, precisa do equivalente em algum lugar: o
 container leva `role="img"` e `aria-label="N de 5 estrelas"`, e cada

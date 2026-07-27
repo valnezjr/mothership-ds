@@ -195,10 +195,12 @@ Combine com `<HoverEdge>` para o contorno reativo, como o `<Card>`.
 | `avatar` | `ReactNode` | normalmente um `<Avatar size="sm">` |
 | `rating` | `number` | 0–5; omita para não mostrar estrelas |
 | `highlighted` | `boolean` | borda e glow accent, para o depoimento em foco |
+| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
 
-Aspas decorativas no topo e identidade (avatar + nome + cargo) sempre
-no rodapé do card, independente do tamanho do texto. Combine com
-`<HoverEdge>`, como o `<Card>`.
+Identidade (avatar + nome + cargo) sempre no rodapé do card,
+independente do tamanho do texto. Já nasce com o contorno reativo
+(`interactive`) — não precisa envolver com `<HoverEdge>`. Combine com
+`<Carousel items={...}>` para paginar vários depoimentos.
 
 ---
 
@@ -218,10 +220,13 @@ com o bounce do sistema na abertura **e** no fechamento.
 
 | Prop | Tipo | |
 |---|---|---|
-| `slides` | `{ image, caption? }[]` | `image` aceita `url(...)` ou gradiente |
-| `autoplay` | `number` | ms entre slides; interagir reinicia o relógio |
+| `slides` | `{ image, caption? }[]` | fotos em tela cheia; `image` aceita `url(...)` ou gradiente |
+| `items` | `ReactNode[]` | conteúdo livre por página — ex. um grupo de `TestimonialCard`. Substitui `slides` |
+| `autoplay` | `number` | ms entre páginas; interagir reinicia o relógio |
 
-O bullet ativo se alonga em pill, mostrando qual foto está em destaque.
+O bullet ativo se alonga em pill, mostrando qual página está em
+destaque. Com `items`, setas e bullets trocam o branco fixo (pensado
+pra foto) pelas cores do tema.
 
 ### `Gallery`
 

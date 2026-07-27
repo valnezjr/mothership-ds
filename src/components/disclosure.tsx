@@ -106,15 +106,22 @@ export interface Slide {
 }
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
-  slides: Slide[];
+  /** Fotos em tela cheia, com legenda opcional. Use `items` no lugar disso para conteúdo livre. */
+  slides?: Slide[];
+  /**
+   * Uma página por item, com conteúdo livre — ex. um grupo de
+   * `TestimonialCard`. Substitui `slides`; some das duas.
+   */
+  items?: React.ReactNode[];
   /** Avança sozinho a cada N ms. */
   autoplay?: number;
 }
 
-/** Bullets mostram qual foto está em destaque: o ativo vira uma pill. */
-export function Carousel({ slides, autoplay, className, ...rest }: CarouselProps) {
+/** Bullets mostram qual página está em destaque: a ativa vira uma pill. */
+export function Carousel({ slides, items, autoplay, className, ...rest }: CarouselProps) {
+  const pages = items ?? slides ?? [];
   const [index, setIndex] = React.useState(0);
-  const count = slides.length;
+  const count = pages.length;
   const [tick, setTick] = React.useState(0); // reinicia o relógio ao interagir
 
   const go = React.useCallback(
@@ -135,17 +142,26 @@ export function Carousel({ slides, autoplay, className, ...rest }: CarouselProps
   if (!count) return null;
 
   return (
-    <div className={["ms-carousel", className].filter(Boolean).join(" ")} {...rest}>
+    <div
+      className={["ms-carousel", items && "ms-carousel--content", className].filter(Boolean).join(" ")}
+      {...rest}
+    >
       <div className="ms-carousel__track" style={{ transform: `translateX(-${index * 100}%)` }}>
-        {slides.map((s, i) => (
-          <div
-            key={i}
-            className="ms-carousel__slide"
-            style={{ ["--ms-photo" as string]: s.image }}
-          >
-            {s.caption != null && <div className="ms-carousel__caption">{s.caption}</div>}
-          </div>
-        ))}
+        {items
+          ? items.map((node, i) => (
+              <div key={i} className="ms-carousel__slide ms-carousel__slide--content">
+                {node}
+              </div>
+            ))
+          : slides!.map((s, i) => (
+              <div
+                key={i}
+                className="ms-carousel__slide"
+                style={{ ["--ms-photo" as string]: s.image }}
+              >
+                {s.caption != null && <div className="ms-carousel__caption">{s.caption}</div>}
+              </div>
+            ))}
       </div>
       <button
         className="ms-carousel__arrow ms-carousel__arrow--prev"
@@ -164,7 +180,7 @@ export function Carousel({ slides, autoplay, className, ...rest }: CarouselProps
         {ArrowRight}
       </button>
       <div className="ms-carousel__bullets">
-        {slides.map((_, i) => (
+        {pages.map((_, i) => (
           <button
             key={i}
             className={["ms-carousel__bullet", i === index && "ms-carousel__bullet--active"]
