@@ -217,12 +217,9 @@ como `StatGrid`/`StatTile`.
 | `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
 
 `grid-auto-flow: dense` preenche os buracos deixados por spans
-irregulares, e os tiles **sem** `rowSpan` não esticam pra uma altura
-uniforme — ficam só do tamanho do próprio conteúdo. Um tile com
-`rowSpan` preenche a área toda que ocupa (é deliberadamente grande);
-os demais variam de altura entre si conforme o texto, o que dá o ar
-orgânico ao conjunto — quanto mais variar `colSpan`/`rowSpan`/tamanho
-de conteúdo entre os tiles, mais perceptível.
+irregulares em vez de deixar o layout furado, mas os tiles esticam
+pra altura uniforme da linha (stretch, o padrão do grid) — linhas
+sempre alinhadas, só o tamanho (`colSpan`/`rowSpan`) varia entre eles.
 
 Abaixo de 720px o grid vira uma coluna e todo tile volta a 1×1 —
 nenhum bloco fica maior que outro numa lista vertical.

@@ -8,14 +8,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 
-- **`BentoGrid`/`BentoTile`**: layout mais orgânico — o grid ganha
-  `grid-auto-flow: dense` (preenche buracos deixados por spans
-  irregulares) e os tiles **sem** `rowSpan` não esticam mais pra uma
-  altura uniforme (`align-items: start`), ficando só do tamanho do
-  próprio conteúdo; um tile com `rowSpan` continua preenchendo a área
-  toda que ocupa. `rowSpan` ganha a opção `3` (era só `2`). Resultado:
-  bordas que não fecham numa linha reta entre tiles vizinhos, sem JS
-  medindo nada.
+- **`BentoGrid`/`BentoTile`**: mais opções de tamanho — `rowSpan`
+  ganha a opção `3` (era só `2`), e o grid usa `grid-auto-flow: dense`
+  pra preencher buracos deixados por spans irregulares em vez de
+  deixar o layout furado. Tentei também tirar o stretch das linhas
+  (`align-items: start`, tiles do tamanho do próprio conteúdo) pra um
+  ar mais orgânico, mas revertido — linhas alinhadas ficaram melhores;
+  só o tamanho (`colSpan`/`rowSpan`) varia entre os tiles agora.
 
 ## [1.2.0] — 2026-07-27
 

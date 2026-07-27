@@ -918,7 +918,7 @@ export const STORIES: Story[] = [
     id: "bento",
     group: "Componentes",
     title: "Bento grid",
-    subtitle: "Tiles de vidro com tamanhos variáveis, empacotamento denso e bordas orgânicas",
+    subtitle: "Tiles de vidro com tamanhos variáveis e empacotamento denso",
     render: () => (
       <BentoGrid>
         <BentoTile
