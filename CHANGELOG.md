@@ -36,6 +36,21 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   consistente. Colunas `sortable` ganham alternância `asc → desc →
   ordem original` no cabeçalho, com `aria-sort` no `<th>`.
   `overflow-x: auto` no wrapper cobre telas estreitas.
+- **Marketing**: `BentoGrid`/`BentoTile` — grid de 4 colunas com tiles
+  de tamanho variável (`colSpan`/`rowSpan`), como `StatGrid`/`StatTile`.
+  Já nasce com o contorno reativo (`interactive`, padrão `true`).
+  Abaixo de 720px vira uma coluna e todo tile volta a 1×1.
+
+### Alterado
+
+- **Cores de marca realinhadas com `assets/logo.svg`**: `--color-accent`
+  (`#00afef`, era `#00a7da`) e `--color-pink` (`#ed2d66`, era
+  `#d4708f`) passam a ser as paradas exatas do gradiente da logo —
+  `--color-orange` já era. Escalas 100–900 recalculadas com a mesma
+  fórmula de mix (branco/preto) já usada no accent original, preservando
+  o "formato" da escala. `--chart-3`/`--chart-4` **não** acompanham —
+  já validados contra daltonismo nos valores antigos, ficam soltos por
+  design (documentado em `docs/tokens.md` e `TOKENS.md`).
 
 ## [1.0.1] — 2026-07-27
 

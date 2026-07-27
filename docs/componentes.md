@@ -202,6 +202,23 @@ independente do tamanho do texto. Já nasce com o contorno reativo
 (`interactive`) — não precisa envolver com `<HoverEdge>`. Combine com
 `<Carousel items={...}>` para paginar vários depoimentos.
 
+### `BentoGrid` · `BentoTile`
+
+`BentoGrid` é só o grid (4 colunas); os tiles são `<BentoTile>` filhos,
+como `StatGrid`/`StatTile`.
+
+| Prop (`BentoTile`) | Tipo | |
+|---|---|---|
+| `colSpan` | `2 \| 3 \| 4` | quantas colunas ocupa no grid de 4 |
+| `rowSpan` | `2` | quantas linhas ocupa |
+| `icon` | `ReactNode` | |
+| `title` | `ReactNode` | |
+| `description` | `ReactNode` | |
+| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
+
+Abaixo de 720px o grid vira uma coluna e todo tile volta a 1×1 —
+nenhum bloco fica maior que outro numa lista vertical.
+
 ---
 
 ## Interativos

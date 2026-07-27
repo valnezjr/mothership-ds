@@ -653,6 +653,65 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   font-size: var(--text-sm);
 }
 
+/* ---------- Marketing: bento grid ---------- */
+.ms-bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.ms-bento__tile--col-2 { grid-column: span 2; }
+.ms-bento__tile--col-3 { grid-column: span 3; }
+.ms-bento__tile--col-4 { grid-column: span 4; }
+.ms-bento__tile--row-2 { grid-row: span 2; }
+
+/* Abaixo de 720px o grid vira uma coluna — nenhum tile fica maior
+   que outro numa lista vertical (mesmo breakpoint do resto do sistema). */
+@media (max-width: 720px) {
+  .ms-bento { grid-template-columns: 1fr; }
+  .ms-bento__tile--col-2,
+  .ms-bento__tile--col-3,
+  .ms-bento__tile--col-4 { grid-column: span 1; }
+  .ms-bento__tile--row-2 { grid-row: span 1; }
+}
+
+.ms-bento__tile {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+}
+
+.ms-bento__tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.ms-bento__tile-icon svg { width: 20px; height: 20px; }
+
+.ms-bento__tile-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-2);
+}
+
+.ms-bento__tile-desc {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
 /* ---------- Alerta ---------- */
 /* Segue o color code das badges: fundo suave + borda colorida completa,
    com bloco de ícone à esquerda em cor sólida (a mesma da borda) */

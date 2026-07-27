@@ -187,3 +187,64 @@ export function TestimonialCard({
     </div>
   );
 }
+
+/* ---------- Bento grid ---------- */
+
+export function BentoGrid({ className, ...rest }: Div) {
+  return <div className={cx("ms-bento", className)} {...rest} />;
+}
+
+export interface BentoTileProps extends Omit<Div, "title"> {
+  /** Quantas colunas ocupa no grid de 4. Padrão 1. */
+  colSpan?: 2 | 3 | 4;
+  /** Quantas linhas ocupa. Padrão 1. */
+  rowSpan?: 2;
+  icon?: React.ReactNode;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  /** Contorno reativo no hover/active. Padrão `true`. */
+  interactive?: boolean;
+}
+
+/**
+ * Célula do bento grid: vidro + `icon`/`title`/`description` opcionais
+ * (ou `children` livre), com `colSpan`/`rowSpan` controlando o
+ * tamanho. Já nasce com o contorno reativo (`interactive`, padrão
+ * `true`). Abaixo de 720px o grid vira uma coluna e todo tile volta a
+ * 1×1 — nenhum bloco fica maior que outro numa lista vertical.
+ */
+export function BentoTile({
+  colSpan,
+  rowSpan,
+  icon,
+  title,
+  description,
+  interactive = true,
+  className,
+  children,
+  ...rest
+}: BentoTileProps) {
+  const setAngle = useEdgeAngle();
+  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (interactive) setAngle(e);
+  };
+
+  return (
+    <div
+      className={cx(
+        "ms-bento__tile",
+        colSpan && `ms-bento__tile--col-${colSpan}`,
+        rowSpan && `ms-bento__tile--row-${rowSpan}`,
+        interactive && "ms-hover-edge",
+        className
+      )}
+      onPointerMove={handleMove}
+      {...rest}
+    >
+      {icon != null && <div className="ms-bento__tile-icon">{icon}</div>}
+      {title != null && <div className="ms-bento__tile-title">{title}</div>}
+      {description != null && <p className="ms-bento__tile-desc">{description}</p>}
+      {children}
+    </div>
+  );
+}

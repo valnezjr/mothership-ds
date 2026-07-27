@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 34 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 36 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -36,9 +36,14 @@ Expansão em componentes de "marketing" (landing page), um de cada vez:
 - [x] `TestimonialCard` (`src/components/marketing.tsx`)
 - [x] `Table` (`src/components/table.tsx`) — pronta para CRUD: 1ª coluna
       status, última ações (editar/excluir), ordenação por coluna
-- [ ] Bento grid
-- [ ] Ajustar as cores de marca (`--color-accent`, `--color-pink`, etc.)
-      para seguir mais de perto as cores reais de `assets/logo.svg`
+- [x] `BentoGrid`/`BentoTile` (`src/components/marketing.tsx`) —
+      `colSpan`/`rowSpan` no grid de 4, vira 1 coluna abaixo de 720px
+- [x] Cores de marca realinhadas com `assets/logo.svg`: `--color-accent`
+      (#00afef, era #00a7da) e `--color-pink` (#ed2d66, era #d4708f)
+      agora são as paradas exatas do gradiente da logo; `--color-orange`
+      já era exata. Escalas 100–900 recalculadas com a mesma fórmula de
+      mix já usada (branco/preto, mesmos pesos). `--chart-3`/`--chart-4`
+      não seguem — já validados nos valores antigos, seguem soltos.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

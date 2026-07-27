@@ -52,38 +52,42 @@
   --switch-height: 24px;
   --switch-thumb: 32px;
 
-  /* ---------- Cores de marca (fixas nos dois temas) ---------- */
-  --color-accent: rgb(0, 167, 218);     /* ciano — hover de links do rodapé */
-  --color-highlight: rgb(255, 208, 0);  /* amarelo — ícone "flash" */
+  /* ---------- Cores de marca (fixas nos dois temas) ----------
+     accent, pink e orange são as três cores exatas do gradiente de
+     assets/logo.svg (v1.5: accent e pink realinhados; orange já
+     nasceu daí). accent também é a cor da pupila da logo (#00aeed,
+     1 unidade de diferença — a mesma cor, arredondamento do CorelDraw). */
+  --color-accent: rgb(0, 175, 239);     /* ciano — gradiente da logo, parada 0% */
+  --color-highlight: rgb(255, 208, 0);  /* amarelo — ícone "flash" da página original */
   --color-success: rgb(0, 214, 143);
   --color-danger: rgb(255, 77, 109);
 
-  /* Ampliação da paleta: violeta e rosa vindos dos gráficos,
-     laranja do gradiente da logo e um cinza para status neutros. */
+  /* Ampliação da paleta: violeta é decorativa (não vem da logo),
+     rosa e laranja vêm do gradiente da logo, cinza é neutro de status. */
   --color-violet: rgb(111, 97, 214);
-  --color-pink: rgb(212, 112, 143);
+  --color-pink: rgb(237, 45, 102);
   --color-orange: rgb(242, 111, 53);
   --color-gray: rgb(139, 139, 158);
 
-  --color-accent-soft: rgba(0, 167, 218, 0.2);
+  --color-accent-soft: rgba(0, 175, 239, 0.2);
   --color-highlight-soft: rgba(255, 208, 0, 0.2);
   --color-success-soft: rgba(0, 214, 143, 0.2);
   --color-danger-soft: rgba(255, 77, 109, 0.2);
   --color-violet-soft: rgba(111, 97, 214, 0.2);
-  --color-pink-soft: rgba(212, 112, 143, 0.2);
+  --color-pink-soft: rgba(237, 45, 102, 0.2);
   --color-orange-soft: rgba(242, 111, 53, 0.2);
   --color-gray-soft: rgba(139, 139, 158, 0.2);
 
   /* ---------- Escalas de marca (100 claro → 900 escuro; 500 = base) ---------- */
-  --color-accent-100: #d9f2f9;
-  --color-accent-200: #b2e5f4;
-  --color-accent-300: #80d3ec;
-  --color-accent-400: #40bde3;
-  --color-accent-500: #00a7da;
-  --color-accent-600: #008eb9;
-  --color-accent-700: #007599;
-  --color-accent-800: #005c78;
-  --color-accent-900: #004357;
+  --color-accent-100: #d9f3fd;
+  --color-accent-200: #b3e7fa;
+  --color-accent-300: #80d7f7;
+  --color-accent-400: #40c3f3;
+  --color-accent-500: #00afef;
+  --color-accent-600: #0095cb;
+  --color-accent-700: #007aa7;
+  --color-accent-800: #006083;
+  --color-accent-900: #004660;
 
   --color-highlight-100: #fff8d9;
   --color-highlight-200: #fff1b2;
@@ -125,15 +129,15 @@
   --color-violet-800: #3d3576;
   --color-violet-900: #2c2756;
 
-  --color-pink-100: #f9eaee;
-  --color-pink-200: #f2d4dd;
-  --color-pink-300: #eab8c7;
-  --color-pink-400: #df94ab;
-  --color-pink-500: #d4708f;
-  --color-pink-600: #b45f7a;
-  --color-pink-700: #944e64;
-  --color-pink-800: #753e4f;
-  --color-pink-900: #552d39;
+  --color-pink-100: #fce0e8;
+  --color-pink-200: #fac0d1;
+  --color-pink-300: #f696b3;
+  --color-pink-400: #f2628c;
+  --color-pink-500: #ed2d66;
+  --color-pink-600: #c92657;
+  --color-pink-700: #a61f47;
+  --color-pink-800: #821938;
+  --color-pink-900: #5f1229;
 
   --color-orange-100: #fde9e1;
   --color-orange-200: #fbd4c2;
@@ -157,9 +161,14 @@
 
   /* ---------- Cores de dados (gráficos) ----------
      Categóricas em ORDEM FIXA (1 ciano · 2 ouro · 3 violeta · 4 magenta),
-     derivadas da paleta da marca e validadas por modo contra daltonismo
-     (ΔE CVD ≥ 8), visão normal (ΔE ≥ 15) e contraste ≥ 3:1 com o fundo.
-     Nunca cicle nem reordene; success/danger ficam reservadas p/ status. */
+     validadas por modo contra daltonismo (ΔE CVD ≥ 8), visão normal
+     (ΔE ≥ 15) e contraste ≥ 3:1 com o fundo. Nunca cicle nem reordene;
+     success/danger ficam reservadas p/ status.
+
+     Passos próprios, independentes das cores de marca acima: nasceram
+     de accent/violet/pink (dark) antes do realinhamento de v1.5 com
+     assets/logo.svg, mas já validados nesses valores — mudar a marca
+     não invalida o gráfico, então não seguem accent/pink automaticamente. */
   --chart-1: #0096c8;
   --chart-2: #b29200;
   --chart-3: #6f61d6;

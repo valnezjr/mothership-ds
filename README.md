@@ -8,7 +8,7 @@
 fundo animado e uma identidade de movimento própria.
 
 [![CI](https://github.com/valnezjr/mothership-ds/actions/workflows/ci.yml/badge.svg)](https://github.com/valnezjr/mothership-ds/actions/workflows/ci.yml)
-[![Styleguide](https://img.shields.io/badge/styleguide-online-00a7da)](https://valnezjr.github.io/mothership-ds/)
+[![Styleguide](https://img.shields.io/badge/styleguide-online-00afef)](https://valnezjr.github.io/mothership-ds/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
 ![React 18+](https://img.shields.io/badge/react-18%2B-61dafb)
 ![TypeScript](https://img.shields.io/badge/typescript-5-3178c6)
@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **34 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **36 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -162,7 +162,7 @@ export default function Home() {
 
 **Marketing**
 
-`PricingCard` · `TestimonialCard`
+`PricingCard` · `TestimonialCard` · `BentoGrid` · `BentoTile`
 
 </td><td valign="top" width="33%">
 
@@ -238,7 +238,7 @@ Ele é publicado automaticamente no GitHub Pages a cada push na `master`.
 ## Princípios
 
 **Tokens antes de valores.** Nenhum componente escreve `15px` ou
-`#00a7da`; tudo vem de variáveis CSS. É o que faz um componente novo
+`#00afef`; tudo vem de variáveis CSS. É o que faz um componente novo
 nascer coerente e funcionar nos dois temas sem trabalho extra.
 
 **O movimento é parte da identidade.** Um único easing com overshoot

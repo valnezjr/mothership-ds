@@ -6,7 +6,7 @@ CSS divergirem, o CSS ganha; atualize aqui. Para o texto explicado
 (exemplos, critérios de validação em prosa), ver
 [`docs/tokens.md`](docs/tokens.md).
 
-**Regra fixa**: nenhum componente escreve `15px` ou `#00a7da` direto —
+**Regra fixa**: nenhum componente escreve `15px` ou `#00afef` direto —
 sempre `var(--token)`.
 
 ## Tipografia
@@ -105,14 +105,19 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 
 | Token base | Uso semântico |
 |---|---|
-| `--color-accent` | ciano — ação primária |
-| `--color-highlight` | amarelo — atenção |
+| `--color-accent` | ciano — ação primária. Parada 0% de `assets/logo.svg` |
+| `--color-highlight` | amarelo — atenção (ícone flash da página original, não da logo) |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |
-| `--color-violet` | violeta — também `--chart-3` |
-| `--color-pink` | rosa — também `--chart-4` |
-| `--color-orange` | laranja — gradiente da logo |
+| `--color-violet` | violeta decorativo — não vem da logo |
+| `--color-pink` | magenta. Parada 60% de `assets/logo.svg` |
+| `--color-orange` | laranja. Parada 100% de `assets/logo.svg` |
 | `--color-gray` | cinza — status neutro |
+
+`accent`/`pink`/`orange` são as três paradas exatas do gradiente da
+logo (realinhado na v1.5). `--chart-3`/`--chart-4` não seguem
+`violet`/`pink` automaticamente — já validados contra daltonismo nos
+valores antigos, ficam soltos por design.
 
 Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 

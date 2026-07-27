@@ -37,14 +37,21 @@ São oito, cada uma disponível em três formas.
 
 | Token | Origem |
 |---|---|
-| `--color-accent` | ciano da marca — ação primária |
-| `--color-highlight` | amarelo do ícone de raio — atenção |
+| `--color-accent` | ciano — ação primária. Parada 0% do gradiente de `assets/logo.svg` |
+| `--color-highlight` | amarelo do ícone de raio da página original — atenção |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |
-| `--color-violet` | violeta dos gráficos (`--chart-3`) |
-| `--color-pink` | rosa dos gráficos (`--chart-4`) |
-| `--color-orange` | laranja do gradiente da logo |
+| `--color-violet` | violeta decorativo — não vem da logo, só dos gráficos |
+| `--color-pink` | magenta. Parada 60% do gradiente de `assets/logo.svg` |
+| `--color-orange` | laranja. Parada 100% do gradiente de `assets/logo.svg` |
 | `--color-gray` | cinza — status neutro |
+
+`accent`, `pink` e `orange` são as três paradas exatas do gradiente da
+logo (realinhado na v1.5 — antes, `accent` e `pink` eram aproximações).
+`--chart-3`/`--chart-4` **não** seguem `violet`/`pink` automaticamente:
+nasceram deles num momento anterior, mas já validados contra
+daltonismo e contraste nesses valores — mudar a cor de marca não
+invalida um gráfico já publicado.
 
 As três formas de cada cor:
 
