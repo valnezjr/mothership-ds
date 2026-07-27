@@ -121,8 +121,18 @@ valnezjr.github.io/mothership-ds/exemplo/   ← examples/next-app/out (Next expo
 
 O workflow builda os dois e copia `examples/next-app/out/` para
 `styleguide/dist/exemplo/` antes de um único `upload-pages-artifact`.
-`examples/next-app` só ativa `output: "export"` e `basePath: "/exemplo"`
-quando a env `GITHUB_PAGES=true` está setada (só o workflow define
-isso) — copiar os arquivos do exemplo para outro projeto não herda
-esse comportamento. Ao trocar o subcaminho, atualizar `basePath` em
+`examples/next-app` só ativa `output: "export"` e
+`basePath: "/mothership-ds/exemplo"` quando a env `GITHUB_PAGES=true`
+está setada (só o workflow define isso) — copiar os arquivos do
+exemplo para outro projeto não herda esse comportamento.
+
+O `basePath` repete o nome do repo mesmo ele já aparecendo na URL do
+Pages: caminhos absolutos (o que o Next gera com `basePath`) resolvem
+contra a raiz do **domínio** (`valnezjr.github.io`), não contra a raiz
+do site do projeto — só `/exemplo` fazia os assets pedirem
+`valnezjr.github.io/exemplo/...` (404) em vez de
+`valnezjr.github.io/mothership-ds/exemplo/...`. Descoberto porque o
+teste local antes do primeiro deploy simulava a raiz errada (servia
+`exemplo/` diretamente na raiz do servidor, sem o segmento do repo por
+cima). Ao trocar o subcaminho, atualizar `basePath` em
 `examples/next-app/next.config.js` junto com os links no README.
