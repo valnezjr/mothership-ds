@@ -26,7 +26,9 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - **`Carousel`**: nova prop `items` (`ReactNode[]`) para paginar
   conteúdo livre em vez de fotos — ex. grupos de `TestimonialCard`.
   Setas e bullets passam a usar as cores do tema nesse modo, em vez
-  do branco fixo pensado para foto.
+  do branco fixo pensado para foto. Nova prop `arrows` (padrão
+  `true`) esconde as setas, deixando a navegação só nos bullets.
+  Navegável por arraste horizontal (toque ou mouse) em qualquer modo.
 
 ## [1.0.1] — 2026-07-27
 

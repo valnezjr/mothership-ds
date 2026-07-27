@@ -115,10 +115,16 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   items?: React.ReactNode[];
   /** Avança sozinho a cada N ms. */
   autoplay?: number;
+  /** Setas de anterior/próximo. Padrão `true`; os bullets navegam sempre. */
+  arrows?: boolean;
 }
 
-/** Bullets mostram qual página está em destaque: a ativa vira uma pill. */
-export function Carousel({ slides, items, autoplay, className, ...rest }: CarouselProps) {
+/**
+ * Bullets mostram qual página está em destaque: a ativa vira uma
+ * pill. Sempre navegável por arraste horizontal (toque ou mouse),
+ * além de setas (opcionais) e bullets.
+ */
+export function Carousel({ slides, items, autoplay, arrows = true, className, ...rest }: CarouselProps) {
   const pages = items ?? slides ?? [];
   const [index, setIndex] = React.useState(0);
   const count = pages.length;
@@ -139,11 +145,31 @@ export function Carousel({ slides, items, autoplay, className, ...rest }: Carous
     return () => clearInterval(id);
   }, [autoplay, count, tick]);
 
+  // Arraste horizontal (dedo ou mouse): só decide a direção ao soltar,
+  // pra não brigar com cliques nos bullets ou no conteúdo do slide.
+  const dragX = React.useRef<number | null>(null);
+  const handleDragStart = (x: number) => { dragX.current = x; };
+  const handleDragEnd = (x: number) => {
+    if (dragX.current == null) return;
+    const delta = x - dragX.current;
+    dragX.current = null;
+    if (Math.abs(delta) > 40) go(index + (delta < 0 ? 1 : -1));
+  };
+
   if (!count) return null;
 
   return (
     <div
-      className={["ms-carousel", items && "ms-carousel--content", className].filter(Boolean).join(" ")}
+      className={[
+        "ms-carousel",
+        items && "ms-carousel--content",
+        !arrows && "ms-carousel--no-arrows",
+        className,
+      ].filter(Boolean).join(" ")}
+      onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+      onTouchEnd={(e) => handleDragEnd(e.changedTouches[0].clientX)}
+      onPointerDown={(e) => e.pointerType !== "touch" && handleDragStart(e.clientX)}
+      onPointerUp={(e) => e.pointerType !== "touch" && handleDragEnd(e.clientX)}
       {...rest}
     >
       <div className="ms-carousel__track" style={{ transform: `translateX(-${index * 100}%)` }}>
@@ -163,22 +189,26 @@ export function Carousel({ slides, items, autoplay, className, ...rest }: Carous
               </div>
             ))}
       </div>
-      <button
-        className="ms-carousel__arrow ms-carousel__arrow--prev"
-        type="button"
-        aria-label="Anterior"
-        onClick={() => go(index - 1)}
-      >
-        {ArrowLeft}
-      </button>
-      <button
-        className="ms-carousel__arrow ms-carousel__arrow--next"
-        type="button"
-        aria-label="Próximo"
-        onClick={() => go(index + 1)}
-      >
-        {ArrowRight}
-      </button>
+      {arrows && (
+        <>
+          <button
+            className="ms-carousel__arrow ms-carousel__arrow--prev"
+            type="button"
+            aria-label="Anterior"
+            onClick={() => go(index - 1)}
+          >
+            {ArrowLeft}
+          </button>
+          <button
+            className="ms-carousel__arrow ms-carousel__arrow--next"
+            type="button"
+            aria-label="Próximo"
+            onClick={() => go(index + 1)}
+          >
+            {ArrowRight}
+          </button>
+        </>
+      )}
       <div className="ms-carousel__bullets">
         {pages.map((_, i) => (
           <button

@@ -223,10 +223,12 @@ com o bounce do sistema na abertura **e** no fechamento.
 | `slides` | `{ image, caption? }[]` | fotos em tela cheia; `image` aceita `url(...)` ou gradiente |
 | `items` | `ReactNode[]` | conteúdo livre por página — ex. um grupo de `TestimonialCard`. Substitui `slides` |
 | `autoplay` | `number` | ms entre páginas; interagir reinicia o relógio |
+| `arrows` | `boolean` | setas de anterior/próximo; padrão `true`. Os bullets navegam sempre |
 
 O bullet ativo se alonga em pill, mostrando qual página está em
 destaque. Com `items`, setas e bullets trocam o branco fixo (pensado
-pra foto) pelas cores do tema.
+pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
+(toque ou mouse), além de setas e bullets.
 
 ### `Gallery`
 

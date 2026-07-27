@@ -908,6 +908,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
+  /* deixa o navegador cuidar do scroll vertical nativo; o arraste
+     horizontal (swipe) é decidido via JS, sem brigar um com o outro */
+  touch-action: pan-y;
 }
 
 .ms-carousel__track {
@@ -1012,6 +1015,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-carousel--content .ms-carousel__bullet { background: var(--color-border); }
 .ms-carousel--content .ms-carousel__bullet--active { background: var(--color-accent); }
+
+/* Sem setas, o respiro lateral não precisa mais desviar de nada. */
+.ms-carousel--no-arrows .ms-carousel__slide--content {
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+}
 
 /* ---------- Galeria com filtros ---------- */
 .ms-gallery__filters {

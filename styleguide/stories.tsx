@@ -777,7 +777,7 @@ export const STORIES: Story[] = [
     id: "depoimentos",
     group: "Componentes",
     title: "Card de depoimentos",
-    subtitle: "Contorno reativo no hover/active, dentro de um carrossel de páginas",
+    subtitle: "Contorno reativo no hover/active, paginado só por bullets e arraste",
     render: () => {
       const testimonials = [
         {
@@ -789,7 +789,6 @@ export const STORIES: Story[] = [
         },
         {
           rating: 5,
-          highlighted: true,
           quote: "O contorno reativo e o fundo vivo deram uma identidade própria pro produto sem escrever uma linha de animação.",
           author: "Diego Nascimento",
           role: "Founder, Nebulosa",
@@ -831,6 +830,7 @@ export const STORIES: Story[] = [
       }
       return (
         <Carousel
+          arrows={false}
           items={pages.map((page, p) => (
             <div key={p} style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch" }}>
               {page.map((t) => (
