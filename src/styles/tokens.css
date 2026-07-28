@@ -237,8 +237,12 @@
   --color-text-muted: rgba(0, 0, 0, 0.7);
   --color-border: rgba(0, 0, 0, 0.5);
   --color-border-strong: #000000;
-  --color-surface: rgba(0, 0, 0, 0.05);
-  --color-surface-hover: rgba(0, 0, 0, 0.15);
+  /* Vidro esbranquiçado, não escurecido: sobre os glows saturados do
+     fundo claro, um véu preto sujava a superfície pra um cinza/roxo
+     turvo que reduzia o contraste do texto escuro. Um véu branco
+     "lava" a cor por baixo pro efeito de vidro fosco de verdade. */
+  --color-surface: rgba(255, 255, 255, 0.6);
+  --color-surface-hover: rgba(255, 255, 255, 0.85);
   --color-thumb: #ffffff;
 
   --bg-base: #ffffff;
