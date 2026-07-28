@@ -143,7 +143,7 @@ export default function Home() {
 
 **Layout e navegação**
 
-`Page` · `Container` · `Navbar` · `Breadcrumbs` · `Hero` · `Footer`
+`Page` · `Container` · `Navbar` · `Sidebar` · `Breadcrumbs` · `Hero` · `Footer`
 
 **Marca**
 
@@ -240,6 +240,13 @@ Ele é publicado automaticamente no GitHub Pages a cada push na `master`.
 **Tokens antes de valores.** Nenhum componente escreve `15px` ou
 `#00afef`; tudo vem de variáveis CSS. É o que faz um componente novo
 nascer coerente e funcionar nos dois temas sem trabalho extra.
+
+**Poucos efeitos, respiro orgânico.** As cores de marca foram extraídas
+ou harmonizadas a partir da identidade Mothership; a escala de
+espaçamento foge um pouco da progressão matemática mais óbvia de
+propósito. Combinado a um punhado de efeitos recorrentes — não um
+novo por componente —, o resultado é coesão e performance numa
+interface moderna e arrojada, mas com sensação calma de uso.
 
 **O movimento é parte da identidade.** Um único easing com overshoot
 (`--ease-bounce`) assina as microinterações, e o fundo nunca fica

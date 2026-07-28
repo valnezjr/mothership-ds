@@ -33,7 +33,9 @@ O tema escuro é o padrão. O claro é ativado pela classe `light` no
 
 ### Marca — fixas nos dois temas
 
-São oito, cada uma disponível em três formas.
+São oito, cada uma disponível em três formas. Todas foram extraídas
+direto da marca Mothership ou harmonizadas pra completar a paleta sem
+destoar dela — nenhuma é um tom escolhido de forma solta.
 
 | Token | Origem |
 |---|---|
@@ -85,7 +87,9 @@ Verde e vermelho ficam **reservados para status** — nunca viram "série 5".
 ## Tipografia
 
 Família única: [Outfit](https://fonts.google.com/specimen/Outfit), pesos
-400 e 500.
+400 e 500. Escolhida por ser limpa, muito legível e versátil o
+bastante pra título e corpo de texto; por não ser tão batida quanto as
+fontes mainstream, carrega uma pegada mais orgânica.
 
 | Token | Tamanho | Uso |
 |---|---|---|
@@ -105,7 +109,7 @@ Há utilitários prontos: `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
 
 ## Espaçamento
 
-Escala de oito passos, extraída das medidas que já se repetiam na página
+Escala de sete passos, extraída das medidas que já se repetiam na página
 original:
 
 ```
@@ -114,6 +118,10 @@ original:
 --space-3  12px      --space-7   56px
 --space-4  16px
 ```
+
+Os saltos fogem um pouco da progressão matemática mais comum (dobrar
+ou somar um valor fixo) de propósito — o respiro é mais orgânico e
+característico do que "canônico".
 
 ## Raios
 
@@ -124,6 +132,10 @@ original:
 | `--radius-full` | 50% | avatar, botões de ícone, anéis |
 
 ## Efeitos
+
+Poucos efeitos, mas recorrentes, tratados como token igual o resto dos
+fundamentos: garante aplicação uniforme (nenhum componente reinventa
+um blur ou um easing próprio), coesão visual e performance.
 
 ```css
 --blur-glass   20px    /* superfícies de vidro */

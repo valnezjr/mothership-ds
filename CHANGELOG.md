@@ -6,6 +6,22 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Alterado
+
+- **Copy dos fundamentos (Cores, Tipografia, Espaçamento & Raios,
+  Efeitos)** no styleguide e em `docs/tokens.md` ganha o raciocínio de
+  design por trás de cada escolha: cores extraídas ou harmonizadas com
+  a marca Mothership; Outfit escolhida pela legibilidade, versatilidade
+  e uma pegada mais orgânica por fugir do mainstream; escala de
+  espaçamento que foge de propósito da progressão matemática mais
+  óbvia; poucos efeitos recorrentes tratados como token, garantindo
+  coesão e performance. De quebra, corrigido "escala de oito passos"
+  pra "sete" em `docs/tokens.md` (são 7 tokens, `--space-1..7`).
+- **README**: `Sidebar` estava faltando na tabela de componentes;
+  novo princípio "Poucos efeitos, respiro orgânico" sintetiza a mesma
+  filosofia acima. Descrição do repositório no GitHub também
+  atualizada (ainda dizia 37 componentes).
+
 ### Adicionado
 
 - **Story "Page & Container"** no styleguide: `Page` só em texto (um

@@ -508,7 +508,7 @@ export const STORIES: Story[] = [
     id: "cores",
     group: "Fundações",
     title: "Cores",
-    subtitle: "Cores semânticas (texto, borda, superfície) mudam com o tema; as 8 cores de marca são fixas e vêm com escalas de 100 a 900 pra variar intensidade sem inventar um tom novo a cada tela.",
+    subtitle: "Cores semânticas (texto, borda, superfície) mudam com o tema; as 8 cores de marca são fixas, extraídas ou harmonizadas a partir da marca Mothership, com escalas de 100 a 900 pra variar intensidade sem inventar um tom novo a cada tela.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
@@ -535,9 +535,9 @@ export const STORIES: Story[] = [
         </div>
         <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 24 }}>
           Accent, Pink e Orange são as três paradas exatas do gradiente de{" "}
-          <code>assets/logo.svg</code>; Violet é decorativo (não vem da logo) e Gray
-          serve a status neutros. Todas com escala completa e versão <code>-soft</code> para
-          badges e alertas.
+          <code>assets/logo.svg</code> — extraídas direto da marca; Highlight, Success,
+          Danger, Violet e Gray foram harmonizadas pra completar a paleta sem destoar
+          dela. Todas com escala completa e versão <code>-soft</code> para badges e alertas.
         </p>
         <h3 className="ms-h3" style={{ marginBottom: 4 }}>Escalas</h3>
         <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 12 }}>
@@ -553,7 +553,7 @@ export const STORIES: Story[] = [
     id: "tipografia",
     group: "Fundações",
     title: "Tipografia",
-    subtitle: "Uma família só (Outfit, 400 e 500) e uma escala fixa de tamanhos — de 12px pras badges até 32px pros títulos — pra nenhuma tela inventar um font-size avulso.",
+    subtitle: "Uma família só (Outfit, 400 e 500) e uma escala fixa de tamanhos — de 12px pras badges até 32px pros títulos — pra nenhuma tela inventar um font-size avulso. Escolhida por ser limpa, muito legível e versátil, com uma pegada mais orgânica e um charme que foge do óbvio de fontes mais batidas.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><span className="ms-h1">Título 2xl — 32px</span> <code className="ms-text-xs ms-text-muted">--text-2xl · 500</code></div>
@@ -569,7 +569,7 @@ export const STORIES: Story[] = [
     id: "espacamento",
     group: "Fundações",
     title: "Espaçamento & Raios",
-    subtitle: "Escala de espaçamento (4 a 56px) e os três raios do sistema (10px, pill e círculo) — a régua que toda margem, padding e border-radius do design system usa.",
+    subtitle: "Escala de espaçamento (4 a 56px) e os três raios do sistema (10px, pill e círculo) — a régua que toda margem, padding e border-radius do design system usa. Os saltos fogem um pouco da progressão matemática mais comum de propósito, pra um respiro mais orgânico e característico.",
     render: () => (
       <>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
@@ -608,7 +608,7 @@ export const STORIES: Story[] = [
     id: "efeitos",
     group: "Fundações",
     title: "Efeitos",
-    subtitle: "O vidro (glassmorphism), o easing com overshoot que assina as microinterações e o fundo animado com paralaxe — os três efeitos que dão identidade visual ao sistema.",
+    subtitle: "O vidro (glassmorphism), o easing com overshoot que assina as microinterações e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Vidro">
@@ -638,6 +638,13 @@ export const STORIES: Story[] = [
             </CardText>
           </Card>
         </HoverEdge>
+        <p className="ms-text-sm ms-text-muted" style={{ marginTop: 4 }}>
+          Poucos efeitos, mas recorrentes: tratá-los como token garante que todo
+          componente novo já nasça coerente, sem reinventar um blur ou um easing
+          próprio — e mantém a performance sob controle. Junto de uma interface
+          moderna e arrojada, os respiros mais orgânicos do espaçamento criam um
+          ecossistema agradável, com uma sensação calma de uso.
+        </p>
       </div>
     ),
   },
