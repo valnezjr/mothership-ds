@@ -43,7 +43,7 @@ export function App() {
             <ThemeSwitch />
           </Navbar>
 
-          <div style={{ maxWidth: 1180, margin: "0 auto", padding: "112px 24px 80px" }}>
+          <div style={{ maxWidth: 1180, margin: "0 auto", padding: "112px 24px 0" }}>
             <header id="topo" style={{ marginBottom: 40 }}>
               <h1 className="ms-h1">Mothership DS</h1>
               <p className="ms-text-sm ms-text-muted">
@@ -54,7 +54,13 @@ export function App() {
               </p>
             </header>
 
-            <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
+            {/* paddingBottom aqui (não no wrapper acima) de propósito: é o
+                "chão" onde o position: sticky da Sidebar se apoia. Fora desta
+                linha, o respiro do fim de página não conta pro cálculo do
+                sticky — no scroll máximo a Sidebar acabava subindo por trás
+                da navbar flutuante. var(--space-6) é a mesma folga já usada
+                no max-height da própria Sidebar, pra fechar a conta exata. */}
+            <div style={{ display: "flex", gap: 40, alignItems: "flex-start", paddingBottom: "var(--space-6)" }}>
               <Sidebar sections={SIDEBAR_SECTIONS} />
 
               <main style={{ flex: 1, minWidth: 0, maxWidth: 860 }}>

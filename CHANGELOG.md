@@ -98,6 +98,25 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   cascata; a linha vertical ficava sem respiro nenhum dos itens, e o
   hover encostava nela. Precisou prefixar `.ms-page .ms-sidebar__list`
   pra vencer o reset.
+- **Gaveta da `Sidebar` abria atrás da Navbar no mobile**: `.ms-sidebar__backdrop`
+  (98) e `.ms-sidebar__drawer` (99) tinham z-index menor que `.ms-navbar`
+  (100) — a navbar flutuante cobria o topo da gaveta ao abrir. Subidos
+  para 150/151 (acima da navbar de propósito, diferente do menu da
+  própria Navbar que fica por baixo); o botão que abre/fecha foi pra
+  152, acima da própria gaveta, pra continuar clicável como "X" por
+  cima dela. Escala documentada em ARCHITECTURE.md.
+- **Sidebar sobrepunha a Navbar no fim da página (desktop)**: o
+  `padding-bottom: 80px` que dava respiro ao fim da página vivia no
+  wrapper mais externo, **fora** da caixa em que a Sidebar (`position:
+  sticky`) se apoia — esse respiro não contava pro cálculo de onde o
+  sticky "solta", então no scroll máximo a Sidebar subia ~48px acima
+  do esperado, atrás da navbar flutuante. Confirmado hackeando o
+  padding-bottom do `<main>` pra um valor absurdo (2000px) sem nenhum
+  efeito — prova de que o container errado estava sendo inflado. O
+  respiro foi movido pra dentro da própria linha flex (Sidebar + main)
+  como `var(--space-6)`, a mesma folga já usada no `max-height` da
+  Sidebar — fecha a conta exata pra qualquer altura de tela, não só a
+  testada.
 
 ## [1.2.0] — 2026-07-27
 

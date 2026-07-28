@@ -1508,7 +1508,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   position: fixed;
   left: var(--space-4);
   bottom: var(--space-4);
-  z-index: 100;
+  /* Acima do próprio drawer (151): continua visível/clicável como "X"
+     de fechar por cima da gaveta, em vez de ficar coberto por ela. */
+  z-index: 152;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1541,7 +1543,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-sidebar__backdrop {
   position: fixed;
   inset: 0;
-  z-index: 98;
+  /* Acima da Navbar (100): a gaveta é a navegação principal enquanto
+     aberta, não um apêndice pendurado embaixo da barra (diferença do
+     menu da própria Navbar, que fica abaixo dela de propósito). */
+  z-index: 150;
   background: rgba(0, 0, 0, 0.55);
   opacity: 0;
   visibility: hidden;
@@ -1561,7 +1566,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 151;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);

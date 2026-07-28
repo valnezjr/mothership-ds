@@ -64,14 +64,21 @@ posição sob o header ao abrir.
 ### Escala de z-index
 
 ```
-navbar-menu   99      modal        500
-navbar       100      toasts       600
-splash      1000      histórico    610
-                      tooltip      700
+navbar-menu   99      sidebar-backdrop  150
+navbar       100      sidebar-drawer    151
+splash      1000      sidebar-toggle    152
+modal        500      toasts            600
+histórico    610      tooltip           700
 ```
 
 Toasts e histórico ficam **acima** do modal de propósito: uma
 notificação disparada com um diálogo aberto precisa continuar visível.
+
+A gaveta da `Sidebar` fica **acima** da navbar de propósito (diferença
+do menu da própria Navbar, que fica abaixo dela): a gaveta é a
+navegação principal enquanto aberta no mobile, não um apêndice
+pendurado embaixo da barra. O botão que abre/fecha fica acima da
+própria gaveta, pra continuar clicável como "X" por cima dela.
 
 ## A biblioteca não invade o app
 
