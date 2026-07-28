@@ -46,7 +46,7 @@ export function App() {
           <div style={{ maxWidth: 1180, margin: "0 auto", padding: "112px 24px 80px" }}>
             <header id="topo" style={{ marginBottom: 40 }}>
               <h1 className="ms-h1">Mothership DS</h1>
-              <p className="ms-text-sm ms-text-muted" style={{ maxWidth: 620 }}>
+              <p className="ms-text-sm ms-text-muted">
                 Biblioteca React do design system — cada bloco abaixo renderiza o componente
                 real, importado de <code>mothership-ds</code>. Outfit, glassmorphism e temas
                 claro/escuro; alterne no switch da navbar. Use o sumário à esquerda pra pular
@@ -74,7 +74,7 @@ export function App() {
                       >
                         {group}
                       </h2>
-                      <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 24, maxWidth: 620 }}>
+                      <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 24 }}>
                         {GROUP_DESCRIPTIONS[group]}
                       </p>
                       {stories.map((s) => (
@@ -82,7 +82,7 @@ export function App() {
                           <h3 className="ms-h2" style={{ marginBottom: 4 }}>
                             {s.title}
                           </h3>
-                          <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20, maxWidth: 620 }}>
+                          <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
                             {s.subtitle}
                           </p>
                           {s.render()}

@@ -46,6 +46,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   coluna de 860px do conteúdo — saiu de dentro do `<div>` de duas
   colunas para o topo do wrapper. O conteúdo de fato ganhou um
   `<main>` semântico (antes era uma `<div>` genérica).
+- **`maxWidth: 620` removido dos parágrafos do styleguide** (intro do
+  header, descrição de cada grupo, subtítulo de cada story): a caixa
+  do header já cobria a largura toda desde o ajuste acima, mas o texto
+  ficava preso a 620px — dava a impressão de que o header (e o corpo
+  de texto abaixo) era mais estreito que a Sidebar + `<main>` juntos.
+  Não era padding do wrapper nem margin do header, só essa restrição
+  inline nos parágrafos.
 - **`Sidebar`: fundo de vidro** — a versão fixa do desktop (`.ms-sidebar`)
   ganhou o mesmo tratamento de superfície do `Card` (borda, raio,
   `--color-surface`, blur), em vez de ficar só a lista de links flutuando
