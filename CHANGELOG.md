@@ -20,6 +20,19 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   fechava as 4×4 células do grid). Novo tile (`rowSpan={2}`) preenche
   exatamente esse buraco via `dense`, e o tile "Styleguide gerado da
   própria biblioteca" deixa de sobrar sozinho com espaço vazio ao lado.
+- **Exemplo do card de depoimentos no styleguide**: paginação de 2
+  depoimentos por página era fixa, então no mobile o segundo card de
+  cada página quebrava linha e empilhava embaixo do primeiro dentro da
+  mesma página do carrossel. Agora o tamanho da página é responsivo —
+  1 depoimento por página abaixo de 720px, 2 acima disso.
+
+### Corrigido
+
+- **`Carousel`**: o índice da página ativa não era limitado quando
+  `items`/`slides` mudava de tamanho em runtime (ex. paginação
+  responsiva) — dava pra ficar preso numa página que deixou de existir.
+  Agora o índice é reancorado pro último válido sempre que a contagem
+  de páginas muda.
 
 ## [1.2.0] — 2026-07-27
 

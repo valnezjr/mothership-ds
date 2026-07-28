@@ -130,6 +130,12 @@ export function Carousel({ slides, items, autoplay, arrows = true, className, ..
   const count = pages.length;
   const [tick, setTick] = React.useState(0); // reinicia o relógio ao interagir
 
+  // `count` pode mudar em runtime (ex. paginação responsiva) — sem isso
+  // o índice guardado sobreviveria a uma página que deixou de existir.
+  React.useEffect(() => {
+    setIndex((i) => (count ? Math.min(i, count - 1) : 0));
+  }, [count]);
+
   const go = React.useCallback(
     (n: number) => {
       if (!count) return;
