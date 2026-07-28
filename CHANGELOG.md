@@ -92,6 +92,12 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   responsiva) — dava pra ficar preso numa página que deixou de existir.
   Agora o índice é reancorado pro último válido sempre que a contagem
   de páginas muda.
+- **`Sidebar`: linha lateral colada nos subtópicos** — `.ms-page ul {
+  padding: 0 }` (reset global) tem mais especificidade que uma classe
+  sozinha, então o `padding-left` do `.ms-sidebar__list` nunca vencia a
+  cascata; a linha vertical ficava sem respiro nenhum dos itens, e o
+  hover encostava nela. Precisou prefixar `.ms-page .ms-sidebar__list`
+  pra vencer o reset.
 
 ## [1.2.0] — 2026-07-27
 

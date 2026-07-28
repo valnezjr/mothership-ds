@@ -1477,10 +1477,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-direction: column;
   gap: var(--space-1);
   margin: 0;
-  padding: 0 0 0 var(--space-4);
   list-style: none;
   border-left: 1px solid var(--color-border);
 }
+
+/* .ms-page ul { padding: 0 } tem mais especificidade (classe + elemento)
+   que uma classe sozinha — sem o prefixo, este padding-left nunca vencia
+   a cascata e a linha ficava colada nos itens (e no hover deles). */
+.ms-page .ms-sidebar__list { padding: 0 0 0 var(--space-4); }
 
 .ms-sidebar__link {
   display: block;
