@@ -96,6 +96,35 @@ Abaixo de 720px os links saem da barra — que passa a dividir o espaço
 entre marca, sino e switch — e o hambúrguer abre um menu de vidro logo
 abaixo do header. O ícone transiciona de hambúrguer para X.
 
+### `Sidebar`
+
+Sumário completo da página: versão mais densa da Navbar, com
+subtópicos por seção. A lib não impõe layout — o host posiciona ao
+lado do conteúdo (`<div style={{ display: "flex" }}>`).
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `sections` | `{ href, label, items?: { href, label }[] }[]` | — | seção + subtópicos opcionais |
+| `spy` | `boolean` | `true` | marca a seção/subtópico visível, como a Navbar |
+| `toggleLabel` | `string` | `"Abrir sumário"` | nome acessível do botão da gaveta no mobile |
+
+```tsx
+<Sidebar sections={[
+  { href: "#introducao", label: "Introdução", items: [
+    { href: "#instalacao", label: "Instalação" },
+  ] },
+  { href: "#guias", label: "Guias" },
+]} />
+```
+
+Desktop: `position: sticky` (`top: 96px`, sob a navbar flutuante),
+rolagem própria se o sumário for mais alto que a tela. Abaixo de
+720px vira um botão flutuante (canto inferior esquerdo) que abre a
+mesma navegação como gaveta, com véu de fundo — clicar fora, Esc ou
+um link fecha. Usa o mesmo scrollspy da Navbar (`useScrollSpy`
+compartilhado), estendido para também acompanhar os `items` aninhados;
+quando um subtópico está ativo, a seção-pai também recebe destaque.
+
 ### `Breadcrumbs`
 
 | Prop | Tipo | |

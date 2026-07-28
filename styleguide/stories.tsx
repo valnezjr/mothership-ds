@@ -9,7 +9,7 @@ import {
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
-  Navbar, Accordion, Carousel, Gallery, Marquee,
+  Navbar, Sidebar, Accordion, Carousel, Gallery, Marquee,
   // marketing
   PricingCard, TestimonialCard, BentoGrid, BentoTile,
   // alertas
@@ -492,6 +492,59 @@ function TestimonialsDemo() {
   );
 }
 
+const SIDEBAR_DEMO_SECTIONS = [
+  {
+    href: "#sidebar-demo-introducao",
+    label: "Introdução",
+    items: [
+      { href: "#sidebar-demo-instalacao", label: "Instalação" },
+      { href: "#sidebar-demo-configuracao", label: "Configuração" },
+    ],
+  },
+  {
+    href: "#sidebar-demo-guias",
+    label: "Guias",
+    items: [
+      { href: "#sidebar-demo-autenticacao", label: "Autenticação" },
+      { href: "#sidebar-demo-rotas", label: "Rotas" },
+      { href: "#sidebar-demo-estado", label: "Estado global" },
+    ],
+  },
+  {
+    href: "#sidebar-demo-api",
+    label: "Referência da API",
+    items: [
+      { href: "#sidebar-demo-endpoints", label: "Endpoints" },
+      { href: "#sidebar-demo-erros", label: "Erros" },
+    ],
+  },
+];
+
+const SIDEBAR_DEMO_PARAGRAPH =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rola esse bloco pra ver o sumário ao lado marcar a seção visível — o mesmo scrollspy da Navbar, agora com subtópicos.";
+
+function SidebarDemo() {
+  return (
+    <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
+      <Sidebar sections={SIDEBAR_DEMO_SECTIONS} style={{ top: 8 }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {SIDEBAR_DEMO_SECTIONS.map((s) => (
+          <section key={s.href} id={s.href.slice(1)} style={{ marginBottom: 40 }}>
+            <h4 className="ms-h2" style={{ marginBottom: 8 }}>{s.label}</h4>
+            <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 24 }}>{SIDEBAR_DEMO_PARAGRAPH}</p>
+            {(s.items ?? []).map((i) => (
+              <div key={i.href} id={i.href.slice(1)} style={{ marginBottom: 24 }}>
+                <h5 className="ms-h3" style={{ marginBottom: 6 }}>{i.label}</h5>
+                <p className="ms-text-sm ms-text-muted">{SIDEBAR_DEMO_PARAGRAPH}</p>
+              </div>
+            ))}
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const GITHUB = (
   <svg viewBox="0 0 24 24" aria-label="GitHub">
     <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.68.8.56A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
@@ -725,6 +778,22 @@ export const STORIES: Story[] = [
             </Navbar>
           </div>
         </div>
+      </>
+    ),
+  },
+  {
+    id: "sidebar",
+    group: "Componentes",
+    title: "Sidebar",
+    subtitle: "Sumário completo com subtópicos — versão mais densa da Navbar, fixa à esquerda",
+    render: () => (
+      <>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
+          Sticky à esquerda com <code>spy</code> ligado por padrão — role o bloco abaixo.
+          Encolha a tela (ou olhe pelo celular) pra ver o botão flutuante que abre a mesma
+          navegação como gaveta.
+        </p>
+        <SidebarDemo />
       </>
     ),
   },

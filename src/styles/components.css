@@ -104,7 +104,8 @@
    anel accent, aplicado só na navegação por teclado. */
 .ms-page :is(a, button, input, textarea, select, [tabindex]):focus-visible,
 .ms-modal :is(a, button, input, textarea, select, [tabindex]):focus-visible,
-.ms-navbar__menu :is(a, button):focus-visible {
+.ms-navbar__menu :is(a, button):focus-visible,
+.ms-sidebar__drawer :is(a, button):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: var(--radius-md);
@@ -117,6 +118,7 @@
 .ms-page .ms-carousel__arrow:focus-visible,
 .ms-page .ms-alert__close:focus-visible,
 .ms-page .ms-table__action:focus-visible,
+.ms-sidebar__toggle:focus-visible,
 .ms-modal__close:focus-visible {
   border-radius: var(--radius-full);
 }
@@ -1428,6 +1430,161 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Âncoras não somem atrás da navbar fixa (escopado à página do DS) */
 .ms-page [id] { scroll-margin-top: 96px; }
+
+/* ---------- Sidebar (sumário completo) ----------
+   Nav fixa à esquerda no desktop (o host decide o layout ao redor —
+   flex/grid próprio, a lib não empurra um template de página).
+   Abaixo de 720px vira botão + gaveta com o MESMO conteúdo (dois
+   `<nav aria-label="Sumário">`, um por breakpoint) — mesma receita da
+   Navbar: display:none remove o que não é da vez tanto da tela quanto
+   da árvore de acessibilidade, sem precisar de aria-hidden/inert. */
+.ms-sidebar {
+  position: sticky;
+  top: 96px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 240px;
+  flex-shrink: 0;
+  max-height: calc(100vh - 96px - var(--space-6));
+  overflow-y: auto;
+  padding-right: var(--space-2);
+}
+
+.ms-sidebar__group { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.ms-sidebar__section {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: background var(--transition-slow), color var(--transition-slow);
+}
+
+.ms-sidebar__section:hover { background: var(--color-surface-hover); }
+
+.ms-sidebar__section--active { color: var(--color-accent); background: var(--color-accent-soft); }
+
+.ms-sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0 0 0 var(--space-4);
+  list-style: none;
+  border-left: 1px solid var(--color-border);
+}
+
+.ms-sidebar__link {
+  display: block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: background var(--transition-slow), color var(--transition-slow);
+}
+
+.ms-sidebar__link:hover { background: var(--color-surface-hover); color: var(--color-text); }
+
+.ms-sidebar__link--active { color: var(--color-accent); background: var(--color-accent-soft); }
+
+/* Botão flutuante que abre a gaveta — mesma anatomia (3 barras) do
+   hambúrguer da Navbar, escondido por padrão (só aparece abaixo de
+   720px, na media query no fim da seção). */
+.ms-sidebar__toggle {
+  display: none;
+  position: fixed;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.ms-sidebar__toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-text);
+  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+}
+
+.ms-sidebar__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ms-sidebar__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.ms-sidebar__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.ms-sidebar__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-slow), visibility 0s linear var(--transition-slow);
+}
+
+.light .ms-sidebar__backdrop { background: rgba(244, 246, 252, 0.72); }
+
+.ms-sidebar__backdrop--open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.ms-sidebar__drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(300px, 80vw);
+  padding: var(--space-6) var(--space-4);
+  overflow-y: auto;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  transform: translateX(-100%);
+  transition: transform 0.35s var(--ease-bounce);
+}
+
+.ms-sidebar__drawer--open { transform: none; }
+
+@media (max-width: 720px) {
+  .ms-sidebar { display: none; }
+  .ms-sidebar__toggle { display: inline-flex; }
+}
+
+@media (min-width: 720.001px) {
+  .ms-sidebar__toggle,
+  .ms-sidebar__backdrop,
+  .ms-sidebar__drawer { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-sidebar__toggle span,
+  .ms-sidebar__backdrop,
+  .ms-sidebar__drawer { transition: none; }
+}
 
 /* ---------- Splash screen (logo Mothership) ----------
    Fase 1 (carregando): só o olho + sorriso, centralizados e ampliados,

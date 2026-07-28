@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 37 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 38 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -50,6 +50,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       dispensaria a diretiva. `LogoMarquee`/`TechMarquee`/`IconMarquee`/
       `TestimonialMarquee` ficam como composições futuras, documentadas
       mas não implementadas.
+
+### Não lançado
+
+- [x] `Sidebar` (`src/components/navbar.tsx`) — sumário completo com
+      subtópicos, sticky à esquerda no desktop; abaixo de 720px vira
+      botão + gaveta (mesma navegação, com véu de fundo). Scrollspy
+      compartilhado com a `Navbar` via `useScrollSpy` (hook privado,
+      extraído nessa adição — antes era um efeito duplicado em cada
+      componente).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

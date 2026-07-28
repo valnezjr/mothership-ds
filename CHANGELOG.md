@@ -6,6 +6,21 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- **`Sidebar`** (`src/components/navbar.tsx`) — sumário completo de
+  seções e subtópicos, versão mais densa da Navbar. `sections` aceita
+  `{ href, label, items?: { href, label }[] }[]`. Sticky à esquerda
+  no desktop (`position: sticky`, sob a navbar flutuante), com rolagem
+  própria se passar da altura da tela. Abaixo de 720px vira um botão
+  flutuante que abre a mesma navegação como gaveta, com véu de fundo —
+  fecha ao clicar fora, Esc ou um link. Mesmo scrollspy da `Navbar`
+  (`spy`, padrão `true` aqui — na Navbar é `false`), estendido para
+  também acompanhar os `items` aninhados; quando um subtópico está
+  ativo, a seção-pai recebe destaque também. A lógica de scrollspy foi
+  extraída para um hook privado (`useScrollSpy`) compartilhado pelas
+  duas — antes era um efeito quase idêntico duplicado só na Navbar.
+
 ### Alterado
 
 - **`BentoGrid`/`BentoTile`**: mais opções de tamanho — `rowSpan`
