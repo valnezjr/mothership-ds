@@ -125,9 +125,14 @@ export function App() {
                 style={{ position: "static", maxHeight: "none", minHeight: 0, height: "100%" }}
               />
 
+              {/* padding lateral e superior de propósito: overflow-y:auto vira
+                  overflow-x:auto sozinho por especificação (não dá pra ter só
+                  um eixo com scroll e o outro "visible") — sem esse respiro,
+                  o scale(1.03) do hover reativo (.ms-hover-edge) crescia o
+                  card pra fora da caixa e a borda cortava o crescimento. */}
               <main
                 ref={mainRef}
-                style={{ flex: 1, minWidth: 0, maxWidth: 860, overflowY: "auto", paddingBottom: 24 }}
+                style={{ flex: 1, minWidth: 0, maxWidth: 900, overflowY: "auto", padding: "8px 32px 32px" }}
               >
                 {isFirstInGroup && (
                   <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>

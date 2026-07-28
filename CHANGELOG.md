@@ -38,6 +38,18 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   desatualizado desde que este próprio styleguide passou a controlar
   o item ativo via `active` (ver acima).
 
+### Corrigido
+
+- **Hover reativo (`.ms-hover-edge`) cortado nas bordas do `<main>`**:
+  `overflow-y: auto` faz o `overflow-x` computado virar `auto` também
+  por especificação (não dá pra ter só um eixo com scroll e o outro
+  "visible") — o `scale(1.03)` do hover crescia o card ~13px pra cada
+  lado e a caixa cortava esse crescimento (e a sombra) na borda.
+  Consequência direta de `<main>` ter ganhado `overflow-y: auto` na
+  virada pra SPA de uma story por vez. Corrigido com respiro lateral e
+  superior no `<main>` (`padding: 8px 32px 32px`, `maxWidth` de 860
+  pra 900 pra compensar a largura útil).
+
 ## [1.2.2] — 2026-07-28
 
 ### Alterado
