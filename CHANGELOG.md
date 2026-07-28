@@ -4,7 +4,7 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [1.2.2] — 2026-07-28
 
 ### Alterado
 
@@ -162,6 +162,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   como `var(--space-6)`, a mesma folga já usada no `max-height` da
   Sidebar — fecha a conta exata pra qualquer altura de tela, não só a
   testada.
+- **Exemplos da story "Navbar" não colapsavam pro hambúrguer no
+  mobile**: as três instâncias de demonstração passavam
+  `responsive={false}` explicitamente, mesmo com o texto da própria
+  story prometendo "em telas estreitas os links migram pro menu do
+  hambúrguer". Sem o hambúrguer no DOM, a regra CSS que esconde os
+  links (`.ms-navbar:has(.ms-navbar__burger) > .ms-navbar__link`)
+  nunca batia — os links ficavam visíveis dentro do pill, cortados
+  pela barra de rolagem invisível (`scrollbar-width: none`). Removido
+  o override; as três voltam ao padrão (`responsive` `true`) e
+  colapsam de verdade.
 
 ## [1.2.0] — 2026-07-27
 

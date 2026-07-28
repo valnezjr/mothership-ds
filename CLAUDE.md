@@ -51,7 +51,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `TestimonialMarquee` ficam como composições futuras, documentadas
       mas não implementadas.
 
-### Não lançado
+### v1.2.2 — lançada em 2026-07-28
 
 - [x] `Sidebar` (`src/components/navbar.tsx`) — sumário completo com
       subtópicos, sticky à esquerda no desktop; abaixo de 720px vira
@@ -68,6 +68,21 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       o texto da story só aponta pra Sidebar real já em uso.
       Textos de apoio das 35 stories reescritos pra tom de documentação
       (eram legendas de uma linha).
+- [x] Removido `Container` (`src/components/primitives.tsx`) — wrapper
+      fino que nenhum consumidor real usava; `Page`/`contained` segue
+      oferecendo a mesma largura de 588px via `.ms-container` (classe
+      mantida no CSS). 37 componentes (era 38).
+- [x] Corrigido `--color-surface` no tema claro: véu preto
+      (`rgba(0,0,0,.05)`) sobre os glows saturados do fundo virava um
+      cinza/roxo turvo que derrubava o contraste do texto preto.
+      Trocado por véu branco (`rgba(255,255,255,.6)`), espelhando a
+      lógica do tema escuro. `--color-surface-hover` continua
+      escurecendo (`rgba(0,0,0,.15)`) — branco ali ficava
+      imperceptível sobre a base já branca.
+- [x] Corrigido: as três instâncias de exemplo da story "Navbar"
+      passavam `responsive={false}`, então nunca colapsavam pro
+      hambúrguer no mobile (links cortados pela barra de rolagem
+      invisível do pill) — removido o override.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

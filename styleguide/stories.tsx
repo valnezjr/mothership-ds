@@ -747,7 +747,6 @@ export const STORIES: Story[] = [
             </p>
             <Navbar
               variant="static"
-              responsive={false}
               brand=".valnezJunior()"
               links={[{ href: "#", label: "Início" }, { href: "#", label: "Projetos" }, { href: "#", label: "Contato" }]}
             />
@@ -758,7 +757,6 @@ export const STORIES: Story[] = [
             </p>
             <Navbar
               variant="static"
-              responsive={false}
               links={[{ href: "#", label: "Fundações" }, { href: "#", label: "Componentes" }, { href: "#", label: "Dados" }]}
             />
           </div>
@@ -768,7 +766,6 @@ export const STORIES: Story[] = [
             </p>
             <Navbar
               variant="static"
-              responsive={false}
               brand=".valnezJunior()"
               links={[{ href: "#", label: "Links" }, { href: "#", label: "Sobre" }]}
             >
