@@ -104,15 +104,19 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 ### Corrigido
 
 - **Vidro escurecido no tema claro derrubava o contraste do texto**:
-  `--color-surface`/`--color-surface-hover` no `.light` usavam um véu
-  **preto** (`rgba(0,0,0,.05)`/`.15`) sobre os glows saturados do
-  fundo — o resultado era uma superfície cinza/roxa turva, mais escura
-  que o esperado, reduzindo o contraste com o texto preto por cima.
-  Trocado para véu **branco** (`rgba(255,255,255,.6)`/`.85`), que lava
-  a cor por baixo pro efeito de vidro fosco de verdade — mesma lógica
-  já usada no tema escuro (véu branco sobre fundo escuro), espelhada
-  pro claro. Afeta toda superfície de vidro do sistema (Card, Navbar,
-  Sidebar, Modal, inputs…), já que todas herdam do mesmo token.
+  `--color-surface` no `.light` usava um véu **preto**
+  (`rgba(0,0,0,.05)`) sobre os glows saturados do fundo — o resultado
+  era uma superfície cinza/roxa turva, mais escura que o esperado,
+  reduzindo o contraste com o texto preto por cima. Trocado para véu
+  **branco** (`rgba(255,255,255,.6)`), que lava a cor por baixo pro
+  efeito de vidro fosco de verdade — mesma lógica já usada no tema
+  escuro (véu branco sobre fundo escuro), espelhada pro claro. Afeta
+  toda superfície de vidro do sistema (Card, Navbar, Sidebar, Modal,
+  inputs…), já que todas herdam do mesmo token. `--color-surface-hover`
+  **não** acompanhou — tentei branco ali também, mas sobre uma base já
+  branca o hover ficava imperceptível; continua escurecendo
+  (`rgba(0,0,0,.15)`, valor original) pra sinalizar o estado de
+  verdade.
 
 - **`Carousel`**: o índice da página ativa não era limitado quando
   `items`/`slides` mudava de tamanho em runtime (ex. paginação
