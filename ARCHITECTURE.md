@@ -113,8 +113,44 @@ configuração. Publicado automaticamente a cada push em `master`
 (`.github/workflows/pages.yml`).
 
 Documentar um componente novo = uma entrada em
-`styleguide/stories.tsx` (ver COMPONENT_GUIDELINES.md); navegação,
-índice e âncoras se montam a partir do array `STORIES`.
+`styleguide/stories.tsx` (ver COMPONENT_GUIDELINES.md); a Sidebar se
+monta sozinha a partir do array `STORIES`.
+
+### Performance: uma story por vez, não as 37 juntas
+
+Até a v1.2.2, `App.tsx` renderizava todas as stories na mesma página,
+uma rolagem contínua. Com ~37 componentes montados ao mesmo tempo —
+`backdrop-filter` em dezenas de painéis de vidro, o parallax do mouse
+do `LivingBackground`, marquees rodando, o `Splash` fazendo lint —
+a performance degradava visivelmente conforme o catálogo crescia.
+
+A partir daí, `App.tsx` virou uma SPA de fato: só a story ativa fica
+montada. Header e Sidebar ficam fixos (`height: 100vh` na coluna,
+`overflow: hidden`); só o `<main>` rola, internamente. A troca não é
+roteamento de verdade (sem lib de rotas) — é o hash da URL:
+
+- Sidebar recebe `active` controlado (`#${story.id}`) em vez de
+  `spy` — sem isso ela não teria como saber qual item destacar, já
+  que não há mais nada rolando pra detectar via scroll. `spy` desliga
+  sozinho quando `active` é passado (ver docs/componentes.md).
+- Um listener de `hashchange` decide qual story mostrar
+  (`resolveStoryId`): se o hash bate com uma story, mostra ela; se
+  bate com um grupo (clique no cabeçalho "Fundações" etc.), mostra a
+  primeira story daquele grupo; senão, cai na primeira story de todas.
+  Isso também dá voltar/avançar do navegador de graça — é só histórico
+  de URL, sem estado nenhum pra sincronizar manualmente.
+- Troca de story também move o foco pro título (`tabIndex={-1}` +
+  `.focus()`) e zera o scroll do `<main>` — mesma prática de qualquer
+  troca de rota em SPA, pra quem navega por teclado/leitor de tela
+  perceber que o conteúdo mudou.
+- A Sidebar ganhou um efeito próprio (`scrollIntoView` no item ativo,
+  dentro da sua própria lista) — sem ele, navegar pra um item fora da
+  área visível não rolava a lista sozinha até lá.
+
+Isso é uma escolha de arquitetura da PÁGINA do styleguide, não da
+biblioteca: `Page`/`.ms-page` continuam sendo uma superfície de
+rolagem normal pra qualquer consumidor — só o `App.tsx` do styleguide
+virou app-shell de altura fixa.
 
 ## Topologia do GitHub Pages
 

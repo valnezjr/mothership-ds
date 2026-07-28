@@ -217,8 +217,15 @@ export interface SidebarSection extends SidebarItem {
 
 export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   sections: SidebarSection[];
-  /** Marca a seção/subtópico visível conforme a rolagem. Padrão `true`. */
+  /** Marca a seção/subtópico visível conforme a rolagem. Padrão `true`. Ignorado se `active` for passado. */
   spy?: boolean;
+  /**
+   * Controla o item ativo de fora (ex. roteamento próprio, SPA de uma
+   * story por vez) em vez de detectar por scroll. Passando isso, o
+   * scrollspy interno desliga por completo — nem os listeners de
+   * scroll são anexados.
+   */
+  active?: string;
   /** Nome acessível do botão que abre a gaveta abaixo de 720px. */
   toggleLabel?: string;
 }
@@ -230,14 +237,36 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
  * a lib não impõe layout de página). Abaixo de 720px vira um botão
  * flutuante que abre a mesma navegação como gaveta.
  */
-export function Sidebar({ sections, spy = true, toggleLabel = "Abrir sumário", className, ...rest }: SidebarProps) {
+export function Sidebar({
+  sections,
+  spy = true,
+  active: activeProp,
+  toggleLabel = "Abrir sumário",
+  className,
+  ...rest
+}: SidebarProps) {
   const hrefs = sections.flatMap((s) => [s.href, ...(s.items ?? []).map((i) => i.href)]);
-  const active = useScrollSpy(hrefs, spy);
+  const spyActive = useScrollSpy(hrefs, spy && activeProp === undefined);
+  const active = activeProp ?? spyActive;
   const [open, setOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
   const drawerId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-drawer`;
+  const navRef = React.useRef<HTMLElement>(null);
+  const drawerRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => setMounted(true), []);
+
+  // Mantém o item ativo visível: útil sobretudo com `active` controlado
+  // (ex. roteamento) — sem isso, navegar pra um item fora da área
+  // visível não rola a lista sozinha até ele.
+  React.useEffect(() => {
+    for (const el of [navRef.current, drawerRef.current]) {
+      // O link do subtópico (mais específico) vence a seção-pai —
+      // as duas podem estar "ativas" ao mesmo tempo (destaque em cascata).
+      const target = el?.querySelector(".ms-sidebar__link--active") ?? el?.querySelector(".ms-sidebar__section--active");
+      target?.scrollIntoView({ block: "nearest" });
+    }
+  }, [active]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -296,6 +325,7 @@ export function Sidebar({ sections, spy = true, toggleLabel = "Abrir sumário", 
   return (
     <>
       <nav
+        ref={navRef}
         className={["ms-sidebar", className].filter(Boolean).join(" ")}
         aria-label="Sumário"
         {...rest}
@@ -330,6 +360,7 @@ export function Sidebar({ sections, spy = true, toggleLabel = "Abrir sumário", 
               aria-hidden="true"
             />
             <nav
+              ref={drawerRef}
               id={drawerId}
               className={[
                 "ms-sidebar__drawer",

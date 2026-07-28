@@ -84,6 +84,21 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       hambúrguer no mobile (links cortados pela barra de rolagem
       invisível do pill) — removido o override.
 
+### Não lançado
+
+- [x] `Sidebar` ganha a prop `active` (controla o item ativo de fora,
+      desliga o `spy` interno) e um efeito de `scrollIntoView` no item
+      ativo dentro da própria lista.
+- [x] Styleguide (`styleguide/App.tsx`) vira SPA de uma story por vez —
+      as 37 montadas juntas numa rolagem contínua estavam degradando a
+      performance (glass em dezenas de painéis, parallax do fundo vivo,
+      marquees rodando ao mesmo tempo). Header e Sidebar fixos
+      (`height: 100vh`, só `<main>` rola); troca por hash da URL
+      (`resolveStoryId`), sem lib de rotas — voltar/avançar do navegador
+      funciona de graça. Rodapé sai do fim de uma rolagem longa pra
+      última linha da coluna fixa, sempre visível. Detalhe completo em
+      ARCHITECTURE.md § Performance do styleguide.
+
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
 só recomendação; componentes que precisam de ícone aceitam `ReactNode`

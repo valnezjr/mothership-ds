@@ -786,8 +786,11 @@ export const STORIES: Story[] = [
       <p className="ms-text-sm ms-text-muted" style={{ maxWidth: 620 }}>
         Sem exemplo isolado aqui de propósito: você já está usando o componente — é o
         sumário fixo à esquerda desta página (ou o botão flutuante, se estiver no celular).
-        Ele monta as seções a partir da mesma lista que gera esta navegação, com{" "}
-        <code>spy</code> ligado, marcando também a seção-pai quando um subtópico está ativo.
+        Ele monta as seções a partir da mesma lista que gera esta navegação. Este styleguide
+        usa <code>active</code> (controlado por qual componente está na janela agora, não
+        por rolagem — só uma story fica montada por vez, de propósito) em vez de{" "}
+        <code>spy</code>; passando <code>active</code>, o <code>spy</code> desliga sozinho.
+        A seção-pai também é marcada quando um subtópico está ativo, nos dois modos.
       </p>
     ),
   },

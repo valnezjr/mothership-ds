@@ -111,7 +111,8 @@ lado do conteúdo (`<div style={{ display: "flex" }}>`).
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
 | `sections` | `{ href, label, items?: { href, label }[] }[]` | — | seção + subtópicos opcionais |
-| `spy` | `boolean` | `true` | marca a seção/subtópico visível, como a Navbar |
+| `spy` | `boolean` | `true` | marca a seção/subtópico visível, como a Navbar. Ignorado se `active` for passado |
+| `active` | `string` | — | controla o item ativo de fora (ex. roteamento próprio) em vez de detectar por scroll — desliga o `spy` interno por completo |
 | `toggleLabel` | `string` | `"Abrir sumário"` | nome acessível do botão da gaveta no mobile |
 
 ```tsx
@@ -130,6 +131,16 @@ mesma navegação como gaveta, com véu de fundo — clicar fora, Esc ou
 um link fecha. Usa o mesmo scrollspy da Navbar (`useScrollSpy`
 compartilhado), estendido para também acompanhar os `items` aninhados;
 quando um subtópico está ativo, a seção-pai também recebe destaque.
+Sempre que o item ativo muda (por scroll ou por `active`), ele rola
+pra dentro da área visível da própria lista (`scrollIntoView`) — útil
+se a lista for mais alta que o espaço disponível.
+
+Pra um layout de "uma página por vez" (SPA: clique troca o conteúdo
+em vez de rolar até ele — como este próprio styleguide, ver
+ARCHITECTURE.md § Performance), passe `active` com o item que está na
+tela; o `spy` desliga sozinho, nem os listeners de scroll são
+anexados. `contained` de `Page` combina bem com esse padrão pra travar
+a largura do painel de conteúdo.
 
 **Monte só uma por página.** O botão e a gaveta do mobile são
 `position: fixed` no canto inferior esquerdo — duas instâncias na tela

@@ -4,6 +4,40 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Adicionado
+
+- **`Sidebar`: prop `active`** — controla o item ativo de fora (ex.
+  roteamento próprio) em vez de detectar por scroll. Passando `active`,
+  o `spy` interno desliga por completo (nem os listeners de scroll são
+  anexados). Ganhou também um efeito próprio: sempre que o item ativo
+  muda, ele rola pra dentro da área visível da lista da própria
+  Sidebar (`scrollIntoView`) — útil se a lista for mais alta que o
+  espaço disponível, em qualquer um dos dois modos (`spy` ou `active`).
+
+### Alterado
+
+- **Styleguide vira uma SPA de uma story por vez**: até aqui,
+  `App.tsx` montava as 37 stories na mesma página, rolagem contínua —
+  com tantos painéis de vidro (`backdrop-filter`), o parallax do
+  `LivingBackground` e marquees rodando ao mesmo tempo, a performance
+  degradava. Agora só a story ativa fica montada: header e Sidebar
+  ficam fixos (`height: 100vh`, `overflow: hidden` na coluna), só o
+  `<main>` rola. A troca é por hash da URL (sem lib de rotas) — clique
+  na Sidebar muda o hash, um listener de `hashchange` decide qual
+  story mostrar (`resolveStoryId`): bate com uma story, mostra ela;
+  bate com um grupo (clique no cabeçalho "Fundações" etc.), mostra a
+  primeira story daquele grupo; senão, cai na primeira de todas. Voltar
+  /avançar do navegador funciona de graça (é só histórico de URL).
+  Troca de story move o foco pro título e zera o scroll do `<main>` —
+  mesma prática de qualquer troca de rota em SPA. Rodapé deixa de ficar
+  no fim de uma rolagem longa — agora é a última linha da coluna fixa,
+  sempre visível. Decisão documentada em ARCHITECTURE.md.
+- **Story "Sidebar"**: texto atualizado — dizia "com `spy` ligado",
+  desatualizado desde que este próprio styleguide passou a controlar
+  o item ativo via `active` (ver acima).
+
 ## [1.2.2] — 2026-07-28
 
 ### Alterado
