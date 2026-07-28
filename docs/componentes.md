@@ -524,5 +524,10 @@ telas estreitas sem quebrar o layout.
 
 ### `LogoMark`
 
-A logo completa em SVG, com as partes agrupadas para animação e o
-gradiente da marca correndo continuamente.
+A logo em SVG, com as partes agrupadas para animação e o gradiente da
+marca correndo continuamente. **Uso interno da `Splash`** — as partes
+(palavra, letras, dirigível) nascem fora de posição via CSS, prontas
+pra revelação; sem uma ancestral `.ms-splash--ready`, ficam presas
+nessa fase inicial. Não é um componente de "logo genérica" para uso
+solto — se precisar da marca em outro contexto, use `assets/logo.svg`
+diretamente.

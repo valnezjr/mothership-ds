@@ -3,7 +3,7 @@
 import React from "react";
 import {
   // primitivas
-  Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
+  Container, Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
   Footer, Flash,
   // tema e utilitários
@@ -119,7 +119,9 @@ function AlertsDemo() {
       <h3 className="ms-h3" style={{ margin: "24px 0 8px" }}>Como notificação (toast)</h3>
       <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 12 }}>
         <code>useAlerts().notify(...)</code> — vive 20s com barra decrescente, tem X para
-        dispensar e entra no histórico do sino (no topo).
+        dispensar e entra no histórico (<code>AlertHistory</code>, aberto pelo sino no topo).
+        Ele é montado automaticamente pelo <code>AlertsProvider</code> quando aberto — não
+        precisa renderizar à mão.
       </p>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         {tones.map((t) => (
@@ -652,8 +654,45 @@ export const STORIES: Story[] = [
     id: "splash",
     group: "Componentes",
     title: "Splash screen",
-    subtitle: "Animação de abertura do app: o olho pisca enquanto carrega, o nome se centraliza a partir do O e o dirigível pousa por último. Existe em versão overlay (tela cheia) e inline (embutida no conteúdo).",
+    subtitle: "Animação de abertura do app: o olho pisca enquanto carrega, o nome se centraliza a partir do O e o dirigível pousa por último. Existe em versão overlay (tela cheia) e inline (embutida no conteúdo). A marca em si é o LogoMark — SVG exportado do logo.svg, sem uso isolado fora daqui: as partes nascem fora de posição de propósito, prontas pra essa revelação.",
     render: () => <SplashDemo />,
+  },
+  {
+    id: "layout",
+    group: "Componentes",
+    title: "Page & Container",
+    subtitle: "Page aplica o fundo, a cor e a tipografia do tema à raiz da aplicação. Container centraliza o conteúdo com um teto de 588px — a mesma largura da página original que deu origem ao sistema.",
+    render: () => (
+      <>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16, maxWidth: 620 }}>
+          <code>Page</code> sem exemplo isolado aqui de propósito: um <code>.ms-page</code>{" "}
+          dentro de outro duplicaria o fundo da página (<code>min-height: 100vh</code> e o
+          gradiente de fundo) de forma confusa. Este próprio styleguide já é o exemplo — a
+          classe vai direto no <code>&lt;body&gt;</code>, com o mesmo efeito do componente.
+        </p>
+        <div
+          style={{
+            border: "1px dashed var(--color-border)",
+            borderRadius: "var(--radius-md)",
+            padding: "1px 0",
+          }}
+        >
+          <Container>
+            <div
+              style={{
+                background: "var(--color-accent-soft)",
+                border: "1px solid var(--color-accent)",
+                borderRadius: "var(--radius-md)",
+                padding: 16,
+                textAlign: "center",
+              }}
+            >
+              <code className="ms-text-xs">588px de largura máxima</code>
+            </div>
+          </Container>
+        </div>
+      </>
+    ),
   },
   {
     id: "hero",

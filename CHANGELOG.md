@@ -8,6 +8,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Story "Page & Container"** no styleguide: `Page` só em texto (um
+  `.ms-page` dentro de outro duplicaria o fundo de tela cheia da
+  página de forma confusa — este próprio styleguide, com a classe no
+  `<body>`, já é o exemplo em produção); `Container` ganha exemplo
+  ao vivo mostrando o teto de 588px.
 - **`Sidebar`** (`src/components/navbar.tsx`) — sumário completo de
   seções e subtópicos, versão mais densa da Navbar. `sections` aceita
   `{ href, label, items?: { href, label }[] }[]`. Sticky à esquerda
@@ -45,6 +50,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   ganhou o mesmo tratamento de superfície do `Card` (borda, raio,
   `--color-surface`, blur), em vez de ficar só a lista de links flutuando
   sem contorno sobre o fundo da página.
+- **`docs/componentes.md`: `LogoMark` reescrito** — a descrição dizia
+  "a logo completa", sugerindo uso solto; na prática as partes (palavra,
+  letras, dirigível) nascem fora de posição via CSS e só assentam sob
+  uma ancestral `.ms-splash--ready`, hoje fornecida só pela `Splash`.
+  Documentado como uso interno dela, não uma "logo genérica" — cheguei
+  a tentar uma story isolada pra esse levantamento e ela ficava presa
+  na fase 1 (só olho), confirmando o comportamento antes de decidir não
+  incluir (a `AlertHistory` também ficou de fora pelo mesmo espírito:
+  o próprio código já documenta "não renderize manualmente").
 
 - **`BentoGrid`/`BentoTile`**: mais opções de tamanho — `rowSpan`
   ganha a opção `3` (era só `2`), e o grid usa `grid-auto-flow: dense`
