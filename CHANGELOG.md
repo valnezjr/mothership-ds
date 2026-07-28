@@ -36,6 +36,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   frases explicando o que o componente é e quando usar, no tom de
   documentação — cada grupo (Fundações/Componentes/Dados) também
   ganhou uma frase de abertura.
+- **Header do styleguide passa a cobrir a largura total** (do início
+  da Sidebar até o fim do `<main>`), em vez de ficar confinado à
+  coluna de 860px do conteúdo — saiu de dentro do `<div>` de duas
+  colunas para o topo do wrapper. O conteúdo de fato ganhou um
+  `<main>` semântico (antes era uma `<div>` genérica).
+- **`Sidebar`: fundo de vidro** — a versão fixa do desktop (`.ms-sidebar`)
+  ganhou o mesmo tratamento de superfície do `Card` (borda, raio,
+  `--color-surface`, blur), em vez de ficar só a lista de links flutuando
+  sem contorno sobre o fundo da página.
 
 - **`BentoGrid`/`BentoTile`**: mais opções de tamanho — `rowSpan`
   ganha a opção `3` (era só `2`), e o grid usa `grid-auto-flow: dense`

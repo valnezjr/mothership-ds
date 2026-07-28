@@ -1449,7 +1449,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-shrink: 0;
   max-height: calc(100vh - 96px - var(--space-6));
   overflow-y: auto;
-  padding-right: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
 }
 
 .ms-sidebar__group { display: flex; flex-direction: column; gap: var(--space-1); }
