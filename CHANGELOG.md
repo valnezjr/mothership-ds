@@ -23,6 +23,20 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 
+- **Styleguide passa a usar o próprio `Sidebar` como navegação padrão**
+  (`styleguide/App.tsx`): a Navbar do topo perde os links de grupo e o
+  hambúrguer (fica só marca + sino + switch de tema), e a lista plana
+  de âncoras logo abaixo do título sai — o sumário completo (grupos +
+  cada componente) passa a viver na Sidebar fixa à esquerda, montada a
+  partir do mesmo array `STORIES` que já gerava a navegação antiga.
+  Layout virou duas colunas (`display: flex`) só no wrapper da página;
+  a largura do conteúdo (860px) não muda.
+- **Textos de apoio de todas as 35 stories reescritos**: eram legendas
+  de uma linha (`"Outfit 400/500, escala 12–32px"`); agora são 1–2
+  frases explicando o que o componente é e quando usar, no tom de
+  documentação — cada grupo (Fundações/Componentes/Dados) também
+  ganhou uma frase de abertura.
+
 - **`BentoGrid`/`BentoTile`**: mais opções de tamanho — `rowSpan`
   ganha a opção `3` (era só `2`), e o grid usa `grid-auto-flow: dense`
   pra preencher buracos deixados por spans irregulares em vez de

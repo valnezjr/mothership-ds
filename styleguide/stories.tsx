@@ -9,7 +9,7 @@ import {
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
-  Navbar, Sidebar, Accordion, Carousel, Gallery, Marquee,
+  Navbar, Accordion, Carousel, Gallery, Marquee,
   // marketing
   PricingCard, TestimonialCard, BentoGrid, BentoTile,
   // alertas
@@ -492,59 +492,6 @@ function TestimonialsDemo() {
   );
 }
 
-const SIDEBAR_DEMO_SECTIONS = [
-  {
-    href: "#sidebar-demo-introducao",
-    label: "Introdução",
-    items: [
-      { href: "#sidebar-demo-instalacao", label: "Instalação" },
-      { href: "#sidebar-demo-configuracao", label: "Configuração" },
-    ],
-  },
-  {
-    href: "#sidebar-demo-guias",
-    label: "Guias",
-    items: [
-      { href: "#sidebar-demo-autenticacao", label: "Autenticação" },
-      { href: "#sidebar-demo-rotas", label: "Rotas" },
-      { href: "#sidebar-demo-estado", label: "Estado global" },
-    ],
-  },
-  {
-    href: "#sidebar-demo-api",
-    label: "Referência da API",
-    items: [
-      { href: "#sidebar-demo-endpoints", label: "Endpoints" },
-      { href: "#sidebar-demo-erros", label: "Erros" },
-    ],
-  },
-];
-
-const SIDEBAR_DEMO_PARAGRAPH =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rola esse bloco pra ver o sumário ao lado marcar a seção visível — o mesmo scrollspy da Navbar, agora com subtópicos.";
-
-function SidebarDemo() {
-  return (
-    <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
-      <Sidebar sections={SIDEBAR_DEMO_SECTIONS} style={{ top: 8 }} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {SIDEBAR_DEMO_SECTIONS.map((s) => (
-          <section key={s.href} id={s.href.slice(1)} style={{ marginBottom: 40 }}>
-            <h4 className="ms-h2" style={{ marginBottom: 8 }}>{s.label}</h4>
-            <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 24 }}>{SIDEBAR_DEMO_PARAGRAPH}</p>
-            {(s.items ?? []).map((i) => (
-              <div key={i.href} id={i.href.slice(1)} style={{ marginBottom: 24 }}>
-                <h5 className="ms-h3" style={{ marginBottom: 6 }}>{i.label}</h5>
-                <p className="ms-text-sm ms-text-muted">{SIDEBAR_DEMO_PARAGRAPH}</p>
-              </div>
-            ))}
-          </section>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 const GITHUB = (
   <svg viewBox="0 0 24 24" aria-label="GitHub">
     <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.68.8.56A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
@@ -559,7 +506,7 @@ export const STORIES: Story[] = [
     id: "cores",
     group: "Fundações",
     title: "Cores",
-    subtitle: "Semânticas por tema, 8 cores de marca e escalas 100–900",
+    subtitle: "Cores semânticas (texto, borda, superfície) mudam com o tema; as 8 cores de marca são fixas e vêm com escalas de 100 a 900 pra variar intensidade sem inventar um tom novo a cada tela.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
@@ -604,7 +551,7 @@ export const STORIES: Story[] = [
     id: "tipografia",
     group: "Fundações",
     title: "Tipografia",
-    subtitle: "Outfit 400/500, escala 12–32px",
+    subtitle: "Uma família só (Outfit, 400 e 500) e uma escala fixa de tamanhos — de 12px pras badges até 32px pros títulos — pra nenhuma tela inventar um font-size avulso.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><span className="ms-h1">Título 2xl — 32px</span> <code className="ms-text-xs ms-text-muted">--text-2xl · 500</code></div>
@@ -620,7 +567,7 @@ export const STORIES: Story[] = [
     id: "espacamento",
     group: "Fundações",
     title: "Espaçamento & Raios",
-    subtitle: "Escala 4–56px, raios 10px / pill / círculo",
+    subtitle: "Escala de espaçamento (4 a 56px) e os três raios do sistema (10px, pill e círculo) — a régua que toda margem, padding e border-radius do design system usa.",
     render: () => (
       <>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
@@ -659,7 +606,7 @@ export const STORIES: Story[] = [
     id: "efeitos",
     group: "Fundações",
     title: "Efeitos",
-    subtitle: "Glassmorphism, bounce e o fundo vivo",
+    subtitle: "O vidro (glassmorphism), o easing com overshoot que assina as microinterações e o fundo animado com paralaxe — os três efeitos que dão identidade visual ao sistema.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Vidro">
@@ -698,21 +645,21 @@ export const STORIES: Story[] = [
     id: "loader",
     group: "Componentes",
     title: "Loader",
-    subtitle: "Rosto da marca enchendo de líquido conforme carrega",
+    subtitle: "Indicador de progresso de marca: o rosto do logo enche de líquido conforme o valor sobe. Use no lugar de uma barra genérica quando o carregamento merece destaque.",
     render: () => <LoaderDemo />,
   },
   {
     id: "splash",
     group: "Componentes",
     title: "Splash screen",
-    subtitle: "Olho piscando → nome a partir do O → dirigível",
+    subtitle: "Animação de abertura do app: o olho pisca enquanto carrega, o nome se centraliza a partir do O e o dirigível pousa por último. Existe em versão overlay (tela cheia) e inline (embutida no conteúdo).",
     render: () => <SplashDemo />,
   },
   {
     id: "hero",
     group: "Componentes",
     title: "Hero",
-    subtitle: "Abertura com título em destaque e ações",
+    subtitle: "Bloco de abertura de página: eyebrow opcional, título (com destaque de uma palavra via HeroHighlight), subtítulo e uma fileira de ações.",
     render: () => (
       <Hero style={{ paddingTop: 24 }}>
         <Badge tone="accent">Disponível para projetos</Badge>
@@ -733,7 +680,7 @@ export const STORIES: Story[] = [
     id: "navbar",
     group: "Componentes",
     title: "Navbar",
-    subtitle: "Pill de vidro com scrollspy e hamburguer",
+    subtitle: "Barra de navegação flutuante em pill de vidro. spy marca o link da seção visível conforme a rolagem; abaixo de 720px os links migram pra um menu de hambúrguer.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
@@ -785,23 +732,21 @@ export const STORIES: Story[] = [
     id: "sidebar",
     group: "Componentes",
     title: "Sidebar",
-    subtitle: "Sumário completo com subtópicos — versão mais densa da Navbar, fixa à esquerda",
+    subtitle: "Sumário completo de seções e subtópicos — é a navegação padrão deste próprio styleguide. Fica fixa à esquerda no desktop e vira botão + gaveta abaixo de 720px.",
     render: () => (
-      <>
-        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
-          Sticky à esquerda com <code>spy</code> ligado por padrão — role o bloco abaixo.
-          Encolha a tela (ou olhe pelo celular) pra ver o botão flutuante que abre a mesma
-          navegação como gaveta.
-        </p>
-        <SidebarDemo />
-      </>
+      <p className="ms-text-sm ms-text-muted" style={{ maxWidth: 620 }}>
+        Sem exemplo isolado aqui de propósito: você já está usando o componente — é o
+        sumário fixo à esquerda desta página (ou o botão flutuante, se estiver no celular).
+        Ele monta as seções a partir da mesma lista que gera esta navegação, com{" "}
+        <code>spy</code> ligado, marcando também a seção-pai quando um subtópico está ativo.
+      </p>
     ),
   },
   {
     id: "breadcrumbs",
     group: "Componentes",
     title: "Breadcrumbs",
-    subtitle: "Trilha em pills com separadores",
+    subtitle: "Trilha de navegação em pills, pra mostrar onde a página atual está na hierarquia do site. O último item (a página atual) não é um link.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "center" }}>
         <Breadcrumbs
@@ -823,7 +768,7 @@ export const STORIES: Story[] = [
     id: "botoes",
     group: "Componentes",
     title: "Botões",
-    subtitle: "Glass / sólido / ghost, 3 tamanhos, disabled",
+    subtitle: "Três variantes (vidro, sólido e ghost) em três tamanhos, com estado disabled. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
         <ButtonLink href="#">Padrão (glass)</ButtonLink>
@@ -842,7 +787,7 @@ export const STORIES: Story[] = [
     id: "lista-links",
     group: "Componentes",
     title: "Lista de links",
-    subtitle: "Padrão linktree da página original",
+    subtitle: "Lista vertical de links em pill, no padrão linktree da página original que deu origem a essa biblioteca — útil pra páginas pessoais ou de contato.",
     render: () => (
       <LinkList style={{ maxWidth: 420, margin: "0 auto" }}>
         <li><ButtonLink href="#">Whatsapp</ButtonLink></li>
@@ -855,7 +800,7 @@ export const STORIES: Story[] = [
     id: "icones",
     group: "Componentes",
     title: "Botões de ícone",
-    subtitle: "Sociais circulares, 3 tamanhos",
+    subtitle: "Botões circulares só de ícone, pra redes sociais ou ações compactas, em três tamanhos. Sempre exigem aria-label — não há texto visível que dê nome ao controle.",
     render: () => (
       <>
         <IconRow>
@@ -875,7 +820,7 @@ export const STORIES: Story[] = [
     id: "switch",
     group: "Componentes",
     title: "Switch de tema",
-    subtitle: "Claro/escuro com deslize animado",
+    subtitle: "Controle de claro/escuro com o polegar deslizando (sol ↔ lua) de forma animada. É o mesmo switch usado na navbar deste styleguide.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
         <ThemeSwitch />
@@ -889,7 +834,7 @@ export const STORIES: Story[] = [
     id: "avatar",
     group: "Componentes",
     title: "Avatar & Perfil",
-    subtitle: "112 / 80 / 48px + bloco de perfil",
+    subtitle: "Avatar circular em três tamanhos (foto ou iniciais) e o bloco Profile, que junta avatar + nome + cargo numa única unidade reutilizável.",
     render: () => (
       <>
         <div style={{ display: "flex", gap: 24, alignItems: "flex-end", justifyContent: "center", paddingBottom: 16 }}>
@@ -907,7 +852,7 @@ export const STORIES: Story[] = [
     id: "campos",
     group: "Componentes",
     title: "Campos de formulário",
-    subtitle: "Input, textarea, foco e disabled",
+    subtitle: "Input e textarea com o mesmo tratamento de foco e disabled do resto do sistema. Field junta label + controle numa única unidade acessível.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
@@ -921,7 +866,7 @@ export const STORIES: Story[] = [
     id: "cards",
     group: "Componentes",
     title: "Cards",
-    subtitle: "Superfície de vidro, com e sem contorno reativo",
+    subtitle: "Superfície de vidro genérica, com ou sem o contorno reativo (HoverEdge) que acompanha o mouse — a base visual por trás de StatTile, PricingCard e outros.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Card de vidro">
@@ -946,7 +891,7 @@ export const STORIES: Story[] = [
     id: "precificacao",
     group: "Componentes",
     title: "Card de precificação",
-    subtitle: "Plano em destaque, recursos com check e ação",
+    subtitle: "Card de plano com preço, período e lista de recursos (com ou sem check). highlighted/badge destacam o plano recomendado com borda e glow.",
     render: () => (
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch", paddingTop: 20 }}>
         <PricingCard
@@ -998,14 +943,14 @@ export const STORIES: Story[] = [
     id: "depoimentos",
     group: "Componentes",
     title: "Card de depoimentos",
-    subtitle: "Contorno reativo no hover/active, paginado só por bullets e arraste",
+    subtitle: "Depoimento com avaliação em estrelas opcional e identidade (avatar + nome + cargo) fixada no rodapé. Contorno reativo no hover e no active, pra funcionar também em telas de toque sem hover de verdade.",
     render: () => <TestimonialsDemo />,
   },
   {
     id: "bento",
     group: "Componentes",
     title: "Bento grid",
-    subtitle: "Tiles de vidro com tamanhos variáveis e empacotamento denso",
+    subtitle: "Grid de 4 colunas com tiles de tamanho variável (colSpan/rowSpan), no estilo dashboard de app. grid-auto-flow: dense preenche os buracos deixados pelos tamanhos irregulares.",
     render: () => (
       <BentoGrid>
         <BentoTile
@@ -1100,7 +1045,7 @@ export const STORIES: Story[] = [
     id: "badges",
     group: "Componentes",
     title: "Badges",
-    subtitle: "Neutro + 8 cores de marca",
+    subtitle: "Etiqueta pequena pra marcar estado ou categoria — tom neutro ou uma das 8 cores de marca, sempre acompanhada de texto, nunca só a cor.",
     render: () => (
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
         <Badge>Neutro</Badge>
@@ -1119,21 +1064,21 @@ export const STORIES: Story[] = [
     id: "alertas",
     group: "Componentes",
     title: "Alertas",
-    subtitle: "Estáticos e como notificação (toast de 20s)",
+    subtitle: "Mensagens de feedback: estáticas (embutidas na página) ou como toast disparado por notify(), que soma 20s na tela com barra de tempo e histórico.",
     render: () => <AlertsDemo />,
   },
   {
     id: "modal",
     group: "Componentes",
     title: "Modal & etapas",
-    subtitle: "Popup fechável e versão paginada (anterior / próximo)",
+    subtitle: "Popup sobre véu escurecido (ou claro, no tema claro), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
     render: () => <ModalDemo />,
   },
   {
     id: "accordion",
     group: "Componentes",
     title: "Accordion",
-    subtitle: "Expande com bounce; modo exclusivo opcional",
+    subtitle: "Painéis que expandem com leve bounce na abertura e no fechamento. single fecha o painel aberto ao abrir outro — ideal pra FAQs.",
     render: () => (
       <>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Padrão (vários abertos)</h3>
@@ -1164,7 +1109,7 @@ export const STORIES: Story[] = [
     id: "carrossel",
     group: "Componentes",
     title: "Carrossel",
-    subtitle: "Fotos com bullets indicando o destaque",
+    subtitle: "Paginação por fotos (com legenda) ou conteúdo livre via items — ex. um grupo de TestimonialCard. Navegável por setas, bullets e arraste horizontal (toque ou mouse).",
     render: () => (
       <div>
         <Carousel
@@ -1183,7 +1128,7 @@ export const STORIES: Story[] = [
     id: "galeria",
     group: "Componentes",
     title: "Galeria",
-    subtitle: "Filtros por categoria, badges e hover em degradê",
+    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro.",
     render: () => (
       <Gallery
         categories={[
@@ -1206,7 +1151,7 @@ export const STORIES: Story[] = [
     id: "marquee",
     group: "Componentes",
     title: "Marquee",
-    subtitle: "Scroll horizontal infinito — primitive para qualquer conteúdo, não só logos",
+    subtitle: "Faixa de rolagem horizontal infinita, 100% CSS (sem JS por trás da animação). Aceita qualquer conteúdo — não só logos — com direction, speed, pauseOnHover e fade nas bordas.",
     render: () => {
       const chips = ["Design Systems", "Tokens", "Glassmorphism", "Acessibilidade", "Movimento", "Performance"];
       const techs = ["React", "TypeScript", "Next.js", "Tailwind", "Node", "Figma", "Storybook"];
@@ -1271,7 +1216,7 @@ export const STORIES: Story[] = [
     id: "rodape",
     group: "Componentes",
     title: "Rodapé",
-    subtitle: "Crédito com flash e link accent",
+    subtitle: "Rodapé de página com o crédito de marca (ícone de raio + link em accent). Aceita children livre pra colunas de links, redes sociais etc.",
     render: () => (
       <Footer>
         <p>
@@ -1286,7 +1231,7 @@ export const STORIES: Story[] = [
     id: "grafico-linhas",
     group: "Dados",
     title: "Gráfico de linhas",
-    subtitle: "Eixos x/y, 2 séries, grade recessiva e hover",
+    subtitle: "Série temporal com eixos, grade recessiva e tooltip no hover. Aceita múltiplas séries (series), cada uma com sua própria cor de dado.",
     render: () => (
       <div>
         <LineChart
@@ -1305,7 +1250,7 @@ export const STORIES: Story[] = [
     id: "barras",
     group: "Dados",
     title: "Barras de progresso",
-    subtitle: "Horizontais, cor por entidade, valor rotulado",
+    subtitle: "Barras horizontais com cor por entidade e valor rotulado — pra comparar algumas categorias lado a lado, sem precisar de um gráfico completo.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Meter label="UI Design" value={82} slot={1} />
@@ -1319,7 +1264,7 @@ export const STORIES: Story[] = [
     id: "pizza",
     group: "Dados",
     title: "Gráfico de pizza",
-    subtitle: "Fatias com respiro, rótulos diretos e legenda",
+    subtitle: "Fatias com respiro de 2px, rótulo com percentual direto na fatia e uma legenda embaixo, sempre junto, pra nomear as cores mesmo se o rótulo interno for pequeno demais.",
     render: () => (
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
         <PieChart
@@ -1337,7 +1282,7 @@ export const STORIES: Story[] = [
     id: "anel",
     group: "Dados",
     title: "Anel de progresso",
-    subtitle: "Número-herói no centro, qualquer tamanho",
+    subtitle: "Indicador circular de progresso com um número-herói no centro (ou hideValue, útil dentro de um stat tile). size controla o diâmetro em px — o traço e a fonte escalam junto.",
     render: () => (
       <div style={{ display: "flex", gap: 32, alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
         <ProgressRing value={72} caption="concluído" />
@@ -1350,7 +1295,7 @@ export const STORIES: Story[] = [
     id: "widgets",
     group: "Dados",
     title: "Widgets de dashboard",
-    subtitle: "Stat tiles com delta, sparkline e contorno reativo",
+    subtitle: "StatTile: número, delta (trend up/down/flat) e sparkline opcional, com o mesmo contorno reativo do Card. StatGrid organiza vários lado a lado num grid responsivo.",
     render: () => (
       <>
         <StatGrid>
@@ -1379,7 +1324,7 @@ export const STORIES: Story[] = [
     id: "sparkline",
     group: "Dados",
     title: "Sparkline & Legenda",
-    subtitle: "Miniaturas de série e identificação",
+    subtitle: "Sparkline: miniatura de série temporal sem eixos, pra caber dentro de um card. Legend identifica as cores de várias séries/categorias num gráfico maior.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {[1, 2, 3, 4].map((slot) => (
@@ -1400,7 +1345,7 @@ export const STORIES: Story[] = [
     id: "tabela",
     group: "Dados",
     title: "Tabela",
-    subtitle: "Pronta para CRUD: status na 1ª coluna, ações na última, ordenação por coluna",
+    subtitle: "Tabela pronta pro fluxo de CRUD: primeira coluna sempre uma badge de status, última sempre os ícones de ação (editar/excluir). Colunas sortable alternam asc → desc → ordem original no cabeçalho.",
     render: () => <TableDemo />,
   },
 ];

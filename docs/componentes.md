@@ -125,6 +125,13 @@ um link fecha. Usa o mesmo scrollspy da Navbar (`useScrollSpy`
 compartilhado), estendido para também acompanhar os `items` aninhados;
 quando um subtópico está ativo, a seção-pai também recebe destaque.
 
+**Monte só uma por página.** O botão e a gaveta do mobile são
+`position: fixed` no canto inferior esquerdo — duas instâncias na tela
+ao mesmo tempo sobrepõem os dois botões exatamente no mesmo pixel, e o
+clique passa a acertar o que estiver por cima, não necessariamente o
+que o usuário via. Este próprio styleguide usa uma só, montada a
+partir de `STORIES` (`styleguide/App.tsx`).
+
 ### `Breadcrumbs`
 
 | Prop | Tipo | |

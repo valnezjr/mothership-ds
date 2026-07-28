@@ -59,6 +59,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       compartilhado com a `Navbar` via `useScrollSpy` (hook privado,
       extraído nessa adição — antes era um efeito duplicado em cada
       componente).
+- [x] Styleguide (`styleguide/App.tsx`) passa a usar essa `Sidebar`
+      como navegação padrão, montada a partir de `STORIES` — a Navbar
+      do topo perde `links`/hambúrguer (só marca + sino + switch). A
+      story `"sidebar"` não instancia o componente de novo — duas
+      instâncias na mesma página duplicam o botão/gaveta fixos do
+      mobile na mesma posição de tela (achado real, não hipotético);
+      o texto da story só aponta pra Sidebar real já em uso.
+      Textos de apoio das 35 stories reescritos pra tom de documentação
+      (eram legendas de uma linha).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
