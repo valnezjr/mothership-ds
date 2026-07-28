@@ -3,7 +3,7 @@
 import React from "react";
 import {
   // primitivas
-  Container, Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
+  Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
   Footer, Flash,
   // tema e utilitários
@@ -667,15 +667,21 @@ export const STORIES: Story[] = [
   {
     id: "layout",
     group: "Componentes",
-    title: "Page & Container",
-    subtitle: "Page aplica o fundo, a cor e a tipografia do tema à raiz da aplicação. Container centraliza o conteúdo com um teto de 588px — a mesma largura da página original que deu origem ao sistema.",
+    title: "Page",
+    subtitle: "Aplica o fundo, a cor e a tipografia do tema à raiz da aplicação. contained embrulha o conteúdo num teto de 588px — a mesma largura da página original que deu origem ao sistema.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16, maxWidth: 620 }}>
-          <code>Page</code> sem exemplo isolado aqui de propósito: um <code>.ms-page</code>{" "}
-          dentro de outro duplicaria o fundo da página (<code>min-height: 100vh</code> e o
-          gradiente de fundo) de forma confusa. Este próprio styleguide já é o exemplo — a
-          classe vai direto no <code>&lt;body&gt;</code>, com o mesmo efeito do componente.
+          Sem exemplo isolado aqui de propósito: um <code>.ms-page</code> dentro de outro
+          duplicaria o fundo da página (<code>min-height: 100vh</code> e o gradiente de fundo)
+          de forma confusa. Este próprio styleguide já é o exemplo — a classe vai direto no{" "}
+          <code>&lt;body&gt;</code>, com o mesmo efeito do componente.
+        </p>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16, maxWidth: 620 }}>
+          <code>contained</code> embrulha o conteúdo na mesma largura de 588px (
+          <code>--container-max</code>) que a página original usava — sem componente
+          dedicado pra isso, só a classe <code>.ms-container</code> que o próprio{" "}
+          <code>Page</code> aplica internamente:
         </p>
         <div
           style={{
@@ -684,7 +690,7 @@ export const STORIES: Story[] = [
             padding: "1px 0",
           }}
         >
-          <Container>
+          <div className="ms-container">
             <div
               style={{
                 background: "var(--color-accent-soft)",
@@ -696,7 +702,7 @@ export const STORIES: Story[] = [
             >
               <code className="ms-text-xs">588px de largura máxima</code>
             </div>
-          </Container>
+          </div>
         </div>
       </>
     ),

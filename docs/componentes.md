@@ -59,14 +59,20 @@ Anima os glows do fundo. Aceita `config` para calibrar cada glow; veja
 
 ## Layout e navegação
 
-### `Page` · `Container`
+### `Page`
 
 ```tsx
 <Page contained>…</Page>
 ```
 
 `Page` aplica o fundo, a tipografia e as cores do tema. `contained`
-embrulha o conteúdo no container de 588px — o mesmo da página original.
+embrulha o conteúdo num teto de 588px (`--container-max`) — o mesmo da
+página original. Não existe um componente `Container` separado: era um
+wrapper fino (só a classe `.ms-container`) que nenhum consumidor real
+do sistema usava — cada página já define sua própria largura via
+`style`/CSS, e via `Page`/`contained` quando quer especificamente essa
+largura original. O token `--container-max` continua disponível pra
+quem quiser replicar essa largura manualmente.
 
 ### `Navbar`
 

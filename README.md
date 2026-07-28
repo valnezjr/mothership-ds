@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **38 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **37 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -143,7 +143,7 @@ export default function Home() {
 
 **Layout e navegação**
 
-`Page` · `Container` · `Navbar` · `Sidebar` · `Breadcrumbs` · `Hero` · `Footer`
+`Page` · `Navbar` · `Sidebar` · `Breadcrumbs` · `Hero` · `Footer`
 
 **Marca**
 

@@ -29,10 +29,6 @@ export function Page({ contained, className, children, ...rest }: PageProps) {
   );
 }
 
-export function Container({ className, ...rest }: Div) {
-  return <div className={cx("ms-container", className)} {...rest} />;
-}
-
 /* ---------- Botões ---------- */
 
 export type ButtonVariant = "glass" | "solid" | "ghost";

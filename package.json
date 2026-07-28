@@ -1,7 +1,7 @@
 {
   "name": "mothership-ds",
   "version": "1.2.0",
-  "description": "Design system em React + TypeScript: glassmorphism, temas claro/escuro, fundo animado e 38 componentes sem dependências de runtime.",
+  "description": "Design system em React + TypeScript: glassmorphism, temas claro/escuro, fundo animado e 37 componentes sem dependências de runtime.",
   "keywords": [
     "design-system",
     "react",

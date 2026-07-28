@@ -22,13 +22,27 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   filosofia acima. Descrição do repositório no GitHub também
   atualizada (ainda dizia 37 componentes).
 
+### Removido
+
+- **`Container`** (`src/components/primitives.tsx`) — wrapper fino
+  (só a classe `.ms-container`: teto de 588px, margem e raio herdados
+  da página pessoal original) que nenhum consumidor real do sistema
+  usava — nem o styleguide, nem o exemplo Next.js, que já definem a
+  própria largura via `style`. A única outra utilidade cogitada (usar
+  pra travar a largura do `<main>`) seria redundante com o que
+  qualquer app já faz sozinho com uma linha de CSS. `Page` continua
+  oferecendo a mesma largura via `contained` (usa `.ms-container`
+  internamente); o token `--container-max` segue documentado pra quem
+  quiser replicar essa largura manualmente. 37 componentes (era 38).
+
 ### Adicionado
 
-- **Story "Page & Container"** no styleguide: `Page` só em texto (um
-  `.ms-page` dentro de outro duplicaria o fundo de tela cheia da
-  página de forma confusa — este próprio styleguide, com a classe no
-  `<body>`, já é o exemplo em produção); `Container` ganha exemplo
-  ao vivo mostrando o teto de 588px.
+- **Story "Page"** no styleguide: sem exemplo isolado do componente em
+  si de propósito (um `.ms-page` dentro de outro duplicaria o fundo de
+  tela cheia da página de forma confusa — este próprio styleguide, com
+  a classe no `<body>`, já é o exemplo em produção); a demonstração do
+  teto de 588px (`contained`) usa a classe `.ms-container` direto, já
+  que o componente `Container` foi removido (ver seção Removido).
 - **`Sidebar`** (`src/components/navbar.tsx`) — sumário completo de
   seções e subtópicos, versão mais densa da Navbar. `sections` aceita
   `{ href, label, items?: { href, label }[] }[]`. Sticky à esquerda
