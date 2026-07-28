@@ -93,11 +93,28 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       as 37 montadas juntas numa rolagem contínua estavam degradando a
       performance (glass em dezenas de painéis, parallax do fundo vivo,
       marquees rodando ao mesmo tempo). Header e Sidebar fixos
-      (`height: 100vh`, só `<main>` rola); troca por hash da URL
-      (`resolveStoryId`), sem lib de rotas — voltar/avançar do navegador
-      funciona de graça. Rodapé sai do fim de uma rolagem longa pra
-      última linha da coluna fixa, sempre visível. Detalhe completo em
-      ARCHITECTURE.md § Performance do styleguide.
+      (`height: 100vh`, só `<main>` rola); troca por hash da URL, sem
+      lib de rotas — voltar/avançar do navegador funciona de graça.
+      Rodapé sai do fim de uma rolagem longa pra última linha da coluna
+      fixa, sempre visível.
+- [x] Corrigido: `overflow-y: auto` no `<main>` (recém-adicionado pra
+      SPA acima) fazia o `overflow-x` computado virar `auto` também
+      por especificação — o `scale(1.03)` do hover reativo
+      (`.ms-hover-edge`) crescia o card pra fora da caixa e a borda
+      cortava esse crescimento (e a sombra). Corrigido com respiro
+      lateral/superior no `<main>` (`padding: 8px 32px 32px`).
+- [x] O padrão acima virou suporte **nativo** da biblioteca, não só
+      código do styleguide: `useHashRoute` (hook novo,
+      `src/components/navbar.tsx`) sincroniza "qual view está ativa"
+      com o hash da URL; `Sidebar` ganha `variant="fill"` (estica
+      100% da altura do pai em vez de sticky); `.ms-app-shell`
+      (`src/styles/components.css`) trava a viewport. `App.tsx` foi
+      reescrito pra consumir essas três peças em vez do código
+      bespoke que tinha antes — prova de que a API funciona. Tudo
+      opt-in: sem essas peças, nada muda pra quem já tinha uma página
+      comum. Detalhe completo em ARCHITECTURE.md § Performance do
+      styleguide; receita de uso em docs/componentes.md § Layout de
+      SPA.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

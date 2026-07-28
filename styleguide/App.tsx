@@ -8,6 +8,7 @@ import {
   LivingBackground,
   Navbar,
   Sidebar,
+  useHashRoute,
   NotificationBell,
   ThemeSwitch,
   Footer,
@@ -26,17 +27,19 @@ const SIDEBAR_SECTIONS = GROUPS.map((group) => ({
   items: STORIES.filter((s) => s.group === group).map((s) => ({ href: `#${s.id}`, label: s.title })),
 }));
 
+const STORY_IDS = STORIES.map((s) => s.id);
+
 // Primeira story de cada grupo — pra quando o hash aponta pro cabeçalho
 // do grupo (ex. clique em "Fundações" na Sidebar), não numa story.
 const GROUP_FIRST_STORY: Record<string, string> = Object.fromEntries(
   GROUPS.map((g) => [GROUP_IDS[g], STORIES.find((s) => s.group === g)!.id])
 );
 
-function resolveStoryId(hash: string): string {
+function resolveStoryId(hash: string, ids: string[]): string {
   const id = hash.replace(/^#/, "");
-  if (STORIES.some((s) => s.id === id)) return id;
+  if (ids.includes(id)) return id;
   if (GROUP_FIRST_STORY[id]) return GROUP_FIRST_STORY[id];
-  return STORIES[0].id;
+  return ids[0];
 }
 
 /**
@@ -46,29 +49,15 @@ function resolveStoryId(hash: string): string {
  *
  * Uma story por vez, não as 37 juntas: com tudo montado ao mesmo tempo
  * (glass + blur em dezenas de painéis, o parallax do fundo vivo, marquees
- * rodando…) a performance sofria. O clique na Sidebar troca o hash; um
- * listener de hashchange troca qual story está montada na janela —
- * mais barato que rolagem porque só a story ativa existe no DOM.
+ * rodando…) a performance sofria. `useHashRoute` + `Sidebar active` +
+ * `.ms-app-shell` são o trio nativo da biblioteca pra esse padrão —
+ * documentado em ARCHITECTURE.md § Performance do styleguide.
  */
 export function App() {
-  const [activeId, setActiveId] = React.useState(() =>
-    typeof window !== "undefined" ? resolveStoryId(window.location.hash) : STORIES[0].id
-  );
+  const [activeId] = useHashRoute({ ids: STORY_IDS, resolve: resolveStoryId });
   const mainRef = React.useRef<HTMLElement>(null);
   const titleRef = React.useRef<HTMLHeadingElement>(null);
   const firstRender = React.useRef(true);
-
-  React.useEffect(() => {
-    // Sem hash na entrada (visitou a raiz): fixa o padrão na URL, sem
-    // empilhar uma entrada nova no histórico.
-    if (!window.location.hash) {
-      window.history.replaceState(null, "", `#${activeId}`);
-    }
-    const onHashChange = () => setActiveId(resolveStoryId(window.location.hash));
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
@@ -98,15 +87,8 @@ export function App() {
           </Navbar>
 
           <div
-            style={{
-              height: "100vh",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              maxWidth: 1180,
-              margin: "0 auto",
-              padding: "112px 24px 0",
-            }}
+            className="ms-app-shell"
+            style={{ maxWidth: 1180, margin: "0 auto", padding: "112px 24px 0" }}
           >
             <header id="topo" style={{ marginBottom: 24, flexShrink: 0 }}>
               <h1 className="ms-h1">Mothership DS</h1>
@@ -119,11 +101,7 @@ export function App() {
             </header>
 
             <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 40 }}>
-              <Sidebar
-                sections={SIDEBAR_SECTIONS}
-                active={`#${story.id}`}
-                style={{ position: "static", maxHeight: "none", minHeight: 0, height: "100%" }}
-              />
+              <Sidebar sections={SIDEBAR_SECTIONS} active={`#${story.id}`} variant="fill" />
 
               {/* padding lateral e superior de propósito: overflow-y:auto vira
                   overflow-x:auto sozinho por especificação (não dá pra ter só

@@ -52,6 +52,23 @@
   border-radius: var(--radius-md);
 }
 
+/* ---------- App-shell (layout de uma seção por vez) ----------
+   Trava a viewport num wrapper de altura fixa em vez de deixar a
+   página crescer — pensado pra layouts "SPA" onde só um painel de
+   conteúdo (normalmente um <main> com overflow-y: auto) rola por
+   dentro, e o resto (header, Sidebar variant="fill", footer) fica
+   sempre visível. Combine com o hook `useHashRoute` e `Sidebar`
+   `active` pra montar só a seção ativa por vez — ver
+   ARCHITECTURE.md § Performance do styleguide, o primeiro consumidor
+   real desse trio. Opt-in: sem esta classe, uma página comum rola
+   inteira, como sempre. */
+.ms-app-shell {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ---------- Barra de rolagem ----------
    Segue a linguagem do sistema: trilho invisível, polegar em pill de
    vidro que clareia no hover. Firefox usa scrollbar-color; os demais,
@@ -1455,6 +1472,17 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
+}
+
+/* variant="fill": sem sticky nem teto de altura próprio — esse é o
+   trabalho do flex pai (align-items: stretch, o padrão). Pensado pra
+   um app-shell de altura fixa (.ms-app-shell), onde só o conteúdo ao
+   lado rola e a Sidebar deve acompanhar 100% da altura da coluna. */
+.ms-sidebar--fill {
+  position: static;
+  min-height: 0;
+  max-height: none;
+  height: 100%;
 }
 
 .ms-sidebar__group { display: flex; flex-direction: column; gap: var(--space-1); }

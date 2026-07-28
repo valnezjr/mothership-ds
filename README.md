@@ -143,7 +143,7 @@ export default function Home() {
 
 **Layout e navegação**
 
-`Page` · `Navbar` · `Sidebar` · `Breadcrumbs` · `Hero` · `Footer`
+`Page` · `Navbar` · `Sidebar` · `useHashRoute` · `Breadcrumbs` · `Hero` · `Footer`
 
 **Marca**
 
@@ -234,6 +234,13 @@ npm run styleguide:dev   # servidor local com watch
 ```
 
 Ele é publicado automaticamente no GitHub Pages a cada push na `master`.
+
+Também é o primeiro consumidor real do padrão **app-shell** da
+biblioteca: `useHashRoute` + `Sidebar` (`active`, `variant="fill"`) +
+`.ms-app-shell` montam um layout de uma seção por vez — clique troca o
+conteúdo em vez de rolar até ele, útil quando montar tudo de uma vez
+pesa demais. Receita completa em
+[`docs/componentes.md`](docs/componentes.md#layout-de-spa-uma-seção-por-vez).
 
 ## Princípios
 

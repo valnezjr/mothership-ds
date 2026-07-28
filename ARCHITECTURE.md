@@ -116,7 +116,7 @@ Documentar um componente novo = uma entrada em
 `styleguide/stories.tsx` (ver COMPONENT_GUIDELINES.md); a Sidebar se
 monta sozinha a partir do array `STORIES`.
 
-### Performance: uma story por vez, não as 37 juntas
+### Performance do styleguide: uma story por vez, não as 37 juntas
 
 Até a v1.2.2, `App.tsx` renderizava todas as stories na mesma página,
 uma rolagem contínua. Com ~37 componentes montados ao mesmo tempo —
@@ -124,33 +124,51 @@ uma rolagem contínua. Com ~37 componentes montados ao mesmo tempo —
 do `LivingBackground`, marquees rodando, o `Splash` fazendo lint —
 a performance degradava visivelmente conforme o catálogo crescia.
 
-A partir daí, `App.tsx` virou uma SPA de fato: só a story ativa fica
-montada. Header e Sidebar ficam fixos (`height: 100vh` na coluna,
-`overflow: hidden`); só o `<main>` rola, internamente. A troca não é
-roteamento de verdade (sem lib de rotas) — é o hash da URL:
+A correção começou como código só do styleguide (`App.tsx` virando
+uma SPA de fato: só a story ativa montada). O resultado agradou o
+suficiente pra virar suporte nativo da biblioteca — três peças,
+usáveis por qualquer consumidor, não só por este repo:
 
-- Sidebar recebe `active` controlado (`#${story.id}`) em vez de
-  `spy` — sem isso ela não teria como saber qual item destacar, já
-  que não há mais nada rolando pra detectar via scroll. `spy` desliga
-  sozinho quando `active` é passado (ver docs/componentes.md).
-- Um listener de `hashchange` decide qual story mostrar
-  (`resolveStoryId`): se o hash bate com uma story, mostra ela; se
-  bate com um grupo (clique no cabeçalho "Fundações" etc.), mostra a
-  primeira story daquele grupo; senão, cai na primeira story de todas.
+- **`useHashRoute`** (`src/components/navbar.tsx`) — estado de "qual
+  view está ativa" sincronizado com o hash da URL, sem lib de rotas.
+  Um listener de `hashchange` decide o id ativo via `resolve` (padrão:
+  bate exato com a lista de `ids` ou cai no primeiro) — o styleguide
+  personaliza isso pra "hash de um grupo cai na primeira story dele".
   Isso também dá voltar/avançar do navegador de graça — é só histórico
-  de URL, sem estado nenhum pra sincronizar manualmente.
-- Troca de story também move o foco pro título (`tabIndex={-1}` +
-  `.focus()`) e zera o scroll do `<main>` — mesma prática de qualquer
-  troca de rota em SPA, pra quem navega por teclado/leitor de tela
-  perceber que o conteúdo mudou.
-- A Sidebar ganhou um efeito próprio (`scrollIntoView` no item ativo,
-  dentro da sua própria lista) — sem ele, navegar pra um item fora da
-  área visível não rolava a lista sozinha até lá.
+  de URL, sem estado extra pra sincronizar manualmente. Lido só depois
+  da hidratação (mesma cautela do `ThemeProvider` com `localStorage` —
+  ver § Fronteira servidor/cliente): o primeiro render é sempre
+  `ids[0]`, corrigido pro hash real logo em seguida, pra nunca
+  divergir do HTML do servidor em apps com SSR (o styleguide em si não
+  precisa disso — é CSR puro — mas o hook é exportado da biblioteca e
+  Next.js faz SSR por padrão).
+- **`Sidebar` ganha `variant="fill"`** — sem sticky nem teto de altura
+  próprio, só estica 100% da altura do pai (`align-items: stretch` do
+  flex ao redor faz o resto). Combinada com `active` (controlado por
+  fora em vez de detectar por scroll — sem isso a Sidebar não teria
+  como saber qual item destacar, já que não há mais nada rolando pra
+  detectar via scroll; `spy` desliga sozinho quando `active` é
+  passado). A Sidebar também ganhou `scrollIntoView` no item ativo,
+  dentro da própria lista — sem isso, navegar pra um item fora da área
+  visível não rolava a lista sozinha até lá.
+- **`.ms-app-shell`** (`src/styles/components.css`) — utilitário
+  opt-in que trava a viewport (`height: 100vh`, `overflow: hidden`,
+  coluna flex) em vez de deixar a página crescer. Só o painel de
+  conteúdo (normalmente um `<main>` com `overflow-y: auto` próprio)
+  rola por dentro; o resto (header, Sidebar `variant="fill"`, footer)
+  fica sempre visível.
 
-Isso é uma escolha de arquitetura da PÁGINA do styleguide, não da
-biblioteca: `Page`/`.ms-page` continuam sendo uma superfície de
-rolagem normal pra qualquer consumidor — só o `App.tsx` do styleguide
-virou app-shell de altura fixa.
+`App.tsx` também move o foco pro título (`tabIndex={-1}` + `.focus()`)
+e zera o scroll do `<main>` a cada troca — mesma prática de qualquer
+troca de rota em SPA, pra quem navega por teclado/leitor de tela
+perceber que o conteúdo mudou. Isso fica por conta do consumidor (um
+`useEffect` simples num `ref`), não é parte da API do hook — o hook só
+resolve "qual id está ativo", nada de DOM.
+
+Isso é opt-in em toda a extensão: `Page`/`.ms-page` continuam sendo
+uma superfície de rolagem normal por padrão; sem `.ms-app-shell` (ou
+sem passar `active`/`variant="fill"` pra Sidebar), nada muda pra quem
+já tinha uma página comum.
 
 ## Topologia do GitHub Pages
 

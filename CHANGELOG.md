@@ -15,6 +15,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   muda, ele rola pra dentro da área visível da lista da própria
   Sidebar (`scrollIntoView`) — útil se a lista for mais alta que o
   espaço disponível, em qualquer um dos dois modos (`spy` ou `active`).
+- **Suporte nativo a layout de SPA (uma seção por vez)**: o padrão que
+  o styleguide passou a usar para resolver a própria performance virou
+  API real da biblioteca, não só código interno.
+  - **`useHashRoute`** (hook) — sincroniza "qual view está ativa" com
+    o hash da URL, sem lib de rotas. `resolve` customiza como um hash
+    sem correspondência exata resolve pra um id válido (padrão: cai no
+    primeiro). Retorna `[id, navigate]`; voltar/avançar do navegador
+    funcionam de graça. Lido só depois da hidratação, mesma cautela do
+    `ThemeProvider` com `localStorage` — nunca diverge do HTML do
+    servidor em apps com SSR.
+  - **`Sidebar`: prop `variant`** (`"sticky"` padrão, `"fill"` novo) —
+    `fill` estica 100% da altura do pai em vez de `position: sticky`,
+    pra uso dentro de um app-shell de altura fixa.
+  - **`.ms-app-shell`** (utilitário CSS) — trava a viewport
+    (`height: 100vh`, `overflow: hidden`, coluna flex); opt-in, sem
+    ele uma página comum rola inteira como sempre.
+  - Receita completa em docs/componentes.md § Layout de SPA; raciocínio
+    em ARCHITECTURE.md § Performance do styleguide.
 
 ### Alterado
 
@@ -23,17 +41,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   com tantos painéis de vidro (`backdrop-filter`), o parallax do
   `LivingBackground` e marquees rodando ao mesmo tempo, a performance
   degradava. Agora só a story ativa fica montada: header e Sidebar
-  ficam fixos (`height: 100vh`, `overflow: hidden` na coluna), só o
-  `<main>` rola. A troca é por hash da URL (sem lib de rotas) — clique
-  na Sidebar muda o hash, um listener de `hashchange` decide qual
-  story mostrar (`resolveStoryId`): bate com uma story, mostra ela;
-  bate com um grupo (clique no cabeçalho "Fundações" etc.), mostra a
-  primeira story daquele grupo; senão, cai na primeira de todas. Voltar
-  /avançar do navegador funciona de graça (é só histórico de URL).
-  Troca de story move o foco pro título e zera o scroll do `<main>` —
-  mesma prática de qualquer troca de rota em SPA. Rodapé deixa de ficar
-  no fim de uma rolagem longa — agora é a última linha da coluna fixa,
-  sempre visível. Decisão documentada em ARCHITECTURE.md.
+  ficam fixos (`.ms-app-shell`), só o `<main>` rola. A troca é por hash
+  da URL (`useHashRoute`, com `resolve` customizado pra "hash de um
+  grupo cai na primeira story dele"), sem lib de rotas — voltar/avançar
+  do navegador funciona de graça. Troca de story move o foco pro título
+  e zera o scroll do `<main>` — mesma prática de qualquer troca de rota
+  em SPA. Rodapé deixa de ficar no fim de uma rolagem longa — agora é a
+  última linha da coluna fixa, sempre visível. `App.tsx` foi reescrito
+  depois pra consumir o `useHashRoute`/`Sidebar variant`/`.ms-app-shell`
+  nativos em vez do código bespoke original (ver "Adicionado" acima).
 - **Story "Sidebar"**: texto atualizado — dizia "com `spy` ligado",
   desatualizado desde que este próprio styleguide passou a controlar
   o item ativo via `active` (ver acima).

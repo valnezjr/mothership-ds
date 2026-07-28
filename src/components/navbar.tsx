@@ -49,6 +49,64 @@ function useScrollSpy(hrefs: string[], enabled: boolean): string | null {
   return active;
 }
 
+export interface UseHashRouteOptions {
+  /** IDs válidos (sem `#`) — o que o hash não bater cai no resultado de `resolve`. */
+  ids: string[];
+  /**
+   * Resolve um hash (com ou sem `#`) pro id que deve ficar ativo.
+   * Padrão: bate exato com algum item de `ids` ou cai no primeiro —
+   * o suficiente pra âncoras simples. Personalize pra casos como
+   * "hash aponta pro cabeçalho de um grupo, mostra o primeiro item dele".
+   */
+  resolve?: (hash: string, ids: string[]) => string;
+}
+
+/**
+ * Estado de "qual view está ativa" sincronizado com o hash da URL —
+ * sem lib de rotas. Pensado pra layouts de uma seção por vez: troca o
+ * conteúdo montado no clique em vez de rolar até ele (ver `Sidebar`
+ * `active` e ARCHITECTURE.md § Performance do styleguide, que usa
+ * exatamente essa dupla).
+ *
+ * Lido só depois da hidratação — mesma cautela do `ThemeProvider` com
+ * `localStorage`: o primeiro render sempre é `ids[0]`, corrigido pro
+ * hash real logo em seguida, pra nunca divergir do HTML do servidor.
+ * Voltar/avançar do navegador funcionam de graça — é só histórico de
+ * URL, sem estado extra pra sincronizar manualmente.
+ */
+export function useHashRoute({ ids, resolve }: UseHashRouteOptions): [string, (id: string) => void] {
+  const resolveRef = React.useRef(resolve);
+  resolveRef.current = resolve;
+  const idsKey = ids.join("|");
+
+  const defaultResolve = React.useCallback((hash: string, ids: string[]) => {
+    const id = hash.replace(/^#/, "");
+    return ids.includes(id) ? id : ids[0];
+  }, []);
+
+  const [active, setActive] = React.useState(ids[0]);
+
+  React.useEffect(() => {
+    const resolveFn = resolveRef.current ?? defaultResolve;
+    const apply = () => setActive(resolveFn(window.location.hash, ids));
+    if (!window.location.hash) {
+      // Sem hash na entrada: fixa o padrão na URL, sem empilhar uma
+      // entrada nova no histórico.
+      window.history.replaceState(null, "", `#${resolveFn("", ids)}`);
+    }
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey]);
+
+  const navigate = React.useCallback((id: string) => {
+    window.location.hash = id;
+  }, []);
+
+  return [active, navigate];
+}
+
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   /** Marca à esquerda. Sem ela, os links ficam centralizados. */
   brand?: React.ReactNode;
@@ -226,6 +284,14 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
    * scroll são anexados.
    */
   active?: string;
+  /**
+   * `"sticky"` (padrão): acompanha a rolagem da página, gruda sob a
+   * navbar. `"fill"`: ocupa 100% da altura do pai, sem sticky nem
+   * teto de altura próprio — pra uso dentro de um app-shell de altura
+   * fixa (ver `useHashRoute` e `.ms-app-shell`), onde só o conteúdo
+   * rola e a Sidebar deve esticar junto da coluna.
+   */
+  variant?: "sticky" | "fill";
   /** Nome acessível do botão que abre a gaveta abaixo de 720px. */
   toggleLabel?: string;
 }
@@ -234,13 +300,16 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
  * Sumário de navegação: uma versão mais completa da Navbar, com
  * subtópicos por seção. Fica fixo (`position: sticky`) à esquerda no
  * desktop — o host posiciona ao lado do conteúdo (flex/grid próprio,
- * a lib não impõe layout de página). Abaixo de 720px vira um botão
- * flutuante que abre a mesma navegação como gaveta.
+ * a lib não impõe layout de página). `variant="fill"` troca o sticky
+ * por esticar 100% da altura do pai, pra uso num app-shell de altura
+ * fixa. Abaixo de 720px vira um botão flutuante que abre a mesma
+ * navegação como gaveta, nos dois variants.
  */
 export function Sidebar({
   sections,
   spy = true,
   active: activeProp,
+  variant = "sticky",
   toggleLabel = "Abrir sumário",
   className,
   ...rest
@@ -326,7 +395,7 @@ export function Sidebar({
     <>
       <nav
         ref={navRef}
-        className={["ms-sidebar", className].filter(Boolean).join(" ")}
+        className={["ms-sidebar", variant === "fill" && "ms-sidebar--fill", className].filter(Boolean).join(" ")}
         aria-label="Sumário"
         {...rest}
       >

@@ -113,6 +113,7 @@ lado do conteúdo (`<div style={{ display: "flex" }}>`).
 | `sections` | `{ href, label, items?: { href, label }[] }[]` | — | seção + subtópicos opcionais |
 | `spy` | `boolean` | `true` | marca a seção/subtópico visível, como a Navbar. Ignorado se `active` for passado |
 | `active` | `string` | — | controla o item ativo de fora (ex. roteamento próprio) em vez de detectar por scroll — desliga o `spy` interno por completo |
+| `variant` | `"sticky" \| "fill"` | `"sticky"` | `fill` estica 100% da altura do pai em vez de grudar na rolagem — pra uso num `.ms-app-shell` |
 | `toggleLabel` | `string` | `"Abrir sumário"` | nome acessível do botão da gaveta no mobile |
 
 ```tsx
@@ -136,11 +137,11 @@ pra dentro da área visível da própria lista (`scrollIntoView`) — útil
 se a lista for mais alta que o espaço disponível.
 
 Pra um layout de "uma página por vez" (SPA: clique troca o conteúdo
-em vez de rolar até ele — como este próprio styleguide, ver
-ARCHITECTURE.md § Performance), passe `active` com o item que está na
-tela; o `spy` desliga sozinho, nem os listeners de scroll são
-anexados. `contained` de `Page` combina bem com esse padrão pra travar
-a largura do painel de conteúdo.
+em vez de rolar até ele — como este próprio styleguide), passe
+`active` com o item que está na tela e `variant="fill"`; o `spy`
+desliga sozinho, nem os listeners de scroll são anexados. Ver
+**Layout de SPA: uma seção por vez** logo abaixo pro padrão completo,
+com `useHashRoute` e `.ms-app-shell`.
 
 **Monte só uma por página.** O botão e a gaveta do mobile são
 `position: fixed` no canto inferior esquerdo — duas instâncias na tela
@@ -148,6 +149,76 @@ ao mesmo tempo sobrepõem os dois botões exatamente no mesmo pixel, e o
 clique passa a acertar o que estiver por cima, não necessariamente o
 que o usuário via. Este próprio styleguide usa uma só, montada a
 partir de `STORIES` (`styleguide/App.tsx`).
+
+### `useHashRoute`
+
+Hook que dá o estado de "qual view está ativa" sincronizado com o
+hash da URL — sem lib de rotas. É a metade que falta do `active` da
+`Sidebar`: ele controla o destaque, este hook decide qual valor passar.
+
+```tsx
+const [activeId] = useHashRoute({ ids: ["cores", "tipografia", "efeitos"] });
+```
+
+| Opção | Tipo | Padrão | |
+|---|---|---|---|
+| `ids` | `string[]` | — | ids válidos, sem `#` |
+| `resolve` | `(hash: string, ids: string[]) => string` | bate exato ou cai no primeiro | personalize pra casos como "hash de um grupo cai no primeiro item dele" |
+
+Retorna `[id, navigate]` — `id` é a view ativa (sempre um dos `ids`,
+nunca um hash inválido), `navigate(id)` troca a URL programaticamente
+(ex. um botão "Próximo"; um `<a href="#id">` normal já funciona sem
+chamar nada). Voltar/avançar do navegador funcionam de graça — é só
+histórico de URL. Lido só depois da hidratação (mesma cautela do
+`ThemeProvider` com `localStorage`): o primeiro render é sempre
+`ids[0]`, corrigido pro hash real logo em seguida, pra nunca divergir
+do HTML do servidor em apps com SSR.
+
+### Layout de SPA: uma seção por vez
+
+O trio `useHashRoute` + `Sidebar` (`active`, `variant="fill"`) +
+`.ms-app-shell` monta um layout de app: header e Sidebar fixos, um
+painel de conteúdo que troca no clique (não por scroll) e rola por
+dentro. É o padrão deste próprio styleguide — motivo documentado em
+ARCHITECTURE.md § Performance do styleguide (com dezenas de
+componentes animados, montar todos ao mesmo tempo numa rolagem
+contínua pesava; só a seção ativa montada resolve isso de raiz).
+
+```tsx
+"use client";
+import { Sidebar, useHashRoute } from "mothership-ds";
+
+const PAGES = { inicio: <p>Início</p>, sobre: <p>Sobre</p> };
+const IDS = Object.keys(PAGES);
+
+function App() {
+  const [activeId] = useHashRoute({ ids: IDS });
+
+  return (
+    <div className="ms-app-shell">
+      <header>{/* fica sempre visível */}</header>
+
+      <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 24 }}>
+        <Sidebar
+          variant="fill"
+          active={`#${activeId}`}
+          sections={IDS.map((id) => ({ href: `#${id}`, label: id }))}
+        />
+        <main style={{ flex: 1, overflowY: "auto" }}>{PAGES[activeId]}</main>
+      </div>
+
+      <footer>{/* também sempre visível */}</footer>
+    </div>
+  );
+}
+```
+
+`.ms-app-shell` só trava a viewport (`height: 100vh`, `overflow:
+hidden`, coluna flex) — é opt-in, sem ele uma página comum rola
+inteira, como sempre. Sem essa classe (ou fazendo o layout na mão), o
+trio `useHashRoute` + `Sidebar active` ainda funciona sozinho, só que
+numa página que rola normalmente em vez de um app-shell de altura
+fixa — quem decide isso é o CSS ao redor, não os componentes.
 
 ### `Breadcrumbs`
 
