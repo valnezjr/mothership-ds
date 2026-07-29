@@ -65,6 +65,26 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     concreto pedir isso no futuro.
   - 43 componentes (era 40).
 
+### Corrigido
+
+- **Cache indefinido do styleguide publicado**: `styleguide.js`/
+  `styleguide.css` eram gerados sempre com o mesmo nome de arquivo —
+  depois de um deploy novo, o navegador e a CDN do GitHub Pages
+  (`cache-control: max-age=600`) podiam continuar servindo a versão
+  antiga por até 10 minutos, sem nenhum sinal de que o conteúdo tinha
+  mudado (achado real: as stories de `Checkbox`/`Radio`/`Switch`/
+  `Stack`/`Divider`/`Skeleton` já publicadas não apareciam pra quem
+  tinha visitado o styleguide antes). `styleguide/build.mjs` agora
+  nomeia a build de produção com hash de conteúdo
+  (`styleguide-<hash>.js`/`.css`, via `entryNames` do esbuild) — um
+  deploy novo sempre gera um nome de arquivo novo, então não tem cache
+  velho pra servir. `index.html` é escrito depois do build, apontando
+  pros nomes reais (lidos do `metafile` do esbuild). `dist/` é limpo
+  no início de cada build, pra não acumular hashes antigos. O modo
+  `--serve` local mantém nome fixo (`styleguide.js`/`.css`, sem hash)
+  — não há CDN nem cache de navegador relevante num servidor de
+  desenvolvimento com watch.
+
 ### Alterado
 
 - **Styleguide vira uma SPA de uma story por vez**: até aqui,

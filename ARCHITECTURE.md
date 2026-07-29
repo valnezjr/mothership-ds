@@ -116,6 +116,29 @@ Documentar um componente novo = uma entrada em
 `styleguide/stories.tsx` (ver COMPONENT_GUIDELINES.md); a Sidebar se
 monta sozinha a partir do array `STORIES`.
 
+### Nomes de arquivo com hash de conteúdo (produção)
+
+`styleguide/build.mjs`, no build de produção (não em `--serve`),
+nomeia a saída como `styleguide-<hash>.js`/`.css` — `entryNames:
+"styleguide-[hash]"` do esbuild, com `metafile: true` pra descobrir os
+nomes reais e escrever `index.html` depois, apontando pra eles.
+`dist/` é limpo (`rmSync`) no início de cada build, pra não acumular
+hash antigo.
+
+Motivo: a CDN do GitHub Pages responde `cache-control: max-age=600`
+pra qualquer arquivo estático, e sem hash no nome um deploy novo não
+muda a URL de `styleguide.js` — o navegador (ou a CDN) podia continuar
+servindo a versão de até 10 minutos atrás sem nenhum sinal de que
+mudou. Achado real, não hipotético: componentes já publicados não
+apareciam pra quem tinha visitado o styleguide antes do deploy mais
+recente. Com hash de conteúdo, cada deploy que muda algo gera um nome
+de arquivo novo — não tem cache velho pra servir, porque a URL em si
+mudou.
+
+`--serve` (desenvolvimento local) mantém nome fixo, sem hash: não há
+CDN nem cache de navegador relevante num servidor com watch, e nomear
+com hash ali só complicaria o fluxo de live-reload sem benefício.
+
 ### Performance do styleguide: uma story por vez, não as 37 juntas
 
 Até a v1.2.2, `App.tsx` renderizava todas as stories na mesma página,

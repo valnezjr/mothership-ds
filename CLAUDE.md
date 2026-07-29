@@ -166,6 +166,18 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       animação diferentes por baixo — `:checked` vs. classe `.light`
       do tema; generalizar os dois exigiria reescrever `ThemeSwitch`
       sem necessidade real hoje). 43 componentes (era 40).
+- [x] Corrigido: build de produção do styleguide
+      (`styleguide/build.mjs`) nomeava `styleguide.js`/`.css` sempre
+      igual — depois de um deploy, a CDN do GitHub Pages
+      (`cache-control: max-age=600`) podia servir a versão de até 10
+      minutos atrás, sem sinal nenhum de que mudou (achado real:
+      componentes recém-publicados não apareciam pra quem já tinha
+      visitado o styleguide). Agora nomeia com hash de conteúdo
+      (`entryNames: "styleguide-[hash]"`, `metafile: true` pra achar o
+      nome real e escrever o `index.html` depois); `dist/` é limpo no
+      início de cada build. `--serve` local continua com nome fixo.
+      Detalhe em ARCHITECTURE.md § Nomes de arquivo com hash de
+      conteúdo.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
