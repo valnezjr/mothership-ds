@@ -86,6 +86,122 @@ export function Accordion({ items, single, className, ...rest }: AccordionProps)
   );
 }
 
+/* ---------- Tabs ---------- */
+
+export interface TabItem {
+  id: string;
+  label: React.ReactNode;
+  content: React.ReactNode;
+  disabled?: boolean;
+}
+
+export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+  items: TabItem[];
+  value?: string;
+  defaultValue?: string;
+  onChange?: (id: string) => void;
+}
+
+/** Indicador desliza com bounce até a aba ativa — mesma assinatura de movimento do sistema. */
+export function Tabs({ items, value, defaultValue, onChange, className, id, ...rest }: TabsProps) {
+  const [internalValue, setInternalValue] = React.useState(
+    () => defaultValue ?? items.find((it) => !it.disabled)?.id
+  );
+  const activeId = value !== undefined ? value : internalValue;
+  const baseId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-tabs`;
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const tabRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [indicator, setIndicator] = React.useState<{ left: number; width: number } | null>(null);
+
+  const measure = React.useCallback(() => {
+    const btn = activeId ? tabRefs.current.get(activeId) : undefined;
+    if (!btn) return;
+    setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
+  }, [activeId]);
+
+  React.useLayoutEffect(measure, [measure]);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
+
+  function activate(item: TabItem) {
+    if (item.disabled) return;
+    if (value === undefined) setInternalValue(item.id);
+    onChange?.(item.id);
+  }
+
+  function onKeyDown(e: React.KeyboardEvent, index: number) {
+    const enabled = items.map((it, i) => ({ it, i })).filter(({ it }) => !it.disabled);
+    if (enabled.length === 0) return;
+    const pos = enabled.findIndex(({ i }) => i === index);
+    let target: number | undefined;
+    if (e.key === "ArrowRight") target = enabled[(pos + 1) % enabled.length].i;
+    else if (e.key === "ArrowLeft") target = enabled[(pos - 1 + enabled.length) % enabled.length].i;
+    else if (e.key === "Home") target = enabled[0].i;
+    else if (e.key === "End") target = enabled[enabled.length - 1].i;
+    if (target !== undefined) {
+      e.preventDefault();
+      const item = items[target];
+      activate(item);
+      tabRefs.current.get(item.id)?.focus();
+    }
+  }
+
+  const activeItem = items.find((it) => it.id === activeId);
+  const tabId = (itemId: string) => `${baseId}-tab-${itemId}`;
+  const panelId = (itemId: string) => `${baseId}-panel-${itemId}`;
+
+  return (
+    <div className={["ms-tabs", className].filter(Boolean).join(" ")} id={id} {...rest}>
+      <div className="ms-tabs__list" role="tablist" ref={listRef}>
+        {items.map((item, index) => {
+          const selected = item.id === activeId;
+          return (
+            <button
+              key={item.id}
+              ref={(el) => {
+                if (el) tabRefs.current.set(item.id, el);
+                else tabRefs.current.delete(item.id);
+              }}
+              type="button"
+              role="tab"
+              id={tabId(item.id)}
+              aria-selected={selected}
+              aria-controls={panelId(item.id)}
+              disabled={item.disabled}
+              tabIndex={selected ? 0 : -1}
+              className={["ms-tabs__tab", selected && "ms-tabs__tab--active"].filter(Boolean).join(" ")}
+              onClick={() => activate(item)}
+              onKeyDown={(e) => onKeyDown(e, index)}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+        {indicator && (
+          <span
+            className="ms-tabs__indicator"
+            style={{ transform: `translateX(${indicator.left}px)`, width: indicator.width }}
+          />
+        )}
+      </div>
+      {activeItem && (
+        <div
+          className="ms-tabs__panel"
+          role="tabpanel"
+          id={panelId(activeItem.id)}
+          aria-labelledby={tabId(activeItem.id)}
+          tabIndex={0}
+        >
+          {activeItem.content}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ---------- Carrossel ---------- */
 
 const ArrowLeft = (

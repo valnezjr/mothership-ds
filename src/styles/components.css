@@ -631,25 +631,37 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: background var(--transition-slow), border-color var(--transition-slow);
 }
 
+/* Polegar maior que o trilho (--switch-thumb 32px > --switch-height
+   24px, mesmos tokens do ThemeSwitch) — protrui 4px acima/abaixo,
+   centralizado por top/translateY em vez de altura fixa, igual ao
+   ThemeSwitch. */
 .ms-toggle::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: calc(var(--switch-height) - 6px);
-  height: calc(var(--switch-height) - 6px);
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: var(--switch-thumb);
+  height: var(--switch-thumb);
   border-radius: var(--radius-full);
   background: var(--color-thumb);
+  /* ThemeSwitch não precisa de sombra porque o ícone sol/lua desenhado
+     no polegar já garante contraste. Este polegar é liso — sem sombra,
+     fica quase invisível no tema claro (branco sobre o tom "soft"
+     quase branco do trilho ativo). */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   transition: left var(--transition-base) var(--ease-bounce);
 }
 
+/* Ativo continua vidro — só ganha o tom "soft" de marca (mesmo par
+   fundo/borda que Badge tone="accent"), não uma cor sólida. */
 .ms-toggle:checked {
-  background: var(--color-accent);
+  background: var(--color-accent-soft);
   border-color: var(--color-accent);
 }
 
 .ms-toggle:checked::after {
-  left: calc(100% - (var(--switch-height) - 6px) - 2px);
+  left: calc(100% - var(--switch-thumb));
 }
 
 .ms-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -1459,6 +1471,45 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   font-size: var(--text-sm);
   color: var(--color-text-muted);
 }
+
+/* ---------- Tabs ---------- */
+.ms-tabs__list {
+  position: relative;
+  display: flex;
+  gap: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.ms-tabs__tab {
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-1);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color var(--transition-slow);
+}
+
+.ms-tabs__tab:hover { color: var(--color-text); }
+.ms-tabs__tab--active { color: var(--color-text); font-weight: var(--font-weight-medium); }
+.ms-tabs__tab:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Posição/largura vêm de style inline (medidos via DOM) — só a
+   aparência e a transição ficam na classe. */
+.ms-tabs__indicator {
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+  transition: transform 0.3s var(--ease-bounce), width 0.3s var(--ease-bounce);
+}
+
+.ms-tabs__panel { padding-top: var(--space-4); }
 
 /* ---------- Navbar flutuante ---------- */
 .ms-navbar {
@@ -2307,6 +2358,64 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
+}
+
+/* ---------- Paginação ---------- */
+.ms-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ms-pagination__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ms-pagination__arrow,
+.ms-pagination__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.ms-pagination__arrow svg { width: 16px; height: 16px; }
+
+.ms-pagination__arrow:hover:not(:disabled),
+.ms-pagination__page:hover:not(.ms-pagination__page--active) { background: var(--color-surface-hover); }
+
+.ms-pagination__arrow:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Mesmo par cor sólida + branco fixo do Button variant="solid" —
+   não existe token de "texto sobre superfície de marca", então
+   segue o mesmo precedente já aceito ali. */
+.ms-pagination__page--active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.ms-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  color: var(--color-text-muted);
 }
 
 /* ---------- Dados: tooltip ---------- */

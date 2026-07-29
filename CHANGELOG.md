@@ -62,7 +62,17 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     `.light` do tema, não a um `checked` local — generalizar os dois
     sob um primitivo comum exigiria reescrever `ThemeSwitch` por dentro
     sem necessidade real hoje (YAGNI); revisitar se um caso de uso
-    concreto pedir isso no futuro.
+    concreto pedir isso no futuro. Visual revisado depois de nascer,
+    pra bater com o `ThemeSwitch` de verdade: polegar **maior** que o
+    trilho (`--switch-thumb` 32px sobre `--switch-height` 24px, mesmos
+    tokens), protruindo acima/abaixo. Ativo continua vidro — ganha só
+    o tom "soft" de marca (`--color-accent-soft` + borda
+    `--color-accent`, mesmo par de `Badge tone="accent"`), nunca uma
+    cor sólida. Achado ao testar: sem sombra própria, o polegar branco
+    ficava quase invisível no tema claro sobre o tom "soft" quase
+    branco — `ThemeSwitch` escapa disso porque o ícone sol/lua desenhado
+    nele garante contraste; este polegar é liso, então precisou de
+    `box-shadow` sutil.
   - 43 componentes (era 40).
 - **`Select`** — terceiro lote do caminho até a v1.5, revisado depois
   de nascer: a primeira versão era um `<select>` nativo estilizado
@@ -92,6 +102,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   só-escolha) e um filtro por texto (`filter`, com padrão de "contém,
   sem diferenciar maiúsculas") aplicado conforme o usuário digita.
   Mesmo limite de popup não-portal do `Select`. 45 componentes (era 43).
+- **`Tabs`, `Pagination`** — quinto lote do caminho até a v1.5.
+  - **`Tabs`** (`src/components/disclosure.tsx`) — só a aba ativa fica
+    montada (desmonta as demais, como o `Accordion`). Indicador (pill
+    fina) desliza até a aba ativa com `--ease-bounce`, medido de
+    verdade via DOM (`offsetLeft`/`offsetWidth` do botão, não um
+    truque de CSS puro) — recalcula em `resize`. `←`/`→` navegam **e
+    já ativam** a aba (ativação automática), pulando `disabled` com
+    wrap; `Home`/`End` pulam pro primeiro/último item habilitado.
+    Lista de abas rola horizontalmente quando não cabe — achado real
+    ao testar em mobile: sem `overflow-x`, as abas simplesmente
+    cortavam na borda da tela em vez de rolar.
+  - **`Pagination`** (`src/components/primitives.tsx`, sem
+    `"use client"` — 100% controlado, sem estado próprio) — sempre
+    mostra primeira e última página; distância grande vira `…`.
+    Página atual leva `aria-current="page"` (mesmo padrão já usado em
+    `Breadcrumbs`/`StepModal`). Setas de anterior/próxima desabilitam
+    nas pontas.
+  - 47 componentes (era 45).
 
 ### Corrigido
 

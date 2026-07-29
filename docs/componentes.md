@@ -284,6 +284,55 @@ fixa — quem decide isso é o CSS ao redor, não os componentes.
 | `items` | `{ label, href? }[]` | o último vira o item atual |
 | `glass` | `boolean` | envolve numa pill de vidro |
 
+### `Tabs`
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `items` | `{ id, label, content, disabled? }[]` | — | |
+| `value`/`defaultValue` | `string` | — | id da aba ativa — controlado/não-controlado |
+| `onChange` | `(id: string) => void` | — | |
+
+```tsx
+<Tabs
+  items={[
+    { id: "visao", label: "Visão geral", content: <Painel /> },
+    { id: "detalhes", label: "Detalhes", content: <OutroPainel /> },
+  ]}
+/>
+```
+
+Só a aba ativa fica montada — trocar desmonta o conteúdo anterior,
+como um `Accordion`. Um indicador (pill fina) desliza até a aba ativa
+com `--ease-bounce`, medido via DOM (posição/largura reais do botão),
+não CSS puro. `←`/`→` navegam **e já ativam** a aba (ativação
+automática, padrão comum de Tabs), pulando as `disabled` com wrap;
+`Home`/`End` pulam pro primeiro/último item habilitado. Lista rola
+horizontalmente (`overflow-x`) quando não cabe na largura — sem isso,
+abas extras cortariam na borda em telas estreitas.
+
+### `Pagination`
+
+**100% controlado** — quem usa guarda o número da página atual; o
+componente só renderiza e dispara `onChange`.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `page` | `number` | — | 1-indexado |
+| `totalPages` | `number` | — | |
+| `onChange` | `(page: number) => void` | — | |
+| `siblingCount` | `number` | `1` | páginas mostradas de cada lado da atual, além do primeiro/último |
+
+```tsx
+const [page, setPage] = useState(1);
+
+<Pagination page={page} totalPages={12} onChange={setPage} />
+```
+
+Sempre mostra a primeira e a última página; o meio vira `…` quando a
+distância é grande. Página atual leva `aria-current="page"` (mesmo
+padrão de `Breadcrumbs`/`StepModal`); setas de anterior/próxima
+desabilitam nas pontas.
+
 ---
 
 ## Formulários

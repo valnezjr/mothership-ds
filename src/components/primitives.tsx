@@ -370,6 +370,92 @@ export function Breadcrumbs({ items, glass, className, ...rest }: BreadcrumbsPro
   );
 }
 
+/* ---------- Paginação ---------- */
+
+const ArrowLeftSm = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+);
+const ArrowRightSm = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 18l6-6-6-6" />
+  </svg>
+);
+
+type PageToken = number | "ellipsis-start" | "ellipsis-end";
+
+function getPageTokens(page: number, totalPages: number, siblingCount: number): PageToken[] {
+  const totalNumbers = siblingCount * 2 + 5;
+  if (totalPages <= totalNumbers) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  const leftSibling = Math.max(page - siblingCount, 1);
+  const rightSibling = Math.min(page + siblingCount, totalPages);
+  const tokens: PageToken[] = [1];
+  if (leftSibling > 2) tokens.push("ellipsis-start");
+  for (let p = Math.max(leftSibling, 2); p <= Math.min(rightSibling, totalPages - 1); p++) tokens.push(p);
+  if (rightSibling < totalPages - 1) tokens.push("ellipsis-end");
+  if (totalPages > 1) tokens.push(totalPages);
+  return tokens;
+}
+
+export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
+  /** 1-indexado. */
+  page: number;
+  totalPages: number;
+  onChange: (page: number) => void;
+  /** Quantas páginas mostrar de cada lado da atual, além do primeiro/último. */
+  siblingCount?: number;
+}
+
+/** 100% controlado — quem chama guarda `page`, o componente só renderiza e dispara `onChange`. */
+export function Pagination({ page, totalPages, onChange, siblingCount = 1, className, ...rest }: PaginationProps) {
+  const tokens = getPageTokens(page, totalPages, siblingCount);
+  return (
+    <nav aria-label="Paginação" className={cx("ms-pagination", className)} {...rest}>
+      <button
+        type="button"
+        className="ms-pagination__arrow"
+        disabled={page <= 1}
+        aria-label="Página anterior"
+        onClick={() => onChange(page - 1)}
+      >
+        {ArrowLeftSm}
+      </button>
+      <ul className="ms-pagination__list">
+        {tokens.map((t, i) =>
+          typeof t === "number" ? (
+            <li key={t}>
+              <button
+                type="button"
+                className={cx("ms-pagination__page", t === page && "ms-pagination__page--active")}
+                aria-current={t === page ? "page" : undefined}
+                onClick={() => onChange(t)}
+              >
+                {t}
+              </button>
+            </li>
+          ) : (
+            <li key={t} className="ms-pagination__ellipsis" aria-hidden="true">
+              …
+            </li>
+          )
+        )}
+      </ul>
+      <button
+        type="button"
+        className="ms-pagination__arrow"
+        disabled={page >= totalPages}
+        aria-label="Próxima página"
+        onClick={() => onChange(page + 1)}
+      >
+        {ArrowRightSm}
+      </button>
+    </nav>
+  );
+}
+
 /* ---------- Rodapé ---------- */
 
 export function Footer({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {

@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 45 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 47 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -141,9 +141,9 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       0.01s }`, que não existia antes pra nenhum dos dois.
 - [x] Categorias de componentes reorganizadas (`docs/componentes.md`,
       `README.md`) de 8 pra 11, preparando terreno pro lote de
-      componentes a caminho da v1.5 (`Tabs`, `Pagination`,
-      `DropdownMenu`, `Tooltip`, `Popover`, `Drawer`, `EmptyState`,
-      `Timeline`, `Toolbar`, `FilterBar` — ainda não implementados).
+      componentes a caminho da v1.5 (`DropdownMenu`, `Tooltip`,
+      `Popover`, `Drawer`, `EmptyState`, `Timeline`, `Toolbar`,
+      `FilterBar` — ainda não implementados).
       "Layout e navegação" virou **Layout** + **Navegação**;
       **Formulários** saiu de "Controles e superfícies"; **Overlays**
       saiu de "Interativos". Nenhum componente existente mudou de
@@ -164,7 +164,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       compartilhar implementação com `ThemeSwitch` (mecanismos de
       animação diferentes por baixo — `:checked` vs. classe `.light`
       do tema; generalizar os dois exigiria reescrever `ThemeSwitch`
-      sem necessidade real hoje). 43 componentes (era 40).
+      sem necessidade real hoje). Visual revisado depois de nascer:
+      polegar maior que o trilho (`--switch-thumb` 32px > `--switch-height`
+      24px, mesmos tokens do `ThemeSwitch`), ativo mantém vidro com tom
+      "soft" de marca (`--color-accent-soft`, mesmo par de
+      `Badge tone="accent"`) em vez de virar cor sólida.
+      `box-shadow` sutil no polegar — achado ao testar: sem ela, ficava
+      quase invisível no tema claro (branco sobre o "soft" quase
+      branco); `ThemeSwitch` não precisa disso porque o ícone sol/lua
+      já garante contraste. 43 componentes (era 40).
 - [x] `Select` — terceiro lote, revisado: começou como `<select>`
       nativo estilizado, mas foi abandonado a favor de listbox própria
       (decisão consciente, não bug) — não sobrou nenhum primitive
@@ -186,6 +194,20 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       compartilhados; só troca o gatilho por um `<input>` editável e
       acrescenta filtro por texto). Mesmo limite de popup não-portal
       do `Select`. 45 componentes (era 43).
+- [x] `Tabs` (`src/components/disclosure.tsx`, já tinha
+      `"use client"`) e `Pagination` (`src/components/primitives.tsx`,
+      sem `"use client"` — 100% controlado, sem estado próprio) —
+      quinto lote. `Tabs`: só a aba ativa fica montada; indicador
+      desliza com `--ease-bounce` medido via DOM (`offsetLeft`/
+      `offsetWidth`, não CSS puro); `←`/`→` já ativam (ativação
+      automática), pulando `disabled` com wrap; `Home`/`End` pulam
+      pro primeiro/último habilitado; lista rola horizontalmente
+      (achado ao testar em mobile: sem `overflow-x`, abas extras
+      cortavam na borda da tela em vez de rolar). `Pagination`:
+      `page`/`totalPages`/`onChange`, sempre mostra primeira/última
+      página, `…` pro meio distante, `aria-current="page"` na atual
+      (mesmo padrão de `Breadcrumbs`/`StepModal`). 47 componentes
+      (era 45).
 - [x] Corrigido: build de produção do styleguide
       (`styleguide/build.mjs`) nomeava `styleguide.js`/`.css` sempre
       igual — depois de um deploy, a CDN do GitHub Pages

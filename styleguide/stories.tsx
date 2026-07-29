@@ -5,11 +5,11 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select, Combobox,
+  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
-  Navbar, Accordion, Carousel, Gallery, Marquee,
+  Navbar, Accordion, Tabs, Carousel, Gallery, Marquee,
   // marketing
   PricingCard, TestimonialCard, BentoGrid, BentoTile,
   // alertas
@@ -403,6 +403,11 @@ function TableDemo() {
       ]}
     />
   );
+}
+
+function PaginationDemo() {
+  const [page, setPage] = React.useState(1);
+  return <Pagination page={page} totalPages={12} onChange={setPage} />;
 }
 
 function useIsMobile(breakpoint = 720) {
@@ -817,6 +822,13 @@ export const STORIES: Story[] = [
     ),
   },
   {
+    id: "paginacao",
+    group: "Componentes",
+    title: "Paginação",
+    subtitle: "100% controlado — quem usa guarda o número da página, o componente só renderiza e dispara onChange. Números distantes viram \"…\"; sempre mostra primeira e última página.",
+    render: () => <PaginationDemo />,
+  },
+  {
     id: "botoes",
     group: "Componentes",
     title: "Botões",
@@ -1229,6 +1241,22 @@ export const STORIES: Story[] = [
           />
         </div>
       </>
+    ),
+  },
+  {
+    id: "tabs",
+    group: "Componentes",
+    title: "Tabs",
+    subtitle: "Indicador desliza com bounce até a aba ativa (medido via DOM, não CSS puro). Setas ←/→ navegam e já ativam (Home/End pulam pro primeiro/último); pula abas disabled.",
+    render: () => (
+      <Tabs
+        items={[
+          { id: "visao", label: "Visão geral", content: <p className="ms-text-sm">Conteúdo da primeira aba — trocar de aba desmonta o conteúdo anterior, como um accordion.</p> },
+          { id: "detalhes", label: "Detalhes", content: <p className="ms-text-sm">Segunda aba. O indicador embaixo do texto acompanha com <code>--ease-bounce</code>.</p> },
+          { id: "indisponivel", label: "Indisponível", content: null, disabled: true },
+          { id: "historico", label: "Histórico", content: <p className="ms-text-sm">Última aba — <code>End</code> pula direto pra cá.</p> },
+        ]}
+      />
     ),
   },
   {
