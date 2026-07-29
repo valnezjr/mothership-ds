@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 44 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 45 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -142,9 +142,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 - [x] Categorias de componentes reorganizadas (`docs/componentes.md`,
       `README.md`) de 8 pra 11, preparando terreno pro lote de
       componentes a caminho da v1.5 (`Tabs`, `Pagination`,
-      `DropdownMenu`, `Combobox`, `Tooltip`, `Popover`, `Drawer`,
-      `EmptyState`, `Timeline`, `Toolbar`, `FilterBar` — ainda não
-      implementados).
+      `DropdownMenu`, `Tooltip`, `Popover`, `Drawer`, `EmptyState`,
+      `Timeline`, `Toolbar`, `FilterBar` — ainda não implementados).
       "Layout e navegação" virou **Layout** + **Navegação**;
       **Formulários** saiu de "Controles e superfícies"; **Overlays**
       saiu de "Interativos". Nenhum componente existente mudou de
@@ -166,17 +165,27 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       animação diferentes por baixo — `:checked` vs. classe `.light`
       do tema; generalizar os dois exigiria reescrever `ThemeSwitch`
       sem necessidade real hoje). 43 componentes (era 40).
-- [x] `Select` (`src/components/primitives.tsx`, sem `"use client"`) —
-      terceiro lote. `<select>` nativo + `.ms-input` (mesmo
-      borda/foco/disabled do `Input`), `appearance: none` + seta via
-      token novo `--icon-select` (uma versão por tema, cor fixa —
-      data URI não herda `var()`). `placeholder` exige
-      `defaultValue=""` explícito, senão o navegador pula o `<option
-      disabled hidden>` e pré-seleciona a primeira opção real em
-      silêncio (achado ao testar). Lista aberta é do navegador/SO, sem
-      alcance de CSS — só o campo fechado fica no sistema; `Combobox`
-      é o caminho se precisar de um listbox 100% customizado depois.
-      44 componentes (era 43).
+- [x] `Select` — terceiro lote, revisado: começou como `<select>`
+      nativo estilizado, mas foi abandonado a favor de listbox própria
+      (decisão consciente, não bug) — não sobrou nenhum primitive
+      nativo reaproveitável, então virou o design final. Passa a viver
+      em `src/components/select.tsx` (arquivo novo, **com**
+      `"use client"` — tem estado próprio, diferente de tudo que já
+      morava em `primitives.tsx`). Gatilho `<button role="combobox">`
+      + `.ms-input`; popup `<ul role="listbox">` de vidro
+      (`--ease-bounce`, `--icon-select` reaproveitado só na seta do
+      gatilho agora). Teclado completo (setas com wrap pulando
+      `disabled`, Enter/Espaço, Esc, Home/End). Popup é `position:
+      absolute` num wrapper `position: relative` — **não** é portal no
+      `<body>` como Modal/menu da Navbar; decisão deliberada, sabendo
+      que o `Popover` (próximo do roadmap) resolve posicionamento
+      robusto de vez, então não vale antecipar isso agora.
+- [x] `Combobox` (`src/components/select.tsx`) — quarto lote,
+      construído junto com a revisão do `Select` acima (mesmo
+      arquivo, mesma listbox/`OptionList`/`useOutsideClick`
+      compartilhados; só troca o gatilho por um `<input>` editável e
+      acrescenta filtro por texto). Mesmo limite de popup não-portal
+      do `Select`. 45 componentes (era 43).
 - [x] Corrigido: build de produção do styleguide
       (`styleguide/build.mjs`) nomeava `styleguide.js`/`.css` sempre
       igual — depois de um deploy, a CDN do GitHub Pages

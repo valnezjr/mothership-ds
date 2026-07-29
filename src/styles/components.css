@@ -475,21 +475,80 @@
 
 textarea.ms-input { min-height: 96px; resize: vertical; }
 
-/* select.ms-input: mesmo tratamento de borda/foco/disabled do Input —
-   só o miolo (appearance: none + seta) muda. A lista aberta é
-   renderizada pelo navegador/SO, fora do alcance do CSS — não dá pra
-   levar vidro/tokens pra dentro dela, só o campo fechado fica 100% no
-   sistema. */
-select.ms-input {
-  appearance: none;
-  padding-right: calc(var(--space-4) + 24px);
-  background-image: var(--icon-select);
-  background-repeat: no-repeat;
-  background-position: right var(--space-4) center;
+/* ---------- Select & Combobox (listbox própria) ----------
+   O popup é position: absolute dentro de um wrapper position:
+   relative — não é portal no <body> como Modal/menu da Navbar
+   (decisão deliberada: o mecanismo de posicionamento robusto é o que
+   o Popover, próximo do roadmap, vai resolver de vez). */
+.ms-select { position: relative; }
+
+.ms-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  text-align: left;
   cursor: pointer;
 }
 
-select.ms-input:disabled { cursor: not-allowed; }
+.ms-select__trigger::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background: var(--icon-select) no-repeat center / contain;
+  transition: transform var(--transition-base) var(--ease-bounce);
+}
+
+.ms-select__trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
+.ms-select__trigger:disabled { cursor: not-allowed; }
+.ms-select__value--placeholder { color: var(--color-text-muted); }
+
+.ms-listbox {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  right: 0;
+  z-index: 1;
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-1);
+  list-style: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  animation: ms-listbox-in 0.15s var(--ease-bounce);
+}
+
+.ms-listbox__option {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.ms-listbox__option--active { background: var(--color-surface-hover); }
+.ms-listbox__option--selected { font-weight: var(--font-weight-medium); color: var(--color-accent) !important; }
+.ms-listbox__option--disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ms-listbox__empty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-muted);
+}
+
+@keyframes ms-listbox-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-listbox { animation-duration: 0.01s; }
+  .ms-select__trigger::after { transition: none; }
+}
 
 .ms-checkbox-field,
 .ms-radio-field {

@@ -6,6 +6,7 @@
  */
 
 export * from "./components/primitives";
+export * from "./components/select";
 export * from "./components/theme";
 export * from "./components/alerts";
 export * from "./components/navbar";

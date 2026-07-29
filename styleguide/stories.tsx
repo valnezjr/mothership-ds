@@ -5,7 +5,7 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select,
+  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select, Combobox,
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
@@ -904,7 +904,7 @@ export const STORIES: Story[] = [
     id: "campos",
     group: "Componentes",
     title: "Campos de formulário",
-    subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. O <select> é nativo estilizado — a lista aberta é do navegador/SO, sem alcance do CSS; só o campo fechado fica 100% no sistema.",
+    subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. Select tem listbox própria (não o <select> nativo) — vidro, teclado (setas/Enter/Esc) e destaque acompanham o resto do sistema.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
@@ -915,13 +915,34 @@ export const STORIES: Story[] = [
             options={[
               { value: "starter", label: "Starter" },
               { value: "pro", label: "Pro" },
-              { value: "enterprise", label: "Enterprise" },
+              { value: "enterprise", label: "Enterprise (em breve)", disabled: true },
             ]}
           />
         </Field>
         <Field label="Desabilitado"><Input placeholder="Indisponível" disabled /></Field>
         <Field label="Mensagem"><Textarea placeholder="Escreva sua mensagem…" /></Field>
       </div>
+    ),
+  },
+  {
+    id: "combobox",
+    group: "Componentes",
+    title: "Combobox",
+    subtitle: "Campo de texto com autocomplete — filtra as opções conforme digita. Reaproveita a mesma listbox do Select (Setas navegam, Enter escolhe, Esc fecha); a diferença é o gatilho editável e o filtro por texto.",
+    render: () => (
+      <Field label="Cidade" style={{ maxWidth: 320 }}>
+        <Combobox
+          placeholder="Digite pra filtrar…"
+          options={[
+            { value: "sp", label: "São Paulo" },
+            { value: "rj", label: "Rio de Janeiro" },
+            { value: "bh", label: "Belo Horizonte" },
+            { value: "poa", label: "Porto Alegre" },
+            { value: "cur", label: "Curitiba" },
+            { value: "sal", label: "Salvador" },
+          ]}
+        />
+      </Field>
     ),
   },
   {

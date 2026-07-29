@@ -64,20 +64,34 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     sem necessidade real hoje (YAGNI); revisitar se um caso de uso
     concreto pedir isso no futuro.
   - 43 componentes (era 40).
-- **`Select`** — terceiro lote do caminho até a v1.5. Também em
-  `src/components/primitives.tsx`, sem `"use client"`; `<select>`
-  nativo estilizado (`appearance: none` + seta própria via
-  `--icon-select`, novo token com uma versão por tema), reaproveitando
-  a classe `.ms-input` (mesmo tratamento de borda/foco/disabled do
-  `Input`/`Textarea`). Prop `placeholder` some da lista depois de
-  escolhido (`disabled hidden` no `<option>`), mas precisa de
-  `defaultValue=""` explícito pro navegador não pular a opção e
-  pré-selecionar a primeira em silêncio — achado real ao testar, não
-  óbvio de antemão. **Limite de plataforma, não de implementação**: só
-  o campo fechado fica com vidro/tokens do sistema — a lista aberta é
-  renderizada pelo navegador/SO, fora do alcance de qualquer CSS.
-  `Combobox` (próximo do roadmap) é o caminho se um listbox 100%
-  customizado for necessário depois. 44 componentes (era 43).
+- **`Select`** — terceiro lote do caminho até a v1.5, revisado depois
+  de nascer: a primeira versão era um `<select>` nativo estilizado
+  (limitado à lista aberta ser renderizada pelo navegador/SO, fora do
+  alcance de CSS/vidro); decidimos abandonar o nativo em favor de uma
+  **listbox própria**, já que ele não deixava nenhum primitive
+  reaproveitável pro `Combobox` de qualquer forma. Passa a viver em
+  `src/components/select.tsx` (arquivo novo, com `"use client"` — tem
+  estado próprio). Gatilho `<button role="combobox">` estilizado como
+  `.ms-input`; popup `<ul role="listbox">` de vidro, animação de
+  entrada com `--ease-bounce`. Teclado completo: `↓`/`↑` (pulando
+  `disabled`, com wrap), `Enter`/`Espaço`, `Esc`, `Home`/`End`. Clique
+  fora fecha. Aceita `value`/`defaultValue`/`onChange` (controlado ou
+  não) e `name` (monta um `<input type="hidden">` pra `<form>` nativo).
+  **Limite conhecido e deliberado**: o popup é `position: absolute` num
+  wrapper `position: relative`, não portal no `<body>` como Modal/menu
+  da Navbar — pode cortar dentro de um ancestral com `overflow:
+  hidden`. Decisão consciente: o mecanismo de posicionamento robusto
+  (portal + cálculo de posição) é o que o `Popover` (próximo do
+  roadmap) resolve de vez; construir isso agora antecipraria trabalho
+  que muda de qualquer forma quando ele existir.
+- **`Combobox`** — quarto lote, construído junto com a revisão do
+  `Select` acima. Também em `src/components/select.tsx`, reaproveitando
+  a mesma listbox/navegação por teclado (`OptionList`,
+  `useOutsideClick`, `nextEnabledIndex` — internos, não exportados); a
+  diferença é o gatilho (`<input>` editável, não um `<button>`
+  só-escolha) e um filtro por texto (`filter`, com padrão de "contém,
+  sem diferenciar maiúsculas") aplicado conforme o usuário digita.
+  Mesmo limite de popup não-portal do `Select`. 45 componentes (era 43).
 
 ### Corrigido
 

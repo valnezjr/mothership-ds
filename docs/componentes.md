@@ -294,18 +294,20 @@ fixa — quem decide isso é o CSS ao redor, não os componentes.
 
 ### `Select`
 
-`<select>` nativo estilizado (`appearance: none` + seta própria) —
-mesmo tratamento de borda/foco/disabled do `Input`. **Só o campo
-fechado fica dentro do sistema**: a lista aberta é renderizada pelo
-navegador/SO, fora do alcance de qualquer CSS — não dá pra levar
-vidro, `backdrop-filter` ou os tokens de cor pra dentro dela. Se isso
-for um problema real mais adiante, a saída é um listbox customizado
-(o mesmo primitive que um futuro `Combobox` vai precisar).
+Listbox própria — **não** o `<select>` nativo do navegador. Gatilho é
+um `<button role="combobox">` estilizado como `Input` (vidro, borda,
+foco); o popup é um `<ul role="listbox">` de vidro, com o mesmo
+`--ease-bounce` do resto do sistema. Diferente do `<select>` nativo,
+o popup inteiro fica dentro do sistema de design — nada de limite de
+plataforma.
 
-| Prop | Tipo | |
-|---|---|---|
-| `options` | `{ value, label, disabled? }[]` | |
-| `placeholder` | `string` | vira o primeiro item, desabilitado; omita se não precisar |
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `options` | `{ value, label, disabled? }[]` | — | |
+| `placeholder` | `string` | — | exibido quando nada foi escolhido |
+| `value`/`defaultValue` | `string` | — | controlado/não-controlado, como um input |
+| `onChange` | `(value: string) => void` | — | |
+| `name` | `string` | — | monta um `<input type="hidden">` pra participar de `<form>` nativo |
 
 ```tsx
 <Select
@@ -317,7 +319,46 @@ for um problema real mais adiante, a saída é um listbox customizado
 />
 ```
 
-Encaminha `ref`.
+Teclado: `↓`/`↑` navegam (pulando opções `disabled`, com wrap),
+`Enter`/`Espaço` escolhem, `Esc` fecha, `Home`/`End` pulam pro
+primeiro/último item habilitado. Clique fora fecha. Encaminha `ref`
+(pro `<button>` gatilho).
+
+**Limite conhecido, deliberado:** o popup é `position: absolute` num
+wrapper `position: relative` — não é portal no `<body>` como
+Modal/menu da Navbar. Se o gatilho viver dentro de um ancestral com
+`overflow: hidden`, o popup pode cortar. Isso é intencional: o
+mecanismo de posicionamento robusto (portal + cálculo de posição) é o
+que o `Popover` (próximo do roadmap) resolve de vez — construir isso
+aqui antes seria antecipar trabalho que muda de qualquer forma quando
+o `Popover` existir.
+
+### `Combobox`
+
+Campo de texto com autocomplete — mesma listbox do `Select` (mesmo
+popup, mesma navegação por teclado), com o gatilho trocado por um
+`<input>` editável e um filtro por texto aplicado conforme digita.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `options` | `{ value, label, disabled? }[]` | — | |
+| `filter` | `(option, query) => boolean` | contém, sem diferenciar maiúsculas | |
+| `emptyLabel` | `string` | `"Nada encontrado."` | exibido quando o filtro não acha nada |
+| `value`/`defaultValue` | `string` | — | o valor da opção escolhida (não o texto digitado) |
+| `onChange` | `(value: string) => void` | — | |
+
+```tsx
+<Combobox
+  placeholder="Digite pra filtrar…"
+  options={[
+    { value: "sp", label: "São Paulo" },
+    { value: "rj", label: "Rio de Janeiro" },
+  ]}
+/>
+```
+
+Mesmo limite conhecido do `Select` quanto ao popup não ser portal —
+ver acima. Encaminha `ref` (pro `<input>`).
 
 ### `Checkbox` · `Radio`
 
