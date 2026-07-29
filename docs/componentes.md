@@ -292,6 +292,33 @@ fixa — quem decide isso é o CSS ao redor, não os componentes.
 
 `Input` e `Textarea` encaminham `ref`.
 
+### `Select`
+
+`<select>` nativo estilizado (`appearance: none` + seta própria) —
+mesmo tratamento de borda/foco/disabled do `Input`. **Só o campo
+fechado fica dentro do sistema**: a lista aberta é renderizada pelo
+navegador/SO, fora do alcance de qualquer CSS — não dá pra levar
+vidro, `backdrop-filter` ou os tokens de cor pra dentro dela. Se isso
+for um problema real mais adiante, a saída é um listbox customizado
+(o mesmo primitive que um futuro `Combobox` vai precisar).
+
+| Prop | Tipo | |
+|---|---|---|
+| `options` | `{ value, label, disabled? }[]` | |
+| `placeholder` | `string` | vira o primeiro item, desabilitado; omita se não precisar |
+
+```tsx
+<Select
+  placeholder="Escolha um plano"
+  options={[
+    { value: "starter", label: "Starter" },
+    { value: "pro", label: "Pro" },
+  ]}
+/>
+```
+
+Encaminha `ref`.
+
 ### `Checkbox` · `Radio`
 
 `<input>` nativo com `appearance: none` — mantêm foco, teclado e

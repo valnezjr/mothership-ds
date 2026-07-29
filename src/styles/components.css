@@ -475,6 +475,22 @@
 
 textarea.ms-input { min-height: 96px; resize: vertical; }
 
+/* select.ms-input: mesmo tratamento de borda/foco/disabled do Input —
+   só o miolo (appearance: none + seta) muda. A lista aberta é
+   renderizada pelo navegador/SO, fora do alcance do CSS — não dá pra
+   levar vidro/tokens pra dentro dela, só o campo fechado fica 100% no
+   sistema. */
+select.ms-input {
+  appearance: none;
+  padding-right: calc(var(--space-4) + 24px);
+  background-image: var(--icon-select);
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+  cursor: pointer;
+}
+
+select.ms-input:disabled { cursor: not-allowed; }
+
 .ms-checkbox-field,
 .ms-radio-field {
   display: inline-flex;

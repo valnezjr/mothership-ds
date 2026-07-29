@@ -64,6 +64,20 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     sem necessidade real hoje (YAGNI); revisitar se um caso de uso
     concreto pedir isso no futuro.
   - 43 componentes (era 40).
+- **`Select`** — terceiro lote do caminho até a v1.5. Também em
+  `src/components/primitives.tsx`, sem `"use client"`; `<select>`
+  nativo estilizado (`appearance: none` + seta própria via
+  `--icon-select`, novo token com uma versão por tema), reaproveitando
+  a classe `.ms-input` (mesmo tratamento de borda/foco/disabled do
+  `Input`/`Textarea`). Prop `placeholder` some da lista depois de
+  escolhido (`disabled hidden` no `<option>`), mas precisa de
+  `defaultValue=""` explícito pro navegador não pular a opção e
+  pré-selecionar a primeira em silêncio — achado real ao testar, não
+  óbvio de antemão. **Limite de plataforma, não de implementação**: só
+  o campo fechado fica com vidro/tokens do sistema — a lista aberta é
+  renderizada pelo navegador/SO, fora do alcance de qualquer CSS.
+  `Combobox` (próximo do roadmap) é o caminho se um listbox 100%
+  customizado for necessário depois. 44 componentes (era 43).
 
 ### Corrigido
 

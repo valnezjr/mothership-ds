@@ -225,6 +225,52 @@ export const Textarea = React.forwardRef<
   return <textarea ref={ref} className={cx("ms-input", className)} {...rest} />;
 });
 
+export interface SelectOption {
+  value: string;
+  label: React.ReactNode;
+  disabled?: boolean;
+}
+
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  options: SelectOption[];
+  /** Texto do primeiro item, desabilitado — omita se não precisar de um placeholder. */
+  placeholder?: string;
+}
+
+/**
+ * `<select>` nativo estilizado — mesmo tratamento de borda/foco/disabled do `Input`,
+ * só o miolo muda (seta, `appearance: none`). A lista aberta é do navegador/SO: nenhum
+ * CSS chega nela, então só o campo fechado fica com vidro/tokens do sistema.
+ */
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(function Select(
+  { options, placeholder, className, defaultValue, ...rest },
+  ref
+) {
+  // Sem isso, o navegador ignora a opção disabled+hidden e pré-seleciona
+  // a primeira opção real em silêncio — o placeholder nunca aparecia.
+  // Só define quando o consumidor não estiver controlando o valor.
+  const showPlaceholder = placeholder != null && defaultValue === undefined && rest.value === undefined;
+  return (
+    <select
+      ref={ref}
+      className={cx("ms-input", className)}
+      defaultValue={showPlaceholder ? "" : defaultValue}
+      {...rest}
+    >
+      {placeholder != null && (
+        <option value="" disabled hidden>
+          {placeholder}
+        </option>
+      )}
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  );
+});
+
 export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Rótulo ao lado da caixa — omita para montar o `<label>` você mesmo. */
   label?: React.ReactNode;

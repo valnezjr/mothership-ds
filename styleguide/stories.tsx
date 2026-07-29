@@ -5,7 +5,7 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch,
+  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select,
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
@@ -904,11 +904,21 @@ export const STORIES: Story[] = [
     id: "campos",
     group: "Componentes",
     title: "Campos de formulário",
-    subtitle: "Input e textarea com o mesmo tratamento de foco e disabled do resto do sistema. Field junta label + controle numa única unidade acessível.",
+    subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. O <select> é nativo estilizado — a lista aberta é do navegador/SO, sem alcance do CSS; só o campo fechado fica 100% no sistema.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
         <Field label="E-mail (foco = borda accent)"><Input placeholder="voce@exemplo.com" /></Field>
+        <Field label="Plano">
+          <Select
+            placeholder="Escolha um plano"
+            options={[
+              { value: "starter", label: "Starter" },
+              { value: "pro", label: "Pro" },
+              { value: "enterprise", label: "Enterprise" },
+            ]}
+          />
+        </Field>
         <Field label="Desabilitado"><Input placeholder="Indisponível" disabled /></Field>
         <Field label="Mensagem"><Textarea placeholder="Escreva sua mensagem…" /></Field>
       </div>
