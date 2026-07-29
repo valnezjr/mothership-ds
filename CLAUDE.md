@@ -117,12 +117,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       SPA.
 - [x] Glows do `LivingBackground` (`--bg-glow-1..4`,
       `src/styles/tokens.css`, dois temas) trocados de tons de
-      violeta/roxo/azul sem relação com a marca para `var()` direto de
+      violeta/roxo/azul sem relação com a marca para
+      `color-mix(in srgb, var(...), transparent)` sobre
       `--color-accent`/`--color-pink`/`--color-orange` — as três
       paradas do gradiente de `assets/logo.svg`. Fundo passa a ler
       ciano → magenta → laranja, e acompanha automaticamente qualquer
-      realinhamento futuro da marca (não precisa editar o fundo de
-      novo).
+      realinhamento futuro da marca. O `color-mix` (diluindo pra
+      ~50-65%) veio de um ajuste rápido: a primeira versão, com a cor
+      de marca sólida, ficou forte demais — mesmo idioma já usado nas
+      sombras de `.ms-hover-edge`/`.ms-sparkline`.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

@@ -55,12 +55,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   o item ativo via `active` (ver acima).
 - **Cores dos glows do `LivingBackground`** (`--bg-glow-1..4` em
   `src/styles/tokens.css`, os dois temas): eram tons de violeta/roxo/azul
-  sem relação com nenhum token de marca. Agora usam `var()` direto da
-  escala de `--color-accent`/`--color-pink`/`--color-orange` — as três
-  paradas exatas do gradiente de `assets/logo.svg` — então o fundo lê
-  como ciano → magenta → laranja, a mesma progressão da logo, em vez de
-  uma paleta desconectada dela. Se a marca for realinhada de novo (como
-  em v1.2.0), o fundo acompanha automaticamente, sem edição manual.
+  sem relação com nenhum token de marca. Agora usam `color-mix(in srgb,
+  var(...), transparent)` sobre a escala de
+  `--color-accent`/`--color-pink`/`--color-orange` — as três paradas
+  exatas do gradiente de `assets/logo.svg` — então o fundo lê como
+  ciano → magenta → laranja, a mesma progressão da logo, em vez de uma
+  paleta desconectada dela. O `color-mix` (mesmo idioma já usado nas
+  sombras de `.ms-hover-edge`/`.ms-sparkline`) dilui a cor pra manter o
+  efeito suave — a versão inicial, com a cor de marca sólida, ficava
+  forte demais. Se a marca for realinhada de novo (como em v1.2.0), o
+  fundo acompanha automaticamente, sem edição manual.
 
 ### Corrigido
 
