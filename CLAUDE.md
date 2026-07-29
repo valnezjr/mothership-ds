@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 37 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 40 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -139,6 +139,23 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `.ms-alert-history` (reaproveita o mesmo keyframe) ganharam
       `@media (prefers-reduced-motion: reduce) { animation-duration:
       0.01s }`, que não existia antes pra nenhum dos dois.
+- [x] Categorias de componentes reorganizadas (`docs/componentes.md`,
+      `README.md`) de 8 pra 11, preparando terreno pro lote de
+      componentes a caminho da v1.5 (`Tabs`, `Pagination`,
+      `DropdownMenu`, `Checkbox`, `Radio`, `Switch`, `Select`,
+      `Combobox`, `Tooltip`, `Popover`, `Drawer`, `EmptyState`,
+      `Timeline`, `Toolbar`, `FilterBar` — ainda não implementados).
+      "Layout e navegação" virou **Layout** + **Navegação**;
+      **Formulários** saiu de "Controles e superfícies"; **Overlays**
+      saiu de "Interativos". Nenhum componente existente mudou de
+      nome/prop/comportamento, só a categorização.
+- [x] `Stack`, `Divider`, `Skeleton` (`src/components/primitives.tsx`,
+      sem `"use client"`) — primeiro lote do caminho até a v1.5.
+      `Stack`: flexbox fino, `gap` na escala `--space-1..7`. `Divider`:
+      `<hr>` horizontal, `<div role="separator" aria-orientation="vertical">`
+      quando vertical. `Skeleton`: pulso entre
+      `--color-surface`/`--color-surface-hover` (nenhuma cor nova),
+      desliga sob `prefers-reduced-motion`. 40 componentes (era 37).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

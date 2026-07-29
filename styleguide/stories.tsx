@@ -5,7 +5,7 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash,
+  Footer, Flash, Stack, Divider, Skeleton,
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
@@ -940,6 +940,27 @@ export const STORIES: Story[] = [
     ),
   },
   {
+    id: "stack-divider",
+    group: "Componentes",
+    title: "Stack & Divider",
+    subtitle: "Stack: wrapper fino de flexbox — direction/gap/align em tokens do sistema, sem lógica própria. Divider: linha divisória; orientation=\"vertical\" pede altura definida pelo pai (align-self: stretch cobre um Stack em linha).",
+    render: () => (
+      <Stack gap={5}>
+        <Stack direction="row" gap={3} align="center">
+          <Badge>Item 1</Badge>
+          <Badge tone="accent">Item 2</Badge>
+          <Divider orientation="vertical" style={{ height: 20 }} />
+          <Badge tone="success">Item 3</Badge>
+        </Stack>
+        <Divider />
+        <Stack gap={2}>
+          <CardText>Uma coluna, gap=2 (8px).</CardText>
+          <CardText>Segunda linha.</CardText>
+        </Stack>
+      </Stack>
+    ),
+  },
+  {
     id: "precificacao",
     group: "Componentes",
     title: "Card de precificação",
@@ -1399,6 +1420,24 @@ export const STORIES: Story[] = [
     title: "Tabela",
     subtitle: "Tabela pronta pro fluxo de CRUD: primeira coluna sempre uma badge de status, última sempre os ícones de ação (editar/excluir). Colunas sortable alternam asc → desc → ordem original no cabeçalho.",
     render: () => <TableDemo />,
+  },
+  {
+    id: "skeleton",
+    group: "Dados",
+    title: "Skeleton",
+    subtitle: "Placeholder de carregamento. O pulso anima entre os dois tokens de superfície já existentes — nada de cor nova, funciona nos dois temas de graça. variant=\"text\"/\"circle\"/\"rect\" (padrão) cobrem os formatos mais comuns.",
+    render: () => (
+      <Stack gap={5} style={{ maxWidth: 360 }}>
+        <Stack direction="row" gap={3} align="center">
+          <Skeleton variant="circle" />
+          <Stack gap={2} style={{ flex: 1 }}>
+            <Skeleton variant="text" style={{ width: "60%" }} />
+            <Skeleton variant="text" style={{ width: "40%" }} />
+          </Stack>
+        </Stack>
+        <Skeleton style={{ height: 120 }} />
+      </Stack>
+    ),
   },
 ];
 

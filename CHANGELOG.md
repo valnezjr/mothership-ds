@@ -33,6 +33,20 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     ele uma página comum rola inteira como sempre.
   - Receita completa em docs/componentes.md § Layout de SPA; raciocínio
     em ARCHITECTURE.md § Performance do styleguide.
+- **`Stack`, `Divider`, `Skeleton`** — primeiro lote do caminho até a
+  v1.5 (37 → 55 componentes planejados; ver categorias reorganizadas
+  logo abaixo). Os três em `src/components/primitives.tsx`, sem
+  `"use client"` (puramente apresentacionais):
+  - **`Stack`** — wrapper fino de flexbox (`direction`, `gap` na escala
+    `--space-1..7`, `align`, `wrap`), sem lógica própria.
+  - **`Divider`** — linha divisória; `orientation="vertical"` renderiza
+    `<div role="separator" aria-orientation="vertical">` em vez de
+    `<hr>` (que é sempre horizontal por especificação).
+  - **`Skeleton`** — placeholder de carregamento; o pulso anima entre
+    `--color-surface`/`--color-surface-hover` (nenhuma cor nova),
+    `aria-hidden="true"` por padrão, e desliga sob
+    `prefers-reduced-motion: reduce`.
+  - 40 componentes (era 37).
 
 ### Alterado
 
@@ -75,6 +89,18 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   mesma técnica do Modal) — o toast e o painel de histórico
   (`AlertHistory`, que reaproveita o mesmo keyframe) não tinham essa
   cobertura antes; ganharam agora.
+- **Categorias de componentes reorganizadas** (`docs/componentes.md`,
+  `README.md`), preparando terreno pro lote de componentes novos a
+  caminho da v1.5. Eram 8: Providers, Layout e navegação, Controles e
+  superfícies, Marketing, Interativos, Alertas, Dados, Marca. Agora são
+  11 — "Layout e navegação" virou duas (**Layout**: `Page`, `Hero`,
+  `Footer`; **Navegação**: `Navbar`, `Sidebar`, `useHashRoute`,
+  `Breadcrumbs`); **Formulários** foi extraída de "Controles e
+  superfícies" (`Field`, `Input`, `Textarea`); **Overlays** foi extraída
+  de "Interativos" (`Modal`, `StepModal`). Nenhum componente mudou de
+  nome, prop ou comportamento — só a categorização, pra cada peça nova
+  do roadmap (`Tabs`, `Checkbox`, `Tooltip`, `Drawer` etc.) já ter um
+  lugar certo pra entrar.
 
 ### Corrigido
 

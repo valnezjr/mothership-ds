@@ -326,3 +326,78 @@ export function Flash() {
     </span>
   );
 }
+
+/* ---------- Stack ---------- */
+
+export interface StackProps extends Div {
+  /** Eixo principal do flex. */
+  direction?: "row" | "column";
+  /** Espaço entre itens, na escala de 8 pontos (`--space-1`…`--space-7`). */
+  gap?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  align?: "start" | "center" | "end" | "stretch";
+  wrap?: boolean;
+}
+
+/** Wrapper fino de flexbox — só aplica direção/espaço/alinhamento em tokens do sistema. */
+export function Stack({
+  direction = "column",
+  gap = 4,
+  align,
+  wrap,
+  className,
+  style,
+  ...rest
+}: StackProps) {
+  return (
+    <div
+      className={cx("ms-stack", className)}
+      style={{
+        flexDirection: direction,
+        gap: `var(--space-${gap})`,
+        alignItems: align,
+        flexWrap: wrap ? "wrap" : undefined,
+        ...style,
+      }}
+      {...rest}
+    />
+  );
+}
+
+/* ---------- Divider ---------- */
+
+export interface DividerProps extends React.HTMLAttributes<HTMLElement> {
+  orientation?: "horizontal" | "vertical";
+}
+
+/** Linha divisória — vertical exige altura definida pelo pai (`align-self: stretch` cobre um `Stack`/flex). */
+export function Divider({ orientation = "horizontal", className, ...rest }: DividerProps) {
+  if (orientation === "vertical") {
+    return (
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        className={cx("ms-divider", "ms-divider--vertical", className)}
+        {...rest}
+      />
+    );
+  }
+  return <hr className={cx("ms-divider", className)} {...rest} />;
+}
+
+/* ---------- Skeleton ---------- */
+
+export interface SkeletonProps extends Div {
+  /** `text` = linha baixa arredondada; `circle` = avatar/ícone; `rect` = bloco livre (padrão). */
+  variant?: "text" | "circle" | "rect";
+}
+
+/** Placeholder de carregamento — pulsa entre os tokens de superfície existentes, nunca uma cor nova. */
+export function Skeleton({ variant = "rect", className, ...rest }: SkeletonProps) {
+  return (
+    <div
+      className={cx("ms-skeleton", variant !== "rect" && `ms-skeleton--${variant}`, className)}
+      aria-hidden="true"
+      {...rest}
+    />
+  );
+}

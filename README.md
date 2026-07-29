@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **37 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **40 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -141,9 +141,13 @@ export default function Home() {
 <table>
 <tr><td valign="top" width="33%">
 
-**Layout e navegação**
+**Layout**
 
-`Page` · `Navbar` · `Sidebar` · `useHashRoute` · `Breadcrumbs` · `Hero` · `Footer`
+`Page` · `Hero` · `Footer` · `Stack` · `Divider`
+
+**Navegação**
+
+`Navbar` · `Sidebar` · `useHashRoute` · `Breadcrumbs`
 
 **Marca**
 
@@ -151,20 +155,28 @@ export default function Home() {
 
 </td><td valign="top" width="33%">
 
-**Superfícies e controles**
+**Controles e superfícies**
 
 `Button` · `ButtonLink` · `IconButton` · `LinkList` · `Card` · `Badge` ·
-`Avatar` · `Profile` · `Field` · `Input` · `Textarea` · `ThemeSwitch`
+`Avatar` · `Profile` · `ThemeSwitch`
+
+**Formulários**
+
+`Field` · `Input` · `Textarea`
 
 **Interativos**
 
-`Accordion` · `Carousel` · `Gallery` · `Marquee` · `Modal` · `StepModal` · `HoverEdge`
+`Accordion` · `Carousel` · `Gallery` · `Marquee` · `HoverEdge`
+
+</td><td valign="top" width="33%">
+
+**Overlays**
+
+`Modal` · `StepModal`
 
 **Marketing**
 
 `PricingCard` · `TestimonialCard` · `BentoGrid` · `BentoTile`
-
-</td><td valign="top" width="33%">
 
 **Alertas**
 
@@ -173,12 +185,23 @@ export default function Home() {
 **Dados**
 
 `LineChart` · `Meter` · `PieChart` · `ProgressRing` · `Sparkline` ·
-`StatGrid` · `StatTile` · `Legend` · `TooltipProvider` · `Table`
+`StatGrid` · `StatTile` · `Legend` · `TooltipProvider` · `Table` · `Skeleton`
 
 </td></tr>
 </table>
 
 A referência completa de props está em [`docs/componentes.md`](docs/componentes.md).
+
+## Roadmap
+
+- **v1.5 — rumo a 60 componentes.** Expansão do catálogo atual (37),
+  começando pelas composições de conveniência do `Marquee` já
+  documentadas e ainda não implementadas: `LogoMarquee`, `TechMarquee`,
+  `IconMarquee` e `TestimonialMarquee` — variações prontas do primitive
+  já existente, sem lógica própria, para os usos mais comuns (fileira
+  de logos, ícones de stack, avaliações em loop) sem montar o
+  `children` na mão. Detalhe em
+  [`docs/componentes.md`](docs/componentes.md#marquee).
 
 ## Ícones
 

@@ -4,10 +4,11 @@ Referência de props. Todos os componentes aceitam `className` e os
 atributos HTML nativos do elemento que renderizam, então `id`,
 `data-*`, `style` e handlers funcionam como você espera.
 
-Índice: [Providers](#providers) · [Layout](#layout-e-navegação) ·
-[Controles](#controles-e-superfícies) · [Marketing](#marketing) ·
-[Interativos](#interativos) · [Alertas](#alertas) · [Dados](#dados) ·
-[Marca](#marca)
+Índice: [Providers](#providers) · [Layout](#layout) ·
+[Navegação](#navegação) · [Formulários](#formulários) ·
+[Controles](#controles-e-superfícies) · [Interativos](#interativos) ·
+[Overlays](#overlays) · [Marketing](#marketing) · [Alertas](#alertas) ·
+[Dados](#dados) · [Marca](#marca)
 
 ---
 
@@ -57,7 +58,7 @@ Anima os glows do fundo. Aceita `config` para calibrar cada glow; veja
 
 ---
 
-## Layout e navegação
+## Layout
 
 ### `Page`
 
@@ -73,6 +74,62 @@ do sistema usava — cada página já define sua própria largura via
 `style`/CSS, e via `Page`/`contained` quando quer especificamente essa
 largura original. O token `--container-max` continua disponível pra
 quem quiser replicar essa largura manualmente.
+
+### `Stack`
+
+Wrapper fino de flexbox — só aplica direção, espaço e alinhamento em
+tokens do sistema, sem lógica própria. Use quando o layout é só
+empilhar/enfileirar itens com espaço consistente; para arranjos mais
+elaborados, CSS/`style` direto continua sendo o caminho — a `Stack` não
+tenta virar um sistema de grid.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `direction` | `"row" \| "column"` | `"column"` | |
+| `gap` | `1‑7` | `4` | espaço entre itens, na escala `--space-1..7` |
+| `align` | `"start" \| "center" \| "end" \| "stretch"` | — | `align-items` |
+| `wrap` | `boolean` | `false` | |
+
+```tsx
+<Stack direction="row" gap={3} align="center">
+  <Badge>Item 1</Badge>
+  <Badge tone="accent">Item 2</Badge>
+</Stack>
+```
+
+### `Divider`
+
+Linha divisória. `orientation="vertical"` pede altura definida pelo
+pai — `align-self: stretch` cobre a maioria dos casos dentro de um
+`Stack`/flex em linha.
+
+| Prop | Tipo | Padrão |
+|---|---|---|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+
+Horizontal renderiza um `<hr>` (semântica nativa de separador).
+Vertical renderiza um `<div role="separator" aria-orientation="vertical">`,
+já que `<hr>` é sempre horizontal por especificação.
+
+### `Hero` · `HeroHighlight`
+
+| Prop | Tipo | |
+|---|---|---|
+| `eyebrow` | `ReactNode` | badge acima do título |
+| `title` | `ReactNode` | |
+| `subtitle` | `ReactNode` | |
+| `actions` | `ReactNode` | fileira de botões |
+
+`HeroHighlight` destaca uma palavra do título com o gradiente da escala
+accent.
+
+### `Footer` · `Flash`
+
+`Flash` é o ícone de raio da marca, na cor de destaque.
+
+---
+
+## Navegação
 
 ### `Navbar`
 
@@ -227,21 +284,13 @@ fixa — quem decide isso é o CSS ao redor, não os componentes.
 | `items` | `{ label, href? }[]` | o último vira o item atual |
 | `glass` | `boolean` | envolve numa pill de vidro |
 
-### `Hero` · `HeroHighlight`
+---
 
-| Prop | Tipo | |
-|---|---|---|
-| `eyebrow` | `ReactNode` | badge acima do título |
-| `title` | `ReactNode` | |
-| `subtitle` | `ReactNode` | |
-| `actions` | `ReactNode` | fileira de botões |
+## Formulários
 
-`HeroHighlight` destaca uma palavra do título com o gradiente da escala
-accent.
+### `Field` · `Input` · `Textarea`
 
-### `Footer` · `Flash`
-
-`Flash` é o ícone de raio da marca, na cor de destaque.
+`Input` e `Textarea` encaminham `ref`.
 
 ---
 
@@ -279,74 +328,10 @@ Botão circular. `href` e `aria-label` são **obrigatórios** — um `<a>` sem
 | `initials` | `string` | exibido quando não há `src` |
 | `alt` | `string` | texto alternativo |
 
-### `Field` · `Input` · `Textarea`
-
-`Input` e `Textarea` encaminham `ref`.
-
 ### `ThemeSwitch`
 
 Interruptor claro/escuro. Renderiza um `<button role="switch">` com
 `aria-checked` — o estado é anunciado, não só visual.
-
----
-
-## Marketing
-
-Blocos de conversão pra landing pages — adicionados na v1.2.
-
-### `PricingCard`
-
-| Prop | Tipo | |
-|---|---|---|
-| `title` | `ReactNode` | nome do plano |
-| `description` | `ReactNode` | frase curta abaixo do nome |
-| `price` | `ReactNode` | valor já formatado — `"R$49"`, `"Grátis"` |
-| `period` | `ReactNode` | unidade ao lado do preço — `"/mês"` |
-| `features` | `{ text, included? }[]` | `included: false` risca o texto e troca o check por um traço |
-| `cta` | `ReactNode` | ação — normalmente um `<ButtonLink>`, fica sempre no rodapé do card |
-| `badge` | `ReactNode` | rótulo acima do card (ex. `"Popular"`) — implica `highlighted` |
-| `highlighted` | `boolean` | borda e glow accent, sem depender de `badge` |
-
-Combine com `<HoverEdge>` para o contorno reativo, como o `<Card>`.
-
-### `TestimonialCard`
-
-| Prop | Tipo | |
-|---|---|---|
-| `quote` | `ReactNode` | o depoimento |
-| `author` | `ReactNode` | nome de quem depõe |
-| `role` | `ReactNode` | cargo e/ou empresa, abaixo do nome |
-| `avatar` | `ReactNode` | normalmente um `<Avatar size="sm">` |
-| `rating` | `number` | 0–5; omita para não mostrar estrelas |
-| `highlighted` | `boolean` | borda e glow accent, para o depoimento em foco |
-| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
-
-Identidade (avatar + nome + cargo) sempre no rodapé do card,
-independente do tamanho do texto. Já nasce com o contorno reativo
-(`interactive`) — não precisa envolver com `<HoverEdge>`. Combine com
-`<Carousel items={...}>` para paginar vários depoimentos.
-
-### `BentoGrid` · `BentoTile`
-
-`BentoGrid` é só o grid (4 colunas); os tiles são `<BentoTile>` filhos,
-como `StatGrid`/`StatTile`.
-
-| Prop (`BentoTile`) | Tipo | |
-|---|---|---|
-| `colSpan` | `2 \| 3 \| 4` | quantas colunas ocupa no grid de 4 |
-| `rowSpan` | `2 \| 3` | quantas linhas ocupa |
-| `icon` | `ReactNode` | |
-| `title` | `ReactNode` | |
-| `description` | `ReactNode` | |
-| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
-
-`grid-auto-flow: dense` preenche os buracos deixados por spans
-irregulares em vez de deixar o layout furado, mas os tiles esticam
-pra altura uniforme da linha (stretch, o padrão do grid) — linhas
-sempre alinhadas, só o tamanho (`colSpan`/`rowSpan`) varia entre eles.
-
-Abaixo de 720px o grid vira uma coluna e todo tile volta a 1×1 —
-nenhum bloco fica maior que outro numa lista vertical.
 
 ---
 
@@ -412,6 +397,28 @@ Ainda não implementadas — só composições futuras do mesmo primitive,
 sem lógica própria: `LogoMarquee`, `TechMarquee`, `IconMarquee`,
 `TestimonialMarquee`.
 
+### `HoverEdge`
+
+Aplica a qualquer superfície o hover do sistema: cresce, projeta sombra e
+a borda vira um anel em degradê que gira acompanhando o mouse.
+
+```tsx
+<HoverEdge colors={["var(--chart-1)", "var(--color-success)"]}>
+  <Card title="Receita">…</Card>
+</HoverEdge>
+```
+
+| Prop | Tipo | Padrão |
+|---|---|---|
+| `colors` | `[string, string]` | accent → accent-300 |
+| `radius` | `string` | `--radius-md` |
+| `lift` | `string` | `-4px` |
+| `scale` | `number` | `1.03` |
+
+---
+
+## Overlays
+
 ### `Modal` · `StepModal`
 
 | Prop | Tipo | Padrão | |
@@ -440,23 +447,65 @@ Todas as etapas ficam montadas na mesma célula de uma grade, com as
 inativas invisíveis: o modal já nasce com a altura da etapa mais alta e
 não muda de tamanho ao navegar.
 
-### `HoverEdge`
+---
 
-Aplica a qualquer superfície o hover do sistema: cresce, projeta sombra e
-a borda vira um anel em degradê que gira acompanhando o mouse.
+## Marketing
 
-```tsx
-<HoverEdge colors={["var(--chart-1)", "var(--color-success)"]}>
-  <Card title="Receita">…</Card>
-</HoverEdge>
-```
+Blocos de conversão pra landing pages — adicionados na v1.2.
 
-| Prop | Tipo | Padrão |
+### `PricingCard`
+
+| Prop | Tipo | |
 |---|---|---|
-| `colors` | `[string, string]` | accent → accent-300 |
-| `radius` | `string` | `--radius-md` |
-| `lift` | `string` | `-4px` |
-| `scale` | `number` | `1.03` |
+| `title` | `ReactNode` | nome do plano |
+| `description` | `ReactNode` | frase curta abaixo do nome |
+| `price` | `ReactNode` | valor já formatado — `"R$49"`, `"Grátis"` |
+| `period` | `ReactNode` | unidade ao lado do preço — `"/mês"` |
+| `features` | `{ text, included? }[]` | `included: false` risca o texto e troca o check por um traço |
+| `cta` | `ReactNode` | ação — normalmente um `<ButtonLink>`, fica sempre no rodapé do card |
+| `badge` | `ReactNode` | rótulo acima do card (ex. `"Popular"`) — implica `highlighted` |
+| `highlighted` | `boolean` | borda e glow accent, sem depender de `badge` |
+
+Combine com `<HoverEdge>` para o contorno reativo, como o `<Card>`.
+
+### `TestimonialCard`
+
+| Prop | Tipo | |
+|---|---|---|
+| `quote` | `ReactNode` | o depoimento |
+| `author` | `ReactNode` | nome de quem depõe |
+| `role` | `ReactNode` | cargo e/ou empresa, abaixo do nome |
+| `avatar` | `ReactNode` | normalmente um `<Avatar size="sm">` |
+| `rating` | `number` | 0–5; omita para não mostrar estrelas |
+| `highlighted` | `boolean` | borda e glow accent, para o depoimento em foco |
+| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
+
+Identidade (avatar + nome + cargo) sempre no rodapé do card,
+independente do tamanho do texto. Já nasce com o contorno reativo
+(`interactive`) — não precisa envolver com `<HoverEdge>`. Combine com
+`<Carousel items={...}>` para paginar vários depoimentos.
+
+### `BentoGrid` · `BentoTile`
+
+`BentoGrid` é só o grid (4 colunas); os tiles são `<BentoTile>` filhos,
+como `StatGrid`/`StatTile`.
+
+| Prop (`BentoTile`) | Tipo | |
+|---|---|---|
+| `colSpan` | `2 \| 3 \| 4` | quantas colunas ocupa no grid de 4 |
+| `rowSpan` | `2 \| 3` | quantas linhas ocupa |
+| `icon` | `ReactNode` | |
+| `title` | `ReactNode` | |
+| `description` | `ReactNode` | |
+| `interactive` | `boolean` | contorno reativo no hover/active, padrão `true` |
+
+`grid-auto-flow: dense` preenche os buracos deixados por spans
+irregulares em vez de deixar o layout furado, mas os tiles esticam
+pra altura uniforme da linha (stretch, o padrão do grid) — linhas
+sempre alinhadas, só o tamanho (`colSpan`/`rowSpan`) varia entre eles.
+
+Abaixo de 720px o grid vira uma coluna e todo tile volta a 1×1 —
+nenhum bloco fica maior que outro numa lista vertical.
 
 ---
 
@@ -584,6 +633,37 @@ telas estreitas sem quebrar o layout.
   ]}
 />
 ```
+
+### `Skeleton`
+
+Placeholder de carregamento. O pulso anima entre `--color-surface` e
+`--color-surface-hover` — os dois tokens de superfície que já existem,
+nenhuma cor nova — então funciona nos dois temas sem esforço extra.
+`aria-hidden="true"` por padrão: é decorativo, quem precisa anunciar
+"carregando" pra leitor de tela é o container ao redor (`aria-busy`,
+texto oculto), não o placeholder em si.
+
+| Prop | Tipo | Padrão |
+|---|---|---|
+| `variant` | `"text" \| "circle" \| "rect"` | `"rect"` |
+
+`text` é uma linha baixa e arredondada (pill); `circle` vira um círculo
+de 40px (avatar/ícone); `rect` é um bloco livre — defina `width`/`height`
+via `style` conforme o conteúdo real que ele substitui.
+
+```tsx
+<Stack direction="row" gap={3} align="center">
+  <Skeleton variant="circle" />
+  <Stack gap={2} style={{ flex: 1 }}>
+    <Skeleton variant="text" style={{ width: "60%" }} />
+    <Skeleton variant="text" style={{ width: "40%" }} />
+  </Stack>
+</Stack>
+```
+
+Respeita `prefers-reduced-motion: reduce` (pulso desliga, fica parado
+no tom mais forte — ainda reconhecível como placeholder, não como
+conteúdo carregado).
 
 ---
 
