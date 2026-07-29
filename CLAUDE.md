@@ -115,6 +115,14 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       comum. Detalhe completo em ARCHITECTURE.md § Performance do
       styleguide; receita de uso em docs/componentes.md § Layout de
       SPA.
+- [x] Glows do `LivingBackground` (`--bg-glow-1..4`,
+      `src/styles/tokens.css`, dois temas) trocados de tons de
+      violeta/roxo/azul sem relação com a marca para `var()` direto de
+      `--color-accent`/`--color-pink`/`--color-orange` — as três
+      paradas do gradiente de `assets/logo.svg`. Fundo passa a ler
+      ciano → magenta → laranja, e acompanha automaticamente qualquer
+      realinhamento futuro da marca (não precisa editar o fundo de
+      novo).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
