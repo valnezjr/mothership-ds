@@ -17,7 +17,7 @@ import {
   // dados
   LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend, Table,
   // sobreposições
-  Modal, StepModal,
+  Modal, StepModal, Popover,
   // marca
   Splash, Loader,
 } from "../src/index";
@@ -1211,6 +1211,42 @@ export const STORIES: Story[] = [
     title: "Modal & etapas",
     subtitle: "Popup sobre véu escurecido (ou claro, no tema claro), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
     render: () => <ModalDemo />,
+  },
+  {
+    id: "popover",
+    group: "Componentes",
+    title: "Popover",
+    subtitle: "Painel flutuante disparado por clique — conteúdo livre e interativo, diferente do Tooltip (hover, só texto). Posição calculada de verdade (não CSS puro): vira de lado se não couber, nunca sai da viewport. \"Popover leve\": clique fora ou Esc fecham, mas não prende o foco dentro como o Modal.",
+    render: () => (
+      <div style={{ display: "flex", gap: 40 }}>
+        <Popover
+          placement="bottom"
+          align="start"
+          trigger={<Button inline>Abrir popover</Button>}
+        >
+          <p className="ms-h3" style={{ marginBottom: 8 }}>Configurações rápidas</p>
+          <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
+            Conteúdo livre — inclusive controles interativos de verdade.
+          </p>
+          <Switch label="Notificações" defaultChecked />
+        </Popover>
+        <Popover
+          placement="bottom"
+          align="end"
+          trigger={
+            <IconButton href="#" aria-label="Mais opções">
+              <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 20, height: 20 }} aria-hidden="true">
+                <circle cx="5" cy="12" r="2" />
+                <circle cx="12" cy="12" r="2" />
+                <circle cx="19" cy="12" r="2" />
+              </svg>
+            </IconButton>
+          }
+        >
+          <p className="ms-text-sm">Alinhado à direita do gatilho (align="end").</p>
+        </Popover>
+      </div>
+    ),
   },
   {
     id: "accordion",

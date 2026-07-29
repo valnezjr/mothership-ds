@@ -120,6 +120,30 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     `Breadcrumbs`/`StepModal`). Setas de anterior/próxima desabilitam
     nas pontas.
   - 47 componentes (era 45).
+- **`Popover`** (`src/components/popover.tsx`, arquivo novo, com
+  `"use client"`) — sexto lote. Primeiro componente com posicionamento
+  flutuante de verdade: portal no `<body>` + `position: fixed`,
+  posição calculada via `getBoundingClientRect` do gatilho e do
+  conteúdo (vira de lado se não couber, nunca sai da viewport
+  horizontalmente) — o mecanismo que `Select`/`Combobox` deixaram pra
+  depois, deliberadamente. "Popover leve" (ver ACCESSIBILITY.md §
+  Modal): clique fora ou `Esc` fecham, `Esc` devolve o foco ao gatilho,
+  mas **não** prende o foco dentro como o `Modal` — por isso sem
+  `role="dialog"`, que implicaria um contrato que ele não cumpre.
+  `trigger` aceita qualquer `ReactElement` sem precisar encaminhar
+  `ref` (`Button`/`ButtonLink`/`IconButton` não encaminham hoje) — a
+  medição de posição usa um wrapper interno em vez de clonar `ref` no
+  gatilho. Clique no gatilho sempre previne a ação padrão dele —
+  achado real ao testar: a primeira versão da story usava
+  `<ButtonLink href="#">` como gatilho, e sem `preventDefault` o
+  clique também navegava de verdade (o styleguide inteiro roteia por
+  hash, então mudar pra `#` desmontava a story inteira);
+  `IconButton`/`ButtonLink` sempre renderizam `<a>`
+  (`IconButton` exige `href`), então esse risco existe pra qualquer
+  gatilho desse tipo, não só no exemplo. z-index 700, mesma camada do
+  `TooltipProvider` (ver ARCHITECTURE.md § escala de z-index — os dois
+  são overlays leves flutuantes, não bloqueiam a página como o Modal).
+  48 componentes (era 47).
 
 ### Corrigido
 

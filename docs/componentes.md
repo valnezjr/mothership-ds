@@ -605,6 +605,42 @@ Todas as etapas ficam montadas na mesma célula de uma grade, com as
 inativas invisíveis: o modal já nasce com a altura da etapa mais alta e
 não muda de tamanho ao navegar.
 
+### `Popover`
+
+Painel flutuante disparado por clique, com conteúdo livre e
+interativo — diferente do `TooltipProvider` (hover, só texto simples).
+Portal no `<body>`, posição calculada de verdade (não CSS puro): mede
+gatilho e conteúdo, vira de lado se não couber no sentido pedido, e
+nunca deixa o popover sair da viewport horizontalmente.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `trigger` | `ReactElement` | — | elemento que abre/fecha ao ser clicado — não precisa encaminhar `ref` |
+| `open`/`defaultOpen` | `boolean` | — | controlado/não-controlado |
+| `onOpenChange` | `(open: boolean) => void` | — | |
+| `placement` | `"top" \| "bottom"` | `"bottom"` | |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | |
+
+```tsx
+<Popover trigger={<Button inline>Abrir</Button>}>
+  <p>Conteúdo livre — inclusive controles interativos.</p>
+</Popover>
+```
+
+**"Popover leve", não um overlay modal** (ver ACCESSIBILITY.md § Modal):
+clique fora ou `Esc` fecham (e `Esc` devolve o foco ao gatilho), mas
+**não** prende o foco dentro como o `Modal` — por isso não usa
+`role="dialog"`, que implicaria um contrato de foco que ele não
+implementa.
+
+Qualquer `ReactElement` funciona como `trigger`, mesmo sem encaminhar
+`ref` (`Button`, `ButtonLink`, `IconButton` não encaminham hoje) — a
+medição de posição usa um wrapper interno, não um clone com `ref`. O
+clique no gatilho sempre tem a ação padrão dele prevenida
+(`preventDefault`): `IconButton`/`ButtonLink` são sempre `<a>`
+(`IconButton` exige `href`), então sem isso o clique também navegaria
+de verdade.
+
 ---
 
 ## Marketing

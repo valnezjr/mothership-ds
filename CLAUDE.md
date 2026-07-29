@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 47 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 48 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -142,8 +142,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 - [x] Categorias de componentes reorganizadas (`docs/componentes.md`,
       `README.md`) de 8 pra 11, preparando terreno pro lote de
       componentes a caminho da v1.5 (`DropdownMenu`, `Tooltip`,
-      `Popover`, `Drawer`, `EmptyState`, `Timeline`, `Toolbar`,
-      `FilterBar` — ainda não implementados).
+      `Drawer`, `EmptyState`, `Timeline`, `Toolbar`, `FilterBar` —
+      ainda não implementados).
       "Layout e navegação" virou **Layout** + **Navegação**;
       **Formulários** saiu de "Controles e superfícies"; **Overlays**
       saiu de "Interativos". Nenhum componente existente mudou de
@@ -220,6 +220,25 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       início de cada build. `--serve` local continua com nome fixo.
       Detalhe em ARCHITECTURE.md § Nomes de arquivo com hash de
       conteúdo.
+- [x] `Popover` (`src/components/popover.tsx`, arquivo novo, com
+      `"use client"`) — sexto lote. Primeiro componente com
+      posicionamento flutuante de verdade: portal no `<body>` +
+      `position: fixed`, posição calculada via `getBoundingClientRect`
+      do gatilho e do conteúdo (vira de lado se não couber, nunca sai
+      da viewport horizontalmente) — o mecanismo que `Select`/
+      `Combobox` deliberadamente deixaram pra depois. "Popover leve"
+      (ver ACCESSIBILITY.md § Modal): clique fora/Esc fecham e Esc
+      devolve o foco ao gatilho, mas não prende o foco dentro como o
+      `Modal` — por isso sem `role="dialog"`. `trigger` é medido via
+      wrapper interno, não clone com `ref` (`Button`/`ButtonLink`/
+      `IconButton` não encaminham ref hoje). Clique no gatilho sempre
+      previne a ação padrão dele (achado ao testar: `IconButton`
+      exige `href`, então sem `preventDefault` o clique também
+      navegava de verdade — quebrou a primeira versão da story,
+      montada com `<ButtonLink href="#">`, cujo clique mudava o hash
+      da URL e desmontava a story inteira, já que o styleguide inteiro
+      roteia por hash). z-index 700, mesma camada do Tooltip (ver
+      ARCHITECTURE.md § escala de z-index). 48 componentes (era 47).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

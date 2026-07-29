@@ -69,10 +69,16 @@ navbar       100      sidebar-drawer    151
 splash      1000      sidebar-toggle    152
 modal        500      toasts            600
 histórico    610      tooltip           700
+                      popover           700
 ```
 
 Toasts e histórico ficam **acima** do modal de propósito: uma
 notificação disparada com um diálogo aberto precisa continuar visível.
+
+`Popover` divide a camada do tooltip (700) — os dois são overlays
+leves e flutuantes que não bloqueiam a página como o `Modal` (500);
+nenhum dos dois precisa ficar acima do outro porque não faz sentido um
+Popover conter um tooltip ativo (ou vice-versa) na prática.
 
 A gaveta da `Sidebar` fica **acima** da navbar de propósito (diferença
 do menu da própria Navbar, que fica abaixo dela): a gaveta é a
