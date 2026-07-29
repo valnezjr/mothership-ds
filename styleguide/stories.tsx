@@ -5,7 +5,7 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash, Stack, Divider, Skeleton,
+  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch,
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
@@ -912,6 +912,28 @@ export const STORIES: Story[] = [
         <Field label="Desabilitado"><Input placeholder="Indisponível" disabled /></Field>
         <Field label="Mensagem"><Textarea placeholder="Escreva sua mensagem…" /></Field>
       </div>
+    ),
+  },
+  {
+    id: "selecao",
+    group: "Componentes",
+    title: "Checkbox, Radio & Switch",
+    subtitle: "Checkbox e Radio são <input> nativo com appearance: none, então mantêm foco/teclado/formulário de graça — só o visual é customizado. Switch é um checkbox com role=\"switch\", participa de <form> normalmente (diferente do ThemeSwitch, que não é um campo de formulário).",
+    render: () => (
+      <Stack gap={4} style={{ maxWidth: 320 }}>
+        <Stack gap={2}>
+          <Checkbox label="Aceito os termos" defaultChecked />
+          <Checkbox label="Receber novidades por e-mail" />
+          <Checkbox label="Desabilitado" disabled />
+        </Stack>
+        <Divider />
+        <Stack gap={2}>
+          <Radio name="plano-demo" label="Mensal" defaultChecked />
+          <Radio name="plano-demo" label="Anual (2 meses grátis)" />
+        </Stack>
+        <Divider />
+        <Switch label="Notificações ativas" defaultChecked />
+      </Stack>
     ),
   },
   {

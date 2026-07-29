@@ -225,6 +225,70 @@ export const Textarea = React.forwardRef<
   return <textarea ref={ref} className={cx("ms-input", className)} {...rest} />;
 });
 
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Rótulo ao lado da caixa — omita para montar o `<label>` você mesmo. */
+  label?: React.ReactNode;
+}
+
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
+  { label, className, ...rest },
+  ref
+) {
+  const input = <input ref={ref} type="checkbox" className={cx("ms-checkbox", className)} {...rest} />;
+  if (label == null) return input;
+  return (
+    <label className="ms-checkbox-field">
+      {input}
+      <span>{label}</span>
+    </label>
+  );
+});
+
+export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Rótulo ao lado do círculo — omita para montar o `<label>` você mesmo. */
+  label?: React.ReactNode;
+}
+
+/** Agrupamento é nativo: radios com o mesmo `name` já formam um grupo (setas do teclado inclusas), sem componente extra. */
+export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(function Radio(
+  { label, className, ...rest },
+  ref
+) {
+  const input = <input ref={ref} type="radio" className={cx("ms-radio", className)} {...rest} />;
+  if (label == null) return input;
+  return (
+    <label className="ms-radio-field">
+      {input}
+      <span>{label}</span>
+    </label>
+  );
+});
+
+export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  /** Rótulo ao lado do interruptor — omita para montar o `<label>` você mesmo. */
+  label?: React.ReactNode;
+}
+
+/**
+ * Interruptor de formulário — `<input type="checkbox" role="switch">`, participa de
+ * `<form>` normalmente. Para o interruptor de tema claro/escuro, use `ThemeSwitch`.
+ */
+export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(function Switch(
+  { label, className, ...rest },
+  ref
+) {
+  const input = (
+    <input ref={ref} type="checkbox" role="switch" className={cx("ms-toggle", className)} {...rest} />
+  );
+  if (label == null) return input;
+  return (
+    <label className="ms-checkbox-field">
+      {input}
+      <span>{label}</span>
+    </label>
+  );
+});
+
 /* ---------- Hero ---------- */
 
 export interface HeroProps extends Omit<Div, "title"> {

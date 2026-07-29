@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 40 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 43 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -142,9 +142,9 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 - [x] Categorias de componentes reorganizadas (`docs/componentes.md`,
       `README.md`) de 8 pra 11, preparando terreno pro lote de
       componentes a caminho da v1.5 (`Tabs`, `Pagination`,
-      `DropdownMenu`, `Checkbox`, `Radio`, `Switch`, `Select`,
-      `Combobox`, `Tooltip`, `Popover`, `Drawer`, `EmptyState`,
-      `Timeline`, `Toolbar`, `FilterBar` — ainda não implementados).
+      `DropdownMenu`, `Select`, `Combobox`, `Tooltip`, `Popover`,
+      `Drawer`, `EmptyState`, `Timeline`, `Toolbar`, `FilterBar` —
+      ainda não implementados).
       "Layout e navegação" virou **Layout** + **Navegação**;
       **Formulários** saiu de "Controles e superfícies"; **Overlays**
       saiu de "Interativos". Nenhum componente existente mudou de
@@ -156,6 +156,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       quando vertical. `Skeleton`: pulso entre
       `--color-surface`/`--color-surface-hover` (nenhuma cor nova),
       desliga sob `prefers-reduced-motion`. 40 componentes (era 37).
+- [x] `Checkbox`, `Radio`, `Switch` (`src/components/primitives.tsx`,
+      sem `"use client"`) — segundo lote (trio de formulário). Ambos
+      `Checkbox`/`Radio` são `<input>` nativo com `appearance: none`
+      (foco/teclado/`<form>` de graça, só o `::after` é customizado);
+      `Radio` agrupa via `name` nativo, sem `RadioGroup`. `Switch` é
+      `<input type="checkbox" role="switch">`, deliberadamente **sem**
+      compartilhar implementação com `ThemeSwitch` (mecanismos de
+      animação diferentes por baixo — `:checked` vs. classe `.light`
+      do tema; generalizar os dois exigiria reescrever `ThemeSwitch`
+      sem necessidade real hoje). 43 componentes (era 40).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

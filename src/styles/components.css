@@ -475,6 +475,110 @@
 
 textarea.ms-input { min-height: 96px; resize: vertical; }
 
+.ms-checkbox-field,
+.ms-radio-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.ms-checkbox-field:has(:disabled),
+.ms-radio-field:has(:disabled) { cursor: not-allowed; }
+
+.ms-checkbox,
+.ms-radio {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.ms-checkbox { border-radius: 6px; }
+.ms-radio { border-radius: var(--radius-full); }
+
+.ms-checkbox::after {
+  content: "";
+  width: 11px;
+  height: 11px;
+  background: var(--color-thumb);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: transform var(--transition-fast) var(--ease-bounce);
+}
+
+.ms-radio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  transform: scale(0);
+  transition: transform var(--transition-fast) var(--ease-bounce);
+}
+
+.ms-checkbox:checked {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.ms-checkbox:checked::after { transform: scale(1); }
+
+.ms-radio:checked { border-color: var(--color-accent); }
+.ms-radio:checked::after { transform: scale(1); }
+
+.ms-checkbox:disabled,
+.ms-radio:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Interruptor de formulário — pill + polegar num único elemento
+   (pseudo-elemento ::after), diferente do ThemeSwitch (que anima a
+   troca de ícone sol/lua preso à classe .light do tema, não a um
+   estado de `checked` local). Deliberadamente não compartilha classe
+   com `.ms-switch`: são dois mecanismos diferentes por baixo, mesmo
+   parecendo o mesmo controle visual. */
+.ms-toggle {
+  appearance: none;
+  position: relative;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-soft));
+  backdrop-filter: blur(var(--blur-soft));
+  cursor: pointer;
+  transition: background var(--transition-slow), border-color var(--transition-slow);
+}
+
+.ms-toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(var(--switch-height) - 6px);
+  height: calc(var(--switch-height) - 6px);
+  border-radius: var(--radius-full);
+  background: var(--color-thumb);
+  transition: left var(--transition-base) var(--ease-bounce);
+}
+
+.ms-toggle:checked {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.ms-toggle:checked::after {
+  left: calc(100% - (var(--switch-height) - 6px) - 2px);
+}
+
+.ms-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
+
 /* ---------- Card ---------- */
 .ms-card {
   padding: var(--space-5);

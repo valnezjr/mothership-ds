@@ -292,6 +292,47 @@ fixa — quem decide isso é o CSS ao redor, não os componentes.
 
 `Input` e `Textarea` encaminham `ref`.
 
+### `Checkbox` · `Radio`
+
+`<input>` nativo com `appearance: none` — mantêm foco, teclado e
+participação em `<form>` de graça; só o visual é customizado (a marca
+de check/o ponto do radio são um `::after`, não uma imagem). Ambos
+encaminham `ref`.
+
+| Prop | Tipo | |
+|---|---|---|
+| `label` | `ReactNode` | ao lado do controle; omita para montar o `<label>` você mesmo |
+
+```tsx
+<Checkbox label="Aceito os termos" defaultChecked />
+<Radio name="plano" label="Mensal" defaultChecked />
+<Radio name="plano" label="Anual" />
+```
+
+Agrupamento de `Radio` é nativo — mesmo `name` já forma um grupo
+(inclusive navegação por setas do teclado), sem componente `RadioGroup`
+extra. Se quiser o contexto semântico de "isto é um grupo" para leitor
+de tela, envolva num `<fieldset><legend>` comum, como em qualquer
+formulário HTML.
+
+### `Switch`
+
+Interruptor de campo de formulário — `<input type="checkbox"
+role="switch">`, participa de `<form>` normalmente (`name`, `value`,
+reset, `FormData`). Para o interruptor de tema claro/escuro da navbar,
+use `ThemeSwitch`; os dois têm mecanismos de animação diferentes por
+baixo (`Switch` reage a `:checked`, `ThemeSwitch` à classe `.light` do
+`<html>`) e não compartilham classe CSS, mesmo parecendo o mesmo
+controle visual.
+
+| Prop | Tipo | |
+|---|---|---|
+| `label` | `ReactNode` | ao lado do interruptor; omita para montar o `<label>` você mesmo |
+
+```tsx
+<Switch label="Notificações ativas" defaultChecked />
+```
+
 ---
 
 ## Controles e superfícies

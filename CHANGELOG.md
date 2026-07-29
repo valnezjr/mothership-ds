@@ -47,6 +47,23 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
     `aria-hidden="true"` por padrão, e desliga sob
     `prefers-reduced-motion: reduce`.
   - 40 componentes (era 37).
+- **`Checkbox`, `Radio`, `Switch`** — segundo lote do caminho até a
+  v1.5, o trio de formulário. Também em `src/components/primitives.tsx`,
+  sem `"use client"`:
+  - **`Checkbox`**, **`Radio`** — `<input>` nativo com `appearance:
+    none`, mantêm foco/teclado/participação em `<form>` de graça; só o
+    visual (check/ponto) é customizado via `::after`. Agrupamento de
+    `Radio` é nativo (mesmo `name`), sem `RadioGroup` — não havia
+    necessidade concreta pra mais um componente.
+  - **`Switch`** — `<input type="checkbox" role="switch">`, participa
+    de `<form>` normalmente. Deliberadamente **não** compartilha
+    implementação com `ThemeSwitch`: os dois parecem o mesmo controle,
+    mas `ThemeSwitch` anima a troca de ícone sol/lua presa à classe
+    `.light` do tema, não a um `checked` local — generalizar os dois
+    sob um primitivo comum exigiria reescrever `ThemeSwitch` por dentro
+    sem necessidade real hoje (YAGNI); revisitar se um caso de uso
+    concreto pedir isso no futuro.
+  - 43 componentes (era 40).
 
 ### Alterado
 

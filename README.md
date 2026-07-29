@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **40 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **43 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -162,7 +162,7 @@ export default function Home() {
 
 **Formulários**
 
-`Field` · `Input` · `Textarea`
+`Field` · `Input` · `Textarea` · `Checkbox` · `Radio` · `Switch`
 
 **Interativos**
 
