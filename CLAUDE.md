@@ -126,6 +126,19 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       ~50-65%) veio de um ajuste rápido: a primeira versão, com a cor
       de marca sólida, ficou forte demais — mesmo idioma já usado nas
       sombras de `.ms-hover-edge`/`.ms-sparkline`.
+- [x] Corrigido: `ThemeSwitch` só alternava tema clicando no polegar
+      redondo, não no trilho. `onClick` movido do `<button
+      role="switch">` pro `<div className="ms-switch">` que envolve
+      botão + trilho — o clique do botão sobe por bubbling (dispara uma
+      vez só), o do trilho vai direto. Botão continua o único alvo de
+      foco/teclado e de `role`/`aria-checked`.
+- [x] Toast de `notify()` ganha bounce na entrada: `ms-toast-in` passa
+      de `ease` pra `var(--ease-bounce)` e o `from` ganha
+      `scale(0.94)` (mesmo padrão de `ms-modal-in`) — cresce um pouco
+      além do tamanho final antes de assentar. `.ms-alert--toast` e
+      `.ms-alert-history` (reaproveita o mesmo keyframe) ganharam
+      `@media (prefers-reduced-motion: reduce) { animation-duration:
+      0.01s }`, que não existia antes pra nenhum dos dois.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

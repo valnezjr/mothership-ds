@@ -71,9 +71,13 @@ export function ThemeProvider({
 export function ThemeSwitch({ className }: { className?: string }) {
   const { theme, toggle } = useTheme();
   return (
-    <div className={["ms-switch", className].filter(Boolean).join(" ")}>
-      {/* o próprio botão é o controle: role=switch + aria-checked
-          anunciam o estado, em vez de um <div> com onClick */}
+    // onClick no wrapper (não só no botão) pra clicar no trilho também
+    // alternar o tema — o clique do botão sobe até aqui por bubbling,
+    // então fica num só lugar (nunca dispara duas vezes).
+    <div className={["ms-switch", className].filter(Boolean).join(" ")} onClick={toggle}>
+      {/* o próprio botão é o controle acessível: role=switch +
+          aria-checked anunciam o estado; o wrapper só amplia a área de
+          clique, não substitui o botão como alvo de foco/teclado */}
       <button
         className="ms-switch__thumb"
         type="button"
@@ -81,7 +85,6 @@ export function ThemeSwitch({ className }: { className?: string }) {
         aria-checked={theme === "light"}
         aria-label="Alternar tema"
         title="Alternar tema"
-        onClick={toggle}
       />
       <span className="ms-switch__track" />
     </div>

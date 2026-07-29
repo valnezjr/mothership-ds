@@ -65,6 +65,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   efeito suave — a versão inicial, com a cor de marca sólida, ficava
   forte demais. Se a marca for realinhada de novo (como em v1.2.0), o
   fundo acompanha automaticamente, sem edição manual.
+- **Entrada do toast (`Alert` disparado por `notify()`) ganha bounce**:
+  `ms-toast-in` trocou o easing de `ease` pra `var(--ease-bounce)` — a
+  assinatura de movimento do sistema, até agora ausente desse
+  componente — e o `from` do keyframe ganhou `scale(0.94)` (mesmo
+  padrão de `ms-modal-in`). O toast cresce um pouco além do tamanho
+  final antes de assentar, em vez de só deslizar e aparecer. Coberto
+  por `prefers-reduced-motion: reduce` (`animation-duration: 0.01s`,
+  mesma técnica do Modal) — o toast e o painel de histórico
+  (`AlertHistory`, que reaproveita o mesmo keyframe) não tinham essa
+  cobertura antes; ganharam agora.
 
 ### Corrigido
 
@@ -77,6 +87,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   virada pra SPA de uma story por vez. Corrigido com respiro lateral e
   superior no `<main>` (`padding: 8px 32px 32px`, `maxWidth` de 860
   pra 900 pra compensar a largura útil).
+- **`ThemeSwitch`: clicar no trilho não alternava o tema** — só o
+  clique no polegar redondo (`role="switch"`) disparava `toggle()`; o
+  trilho (`.ms-switch__track`) era decorativo. `onClick` movido pro
+  `<div className="ms-switch">` que envolve os dois — o clique do botão
+  sobe até lá por bubbling (dispara uma vez só, não duas), e agora
+  clicar em qualquer parte do controle alterna o tema. O botão continua
+  sendo o alvo de foco/teclado e o único elemento com semântica de
+  switch (`role`/`aria-checked`).
 
 ## [1.2.2] — 2026-07-28
 
