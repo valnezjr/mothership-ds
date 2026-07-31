@@ -466,17 +466,15 @@
   outline-offset: 1px;
 }
 
-/* Só muda a cor da borda no foco — sem mudar a espessura (que
-   deslocaria o conteúdo) e sem `box-shadow` extra: um `box-shadow`
-   emparelhado com a regra global de foco (`:focus-visible` em
-   `.ms-page`, que tem prioridade aqui por causa do `:is()`) desenhava
-   dois anéis concêntricos em vez de um só. `outline: none` cancela só
-   o anel nativo do navegador — o anel accent visível vem da regra
-   global. */
-.ms-input:focus {
-  outline: none;
-  border-color: var(--color-accent);
-}
+/* Só cancela o anel nativo do navegador — a regra global de foco
+   (`.ms-page :is(...):focus-visible`, mais específica que qualquer
+   coisa aqui por causa do `[tabindex]` dentro do `:is()`) já desenha
+   o anel accent sozinha. Mudar `border-color` OU somar `box-shadow`
+   aqui em cima disso não "engrossa" o mesmo anel — desenha um
+   segundo, com um vão visível entre os dois (o `outline-offset` da
+   regra global): é exatamente o "contorno duplo" reportado. Uma coisa
+   só, não duas. */
+.ms-input:focus { outline: none; }
 
 .ms-input:disabled { opacity: 0.4; }
 

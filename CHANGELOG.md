@@ -189,15 +189,21 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   elemento próprio), o hover é escutado no `<input>` e aplicado no
   pseudo-elemento (`.ms-toggle:hover:not(:disabled)::after`).
 - **`Input`/`Textarea`: dois anéis de contorno no foco em vez de um
-  só** — `.ms-input:focus` somava `border-color` accent com
-  `box-shadow: 0 0 0 1px accent`, e a regra global de foco
-  (`.ms-page :is(...):focus-visible`) continuava valendo por cima
-  (tem mais especificidade que `.ms-input:focus` por causa do
-  `:is()`, então o `outline: none` local não a cancelava) — resultado:
-  o outline global (2px, offset 1px) e o box-shadow (1px) desenhavam
-  dois anéis concêntricos. Removido o `box-shadow`; sobra só a
-  mudança de cor da borda (sem deslocar layout) mais o outline global,
-  um anel só. Ganhou também hover (`background: var(--color-surface-hover)`,
+  só** — a regra global de foco (`.ms-page :is(...):focus-visible`)
+  sempre venceu qualquer coisa declarada em `.ms-input:focus`: o
+  `:is()` da regra global carrega a especificidade do argumento mais
+  específico da lista (`[tabindex]`, um seletor de atributo), então
+  ela bate `.ms-input:focus` mesmo com `outline: none` declarado ali.
+  Duas tentativas incompletas antes da correção final: primeiro
+  `.ms-input:focus` somava `border-color` accent com
+  `box-shadow: 0 0 0 1px accent` por cima do outline global (três
+  camadas); removido o `box-shadow`, sobrou `border-color` accent
+  ainda por cima do outline global (dois anéis concêntricos com um
+  vão visível entre eles — o `outline-offset` da regra global). A
+  correção real: `.ms-input:focus` não mexe mais em `border-color`
+  nem `box-shadow`, só cancela o anel nativo do navegador
+  (`outline: none`) — o anel accent visível é só o da regra global,
+  um só. Ganhou também hover (`background: var(--color-surface-hover)`,
   mesmo padrão de botão/link/item de navegação do resto do sistema).
 
 - **Cache indefinido do styleguide publicado**: `styleguide.js`/

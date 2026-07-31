@@ -282,14 +282,21 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
         `::after`, não elemento próprio, então o hover é escutado no
         `<input>` e aplicado no pseudo-elemento).
       - `Input`/`Textarea` no foco desenhavam dois anéis concêntricos:
-        `.ms-input:focus` somava `border-color` accent com
-        `box-shadow: 0 0 0 1px accent`, e a regra global de foco
-        (`.ms-page :is(...):focus-visible`, mais específica por causa
-        do `:is()`) continuava valendo por cima do `outline: none`
-        local. Removido o `box-shadow` — sobra a cor da borda (sem
-        deslocar layout) mais o outline global, um anel só. Ganhou
-        hover (`background: var(--color-surface-hover)`, padrão do
-        resto do sistema).
+        a regra global de foco (`.ms-page :is(...):focus-visible`)
+        sempre venceu qualquer coisa em `.ms-input:focus` — o `:is()`
+        carrega a especificidade do argumento mais específico da
+        lista (`[tabindex]`, seletor de atributo), então bate
+        `.ms-input:focus` mesmo com `outline: none` declarado ali.
+        Duas tentativas incompletas: primeiro `border-color` accent +
+        `box-shadow` por cima do outline global (três camadas);
+        removido o `box-shadow`, sobrou `border-color` accent ainda
+        por cima do outline global (dois anéis, vão visível entre eles
+        por causa do `outline-offset`). Correção real: `.ms-input:focus`
+        não mexe mais em `border-color`/`box-shadow`, só cancela o
+        anel nativo do navegador — o anel visível é só o da regra
+        global, um só. Ganhou hover
+        (`background: var(--color-surface-hover)`, padrão do resto do
+        sistema).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

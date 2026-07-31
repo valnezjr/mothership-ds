@@ -978,7 +978,7 @@ export const STORIES: Story[] = [
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
-        <Field label="E-mail (foco = borda accent)"><Input placeholder="voce@exemplo.com" /></Field>
+        <Field label="E-mail"><Input placeholder="voce@exemplo.com" /></Field>
         <Field label="Plano">
           <Select
             placeholder="Escolha um plano"
