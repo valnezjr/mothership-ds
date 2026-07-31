@@ -64,27 +64,32 @@ posição sob o header ao abrir.
 ### Escala de z-index
 
 ```
-navbar-menu   99      sidebar-backdrop  150
-navbar       100      sidebar-drawer    151
+navbar-menu   99      drawer-backdrop   150
+navbar       100      drawer            151
 splash      1000      sidebar-toggle    152
 modal        500      toasts            600
 histórico    610      tooltip           700
                       popover           700
+                      dropdown-menu     700
 ```
 
 Toasts e histórico ficam **acima** do modal de propósito: uma
 notificação disparada com um diálogo aberto precisa continuar visível.
 
-`Popover` divide a camada do tooltip (700) — os dois são overlays
-leves e flutuantes que não bloqueiam a página como o `Modal` (500);
-nenhum dos dois precisa ficar acima do outro porque não faz sentido um
-Popover conter um tooltip ativo (ou vice-versa) na prática.
+`Popover` e `DropdownMenu` dividem a camada do tooltip (700) — os três
+são overlays leves e flutuantes que não bloqueiam a página como o
+`Modal` (500); nenhum precisa ficar acima dos outros porque não faz
+sentido um conter um tooltip/popover/menu ativo de outro tipo na
+prática.
 
-A gaveta da `Sidebar` fica **acima** da navbar de propósito (diferença
-do menu da própria Navbar, que fica abaixo dela): a gaveta é a
-navegação principal enquanto aberta no mobile, não um apêndice
-pendurado embaixo da barra. O botão que abre/fecha fica acima da
-própria gaveta, pra continuar clicável como "X" por cima dela.
+`drawer-backdrop`/`drawer` são do `Drawer` (`src/components/drawer.tsx`)
+— genérico, não exclusivo da `Sidebar`: ela é só a primeira consumidora
+(gaveta mobile, extraída pra lá na v1.5). Ficam **acima** da navbar de
+propósito (diferença do menu da própria Navbar, que fica abaixo dela):
+enquanto aberta no mobile, a gaveta da `Sidebar` é a navegação
+principal, não um apêndice pendurado embaixo da barra. O `sidebar-toggle`
+(botão que abre/fecha, específico da `Sidebar`) fica acima da própria
+gaveta, pra continuar clicável como "X" por cima dela.
 
 ## A biblioteca não invade o app
 

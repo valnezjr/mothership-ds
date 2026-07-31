@@ -17,7 +17,7 @@ import {
   // dados
   LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend, Table,
   // sobreposições
-  Modal, StepModal, Popover,
+  Modal, StepModal, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
   // marca
   Splash, Loader,
 } from "../src/index";
@@ -186,6 +186,64 @@ function SplashDemo() {
         sozinha; ou passe <code>ready</code> para controlar quando revelar.
       </p>
     </>
+  );
+}
+
+function DrawerDemo() {
+  const [left, setLeft] = React.useState(false);
+  const [right, setRight] = React.useState(false);
+
+  return (
+    <>
+      <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
+        <code>side="left" | "right"</code> escolhe de onde a gaveta desliza.
+      </p>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <Button inline size="sm" onClick={() => setLeft(true)}>Abrir da esquerda</Button>
+        <Button inline size="sm" onClick={() => setRight(true)}>Abrir da direita</Button>
+      </div>
+
+      <Drawer open={left} onClose={() => setLeft(false)}>
+        <p className="ms-h3" style={{ marginBottom: 8 }}>Gaveta</p>
+        <p className="ms-text-sm ms-text-muted">Conteúdo livre, igual ao Popover.</p>
+      </Drawer>
+      <Drawer open={right} onClose={() => setRight(false)} side="right">
+        <p className="ms-h3" style={{ marginBottom: 8 }}>Gaveta à direita</p>
+        <p className="ms-text-sm ms-text-muted"><code>side="right"</code>.</p>
+      </Drawer>
+    </>
+  );
+}
+
+function DropdownMenuDemo() {
+  return (
+    <div style={{ display: "flex", gap: 40 }}>
+      <DropdownMenu trigger={<Button inline>Ações</Button>}>
+        <DropdownMenuLabel>Arquivo</DropdownMenuLabel>
+        <DropdownMenuItem>Renomear</DropdownMenuItem>
+        <DropdownMenuItem>Duplicar</DropdownMenuItem>
+        <DropdownMenuDivider />
+        <DropdownMenuItem disabled>Compartilhar (em breve)</DropdownMenuItem>
+        <DropdownMenuItem tone="danger">Excluir</DropdownMenuItem>
+      </DropdownMenu>
+
+      <DropdownMenu
+        triggerOn="context"
+        trigger={
+          <div
+            className="ms-card"
+            style={{ padding: 24, cursor: "context-menu", userSelect: "none" }}
+          >
+            Clique com o botão direito aqui
+          </div>
+        }
+      >
+        <DropdownMenuItem>Copiar</DropdownMenuItem>
+        <DropdownMenuItem>Colar</DropdownMenuItem>
+        <DropdownMenuDivider />
+        <DropdownMenuItem tone="danger">Remover</DropdownMenuItem>
+      </DropdownMenu>
+    </div>
   );
 }
 
@@ -1247,6 +1305,20 @@ export const STORIES: Story[] = [
         </Popover>
       </div>
     ),
+  },
+  {
+    id: "drawer",
+    group: "Componentes",
+    title: "Drawer",
+    subtitle: "Painel deslizante com véu de fundo, controlado de fora (open/onClose) — mecânica extraída da gaveta mobile do Sidebar, agora compartilhada. \"Leve\" como o Popover: sem focus trap, sem travar o scroll do fundo, só Esc/clique no véu fecham.",
+    render: () => <DrawerDemo />,
+  },
+  {
+    id: "dropdown-menu",
+    group: "Componentes",
+    title: "DropdownMenu",
+    subtitle: "Menu de ações flutuante, navegável por teclado (setas, Home/End, Esc). Absorve o que seria um ContextMenu à parte via triggerOn=\"context\": mesmo menu, só muda o gesto que abre (clique vs. clique direito).",
+    render: () => <DropdownMenuDemo />,
   },
   {
     id: "accordion",

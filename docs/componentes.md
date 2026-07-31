@@ -641,6 +641,69 @@ clique no gatilho sempre tem a ação padrão dele prevenida
 (`IconButton` exige `href`), então sem isso o clique também navegaria
 de verdade.
 
+### `Drawer`
+
+Painel deslizante com véu de fundo, controlado de fora (`open`/`onClose`)
+— mecânica extraída da gaveta mobile do `Sidebar` (v1.2.2), agora um
+componente à parte que o `Sidebar` também consome por dentro.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `open` | `boolean` | — | |
+| `onClose` | `() => void` | — | |
+| `side` | `"left" \| "right"` | `"left"` | lado de onde a gaveta desliza |
+| `backdropClassName` | `string` | — | classe extra no véu (`className` normal vai só no painel) |
+
+```tsx
+<Drawer open={open} onClose={() => setOpen(false)}>
+  <p>Conteúdo livre.</p>
+</Drawer>
+```
+
+"Leve" como o `Popover` (ver ACCESSIBILITY.md § Modal): sem focus trap,
+sem travar o scroll do fundo — só `Esc` ou clique no véu fecham. Portal
+no `<body>`, montado só depois da hidratação (mesma cautela de sempre
+pra SSR).
+
+### `DropdownMenu`
+
+Menu de ações flutuante, navegável por teclado. Absorve o que seria um
+`ContextMenu` à parte via `triggerOn="context"`: mesmo menu, só muda o
+gesto que abre (clique vs. clique direito) e a origem do
+posicionamento (o retângulo do gatilho vs. o ponto do cursor) —
+reaproveita o `computePosition` do `Popover` também pro modo `context`,
+com um gatilho virtual de tamanho zero no ponto do clique.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `trigger` | `ReactElement` | — | elemento que abre o menu — não precisa encaminhar `ref` |
+| `triggerOn` | `"click" \| "context"` | `"click"` | `"context"` é o antigo `ContextMenu` (clique direito) |
+| `open`/`defaultOpen` | `boolean` | — | controlado/não-controlado |
+| `onOpenChange` | `(open: boolean) => void` | — | |
+| `placement` | `"top" \| "bottom"` | `"bottom"` | |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | |
+
+```tsx
+<DropdownMenu trigger={<Button inline>Ações</Button>}>
+  <DropdownMenuLabel>Arquivo</DropdownMenuLabel>
+  <DropdownMenuItem onClick={() => {}}>Renomear</DropdownMenuItem>
+  <DropdownMenuDivider />
+  <DropdownMenuItem tone="danger" onClick={() => {}}>Excluir</DropdownMenuItem>
+</DropdownMenu>
+```
+
+`DropdownMenuItem` aceita `disabled` e `tone="default" | "danger"`
+(ação destrutiva, mesma cor de `Badge tone="danger"`) — fecha o menu
+sozinho ao ser clicado. `DropdownMenuLabel` e `DropdownMenuDivider` são
+só apresentação (rótulo de grupo e separador).
+
+**"Leve" como o Popover**, mas o foco funciona diferente da listbox do
+`Select`/`Combobox`: ao abrir, o foco real sai do gatilho e vai pro
+primeiro item (`role="menu"`/`"menuitem"`, padrão WAI-ARIA) — `↓`/`↑`
+percorrem os itens, `Home`/`End` vão pro primeiro/último habilitado,
+`Esc` fecha e devolve o foco ao gatilho. Clique fora também fecha, sem
+prender o foco dentro (sem `role="dialog"`).
+
 ---
 
 ## Marketing

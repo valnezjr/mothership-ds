@@ -38,13 +38,24 @@ export interface PopoverProps {
   className?: string;
 }
 
-interface Position {
+export interface Position {
   top: number;
   left: number;
 }
 
-function computePosition(
-  trigger: DOMRect,
+/** Retângulo mínimo que `computePosition` precisa — `DOMRect` serve, mas também um ponto (largura/altura zero). */
+export interface RectLike {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  width: number;
+  height: number;
+}
+
+/** Exportado para o `DropdownMenu` reaproveitar (mesmo flip + clamp, gatilho real ou virtual). */
+export function computePosition(
+  trigger: RectLike,
   content: { width: number; height: number },
   placement: "top" | "bottom",
   align: "start" | "center" | "end"

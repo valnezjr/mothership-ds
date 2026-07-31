@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **48 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **50 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React.
 
 | | |
@@ -172,7 +172,7 @@ export default function Home() {
 
 **Overlays**
 
-`Modal` · `StepModal` · `Popover`
+`Modal` · `StepModal` · `Popover` · `Drawer` · `DropdownMenu`
 
 **Marketing**
 
@@ -194,14 +194,13 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
 
 ## Roadmap
 
-- **v1.5 — rumo a 60 componentes.** Expansão do catálogo atual (37),
-  começando pelas composições de conveniência do `Marquee` já
-  documentadas e ainda não implementadas: `LogoMarquee`, `TechMarquee`,
+- **v1.5 — rumo a ~55 componentes.** Expansão do catálogo atual (50).
+  Entre o que falta: as composições de conveniência do `Marquee` já
+  documentadas e ainda não implementadas (`LogoMarquee`, `TechMarquee`,
   `IconMarquee` e `TestimonialMarquee` — variações prontas do primitive
-  já existente, sem lógica própria, para os usos mais comuns (fileira
-  de logos, ícones de stack, avaliações em loop) sem montar o
-  `children` na mão. Detalhe em
-  [`docs/componentes.md`](docs/componentes.md#marquee).
+  já existente, sem lógica própria, para os usos mais comuns) e itens
+  como `Tooltip`, `EmptyState`, `Timeline`, `Toolbar`, `FilterBar`.
+  Detalhe em [`docs/componentes.md`](docs/componentes.md#marquee).
 
 ## Ícones
 

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { createPortal } from "react-dom";
+import { Drawer } from "./drawer";
 
 /* ============================================================
    Navbar flutuante em pill: marca + links + extras (sino, tema),
@@ -318,12 +319,9 @@ export function Sidebar({
   const spyActive = useScrollSpy(hrefs, spy && activeProp === undefined);
   const active = activeProp ?? spyActive;
   const [open, setOpen] = React.useState(false);
-  const [mounted, setMounted] = React.useState(false);
   const drawerId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-drawer`;
   const navRef = React.useRef<HTMLElement>(null);
   const drawerRef = React.useRef<HTMLElement>(null);
-
-  React.useEffect(() => setMounted(true), []);
 
   // Mantém o item ativo visível: útil sobretudo com `active` controlado
   // (ex. roteamento) — sem isso, navegar pra um item fora da área
@@ -340,13 +338,8 @@ export function Sidebar({
   React.useEffect(() => {
     if (!open) return;
     const close = () => setOpen(false);
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("keydown", onKey);
     window.addEventListener("resize", close);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", close);
-    };
+    return () => window.removeEventListener("resize", close);
   }, [open]);
 
   const content = sections.map((s) => {
@@ -415,35 +408,16 @@ export function Sidebar({
         <span />
       </button>
 
-      {mounted &&
-        createPortal(
-          <>
-            <div
-              className={[
-                "ms-sidebar__backdrop",
-                open && "ms-sidebar__backdrop--open",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              onClick={() => setOpen(false)}
-              aria-hidden="true"
-            />
-            <nav
-              ref={drawerRef}
-              id={drawerId}
-              className={[
-                "ms-sidebar__drawer",
-                open && "ms-sidebar__drawer--open",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              aria-label="Sumário"
-            >
-              {content}
-            </nav>
-          </>,
-          document.body
-        )}
+      <Drawer
+        open={open}
+        onClose={() => setOpen(false)}
+        className="ms-sidebar__drawer-panel"
+        backdropClassName="ms-sidebar__drawer-backdrop"
+      >
+        <nav ref={drawerRef} id={drawerId} className="ms-sidebar__drawer-content" aria-label="Sumário">
+          {content}
+        </nav>
+      </Drawer>
     </>
   );
 }

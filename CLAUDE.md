@@ -239,6 +239,35 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       da URL e desmontava a story inteira, já que o styleguide inteiro
       roteia por hash). z-index 700, mesma camada do Tooltip (ver
       ARCHITECTURE.md § escala de z-index). 48 componentes (era 47).
+- [x] `Drawer` (`src/components/drawer.tsx`, arquivo novo, com
+      `"use client"`) — sétimo lote. Não é componente novo de verdade,
+      é extração: a gaveta mobile que o `Sidebar` já tinha desde a
+      v1.2.2 virou um primitivo compartilhado (`open`/`onClose`,
+      `side="left"|"right"`), e o `Sidebar` foi reescrito por dentro
+      pra consumi-lo — zero mudança de comportamento pro
+      `Sidebar` (verificado via Playwright: abre/fecha no botão, véu,
+      Esc, clique num link, resize pra desktop — os cinco continuam
+      idênticos). Mesma mecânica "leve" de sempre: sem focus trap, sem
+      travar o scroll do fundo, portal no `<body>` só depois de montar.
+      49 componentes (era 48).
+- [x] `DropdownMenu` (`src/components/dropdown-menu.tsx`, arquivo
+      novo, com `"use client"`) — oitavo lote. Absorve o que seria um
+      `ContextMenu` à parte via `triggerOn="click"|"context"` (decisão
+      tomada antes de construir): mesmo menu, só muda o gesto que abre
+      e a origem do posicionamento — no modo `"context"`, um gatilho
+      virtual de tamanho zero no ponto do clique direito reaproveita o
+      `computePosition` do `Popover` (agora exportado) sem duplicar a
+      conta de flip/clamp. Foco real percorre os itens (`role="menu"`/
+      `"menuitem"`, setas/Home/End/Esc) — diferente da listbox do
+      `Select`, que usa `aria-activedescendant` e mantém o foco no
+      gatilho. Bug achado ao testar: o painel nasce com
+      `visibility: hidden` até a posição ser calculada (mesmo truque
+      do Popover, pra não piscar no lugar errado) — chamar `.focus()`
+      num elemento ainda oculto é um no-op silencioso, então o efeito
+      que foca o primeiro item precisava esperar `pos` sair de `null`,
+      não só `open` virar `true` (com uma ref pra só focar uma vez por
+      abertura, senão cada reposição por scroll/resize puxava o foco
+      de volta). 50 componentes (era 49).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

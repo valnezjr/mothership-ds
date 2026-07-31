@@ -144,6 +144,34 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   `TooltipProvider` (ver ARCHITECTURE.md § escala de z-index — os dois
   são overlays leves flutuantes, não bloqueiam a página como o Modal).
   48 componentes (era 47).
+- **`Drawer`** (`src/components/drawer.tsx`, arquivo novo, com
+  `"use client"`) — sétimo lote. Extração, não componente do zero: a
+  gaveta mobile que o `Sidebar` já tinha desde a v1.2.2 virou primitivo
+  compartilhado (`open`/`onClose`, `side="left"|"right"`,
+  `backdropClassName`), e o `Sidebar` foi reescrito por dentro pra
+  consumi-lo — comportamento idêntico ao de antes, verificado via
+  Playwright (abrir/fechar pelo botão, véu, `Esc`, clique num link,
+  resize pra desktop). Mesma mecânica "leve" do `Popover`: sem focus
+  trap, sem travar o scroll do fundo, portal no `<body>` só depois de
+  montar. 49 componentes (era 48).
+- **`DropdownMenu`** (`src/components/dropdown-menu.tsx`, arquivo
+  novo, com `"use client"`) — oitavo lote. Absorve o que seria um
+  `ContextMenu` separado via `triggerOn="click"|"context"`: mesmo
+  menu, só muda o gesto que abre (clique vs. clique direito) e a
+  origem do posicionamento — no modo `"context"`, um gatilho virtual
+  de tamanho zero no ponto do clique reaproveita o `computePosition`
+  do `Popover` (agora exportado), sem duplicar a conta de flip/clamp.
+  Diferente da listbox do `Select`/`Combobox` (`aria-activedescendant`,
+  foco fica no gatilho), o foco real percorre os itens
+  (`role="menu"`/`"menuitem"`, `↑`/`↓`/`Home`/`End`/`Esc`) — padrão
+  WAI-ARIA de menu. `DropdownMenuItem` aceita `tone="danger"` (mesma
+  cor de `Badge tone="danger"`) e `disabled`; `DropdownMenuLabel` e
+  `DropdownMenuDivider` são só apresentação. Bug achado ao testar: o
+  painel nasce com `visibility: hidden` até a posição ser calculada
+  (mesmo truque do `Popover`, pra não piscar no lugar errado) —
+  `.focus()` num elemento oculto é um no-op silencioso, então o efeito
+  que foca o primeiro item ao abrir precisou esperar a posição estar
+  pronta, não só o menu estar "aberto". 50 componentes (era 49).
 
 ### Corrigido
 
