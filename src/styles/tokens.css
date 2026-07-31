@@ -51,6 +51,8 @@
   --switch-width: 64px;
   --switch-height: 24px;
   --switch-thumb: 32px;
+  /* Anel de hover do polegar — compartilhado por ThemeSwitch e Switch. */
+  --switch-hover-ring: 8px;
 
   /* ---------- Cores de marca (fixas nos dois temas) ----------
      accent, pink e orange são as três cores exatas do gradiente de

@@ -365,7 +365,7 @@
   transition: outline var(--transition-fast);
 }
 
-.ms-switch__thumb:hover { outline: 8px solid var(--color-border); }
+.ms-switch__thumb:hover { outline: var(--switch-hover-ring) solid var(--color-border); }
 
 .light .ms-switch__thumb {
   animation: ms-slide-in var(--transition-base) forwards;
@@ -459,16 +459,23 @@
 
 .ms-input::placeholder { color: var(--color-text-muted); }
 
+.ms-input:hover:not(:disabled) { background: var(--color-surface-hover); }
+
 .ms-input:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
 }
 
-/* borda destacada sem mudar a espessura (que deslocaria o conteúdo) */
+/* Só muda a cor da borda no foco — sem mudar a espessura (que
+   deslocaria o conteúdo) e sem `box-shadow` extra: um `box-shadow`
+   emparelhado com a regra global de foco (`:focus-visible` em
+   `.ms-page`, que tem prioridade aqui por causa do `:is()`) desenhava
+   dois anéis concêntricos em vez de um só. `outline: none` cancela só
+   o anel nativo do navegador — o anel accent visível vem da regra
+   global. */
 .ms-input:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 1px var(--color-accent);
 }
 
 .ms-input:disabled { opacity: 0.4; }
@@ -734,8 +741,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
      fica quase invisível no tema claro (branco sobre o tom "soft"
      quase branco do trilho ativo). */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: left var(--transition-base) var(--ease-bounce);
+  transition: left var(--transition-base) var(--ease-bounce), outline var(--transition-fast);
 }
+
+/* Mesmo anel de hover do ThemeSwitch (`--switch-hover-ring`, token
+   compartilhado) — o polegar aqui é `::after`, não elemento próprio,
+   então o hover é escutado no `<input>` (`.ms-toggle`) e aplicado no
+   pseudo-elemento. */
+.ms-toggle:hover:not(:disabled)::after { outline: var(--switch-hover-ring) solid var(--color-border); }
 
 /* Ativo continua vidro — só ganha o tom "soft" de marca (mesmo par
    fundo/borda que Badge tone="accent"), não uma cor sólida. */
@@ -1563,6 +1576,11 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   gap: var(--space-5);
   border-bottom: 1px solid var(--color-border);
   overflow-x: auto;
+  /* `overflow-x: auto` sozinho faz o `overflow-y` computado virar `auto`
+     também, por especificação — sem isso, o indicador (`bottom: -1px`)
+     já bastava pra abrir um scroll vertical indesejado no próprio
+     container das abas. */
+  overflow-y: hidden;
 }
 
 .ms-tabs__tab {

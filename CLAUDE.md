@@ -268,6 +268,28 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       não só `open` virar `true` (com uma ref pra só focar uma vez por
       abertura, senão cada reposição por scroll/resize puxava o foco
       de volta). 50 componentes (era 49).
+- [x] Três correções de CSS achadas via feedback direto:
+      - `Tabs`: `.ms-tabs__list` tinha `overflow-x: auto` sem
+        `overflow-y` explícito — por especificação, o navegador
+        computa o eixo que falta como `auto` também, e o indicador
+        (`bottom: -1px`) bastava pra abrir um scroll vertical
+        indevido no container. `overflow-y: hidden` explícito
+        resolve.
+      - Hover do polegar (`outline: 8px solid var(--color-border)`)
+        virou token (`--switch-hover-ring`, `tokens.css`) — existia só
+        no `ThemeSwitch`; replicado no `Switch` genérico
+        (`.ms-toggle:hover:not(:disabled)::after` — o polegar aqui é
+        `::after`, não elemento próprio, então o hover é escutado no
+        `<input>` e aplicado no pseudo-elemento).
+      - `Input`/`Textarea` no foco desenhavam dois anéis concêntricos:
+        `.ms-input:focus` somava `border-color` accent com
+        `box-shadow: 0 0 0 1px accent`, e a regra global de foco
+        (`.ms-page :is(...):focus-visible`, mais específica por causa
+        do `:is()`) continuava valendo por cima do `outline: none`
+        local. Removido o `box-shadow` — sobra a cor da borda (sem
+        deslocar layout) mais o outline global, um anel só. Ganhou
+        hover (`background: var(--color-surface-hover)`, padrão do
+        resto do sistema).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

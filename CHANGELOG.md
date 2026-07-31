@@ -175,6 +175,31 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Corrigido
 
+- **`Tabs`: scroll vertical indevido em `.ms-tabs__list`** —
+  `overflow-x: auto` sozinho faz o navegador computar `overflow-y`
+  como `auto` também, por especificação (mesmo caso do `<main>` do
+  styleguide, já documentado); o indicador (`bottom: -1px`) bastava
+  pra abrir esse scroll vertical. Corrigido com `overflow-y: hidden`
+  explícito.
+- **Hover do polegar tokenizado (`--switch-hover-ring`, novo em
+  `tokens.css`) e replicado no `Switch` genérico**: o anel de hover
+  (8px, `var(--color-border)`) existia só no `ThemeSwitch`
+  (`.ms-switch__thumb:hover`); `Switch` (`.ms-toggle`) não tinha
+  nenhum hover. Como o polegar do `Switch` é um `::after` (não
+  elemento próprio), o hover é escutado no `<input>` e aplicado no
+  pseudo-elemento (`.ms-toggle:hover:not(:disabled)::after`).
+- **`Input`/`Textarea`: dois anéis de contorno no foco em vez de um
+  só** — `.ms-input:focus` somava `border-color` accent com
+  `box-shadow: 0 0 0 1px accent`, e a regra global de foco
+  (`.ms-page :is(...):focus-visible`) continuava valendo por cima
+  (tem mais especificidade que `.ms-input:focus` por causa do
+  `:is()`, então o `outline: none` local não a cancelava) — resultado:
+  o outline global (2px, offset 1px) e o box-shadow (1px) desenhavam
+  dois anéis concêntricos. Removido o `box-shadow`; sobra só a
+  mudança de cor da borda (sem deslocar layout) mais o outline global,
+  um anel só. Ganhou também hover (`background: var(--color-surface-hover)`,
+  mesmo padrão de botão/link/item de navegação do resto do sistema).
+
 - **Cache indefinido do styleguide publicado**: `styleguide.js`/
   `styleguide.css` eram gerados sempre com o mesmo nome de arquivo —
   depois de um deploy novo, o navegador e a CDN do GitHub Pages
