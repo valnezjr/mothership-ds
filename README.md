@@ -194,13 +194,16 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
 
 ## Roadmap
 
-- **v1.5 — rumo a ~55 componentes.** Expansão do catálogo atual (50).
+- **v1.8 — rumo a ~55 componentes.** Expansão do catálogo atual (50).
   Entre o que falta: as composições de conveniência do `Marquee` já
   documentadas e ainda não implementadas (`LogoMarquee`, `TechMarquee`,
   `IconMarquee` e `TestimonialMarquee` — variações prontas do primitive
   já existente, sem lógica própria, para os usos mais comuns) e itens
   como `Tooltip`, `EmptyState`, `Timeline`, `Toolbar`, `FilterBar`.
   Detalhe em [`docs/componentes.md`](docs/componentes.md#marquee).
+  (Meta era v1.5; a v1.5.0 já saiu com outra coisa — `Splash.instant` e
+  `LogoMark` `part="word"` — então a expansão do catálogo passa pra
+  v1.8.)
 
 ## Ícones
 
