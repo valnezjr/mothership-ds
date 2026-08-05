@@ -944,6 +944,7 @@ conteúdo carregado).
 | `onFinish` | `() => void` | — | chamado ao terminar de sair |
 | `persistent` | `boolean` | `false` | não some sozinha |
 | `inline` | `boolean` | `false` | preso ao container (que precisa ser `relative`) |
+| `instant` | `boolean` | `false` | pula a revelação, mostra a composição final assim que `ready`. Use quando a instância é desmontada/remontada mais de uma vez na mesma sessão (ex.: componente que sai/entra de novo ao trocar de seção) — sem isso, cada remontagem faz o CSS reagir à classe `ms-splash--ready` como se fosse a primeira vez, e a animação de entrada roda de novo |
 
 ### `Loader`
 
@@ -958,9 +959,23 @@ conteúdo carregado).
 ### `LogoMark`
 
 A logo em SVG, com as partes agrupadas para animação e o gradiente da
-marca correndo continuamente. **Uso interno da `Splash`** — as partes
-(palavra, letras, dirigível) nascem fora de posição via CSS, prontas
-pra revelação; sem uma ancestral `.ms-splash--ready`, ficam presas
-nessa fase inicial. Não é um componente de "logo genérica" para uso
-solto — se precisar da marca em outro contexto, use `assets/logo.svg`
-diretamente.
+marca correndo continuamente.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `className` | `string` | `"ms-splash__logo"` | ver nota de dimensionamento abaixo |
+| `part` | `"full" \| "word"` | `"full"` | ver abaixo |
+
+- **`part="full"`** (padrão) — dirigível + nome, pensado pra uso **dentro
+  da `Splash`**: as partes nascem fora de posição via CSS, prontas pra
+  revelação; sem uma ancestral `.ms-splash--ready`, ficam presas nessa
+  fase inicial (não é uma logo genérica pra soltar fora desse contexto).
+- **`part="word"`** — só o nome (letras + o rosto no "o"), com `viewBox`
+  recortado (sem a área do dirigível) e já assentado numa posição
+  final e estática (`.ms-logo--word` força isso via CSS, sem depender
+  de `.ms-splash--ready`) — pensado pra uso solto fora da `Splash`,
+  como marca de uma navbar. O piscar do olho continua rodando
+  (`.ms-splash__eye`, incondicional); o degradê da marca também.
+  Dimensionamento fica por conta de quem consome (`className`/`style`
+  no `<svg>`) — sem uma classe própria, cai no `ms-splash__logo`
+  (`width: min(78vw, 560px)`), grande demais pra um contexto como esse.

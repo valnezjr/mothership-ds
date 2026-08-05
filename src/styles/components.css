@@ -2062,6 +2062,18 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   overflow: visible;
 }
 
+/* LogoMark part="word": só o nome, estático, fora do contexto do
+   Splash — sem `.ms-splash--ready` ancestral não há animação de
+   revelação disparando, então as letras (opacity:0 por padrão) e o
+   grupo do nome (transform de zoom/offset por padrão) precisam ser
+   forçados pro estado final "montado" diretamente. */
+.ms-logo--word .ms-splash__word,
+.ms-logo--word .ms-splash__letter {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 /* Branco da logo vira tinta escura no tema claro */
 /* Cores da logo — antes viviam num <style> dentro do SVG, que não é
    escopado e vazava as classes .fil* para o documento inteiro. */
@@ -2106,6 +2118,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-splash--instant .ms-splash__word { animation: none !important; }
+
+/* --ready--instant: além de cancelar a animação (regra acima, que sozinha
+   deixaria o transform no offset/zoom inicial — o mesmo problema que
+   --instant sozinho resolve pro "voltar ao início"), também precisa
+   forçar a posição final assentada, senão o nome fica congelado no
+   meio da revelação em vez de pronto. */
+.ms-splash--ready.ms-splash--instant .ms-splash__word { transform: none; }
+.ms-splash--ready.ms-splash--instant .ms-splash__blimp-in { animation-delay: 0s; }
 
 /* Piscada ocasional (dupla) */
 @keyframes ms-blink {

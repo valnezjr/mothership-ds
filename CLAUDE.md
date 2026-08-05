@@ -336,6 +336,29 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       entrasse ali junto com `children` — `.ms-modal__head` não tem
       essa restrição. Nova classe `.ms-modal__head-extra`.
 
+### v1.5.0 — lançada em 2026-08-05
+
+- [x] `Splash` ganha a prop `instant` — pula a revelação e mostra a
+      composição final assim que `ready`. Achado real de um consumidor:
+      uma instância `inline`+`persistent` montada dentro de uma seção
+      que sai/entra de novo (navegação por estado, sem router) replay
+      a animação inteira a cada remontagem, porque o CSS reage à classe
+      `.ms-splash--ready` aparecendo num elemento novo — não existe
+      "primeira vez" do ponto de vista do navegador. `instant` soma
+      `.ms-splash--instant` (que já existia, mas só desligava
+      `transition`/`animation` sem fixar a posição final) com uma nova
+      regra `.ms-splash--ready.ms-splash--instant .ms-splash__word {
+      transform: none }`, que força o assentamento sem repetir a
+      choreo.
+- [x] `LogoMark` ganha a prop `part` (`"full" | "word"`) — `"word"`
+      renderiza só o nome (letras + rosto no "o"), `viewBox` recortado
+      sem a área do dirigível, já assentado numa posição final estática
+      via `.ms-logo--word` (não depende de `.ms-splash--ready`). Antes
+      a `LogoMark` só funcionava dentro da `Splash`; esse variant
+      resolve o caso de uso solto (ex.: marca de navbar) sem duplicar a
+      lógica de montagem — o `viewBox` foi medido com `getBBox()` no
+      grupo `.ms-splash__word` já assentado, não estimado a mão.
+
 ### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —

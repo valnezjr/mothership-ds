@@ -24,6 +24,15 @@ export interface SplashProps extends React.HTMLAttributes<HTMLDivElement> {
   persistent?: boolean;
   /** Renderiza preso ao container em vez de tela cheia. */
   inline?: boolean;
+  /**
+   * Pula a sequência de revelação e mostra a composição final assim que
+   * `ready`. Pensado para uma instância que é desmontada e remontada
+   * mais de uma vez na mesma sessão (ex.: seção que sai/entra de novo
+   * ao trocar de aba) — sem isso, cada remontagem replay a animação
+   * inteira do zero, já que o CSS reage à classe `.ms-splash--ready`
+   * aparecendo num elemento novo, não a uma transição de estado.
+   */
+  instant?: boolean;
 }
 
 export function Splash({
@@ -33,6 +42,7 @@ export function Splash({
   onFinish,
   persistent,
   inline,
+  instant,
   className,
   ...rest
 }: SplashProps) {
@@ -89,6 +99,7 @@ export function Splash({
         inline && "ms-splash--inline",
         isReady && "ms-splash--ready",
         done && "ms-splash--done",
+        instant && "ms-splash--instant",
         className,
       ]
         .filter(Boolean)

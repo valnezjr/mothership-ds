@@ -6,6 +6,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.5.0] — 2026-08-05
+
+### Adicionado
+
+- **`Splash` ganha a prop `instant`**: pula a sequência de revelação e
+  mostra a composição final assim que `ready`, sem repetir a animação de
+  entrada. Pensada para uma instância desmontada e remontada mais de uma
+  vez na mesma sessão (ex.: um consumidor que troca de seção e volta) —
+  sem isso, o CSS reage à classe `.ms-splash--ready` aparecendo num
+  elemento novo como se fosse a primeira revelação, tocando tudo de novo
+  do zero.
+- **`LogoMark` ganha a prop `part`** (`"full" | "word"`, padrão `"full"`):
+  `"word"` renderiza só o nome (letras + rosto no "o"), com `viewBox`
+  recortado (sem a área do dirigível) e já assentado numa posição final
+  estática via `.ms-logo--word`, sem depender de estar dentro de uma
+  `Splash` com `.ms-splash--ready`. Pensado para uso solto como marca em
+  outros contextos (ex.: navbar).
+
 ## [1.4.0] — 2026-08-05
 
 ### Adicionado
