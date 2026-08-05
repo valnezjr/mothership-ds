@@ -2320,6 +2320,15 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   font-weight: var(--font-weight-medium);
 }
 
+/* Empurrado à direita pelo flex: 1 do título, antes do botão de
+   fechar — mesma linha, sem cortar (diferente de .ms-modal__body, que
+   tem overflow-x: hidden pela barra de rolagem). */
+.ms-modal__head-extra {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .ms-modal__close {
   flex-shrink: 0;
   display: inline-flex;

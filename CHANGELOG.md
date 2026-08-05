@@ -6,6 +6,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.4.0] — 2026-08-05
+
 ### Adicionado
 
 - **Tokens novos para indicadores pequenos (bullets, pontos de etapa,
@@ -25,6 +27,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   pretos que as setas, bullets e legenda do `Carousel` em modo foto já
   usavam, cada um com seu próprio número mágico). Nenhuma mudança
   visual — só a mesma aparência de sempre, agora com um nome.
+- **`Modal`: prop `headerExtra`** (`ModalProps`) — conteúdo extra no
+  cabeçalho, mesma linha do título (ícones, badges, ações rápidas),
+  empurrado à direita pelo `flex: 1` do título, antes do botão de
+  fechar. Existe porque `.ms-modal__body` tem `overflow-x: hidden`
+  (reserva de espaço pra barra de rolagem) — qualquer coisa com hover
+  que cresce além da própria caixa (`HoverEdge`, por exemplo) ficava
+  cortada se entrasse ali junto com `children`; `.ms-modal__head` não
+  tem essa restrição. Achado real, relatado por um consumidor da lib
+  (landing page própria, usando ícones com `HoverEdge` num cabeçalho de
+  Modal). Nova classe `.ms-modal__head-extra` (`flex-shrink: 0`).
 
 ### Corrigido
 

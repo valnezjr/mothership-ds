@@ -23,6 +23,13 @@ export interface ModalProps {
   children?: React.ReactNode;
   /** Ações no rodapé (alinhadas à direita). */
   footer?: React.ReactNode;
+  /** Conteúdo extra no cabeçalho, ao lado do título (ex.: ícones, badges,
+   *  ações rápidas) — mesma linha, empurrado à direita pelo `flex: 1` do
+   *  título, antes do botão de fechar. `.ms-modal__head` não corta
+   *  overflow (diferente de `.ms-modal__body`, que tem `overflow-x:
+   *  hidden` pela barra de rolagem) — é o lugar certo pra qualquer coisa
+   *  com hover que cresce além da própria caixa (`HoverEdge`, por ex.). */
+  headerExtra?: React.ReactNode;
   size?: "sm" | "md" | "lg";
   /** Impede fechar clicando fora ou no Esc. */
   dismissable?: boolean;
@@ -131,6 +138,7 @@ export function Modal({
   title,
   children,
   footer,
+  headerExtra,
   size = "md",
   dismissable = true,
   className,
@@ -164,6 +172,7 @@ export function Modal({
               {title}
             </span>
           )}
+          {headerExtra != null && <div className="ms-modal__head-extra">{headerExtra}</div>}
           <button className="ms-modal__close" type="button" aria-label="Fechar" onClick={requestClose}>
             {CloseIcon}
           </button>

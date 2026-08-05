@@ -276,6 +276,7 @@ function ModalDemo() {
         open={simple}
         onClose={() => setSimple(false)}
         title="Confirmar publicação"
+        headerExtra={<Badge tone="accent">Rascunho</Badge>}
         footer={
           <>
             <Button inline size="sm" variant="ghost" onClick={() => setSimple(false)}>

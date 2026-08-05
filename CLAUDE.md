@@ -303,7 +303,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       nunca dessincronizar de release em release. Só o styleguide, não
       é API nova exportada pela biblioteca.
 
-### Não lançado
+### v1.4.0 — lançada em 2026-08-05
 
 - [x] Corrigido: 24 links de exemplo do styleguide (`styleguide/stories.tsx`)
       usavam `href="#"` em botões/links sem função real (CTAs do Hero,
@@ -327,6 +327,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `--dot-size-active`, `--indicator-size`, `--color-on-solid`/
       `--color-on-highlight` (a exceção — highlight é claro demais pro
       branco), `--carousel-overlay-*`. Zero mudança visual.
+- [x] `Modal` ganha a prop `headerExtra` — conteúdo extra no cabeçalho,
+      mesma linha do título, empurrado à direita pelo `flex: 1` do
+      título antes do botão de fechar. Achado real de um consumidor da
+      lib: `.ms-modal__body` tem `overflow-x: hidden` (reserva de
+      espaço da barra de rolagem), então qualquer coisa com hover que
+      cresce além da própria caixa (`HoverEdge`) ficava cortada se
+      entrasse ali junto com `children` — `.ms-modal__head` não tem
+      essa restrição. Nova classe `.ms-modal__head-extra`.
+
+### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

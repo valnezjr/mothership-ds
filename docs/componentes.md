@@ -584,6 +584,7 @@ a borda vira um anel em degradê que gira acompanhando o mouse.
 | `open` | `boolean` | — | |
 | `onClose` | `() => void` | — | |
 | `title` | `ReactNode` | — | vira o `aria-labelledby` do diálogo |
+| `headerExtra` | `ReactNode` | — | conteúdo extra no cabeçalho, mesma linha do título (ícones, badges, ações rápidas) — empurrado à direita pelo `flex: 1` do título, antes do botão de fechar |
 | `footer` | `ReactNode` | — | ações à direita |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | 480 / 640 / 880px |
 | `dismissable` | `boolean` | `true` | permite fechar no Esc e no clique fora |
@@ -591,6 +592,13 @@ a borda vira um anel em degradê que gira acompanhando o mouse.
 Renderiza em portal no `<body>`, trava o scroll do fundo (com contagem de
 referências, para modais empilhados), prende o foco dentro do diálogo e
 devolve o foco a quem abriu.
+
+`headerExtra` existe pra conteúdo que precisa ficar ao lado do título,
+não no corpo — `.ms-modal__head` não corta overflow, diferente de
+`.ms-modal__body` (`overflow-x: hidden`, pela barra de rolagem). É o
+lugar certo pra algo com hover que cresce além da própria caixa (ex.:
+ícones envolvidos em `HoverEdge`), que ficaria cortado se entrasse
+junto com `children`.
 
 `StepModal` acrescenta:
 
