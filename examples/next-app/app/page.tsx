@@ -167,7 +167,7 @@ export default function Home() {
 
         <Footer id="contato" style={{ marginTop: 56 }}>
           <p>
-            Made by <Flash /> <a href="#">Mothership Studios</a>
+            Made by <Flash /> <a href="#contato">Mothership Studios</a>
           </p>
         </Footer>
       </main>

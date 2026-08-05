@@ -785,8 +785,8 @@ export const STORIES: Story[] = [
           Badge de contexto, título com palavra em destaque, subtítulo e ações.
         </p>
         <div className="ms-hero__actions">
-          <ButtonLink inline variant="solid" href="#">Começar agora</ButtonLink>
-          <ButtonLink inline variant="ghost" href="#">Ver portfólio</ButtonLink>
+          <ButtonLink inline variant="solid" href="#hero">Começar agora</ButtonLink>
+          <ButtonLink inline variant="ghost" href="#hero">Ver portfólio</ButtonLink>
         </div>
       </Hero>
     ),
@@ -893,14 +893,14 @@ export const STORIES: Story[] = [
     subtitle: "Três variantes (vidro, sólido e ghost) em três tamanhos, com estado disabled. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
-        <ButtonLink href="#">Padrão (glass)</ButtonLink>
-        <ButtonLink href="#" variant="solid">Sólido — accent</ButtonLink>
-        <ButtonLink href="#" variant="ghost">Ghost — só borda</ButtonLink>
+        <ButtonLink href="#botoes">Padrão (glass)</ButtonLink>
+        <ButtonLink href="#botoes" variant="solid">Sólido — accent</ButtonLink>
+        <ButtonLink href="#botoes" variant="ghost">Ghost — só borda</ButtonLink>
         <Button disabled>Desabilitado</Button>
         <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
-          <ButtonLink href="#" inline size="sm">Pequeno</ButtonLink>
-          <ButtonLink href="#" inline>Médio</ButtonLink>
-          <ButtonLink href="#" inline size="lg">Grande</ButtonLink>
+          <ButtonLink href="#botoes" inline size="sm">Pequeno</ButtonLink>
+          <ButtonLink href="#botoes" inline>Médio</ButtonLink>
+          <ButtonLink href="#botoes" inline size="lg">Grande</ButtonLink>
         </div>
       </div>
     ),
@@ -912,9 +912,9 @@ export const STORIES: Story[] = [
     subtitle: "Lista vertical de links em pill, no padrão linktree da página original que deu origem a essa biblioteca — útil pra páginas pessoais ou de contato.",
     render: () => (
       <LinkList style={{ maxWidth: 420, margin: "0 auto" }}>
-        <li><ButtonLink href="#">Whatsapp</ButtonLink></li>
-        <li><ButtonLink href="#">E-mail</ButtonLink></li>
-        <li><ButtonLink href="#">Portfólio</ButtonLink></li>
+        <li><ButtonLink href="#lista-links">Whatsapp</ButtonLink></li>
+        <li><ButtonLink href="#lista-links">E-mail</ButtonLink></li>
+        <li><ButtonLink href="#lista-links">Portfólio</ButtonLink></li>
       </LinkList>
     ),
   },
@@ -926,14 +926,14 @@ export const STORIES: Story[] = [
     render: () => (
       <>
         <IconRow>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" aria-label="GitHub">{GITHUB}</IconButton>
         </IconRow>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", alignItems: "center" }}>
-          <IconButton href="#" size="sm" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" aria-label="GitHub">{GITHUB}</IconButton>
-          <IconButton href="#" size="lg" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" size="sm" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" aria-label="GitHub">{GITHUB}</IconButton>
+          <IconButton href="#icones" size="lg" aria-label="GitHub">{GITHUB}</IconButton>
         </div>
       </>
     ),
@@ -1050,8 +1050,8 @@ export const STORIES: Story[] = [
         <Card title="Card com ações">
           <CardText style={{ marginBottom: 16 }}>Combine com outros componentes.</CardText>
           <div style={{ display: "flex", gap: 12 }}>
-            <ButtonLink href="#" inline size="sm" variant="solid">Ação</ButtonLink>
-            <ButtonLink href="#" inline size="sm" variant="ghost">Cancelar</ButtonLink>
+            <ButtonLink href="#cards" inline size="sm" variant="solid">Ação</ButtonLink>
+            <ButtonLink href="#cards" inline size="sm" variant="ghost">Cancelar</ButtonLink>
           </div>
         </Card>
         <HoverEdge colors={["var(--color-accent)", "var(--color-success)"]}>
@@ -1102,7 +1102,7 @@ export const STORIES: Story[] = [
             { text: "Suporte por e-mail", included: false },
             { text: "Domínio próprio", included: false },
           ]}
-          cta={<ButtonLink href="#" inline variant="ghost">Começar grátis</ButtonLink>}
+          cta={<ButtonLink href="#precificacao" inline variant="ghost">Começar grátis</ButtonLink>}
         />
         <PricingCard
           style={{ flex: "1 1 240px" }}
@@ -1117,7 +1117,7 @@ export const STORIES: Story[] = [
             { text: "Suporte por e-mail" },
             { text: "Domínio próprio" },
           ]}
-          cta={<ButtonLink href="#" inline variant="solid">Assinar Pro</ButtonLink>}
+          cta={<ButtonLink href="#precificacao" inline variant="solid">Assinar Pro</ButtonLink>}
         />
         <PricingCard
           style={{ flex: "1 1 240px" }}
@@ -1130,7 +1130,7 @@ export const STORIES: Story[] = [
             { text: "SLA dedicado" },
             { text: "Suporte prioritário" },
           ]}
-          cta={<ButtonLink href="#" inline variant="ghost">Falar com vendas</ButtonLink>}
+          cta={<ButtonLink href="#precificacao" inline variant="ghost">Falar com vendas</ButtonLink>}
         />
       </div>
     ),
@@ -1292,7 +1292,7 @@ export const STORIES: Story[] = [
           placement="bottom"
           align="end"
           trigger={
-            <IconButton href="#" aria-label="Mais opções">
+            <IconButton href="#popover" aria-label="Mais opções">
               <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 20, height: 20 }} aria-hidden="true">
                 <circle cx="5" cy="12" r="2" />
                 <circle cx="12" cy="12" r="2" />
@@ -1482,7 +1482,7 @@ export const STORIES: Story[] = [
     render: () => (
       <Footer>
         <p>
-          Made by <Flash /> <a href="#">Mothership Studios</a>
+          Made by <Flash /> <a href="#rodape">Mothership Studios</a>
         </p>
       </Footer>
     ),

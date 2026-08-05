@@ -84,7 +84,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       hambúrguer no mobile (links cortados pela barra de rolagem
       invisível do pill) — removido o override.
 
-### Não lançado
+### v1.3.0 — lançada em 2026-08-05
 
 - [x] `Sidebar` ganha a prop `active` (controla o item ativo de fora,
       desliga o `spy` interno) e um efeito de `scrollIntoView` no item
@@ -302,6 +302,19 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       importa JSON nativamente) em vez de string solta no texto, pra
       nunca dessincronizar de release em release. Só o styleguide, não
       é API nova exportada pela biblioteca.
+
+### Não lançado
+
+- [x] Corrigido: 24 links de exemplo do styleguide (`styleguide/stories.tsx`)
+      usavam `href="#"` em botões/links sem função real (CTAs do Hero,
+      grid de Botões, Lista de links, Ícones, ações dentro de Card,
+      CTAs do Card de precificação, gatilho do Popover, crédito do
+      Rodapé) — como o styleguide roteia por hash (`useHashRoute`),
+      isso navegava pra primeira story e desmontava a story atual,
+      quebrando o fluxo de quem só estava testando o componente.
+      Trocado por `href="#<id-da-própria-story>"`: autorreferente, não
+      muda o hash, não desmonta nada. Mesmo achado corrigido em
+      `examples/next-app/app/page.tsx` (crédito do rodapé).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

@@ -6,6 +6,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Corrigido
+
+- **Links de exemplo do styleguide navegavam pra fora da story ao
+  clicar** (`styleguide/stories.tsx`, 24 ocorrências): botões/links de
+  demonstração sem função real (CTAs do Hero, grid de Botões, Lista de
+  links, Ícones, ações dentro de Card, CTAs do Card de precificação,
+  gatilho do Popover, crédito do Rodapé) usavam `href="#"` — como o
+  styleguide inteiro roteia por hash (`useHashRoute`), isso navegava
+  pra `ids[0]` (a primeira story) e desmontava a story atual, quebrando
+  o fluxo de quem estava só testando o componente. Trocado por
+  `href="#<id-da-própria-story>"` em cada ocorrência — autorreferente,
+  então o clique não muda o hash (já é o mesmo) e a story não desmonta.
+  Mesmo achado, mesma correção, em `examples/next-app/app/page.tsx`
+  (crédito do rodapé, `href="#contato"` — a `Footer` ali já tem
+  `id="contato"`). O gatilho do `Popover` (linha 1295) já estava
+  protegido por `e.preventDefault()` interno do componente, mas ganhou
+  a troca por consistência mesmo assim.
+
 ## [1.3.0] — 2026-08-05
 
 ### Adicionado
