@@ -424,7 +424,7 @@ export function Pagination({ page, totalPages, onChange, siblingCount = 1, class
         {ArrowLeftSm}
       </button>
       <ul className="ms-pagination__list">
-        {tokens.map((t, i) =>
+        {tokens.map((t) =>
           typeof t === "number" ? (
             <li key={t}>
               <button

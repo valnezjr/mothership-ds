@@ -6,6 +6,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.3.0] — 2026-08-05
+
 ### Adicionado
 
 - **`Sidebar`: prop `active`** — controla o item ativo de fora (ex.
@@ -228,6 +230,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   `--serve` local mantém nome fixo (`styleguide.js`/`.css`, sem hash)
   — não há CDN nem cache de navegador relevante num servidor de
   desenvolvimento com watch.
+- **`Pagination`: parâmetro `i` não utilizado no `.map()` de
+  `src/components/primitives.tsx`** — achado ao consumir a lib como
+  dependência git (fonte crua, sem build) num projeto com
+  `noUnusedLocals`/`noUnusedParameters` estritos: como não há etapa de
+  build própria, o `tsc` do consumidor type-checa o `.tsx` original da
+  lib, e esse tipo de aviso — inofensivo sob o `tsconfig.json` deste
+  repo, que não liga essas flags — quebra quem liga. Sem mudança de
+  comportamento (as chaves da lista já eram únicas via `t`, não `i`).
 
 ### Alterado
 
