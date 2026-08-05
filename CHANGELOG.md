@@ -172,6 +172,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   `.focus()` num elemento oculto é um no-op silencioso, então o efeito
   que foca o primeiro item ao abrir precisou esperar a posição estar
   pronta, não só o menu estar "aberto". 50 componentes (era 49).
+- **Versão no rodapé do styleguide** (`styleguide/App.tsx`): lê
+  `version` direto do `package.json` (`import { version } from
+  "../package.json"` — esbuild importa JSON nativamente, sem loader
+  extra) em vez de string solta, pra nunca ficar dessincronizada de
+  release em release. Só o styleguide, não é API nova da biblioteca.
 
 ### Corrigido
 

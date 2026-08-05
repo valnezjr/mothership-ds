@@ -297,6 +297,11 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
         global, um só. Ganhou hover
         (`background: var(--color-surface-hover)`, padrão do resto do
         sistema).
+- [x] Rodapé do styleguide (`styleguide/App.tsx`) mostra a versão da
+      biblioteca: `import { version } from "../package.json"` (esbuild
+      importa JSON nativamente) em vez de string solta no texto, pra
+      nunca dessincronizar de release em release. Só o styleguide, não
+      é API nova exportada pela biblioteca.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

@@ -14,6 +14,7 @@ import {
   Footer,
 } from "../src/index";
 import { STORIES, GROUPS, GROUP_IDS } from "./stories";
+import { version } from "../package.json";
 
 const GROUP_DESCRIPTIONS: Record<(typeof GROUPS)[number], string> = {
   Fundações: "Os tokens que sustentam o resto: cor, tipografia, espaçamento e os efeitos de vidro que dão identidade visual ao sistema. Todo componente abaixo é construído só com essas variáveis — nunca um valor solto.",
@@ -134,7 +135,7 @@ export function App() {
             </div>
 
             <Footer style={{ flexShrink: 0 }}>
-              <p>Mothership DS · styleguide gerado a partir da biblioteca React</p>
+              <p>Mothership DS · styleguide gerado a partir da biblioteca React · v{version}</p>
             </Footer>
           </div>
         </TooltipProvider>
