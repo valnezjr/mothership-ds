@@ -315,6 +315,18 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       Trocado por `href="#<id-da-própria-story>"`: autorreferente, não
       muda o hash, não desmonta nada. Mesmo achado corrigido em
       `examples/next-app/app/page.tsx` (crédito do rodapé).
+- [x] Auditoria de tokens em indicadores pequenos (bullets, pontos de
+      etapa, marcadores) e texto sobre superfície sólida — achou 5
+      lugares repetindo `#ffffff` cru sem token (`Button` solid,
+      `Pagination` ativa, badge do sino, ícone do `Alert`, placeholder
+      do `Avatar`), 2 componentes repetindo o tamanho 8px/24px do
+      bullet/ponto sem token (`Carousel`, `StepModal`), 2 repetindo
+      10px do marcador pequeno (`Legend`, histórico de alertas), e a
+      família de brancos/pretos translúcidos do `Carousel` em modo foto
+      sem token nenhum. Tokens novos em `tokens.css`: `--dot-size`/
+      `--dot-size-active`, `--indicator-size`, `--color-on-solid`/
+      `--color-on-highlight` (a exceção — highlight é claro demais pro
+      branco), `--carousel-overlay-*`. Zero mudança visual.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

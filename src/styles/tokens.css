@@ -54,6 +54,35 @@
   /* Anel de hover do polegar — compartilhado por ThemeSwitch e Switch. */
   --switch-hover-ring: 8px;
 
+  /* Indicador "bullet"/passo — a mesma linguagem visual em dois
+     componentes (bullets do Carousel, pontos do StepModal): tamanho
+     normal e tamanho "ativo" (o ponto atual se alonga em pill). */
+  --dot-size: 8px;
+  --dot-size-active: 24px;
+  /* Marcador pequeno de status/categoria — Legend (swatch) e histórico
+     de alertas (dot), tamanhos coincidentes por serem a mesma ideia
+     (um círculo/quadrado pequeno indicando uma cor/categoria). */
+  --indicator-size: 10px;
+
+  /* ---------- Texto/ícone sobre superfície sólida ----------
+     Nenhuma cor semântica de "texto sobre marca" existe além destes
+     dois pares fixos (não variam por tema): usados sempre que texto ou
+     ícone precisa ficar sobre um fundo saturado o bastante pra exigir
+     contraste fixo, em vez de var(--color-text) normal. */
+  --color-on-solid: #ffffff;      /* accent, danger, violet, cor de marca em geral */
+  --color-on-highlight: #1a1a2e;  /* exceção: highlight (amarelo) é claro demais pro branco */
+
+  /* ---------- Carousel: controles sobre foto ----------
+     Modo "foto" do Carousel precisa de branco fixo, independente do
+     tema — sobre uma imagem qualquer, var(--color-*) do tema não
+     garante contraste. Modo "conteúdo" ignora estes tokens e usa as
+     cores do tema normalmente (ver .ms-carousel--content). */
+  --carousel-overlay-border: rgba(255, 255, 255, 0.5);
+  --carousel-overlay-surface: rgba(255, 255, 255, 0.15);
+  --carousel-overlay-surface-hover: rgba(255, 255, 255, 0.4);
+  --carousel-overlay-dot: rgba(255, 255, 255, 0.45);
+  --carousel-overlay-scrim: rgba(0, 0, 0, 0.55);
+
   /* ---------- Cores de marca (fixas nos dois temas) ----------
      accent, pink e orange são as três cores exatas do gradiente de
      assets/logo.svg (v1.5: accent e pink realinhados; orange já

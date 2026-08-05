@@ -268,7 +268,7 @@
   border-color: transparent;
 }
 .ms-button--solid,
-.ms-button--solid:hover { color: #ffffff; }
+.ms-button--solid:hover { color: var(--color-on-solid); }
 .ms-button--solid:hover {
   background: var(--color-accent);
   border-color: transparent;
@@ -411,7 +411,7 @@
   background:
     radial-gradient(circle at 30% 30%, rgba(0, 167, 218, 0.8), transparent 70%),
     linear-gradient(135deg, #3b1d6e, #0b1023);
-  color: #ffffff !important;
+  color: var(--color-on-solid) !important;
   font-weight: var(--font-weight-medium);
   font-size: calc(var(--avatar-size) / 3.2);
   border: 2px solid var(--color-border);
@@ -1075,7 +1075,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   width: 20px;
   height: 20px;
   display: block;
-  color: #ffffff;
+  color: var(--color-on-solid);
 }
 
 .ms-alert__body {
@@ -1101,7 +1101,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-alert--gray      .ms-alert__icon { background: var(--color-gray); }
 
 /* Amarelo pede ícone escuro para manter contraste */
-.ms-alert--highlight .ms-alert__icon svg { color: #1a1a2e; }
+.ms-alert--highlight .ms-alert__icon svg { color: var(--color-on-highlight); }
 
 /* ---------- Alertas como notificação (toast) ----------
    Uso via JS: MsAlerts.notify({ title, message, variant, duration })
@@ -1239,8 +1239,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-alert-history__dot {
-  width: 10px;
-  height: 10px;
+  width: var(--indicator-size);
+  height: var(--indicator-size);
   border-radius: var(--radius-full);
   margin-top: 6px;
   flex-shrink: 0;
@@ -1331,14 +1331,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-carousel__caption {
   width: 100%;
   padding: var(--space-3) var(--space-5) calc(var(--space-5) + 20px);
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
-  color: #ffffff !important;
+  background: linear-gradient(transparent, var(--carousel-overlay-scrim));
+  color: var(--color-on-solid) !important;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   text-align: left;
 }
 
-.ms-carousel__caption * { color: #ffffff !important; }
+.ms-carousel__caption * { color: var(--color-on-solid) !important; }
 
 .ms-carousel__arrow {
   position: absolute;
@@ -1350,18 +1350,18 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   justify-content: center;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--carousel-overlay-border);
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--carousel-overlay-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  color: #ffffff !important;
+  color: var(--color-on-solid) !important;
   font-size: 20px;
   cursor: pointer;
   transition: background var(--transition-slow);
 }
 
-.ms-carousel__arrow:hover { background: rgba(255, 255, 255, 0.4); }
+.ms-carousel__arrow:hover { background: var(--carousel-overlay-surface-hover); }
 .ms-carousel__arrow--prev { left: var(--space-3); }
 .ms-carousel__arrow--next { right: var(--space-3); }
 .ms-carousel__arrow svg { width: 18px; height: 18px; }
@@ -1378,19 +1378,19 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-carousel__bullet {
-  width: 8px;
-  height: 8px;
+  width: var(--dot-size);
+  height: var(--dot-size);
   padding: 0;
   border: none;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--carousel-overlay-dot);
   cursor: pointer;
   transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
 }
 
 .ms-carousel__bullet--active {
-  width: 24px;
-  background: #ffffff;
+  width: var(--dot-size-active);
+  background: var(--color-on-solid);
 }
 
 /* Modo "conteúdo" do carrossel (prop `items`): página livre em vez de
@@ -1708,7 +1708,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   justify-content: center;
   border-radius: var(--radius-pill);
   background: var(--color-danger);
-  color: #ffffff !important;
+  color: var(--color-on-solid) !important;
   font-size: 10px;
   font-weight: var(--font-weight-medium);
 }
@@ -2412,8 +2412,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-modal__dot {
-  width: 8px;
-  height: 8px;
+  width: var(--dot-size);
+  height: var(--dot-size);
   padding: 0;
   border: none;
   border-radius: var(--radius-pill);
@@ -2423,7 +2423,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-modal__dot--active {
-  width: 24px;
+  width: var(--dot-size-active);
   background: var(--color-text);
 }
 
@@ -2525,13 +2525,11 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-pagination__arrow:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Mesmo par cor sólida + branco fixo do Button variant="solid" —
-   não existe token de "texto sobre superfície de marca", então
-   segue o mesmo precedente já aceito ali. */
+/* Mesmo par cor sólida + var(--color-on-solid) do Button variant="solid". */
 .ms-pagination__page--active {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-on-solid);
 }
 
 .ms-pagination__ellipsis {
@@ -2632,8 +2630,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-legend__swatch {
-  width: 10px;
-  height: 10px;
+  width: var(--indicator-size);
+  height: var(--indicator-size);
   border-radius: 3px;
   flex-shrink: 0;
 }

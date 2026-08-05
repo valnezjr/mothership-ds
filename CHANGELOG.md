@@ -6,6 +6,26 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- **Tokens novos para indicadores pequenos (bullets, pontos de etapa,
+  marcadores) e texto sobre superfície sólida** (`tokens.css`), fechando
+  lacunas achadas numa auditoria: `--dot-size`/`--dot-size-active` (8px/
+  24px — bullets do `Carousel` e pontos do `StepModal` repetiam esses
+  números soltos em dois lugares); `--indicator-size` (10px — swatch do
+  `Legend` e dot do histórico de alertas, mesma repetição); `--color-on-
+  solid` (branco fixo pra texto/ícone sobre fundo saturado — `Button`
+  variant="solid", página ativa da `Pagination`, badge do sino da
+  `Navbar`, ícone do `Alert`, placeholder do `Avatar`, controles do
+  `Carousel` em modo foto — cinco lugares que já repetiam `#ffffff` cru,
+  dois deles com um comentário no código admitindo a lacuna há tempo);
+  `--color-on-highlight` (`#1a1a2e` — a única exceção, o tom `highlight`
+  é claro demais pro branco); e `--carousel-overlay-*` (border/surface/
+  surface-hover/dot/scrim — a família de valores translúcidos brancos/
+  pretos que as setas, bullets e legenda do `Carousel` em modo foto já
+  usavam, cada um com seu próprio número mágico). Nenhuma mudança
+  visual — só a mesma aparência de sempre, agora com um nome.
+
 ### Corrigido
 
 - **Links de exemplo do styleguide navegavam pra fora da story ao
