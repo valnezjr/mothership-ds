@@ -165,7 +165,7 @@
 .ms-page .ms-gallery__filter:focus-visible,
 .ms-page .ms-navbar__link:focus-visible,
 .ms-page .ms-carousel__bullet:focus-visible,
-.ms-modal__dot:focus-visible {
+.ms-step-indicator__dot:focus-visible {
   border-radius: var(--radius-pill);
 }
 
@@ -2433,14 +2433,16 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   to   { opacity: 1; transform: none; }
 }
 
-/* Indicador de etapa — mesma linguagem dos bullets do carrossel */
-.ms-modal__dots {
+/* Indicador de etapa/página (StepIndicator) — mesma linguagem dos
+   bullets do carrossel. Usado no rodapé do StepModal, mas não é
+   exclusivo dele (ver src/components/StepIndicator.tsx). */
+.ms-step-indicator__dots {
   display: flex;
   gap: var(--space-2);
   margin-right: auto;
 }
 
-.ms-modal__dot {
+.ms-step-indicator__dot {
   width: var(--dot-size);
   height: var(--dot-size);
   padding: 0;
@@ -2451,14 +2453,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
 }
 
-.ms-modal__dot--active {
+.ms-step-indicator__dot--active {
   width: var(--dot-size-active);
   background: var(--color-text);
 }
 
-.ms-modal__dot--done { background: var(--color-text-muted); }
+.ms-step-indicator__dot--done { background: var(--color-text-muted); }
 
-.ms-modal__count {
+.ms-step-indicator__count {
   margin-right: auto;
   font-size: var(--text-xs);
   color: var(--color-text-muted) !important;

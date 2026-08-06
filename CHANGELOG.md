@@ -6,6 +6,25 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.6.0] — 2026-08-06
+
+### Adicionado
+
+- **`StepIndicator`**: indicador de progresso por etapas/páginas — pontos
+  em pill (mesma linguagem dos bullets do `Carousel`) ou texto "Etapa X
+  de Y" (`showCount`). Extraído do rodapé do `StepModal`, que agora só
+  consome este componente (mesmo comportamento visual, zero mudança de
+  API do `StepModal`) — pensado pra também servir navegação paginada
+  fora de um modal (ex.: uma galeria de projetos paginada em vez de
+  scroll).
+
+### Alterado
+
+- CSS do indicador de etapas renomeado de `.ms-modal__dots`/`__dot`/
+  `__count` (implícito do `StepModal`) pra `.ms-step-indicator__dots`/
+  `__dot`/`__count` (agora do `StepIndicator`, componente próprio). Sem
+  mudança visual — é troca de nome de classe interna, não de API pública.
+
 ## [1.5.0] — 2026-08-05
 
 ### Adicionado

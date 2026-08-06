@@ -3,6 +3,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { Button } from "./primitives";
+import { StepIndicator } from "./StepIndicator";
 
 /* ============================================================
    Modal / popup — entrada com o bounce do sistema, saída suave.
@@ -296,30 +297,7 @@ export function StepModal({
         </div>
 
         <div className="ms-modal__footer">
-          {showCount ? (
-            <span className="ms-modal__count">
-              Etapa {current + 1} de {steps.length}
-            </span>
-          ) : (
-            <div className="ms-modal__dots" role="group" aria-label={`Etapa ${current + 1} de ${steps.length}`}>
-              {steps.map((_, i) => (
-                <button
-                  key={i}
-                  className={[
-                    "ms-modal__dot",
-                    i === current && "ms-modal__dot--active",
-                    i < current && "ms-modal__dot--done",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  type="button"
-                  aria-label={`Ir para a etapa ${i + 1}`}
-                  aria-current={i === current}
-                  onClick={() => go(i)}
-                />
-              ))}
-            </div>
-          )}
+          <StepIndicator current={current} total={steps.length} onChange={go} showCount={showCount} />
           <Button inline size="sm" variant="ghost" disabled={first} onClick={() => go(current - 1)}>
             Anterior
           </Button>

@@ -613,6 +613,43 @@ Todas as etapas ficam montadas na mesma célula de uma grade, com as
 inativas invisíveis: o modal já nasce com a altura da etapa mais alta e
 não muda de tamanho ao navegar.
 
+O indicador no rodapé (pontos ou "Etapa X de Y") é o `StepIndicator`
+(abaixo) — `StepModal` só o consome, não reimplementa nada.
+
+### `StepIndicator`
+
+Indicador de progresso por etapas/páginas: pontos em pill (mesma
+linguagem dos bullets do `Carousel`) ou texto "Etapa X de Y"
+(`showCount`). Extraído do rodapé do `StepModal` pra também servir
+navegação paginada **fora** de um modal — ex.: uma galeria de projetos
+paginada em vez de rolagem (a página cresce em número de páginas, não
+em altura — ver ARCHITECTURE.md sobre por que scroll interno é evitado
+neste sistema).
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `current` | `number` | — | etapa/página atual, 0-indexada |
+| `total` | `number` | — | |
+| `onChange` | `(index: number) => void` | — | pular direto pra uma etapa/página (clique num ponto); sem efeito no modo `showCount` |
+| `showCount` | `boolean` | `false` | "Etapa 2 de 4" em vez dos pontos |
+| `label` | `string` | `"Etapa"` | palavra usada no texto e nos rótulos de acessibilidade — troque pra "Página" numa galeria, por exemplo |
+
+```tsx
+const [page, setPage] = useState(0);
+
+<StepIndicator current={page} total={5} onChange={setPage} />
+<StepIndicator current={page} total={5} showCount label="Página" />
+```
+
+**Quando usar:** navegação por lotes fixos de conteúdo (páginas de uma
+galeria, passos de um formulário fora de modal) sem criar scroll.
+**Quando não usar:** listas longas em que a posição exata (ir direto
+pra página 7 de 20) importa mais que o passo a passo — aí é `Pagination`
+(numerada, com `…` pro meio), não este componente. Só o modo com pontos
+é clicável (`onChange`); o modo `showCount` é texto puro — combine com
+botões de anterior/próximo (como o `StepModal` faz) se precisar de
+navegação nesse modo.
+
 ### `Popover`
 
 Painel flutuante disparado por clique, com conteúdo livre e

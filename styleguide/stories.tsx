@@ -17,7 +17,7 @@ import {
   // dados
   LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend, Table,
   // sobreposições
-  Modal, StepModal, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
+  Modal, StepModal, StepIndicator, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
   // marca
   Splash, Loader,
 } from "../src/index";
@@ -467,6 +467,48 @@ function TableDemo() {
 function PaginationDemo() {
   const [page, setPage] = React.useState(1);
   return <Pagination page={page} totalPages={12} onChange={setPage} />;
+}
+
+function StepIndicatorDemo() {
+  const [dotPage, setDotPage] = React.useState(0);
+  const [countPage, setCountPage] = React.useState(0);
+  const total = 4;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+      <div>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 12 }}>
+          Modo pontos — clicável direto (onChange)
+        </p>
+        <StepIndicator current={dotPage} total={total} onChange={setDotPage} />
+      </div>
+      <div>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 12 }}>
+          Modo contador — texto puro, combine com botões próprios (label="Página")
+        </p>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <StepIndicator current={countPage} total={total} showCount label="Página" />
+          <Button
+            inline
+            size="sm"
+            variant="ghost"
+            disabled={countPage === 0}
+            onClick={() => setCountPage((p) => p - 1)}
+          >
+            Anterior
+          </Button>
+          <Button
+            inline
+            size="sm"
+            variant="solid"
+            disabled={countPage === total - 1}
+            onClick={() => setCountPage((p) => p + 1)}
+          >
+            Próximo
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function useIsMobile(breakpoint = 720) {
@@ -1270,6 +1312,13 @@ export const STORIES: Story[] = [
     title: "Modal & etapas",
     subtitle: "Popup sobre véu escurecido (ou claro, no tema claro), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
     render: () => <ModalDemo />,
+  },
+  {
+    id: "step-indicator",
+    group: "Componentes",
+    title: "StepIndicator",
+    subtitle: "Indicador de progresso por etapas/páginas — pontos em pill (mesma linguagem do Carousel) ou texto \"Etapa X de Y\" (showCount). Extraído do rodapé do StepModal pra servir navegação paginada fora de um modal, ex. uma galeria.",
+    render: () => <StepIndicatorDemo />,
   },
   {
     id: "popover",

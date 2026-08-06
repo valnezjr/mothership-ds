@@ -359,6 +359,30 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       lógica de montagem — o `viewBox` foi medido com `getBBox()` no
       grupo `.ms-splash__word` já assentado, não estimado a mão.
 
+### v1.6.0 — lançada em 2026-08-06
+
+- [x] `StepIndicator` (`src/components/StepIndicator.tsx`) — extraído do
+      rodapé do `StepModal` (pontos em pill ou texto "Etapa X de Y",
+      `showCount`). Achado real de um consumidor: precisava do mesmo
+      padrão de paginação fora de um modal (galeria paginada em vez de
+      scroll — regra de "nunca scroll interno" do projeto consumidor,
+      arquitetura.md dele). `StepModal` agora só consome o componente
+      (`<StepIndicator current={current} total={steps.length}
+      onChange={go} showCount={showCount} />` no lugar do JSX inline),
+      sem mudança de comportamento ou API própria. CSS renomeado de
+      `.ms-modal__dots`/`__dot`/`__count` pra `.ms-step-indicator__*`
+      (interno, não é API pública — sem impacto em quem só usa
+      `StepModal`). Nova prop `label` (`"Etapa"` por padrão) parametriza
+      a palavra usada no texto/rótulos de acessibilidade, pra caber em
+      contextos como "Página" numa galeria. Revisão do
+      `design-system-maintainer` achou um item obrigatório antes de
+      fechar: `className`/`{...rest}` não estavam sendo repassados pro
+      elemento raiz (regra fixa "Props sempre repassadas") — corrigido
+      com `StepIndicatorProps extends Omit<React.HTMLAttributes<
+      HTMLElement>, "onChange">` (o `Omit` evita colidir com o
+      `onChange` nativo do DOM, já que a prop própria tem assinatura
+      diferente: `(index: number) => void`).
+
 ### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —

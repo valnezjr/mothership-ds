@@ -20,6 +20,8 @@ export * from "./components/table";
 export * from "./components/marquee";
 export { Modal, StepModal } from "./components/Modal";
 export type { ModalProps, StepModalProps, ModalStep } from "./components/Modal";
+export { StepIndicator } from "./components/StepIndicator";
+export type { StepIndicatorProps } from "./components/StepIndicator";
 export { Loader } from "./components/Loader";
 export type { LoaderProps } from "./components/Loader";
 export { Splash } from "./components/Splash";
