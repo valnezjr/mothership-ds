@@ -461,7 +461,16 @@ export function Gallery({
       <div className="ms-gallery__grid">
         {visibleItems.map((item, i) => (
           <HoverEdge
-            key={i}
+            // Inclui currentPage na key de propósito: sem isso, trocar de
+            // página reaproveita os mesmos nós do DOM por posição (0, 1,
+            // 2…) já que o slice visível muda mas os índices não — o
+            // pop-in em --ease-bounce (.ms-gallery__item, ms-gallery-in)
+            // só dispara quando o elemento é de fato montado, então nunca
+            // rodava ao paginar, só ao trocar de filtro (que já força
+            // remount ao mudar a lista inteira). Forçar a key a mudar
+            // também na paginação faz o mesmo bounce de entrada tocar em
+            // toda virada de página.
+            key={`${currentPage}-${i}`}
             className="ms-gallery__item"
             colors={colorsFor(item.categories)}
           >

@@ -6,6 +6,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Corrigido
+
+- `Gallery` com `itemsPerPage`: trocar de página não repetia o bounce de
+  entrada (`ms-gallery-in`, `var(--ease-bounce)`) que os itens já têm ao
+  aparecer num filtro — a `key` de cada item era só a posição dentro da
+  página (`0..itemsPerPage-1`), então o React reaproveitava os mesmos nós
+  do DOM entre páginas em vez de montar novos, e a animação (disparada só
+  no mount) nunca rodava de novo. `key` agora inclui a página atual.
+
 ## [1.7.0] — 2026-08-06
 
 ### Adicionado

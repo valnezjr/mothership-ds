@@ -399,6 +399,17 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 
 ### Não lançado
 
+- [x] `Gallery` com `itemsPerPage` — corrigido o bounce de entrada
+      (`ms-gallery-in`) não repetir ao trocar de página
+      (`src/components/disclosure.tsx`). A `key` de cada item era só a
+      posição dentro da página atual (`0..itemsPerPage-1`), estável entre
+      páginas — o React reaproveitava os mesmos nós ao invés de montar
+      novos, e a animação (só dispara no mount) nunca rodava de novo,
+      diferente da troca de filtro (que já força remount ao mudar a
+      lista inteira). `key` passa a incluir `currentPage`. Achado real de
+      um consumidor pedindo "as animações de transição padrão do design
+      system" pra paginação.
+
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
 só recomendação; componentes que precisam de ícone aceitam `ReactNode`
