@@ -6,6 +6,21 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.7.0] — 2026-08-06
+
+### Adicionado
+
+- **`Gallery` ganha a prop `itemsPerPage`**: pagina a grade (`StepIndicator`,
+  `showCount`, `label="Página"`, mais anterior/próximo) em vez de crescer
+  em altura. Sem essa prop, comportamento idêntico ao de antes (grade
+  inteira de uma vez). Trocar de filtro ou `itemsPerPage` encolher
+  (reflow responsivo) sempre volta pra primeira página; a paginação
+  reage à lista já filtrada, não à lista completa. Achado real: um
+  consumidor tinha reimplementado uma grade parecida com `Gallery` do
+  zero, sem os filtros/badges/cores de categoria, só porque `Gallery`
+  não paginava — a paginação nativa resolve isso sem sair do
+  componente real.
+
 ## [1.6.0] — 2026-08-06
 
 ### Adicionado

@@ -1440,9 +1440,10 @@ export const STORIES: Story[] = [
     id: "galeria",
     group: "Componentes",
     title: "Galeria",
-    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro.",
+    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura.",
     render: () => (
       <Gallery
+        itemsPerPage={4}
         categories={[
           { key: "ui", label: "UI Design", tone: "accent" },
           { key: "web", label: "Web", tone: "success" },

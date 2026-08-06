@@ -2,7 +2,9 @@
 
 import React from "react";
 import { HoverEdge } from "./theme";
+import { Button } from "./primitives";
 import type { Tone } from "./primitives";
+import { StepIndicator } from "./StepIndicator";
 
 /* ============================================================
    Accordion, carrossel e galeria.
@@ -370,6 +372,15 @@ export interface GalleryProps extends React.HTMLAttributes<HTMLDivElement> {
   items: GalleryItem[];
   categories: GalleryCategory[];
   allLabel?: React.ReactNode;
+  /**
+   * Pagina a grade (`StepIndicator`, rodapé com "Página X de Y" +
+   * anterior/próximo) em vez de crescer em altura — quantos itens já
+   * filtrados aparecem por página. Sem essa prop, a grade mostra tudo
+   * de uma vez (comportamento original). Trocar de filtro ou encolher
+   * `itemsPerPage` (ex.: reflow responsivo) sempre volta pra primeira
+   * página.
+   */
+  itemsPerPage?: number;
 }
 
 /**
@@ -381,14 +392,29 @@ export function Gallery({
   items,
   categories,
   allLabel = "Todos",
+  itemsPerPage,
   className,
   ...rest
 }: GalleryProps) {
   const [filter, setFilter] = React.useState("*");
+  const [page, setPage] = React.useState(0);
   const byKey = React.useMemo(
     () => Object.fromEntries(categories.map((c) => [c.key, c])),
     [categories]
   );
+
+  const filtered = items.filter((item) => filter === "*" || item.categories.includes(filter));
+  const totalPages = itemsPerPage ? Math.max(1, Math.ceil(filtered.length / itemsPerPage)) : 1;
+  const currentPage = Math.min(page, totalPages - 1);
+  const visibleItems = itemsPerPage
+    ? filtered.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage)
+    : filtered;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- só reage à troca de filtro, não a `items`/`categories` em si
+  React.useEffect(() => setPage(0), [filter]);
+  // Sobrevive a itemsPerPage encolher (reflow responsivo) ou o filtro
+  // reduzir a lista o bastante pra invalidar a página atual.
+  React.useEffect(() => setPage((p) => Math.min(p, totalPages - 1)), [totalPages]);
 
   const colorsFor = (keys: string[]): [string, string] => {
     const cats = keys.map((k) => byKey[k]).filter(Boolean);
@@ -433,43 +459,58 @@ export function Gallery({
         ))}
       </div>
       <div className="ms-gallery__grid">
-        {items
-          .filter((item) => filter === "*" || item.categories.includes(filter))
-          .map((item, i) => (
-            <HoverEdge
-              key={i}
-              className="ms-gallery__item"
-              colors={colorsFor(item.categories)}
-            >
-              <div
-                className="ms-gallery__photo"
-                style={{ ["--ms-photo" as string]: item.image }}
-              />
-              <div className="ms-gallery__info">
-                <span className="ms-gallery__title">{item.title}</span>
-                <span className="ms-gallery__badges">
-                  {item.categories.map((k) => {
-                    const c = byKey[k];
-                    if (!c) return null;
-                    return (
-                      <span
-                        key={k}
-                        className={["ms-badge", c.tone && c.tone !== "neutral" && `ms-badge--${c.tone}`]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        {c.label}
-                      </span>
-                    );
-                  })}
-                </span>
-                {item.description != null && (
-                  <span className="ms-gallery__desc">{item.description}</span>
-                )}
-              </div>
-            </HoverEdge>
-          ))}
+        {visibleItems.map((item, i) => (
+          <HoverEdge
+            key={i}
+            className="ms-gallery__item"
+            colors={colorsFor(item.categories)}
+          >
+            <div
+              className="ms-gallery__photo"
+              style={{ ["--ms-photo" as string]: item.image }}
+            />
+            <div className="ms-gallery__info">
+              <span className="ms-gallery__title">{item.title}</span>
+              <span className="ms-gallery__badges">
+                {item.categories.map((k) => {
+                  const c = byKey[k];
+                  if (!c) return null;
+                  return (
+                    <span
+                      key={k}
+                      className={["ms-badge", c.tone && c.tone !== "neutral" && `ms-badge--${c.tone}`]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {c.label}
+                    </span>
+                  );
+                })}
+              </span>
+              {item.description != null && (
+                <span className="ms-gallery__desc">{item.description}</span>
+              )}
+            </div>
+          </HoverEdge>
+        ))}
       </div>
+      {itemsPerPage != null && totalPages > 1 && (
+        <div className="ms-gallery__pager">
+          <StepIndicator current={currentPage} total={totalPages} showCount label="Página" />
+          <Button inline size="sm" variant="ghost" disabled={currentPage === 0} onClick={() => setPage((p) => p - 1)}>
+            Anterior
+          </Button>
+          <Button
+            inline
+            size="sm"
+            variant="solid"
+            disabled={currentPage === totalPages - 1}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Próximo
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

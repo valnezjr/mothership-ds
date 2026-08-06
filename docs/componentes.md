@@ -526,10 +526,18 @@ pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
 | `items` | `{ image, title, description?, categories[] }[]` | |
 | `categories` | `{ key, label, tone?, color? }[]` | |
 | `allLabel` | `ReactNode` | rótulo do filtro "todos" |
+| `itemsPerPage` | `number` | pagina a grade (`StepIndicator`) em vez de crescer em altura — sem essa prop, mostra tudo de uma vez |
 
 Filtra por categoria; cada item ganha o contorno reativo com as cores das
 suas categorias — dois tons quando há duas categorias, a escala 300→600
 quando há uma só.
+
+Com `itemsPerPage`, a paginação reage à lista **já filtrada** — trocar
+de filtro ou `itemsPerPage` encolher (reflow responsivo) sempre volta
+pra primeira página. Pensado pra galerias que não podem crescer sem
+limite na tela (ex.: um portfólio dentro de uma página sem scroll) sem
+abrir mão dos filtros/badges/cores de categoria que fazem a `Gallery`
+parecer a `Gallery`.
 
 ### `Marquee`
 

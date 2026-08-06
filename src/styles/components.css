@@ -1501,6 +1501,16 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   color: var(--color-text-muted) !important;
 }
 
+/* Rodapé de paginação (só existe quando `itemsPerPage` está definido) —
+   mesmo ritmo de gap/align do .ms-modal__footer, que também combina
+   StepIndicator + anterior/próximo. */
+.ms-gallery__pager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
 /* ---------- Accordion ---------- */
 .ms-accordion {
   display: flex;

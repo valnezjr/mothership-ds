@@ -383,6 +383,20 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `onChange` nativo do DOM, já que a prop própria tem assinatura
       diferente: `(index: number) => void`).
 
+### v1.7.0 — lançada em 2026-08-06
+
+- [x] `Gallery` ganha `itemsPerPage` (`src/components/disclosure.tsx`) —
+      pagina a grade com `StepIndicator` (`showCount`, `label="Página"`)
+      em vez de crescer em altura; sem a prop, comportamento idêntico ao
+      de antes. Achado real: consumidor tinha reimplementado uma grade
+      "parecida com Gallery" do zero (sem filtros/badges/cores de
+      categoria) só porque a versão original não paginava — resultado
+      visualmente nada a ver com a identidade do componente real.
+      `filtered`/`totalPages`/`visibleItems` recalculados a cada render
+      (arrays pequenos, sem necessidade de `useMemo`); dois `useEffect`
+      pequenos mantêm a página válida ao trocar de filtro ou
+      `itemsPerPage` encolher num reflow responsivo.
+
 ### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
