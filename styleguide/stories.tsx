@@ -276,6 +276,7 @@ function ModalDemo() {
   const [simple, setSimple] = React.useState(false);
   const [steps, setSteps] = React.useState(false);
   const [count, setCount] = React.useState(false);
+  const [full, setFull] = React.useState(false);
   const { notify } = useAlerts();
 
   return (
@@ -283,7 +284,9 @@ function ModalDemo() {
       <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
         Entra com o bounce do sistema (sobe e assenta), sai com fade rápido. Fecha no{" "}
         <strong>X</strong>, no clique fora e no <strong>Esc</strong>. A versão em etapas pagina
-        o conteúdo com os painéis deslizando na direção da navegação.
+        o conteúdo com os painéis deslizando na direção da navegação. <code>size="full"</code>{" "}
+        preenche quase toda a viewport — pensado pra conteúdo que precisa de espaço de verdade
+        (ex.: um PDF ou imagem embutidos), não pra diálogos de texto comuns.
       </p>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         <Button inline size="sm" variant="solid" onClick={() => setSimple(true)}>
@@ -295,7 +298,28 @@ function ModalDemo() {
         <Button inline size="sm" onClick={() => setCount(true)}>
           Etapas com contador
         </Button>
+        <Button inline size="sm" onClick={() => setFull(true)}>
+          Tela cheia
+        </Button>
       </div>
+
+      <Modal open={full} onClose={() => setFull(false)} title="Conteúdo de tela cheia" size="full">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+            border: "1px dashed var(--color-border)",
+            borderRadius: "var(--radius-md)",
+          }}
+        >
+          <p className="ms-text-sm ms-text-muted">
+            .ms-modal__body já é flex:1 — um iframe/imagem com height:100% aqui preenche o espaço
+            disponível de verdade, não só uma altura arbitrária em vh.
+          </p>
+        </div>
+      </Modal>
 
       <Modal
         open={simple}

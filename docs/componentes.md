@@ -600,8 +600,16 @@ a borda vira um anel em degradê que gira acompanhando o mouse.
 | `title` | `ReactNode` | — | vira o `aria-labelledby` do diálogo |
 | `headerExtra` | `ReactNode` | — | conteúdo extra no cabeçalho, mesma linha do título (ícones, badges, ações rápidas) — empurrado à direita pelo `flex: 1` do título, antes do botão de fechar |
 | `footer` | `ReactNode` | — | ações à direita |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | 480 / 640 / 880px |
+| `size` | `"sm" \| "md" \| "lg" \| "full"` | `"md"` | 480 / 640 / 880px / preenche quase toda a viewport |
 | `dismissable` | `boolean` | `true` | permite fechar no Esc e no clique fora |
+
+`size="full"` não é pra diálogo de texto comum — é pra conteúdo que
+precisa de espaço de verdade (um PDF ou imagem embutidos, por exemplo).
+Diferente das outras variantes (que encolhem pro tamanho do próprio
+conteúdo, com `max-height`), `full` tem `height: 100%` explícito — como
+`.ms-modal__body` já é `flex: 1`, um `<iframe>`/imagem com
+`height: 100%` dentro preenche o espaço disponível de verdade, não uma
+altura arbitrária chutada em `vh`.
 
 Renderiza em portal no `<body>`, trava o scroll do fundo (com contagem de
 referências, para modais empilhados), prende o foco dentro do diálogo e

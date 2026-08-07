@@ -418,6 +418,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `Modal` (véu com blur, fecha no X ou clique fora), mas a
       `Gallery` não tinha nenhum jeito de saber que um item foi
       clicado. `Gallery` só expõe o clique; quem usa decide o que abre.
+- [x] `Modal` ganha `size="full"` (`src/components/Modal.tsx`,
+      `.ms-modal--full`) — preenche quase toda a viewport
+      (`width`/`height: 100%` explícitos, diferente de `sm`/`lg`, que só
+      têm `width` e encolhem em altura pro tamanho do próprio conteúdo
+      via `max-height`). Achado real: o `Modal` de `size="lg"` (880px)
+      abrindo um PDF (`Sobre.tsx`, decisão #24 do valnezJrLP) ficava
+      pequeno demais pra leitura confortável. `.ms-modal__body` já é
+      `flex: 1` — com `height: 100%` no `.ms-modal`, um
+      `<iframe>`/imagem com `height: 100%` dentro passa a preencher o
+      espaço de verdade, não uma altura chutada em `vh`.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

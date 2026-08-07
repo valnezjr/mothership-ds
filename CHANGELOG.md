@@ -8,6 +8,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Modal` ganha `size="full"`**: preenche quase toda a viewport
+  (`width`/`height: 100%`, diferente das outras variantes que só
+  encolhem pro tamanho do próprio conteúdo). Pensado pra conteúdo que
+  precisa de espaço de verdade — um PDF ou imagem embutidos, por
+  exemplo — não pra diálogo de texto comum. `.ms-modal__body` já era
+  `flex: 1`; com `full`, um `<iframe>`/imagem com `height: 100%` dentro
+  passa a preencher o espaço disponível de verdade.
+
 - **`Gallery` ganha `onClick` por item** (`GalleryItem.onClick`): vira o
   card num `<button>` (`.ms-gallery__item-trigger`), pensado pra abrir o
   case completo em algo por cima da página (ex.: `Modal`) ao clicar.

@@ -31,7 +31,10 @@ export interface ModalProps {
    *  hidden` pela barra de rolagem) — é o lugar certo pra qualquer coisa
    *  com hover que cresce além da própria caixa (`HoverEdge`, por ex.). */
   headerExtra?: React.ReactNode;
-  size?: "sm" | "md" | "lg";
+  /** `"full"` preenche quase toda a viewport (largura e altura) — pra
+   *  conteúdo que precisa de espaço de verdade (ex.: um PDF ou imagem
+   *  embutidos), não pra diálogos de texto comuns. */
+  size?: "sm" | "md" | "lg" | "full";
   /** Impede fechar clicando fora ou no Esc. */
   dismissable?: boolean;
   className?: string;

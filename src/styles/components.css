@@ -2340,6 +2340,11 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-modal--sm { width: min(480px, 100%); }
 .ms-modal--lg { width: min(880px, 100%); }
+/* height explícito (não só max-height, herdado de .ms-modal): as
+   variantes menores encolhem pro tamanho do próprio conteúdo, mas
+   "full" precisa preencher de verdade — senão um PDF/imagem embutido
+   com pouca altura própria deixaria a maior parte da viewport vazia. */
+.ms-modal--full { width: 100%; height: 100%; }
 
 .ms-modal-backdrop--closing .ms-modal { animation: ms-modal-out 0.2s ease forwards; }
 
