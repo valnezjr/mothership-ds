@@ -6,6 +6,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- **`Gallery` ganha `onClick` por item** (`GalleryItem.onClick`): vira o
+  card num `<button>` (`.ms-gallery__item-trigger`), pensado pra abrir o
+  case completo em algo por cima da página (ex.: `Modal`) ao clicar.
+  Sem `onClick`, o item continua só visual, como sempre foi — aditivo,
+  sem mudança de comportamento pra quem já usa `Gallery`.
+
 ### Corrigido
 
 - `Gallery` com `itemsPerPage`: trocar de página não repetia o bounce de

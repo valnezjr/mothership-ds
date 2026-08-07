@@ -98,6 +98,31 @@ function SpaceBar({ token, px }: { token: string; px: number }) {
 
 /* ---------- demos que precisam de estado ---------- */
 
+function GalleryDemo() {
+  const { notify } = useAlerts();
+  const open = (title: string) =>
+    notify({ title: "Item clicado.", message: `Abriria o case de "${title}" — ex. num Modal.`, tone: "neutral" });
+
+  return (
+    <Gallery
+      itemsPerPage={4}
+      categories={[
+        { key: "ui", label: "UI Design", tone: "accent" },
+        { key: "web", label: "Web", tone: "success" },
+        { key: "branding", label: "Branding", tone: "highlight" },
+      ]}
+      items={[
+        { image: "linear-gradient(135deg,#6b4796,#00a7da)", title: "Painel Orbital", description: "Dashboard de telemetria com glassmorphism.", categories: ["ui", "web"], onClick: () => open("Painel Orbital") },
+        { image: "linear-gradient(135deg,#63256b,#ffd000)", title: "Marca Mothership", description: "Identidade visual completa.", categories: ["branding"], onClick: () => open("Marca Mothership") },
+        { image: "linear-gradient(135deg,#2e3f5e,#00d68f)", title: "Landing Atmosfera", description: "Página de captura com hero flutuante.", categories: ["web"] },
+        { image: "linear-gradient(135deg,#004357,#6b4796)", title: "App Constelação", description: "Interface mobile com navegação em pill.", categories: ["ui"] },
+        { image: "linear-gradient(135deg,#ff4d6d,#63256b)", title: "Campanha Propulsão", description: "Do manual de marca ao site.", categories: ["branding", "web"] },
+        { image: "linear-gradient(135deg,#00a7da,#00d68f)", title: "Kit Aurora", description: "Biblioteca de componentes com escalas 100–900.", categories: ["ui"] },
+      ]}
+    />
+  );
+}
+
 function AlertsDemo() {
   const { notify } = useAlerts();
   const tones = [
@@ -1440,25 +1465,8 @@ export const STORIES: Story[] = [
     id: "galeria",
     group: "Componentes",
     title: "Galeria",
-    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura.",
-    render: () => (
-      <Gallery
-        itemsPerPage={4}
-        categories={[
-          { key: "ui", label: "UI Design", tone: "accent" },
-          { key: "web", label: "Web", tone: "success" },
-          { key: "branding", label: "Branding", tone: "highlight" },
-        ]}
-        items={[
-          { image: "linear-gradient(135deg,#6b4796,#00a7da)", title: "Painel Orbital", description: "Dashboard de telemetria com glassmorphism.", categories: ["ui", "web"] },
-          { image: "linear-gradient(135deg,#63256b,#ffd000)", title: "Marca Mothership", description: "Identidade visual completa.", categories: ["branding"] },
-          { image: "linear-gradient(135deg,#2e3f5e,#00d68f)", title: "Landing Atmosfera", description: "Página de captura com hero flutuante.", categories: ["web"] },
-          { image: "linear-gradient(135deg,#004357,#6b4796)", title: "App Constelação", description: "Interface mobile com navegação em pill.", categories: ["ui"] },
-          { image: "linear-gradient(135deg,#ff4d6d,#63256b)", title: "Campanha Propulsão", description: "Do manual de marca ao site.", categories: ["branding", "web"] },
-          { image: "linear-gradient(135deg,#00a7da,#00d68f)", title: "Kit Aurora", description: "Biblioteca de componentes com escalas 100–900.", categories: ["ui"] },
-        ]}
-      />
-    ),
+    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura; onClick por item vira o card num botão (ex.: abrir o case completo num Modal).",
+    render: () => <GalleryDemo />,
   },
   {
     id: "marquee",

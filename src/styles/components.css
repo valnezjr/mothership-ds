@@ -1469,6 +1469,21 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-gallery__item.is-hidden { display: none; }
 
+/* Reset de <button> nativo quando o item da galeria tem onClick — o
+   grid item real (.ms-gallery__item, largura/altura/display próprios)
+   fica dentro; este só precisa parar de parecer um <button>. */
+.ms-gallery__item-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: inherit;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
 @keyframes ms-gallery-in {
   from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: none; }

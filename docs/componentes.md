@@ -523,7 +523,7 @@ pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
 
 | Prop | Tipo | |
 |---|---|---|
-| `items` | `{ image, title, description?, categories[] }[]` | |
+| `items` | `{ image, title, description?, categories[], onClick? }[]` | |
 | `categories` | `{ key, label, tone?, color? }[]` | |
 | `allLabel` | `ReactNode` | rótulo do filtro "todos" |
 | `itemsPerPage` | `number` | pagina a grade (`StepIndicator`) em vez de crescer em altura — sem essa prop, mostra tudo de uma vez |
@@ -531,6 +531,12 @@ pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
 Filtra por categoria; cada item ganha o contorno reativo com as cores das
 suas categorias — dois tons quando há duas categorias, a escala 300→600
 quando há uma só.
+
+`onClick` por item vira o card num `<button>` (reset próprio,
+`.ms-gallery__item-trigger`) — sem ele, o item continua só visual, como
+sempre foi. Pensado pra abrir o case completo em algo por cima da
+página (`Modal`, o mais comum) ao clicar; a `Gallery` não abre nada
+sozinha, só expõe o clique — quem usa decide o que acontece.
 
 Com `itemsPerPage`, a paginação reage à lista **já filtrada** — trocar
 de filtro ou `itemsPerPage` encolher (reflow responsivo) sempre volta

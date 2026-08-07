@@ -409,6 +409,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       lista inteira). `key` passa a incluir `currentPage`. Achado real de
       um consumidor pedindo "as animações de transição padrão do design
       system" pra paginação.
+- [x] `Gallery` ganha `onClick` por item (`GalleryItem.onClick`,
+      `src/components/disclosure.tsx`) — o card vira `<button>`
+      (`.ms-gallery__item-trigger`, reset próprio de `<button>` nativo)
+      quando definido; sem ele, item continua só visual. Achado real:
+      consumidor queria abrir o case completo (um PDF) por cima da
+      página ao clicar num item do portfólio — igual à exibição de um
+      `Modal` (véu com blur, fecha no X ou clique fora), mas a
+      `Gallery` não tinha nenhum jeito de saber que um item foi
+      clicado. `Gallery` só expõe o clique; quem usa decide o que abre.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
