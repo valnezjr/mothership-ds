@@ -24,6 +24,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Corrigido
 
+- `TooltipProvider` reage a foco de teclado, não só a ponteiro
+  (mouse/toque): `focusin`/`focusout` somam-se a
+  `pointerover`/`pointermove`/`pointerout`, mesmo padrão de delegação
+  num listener só na `window`. Achado real de um consumidor
+  (valnezJrLP): um `data-tip` num elemento focável (`tabIndex={0}`)
+  nunca aparecia navegando por Tab, só passando o mouse — a informação
+  ficava invisível pra quem usa teclado. O Provider continua sem
+  decidir *se* um elemento é focável (isso é escolha de quem consome);
+  só passa a reagir quando já é.
 - `Gallery` com `itemsPerPage`: trocar de página não repetia o bounce de
   entrada (`ms-gallery-in`, `var(--ease-bounce)`) que os itens já têm ao
   aparecer num filtro — a `key` de cada item era só a posição dentro da

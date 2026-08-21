@@ -399,6 +399,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 
 ### Não lançado
 
+- [x] `TooltipProvider` ganha `focusin`/`focusout` (`src/components/charts.tsx`)
+      — somados a `pointerover`/`pointermove`/`pointerout`, mesmo
+      listener delegado na `window`. Achado real de um consumidor
+      (valnezJrLP): `data-tip` num elemento focável nunca aparecia por
+      teclado, só com mouse. `place()` (interno, não exportado)
+      refatorado pra receber coordenadas em vez de `PointerEvent` —
+      evita duplicar clamp/offset entre os dois caminhos; ponto de
+      ancoragem é o cursor pro ponteiro, o canto inferior-esquerdo do
+      próprio elemento (`getBoundingClientRect()`) pro foco. Zero
+      mudança de CSS ou de API pública.
 - [x] `Gallery` com `itemsPerPage` — corrigido o bounce de entrada
       (`ms-gallery-in`) não repetir ao trocar de página
       (`src/components/disclosure.tsx`). A `key` de cada item era só a

@@ -18,6 +18,16 @@ export type ChartSlot = 1 | 2 | 3 | 4;
 /**
  * Mostra um tooltip de vidro para qualquer elemento com `data-tip`
  * dentro da árvore — inclusive nós SVG. Monte uma vez, perto da raiz.
+ *
+ * Reage a ponteiro (mouse/toque) **e** a foco de teclado — achado real
+ * de um consumidor (valnezJrLP, badges de ferramenta com alternativa
+ * open source só documentada em `title`, invisível a quem navega por
+ * Tab): antes só `pointerover`/`pointermove`/`pointerout`, então
+ * qualquer `data-tip` era inacessível por teclado, ainda que o próprio
+ * elemento fosse focável (`tabIndex`). O gatilho por foco não decide
+ * *se* um elemento é focável — isso continua sendo escolha de quem
+ * consome (`tabIndex={0}` no elemento com `data-tip`, quando fizer
+ * sentido ele ser um tab stop); o Provider só reage quando já é.
  */
 export function TooltipProvider({ children }: { children?: React.ReactNode }) {
   const [tip, setTip] = React.useState<{ text: string; x: number; y: number } | null>(null);
@@ -27,24 +37,28 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
   React.useEffect(() => setMounted(true), []);
 
   React.useEffect(() => {
-    const place = (e: PointerEvent, text: string) => {
+    // `x`/`y` é o ponto de ancoragem — o cursor pro caminho de ponteiro,
+    // o canto inferior-esquerdo do próprio elemento pro caminho de foco
+    // (não há posição de cursor num Tab). Mesmo deslocamento/clamp pros
+    // dois: motivo de existir uma função só, não duas quase iguais.
+    const place = (x: number, y: number, text: string) => {
       const el = ref.current;
       const w = el?.offsetWidth ?? 0;
       const h = el?.offsetHeight ?? 0;
-      let x = e.clientX + 14;
-      let y = e.clientY + 14;
-      if (x + w > window.innerWidth - 8) x = e.clientX - w - 10;
-      if (y + h > window.innerHeight - 8) y = e.clientY - h - 10;
-      setTip({ text, x, y });
+      let px = x + 14;
+      let py = y + 14;
+      if (px + w > window.innerWidth - 8) px = x - w - 10;
+      if (py + h > window.innerHeight - 8) py = y - h - 10;
+      setTip({ text, x: px, y: py });
     };
     const over = (e: PointerEvent) => {
       const target = (e.target as Element)?.closest?.("[data-tip]");
       if (!target) return;
-      place(e, target.getAttribute("data-tip") ?? "");
+      place(e.clientX, e.clientY, target.getAttribute("data-tip") ?? "");
     };
     const move = (e: PointerEvent) => {
       const target = (e.target as Element)?.closest?.("[data-tip]");
-      if (target) place(e, target.getAttribute("data-tip") ?? "");
+      if (target) place(e.clientX, e.clientY, target.getAttribute("data-tip") ?? "");
     };
     const out = (e: PointerEvent) => {
       const from = (e.target as Element)?.closest?.("[data-tip]");
@@ -53,13 +67,33 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
       const to = (e.relatedTarget as Element | null)?.closest?.("[data-tip]");
       if (to !== from) setTip(null);
     };
+    // `focusin`/`focusout` (variantes que borbulham de `focus`/`blur`) —
+    // mesmo padrão de delegação num listener só na window que
+    // `pointerover`/`pointerout` já usam, em vez de um listener por
+    // elemento com `data-tip`.
+    const focusIn = (e: FocusEvent) => {
+      const target = (e.target as Element)?.closest?.("[data-tip]");
+      if (!target) return;
+      const r = target.getBoundingClientRect();
+      place(r.left, r.bottom, target.getAttribute("data-tip") ?? "");
+    };
+    const focusOut = (e: FocusEvent) => {
+      const from = (e.target as Element)?.closest?.("[data-tip]");
+      if (!from) return;
+      const to = (e.relatedTarget as Element | null)?.closest?.("[data-tip]");
+      if (to !== from) setTip(null);
+    };
     window.addEventListener("pointerover", over);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerout", out);
+    window.addEventListener("focusin", focusIn);
+    window.addEventListener("focusout", focusOut);
     return () => {
       window.removeEventListener("pointerover", over);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerout", out);
+      window.removeEventListener("focusin", focusIn);
+      window.removeEventListener("focusout", focusOut);
     };
   }, []);
 

@@ -49,7 +49,10 @@ toasts e o painel de histórico. Veja [Alertas](#alertas).
 ### `TooltipProvider`
 
 Dá tooltip a qualquer elemento com `data-tip` na árvore — inclusive nós
-SVG dentro dos gráficos.
+SVG dentro dos gráficos. Reage a ponteiro (mouse/toque) e a foco de
+teclado (Tab) — quem consome decide se o elemento com `data-tip` é
+focável (`tabIndex={0}` quando fizer sentido); o Provider só reage
+quando já é.
 
 ### `LivingBackground`
 
