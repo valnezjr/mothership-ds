@@ -268,7 +268,7 @@
   border-color: transparent;
 }
 .ms-button--solid,
-.ms-button--solid:hover { color: var(--color-on-solid); }
+.ms-button--solid:hover { color: var(--color-on-accent); }
 .ms-button--solid:hover {
   background: var(--color-accent);
   border-color: transparent;
@@ -1075,7 +1075,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   width: 20px;
   height: 20px;
   display: block;
-  color: var(--color-on-solid);
+  /* Padrão = ícone escuro: cobre accent (tone padrão, sem classe
+     modificadora) e, por herdar daqui sem override próprio,
+     success/danger/orange/gray também — os quatro caem no mesmo
+     #1a1a2e e todos passam 4.5:1 (ver tokens.css). Só
+     neutral/violet/pink (abaixo) e highlight (já existia) precisam
+     de exceção pra continuar branco. */
+  color: var(--color-on-accent);
 }
 
 .ms-alert__body {
@@ -1096,12 +1102,24 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-alert--success   .ms-alert__icon { background: var(--color-success); }
 .ms-alert--danger    .ms-alert__icon { background: var(--color-danger); }
 .ms-alert--violet    .ms-alert__icon { background: var(--color-violet); }
-.ms-alert--pink      .ms-alert__icon { background: var(--color-pink); }
+/* pink-600 (não pink-500) só aqui: pink-500 falha 4.5:1 com texto
+   branco OU escuro (4.06 / 4.20) — o único dos 8 tons sem margem
+   de sobra pra nenhum dos dois lados. Um tom mais escuro da própria
+   escala (já existente, não é cor nova) resolve com branco (5.39). */
+.ms-alert--pink      .ms-alert__icon { background: var(--color-pink-600); }
 .ms-alert--orange    .ms-alert__icon { background: var(--color-orange); }
 .ms-alert--gray      .ms-alert__icon { background: var(--color-gray); }
 
 /* Amarelo pede ícone escuro para manter contraste */
 .ms-alert--highlight .ms-alert__icon svg { color: var(--color-on-highlight); }
+/* Estes três têm contraste real com o branco padrão do sistema
+   (--color-on-solid) — exceção ao novo padrão escuro da regra base
+   acima, não repetição dela. neutral: fundo é --color-border, sem
+   saturação de marca; violet mede 4.82:1; pink already ajustado pro
+   fundo -600 acima, 5.39:1. */
+.ms-alert--neutral .ms-alert__icon svg,
+.ms-alert--violet  .ms-alert__icon svg,
+.ms-alert--pink    .ms-alert__icon svg { color: var(--color-on-solid); }
 
 /* ---------- Alertas como notificação (toast) ----------
    Uso via JS: MsAlerts.notify({ title, message, variant, duration })
@@ -1733,7 +1751,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   justify-content: center;
   border-radius: var(--radius-pill);
   background: var(--color-danger);
-  color: var(--color-on-solid) !important;
+  color: var(--color-on-danger) !important;
   font-size: 10px;
   font-weight: var(--font-weight-medium);
 }
@@ -1869,7 +1887,18 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   transform: translateX(-100%);
-  transition: transform 0.35s var(--ease-bounce);
+  /* a11y (mothership-ds/#a11y-005, achado real de um consumidor —
+     valnezJrLP): o painel montava incondicionalmente (mounted não
+     depende de open, só do 1º client render) e só o transform tirava
+     da tela — conteúdo interativo (nav de 4 links) continuava
+     alcançável por Tab mesmo fechado, inclusive no desktop, onde o
+     hambúrguer que abriria a gaveta nunca aparece. `visibility:hidden`
+     já tira elemento do tab order por spec (mesmo mecanismo do
+     backdrop logo acima) — mesmo truque de delay (0s linear
+     <duração>): esconde só DEPOIS do slide-out terminar, mas revela
+     na hora ao abrir (transition-delay: 0s em --open). */
+  visibility: hidden;
+  transition: transform 0.35s var(--ease-bounce), visibility 0s linear 0.35s;
 }
 
 .ms-drawer--right {
@@ -1880,7 +1909,11 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transform: translateX(100%);
 }
 
-.ms-drawer--open { transform: none; }
+.ms-drawer--open {
+  transform: none;
+  visibility: visible;
+  transition-delay: 0s;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .ms-drawer-backdrop,
@@ -2586,11 +2619,11 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-pagination__arrow:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Mesmo par cor sólida + var(--color-on-solid) do Button variant="solid". */
+/* Mesmo par cor sólida + var(--color-on-accent) do Button variant="solid". */
 .ms-pagination__page--active {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  color: var(--color-on-solid);
+  color: var(--color-on-accent);
 }
 
 .ms-pagination__ellipsis {

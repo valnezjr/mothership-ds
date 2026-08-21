@@ -61,6 +61,23 @@ Contrato de foco de qualquer overlay modal no sistema:
 Um componente novo que abre um overlay modal (não um popover leve)
 deve replicar esse contrato, não reinventar.
 
+## Painéis "leves" (Drawer, Popover, DropdownMenu) — fechado precisa estar fora do tab order
+
+Diferente do Modal, estes não prendem foco nem bloqueiam o resto da
+página — mas isso não significa que o conteúdo fechado pode continuar
+alcançável por teclado. Achado real (`Drawer`, 2026-08-21): o painel
+montava incondicionalmente (só o primeiro client render era condição,
+nunca `open`) e ficava fora da tela só por `transform` — os links de
+navegação lá dentro continuavam no Tab, sem nenhuma pista visual em
+lugar nenhum da tela, mesmo em telas onde o gatilho que abriria o
+painel nunca aparece. `visibility: hidden` no elemento fechado (não só
+no véu de fundo) resolve — tira do tab order por spec, sem precisar de
+`inert` via JS. Padrão fixo em `.ms-drawer`/`.ms-drawer--open`
+(`components.css`): esconder com delay igual à duração da transição de
+saída, revelar sem delay ao abrir (mesmo truque que `.ms-drawer-backdrop`
+já usava só pra si). Um painel leve novo que anima por `transform`/
+`opacity` sem também alternar `visibility` reintroduz este bug.
+
 ## Toasts / região viva
 
 O container de toasts fica **sempre presente no DOM**, mesmo vazio.
@@ -106,6 +123,17 @@ CSS media feature) antes de considerar pronto.
 
 ## Cor
 
+**Texto/ícone sobre superfície sólida de marca precisa de 4.5:1** (WCAG
+AA, texto normal — 3:1 só vale pra texto grande/negrito, ≥18pt ou
+≥14pt bold). Achado real, `axe-core` contra um consumidor
+(valnezJrLP, 2026-08-21): `--color-on-solid` (branco fixo) media só
+2.51:1 contra `--color-accent` — `Button variant="solid"`, `Alert`
+(6 dos 8 tons) e `Pagination` ativa falhavam. Nenhuma cor de marca
+nova pode assumir texto branco sem medir — ver
+[TOKENS.md § Texto/ícone sobre superfície sólida](TOKENS.md#textoícone-sobre-superfície-sólida)
+pros valores já resolvidos e o porquê de cada exceção (`--color-on-accent`,
+`--color-on-danger`, fundo `pink-600` em vez de token de texto novo).
+
 Toda cor de **dado** (série de gráfico) nova precisa passar, validado
 por script, separadamente em cada tema:
 
@@ -125,4 +153,5 @@ entram como cor de série.
 - [ ] Se é ícone sozinho como controle: `aria-label` obrigatório.
 - [ ] Se anima: comportamento sob `prefers-reduced-motion: reduce` definido.
 - [ ] Se introduz cor de dado nova: validada (ΔE CVD ≥ 8, ΔE ≥ 15, contraste ≥ 3:1).
+- [ ] Se renderiza texto/ícone sobre fundo de cor de marca sólida: contraste ≥ 4.5:1 medido (não assumido) — usar `--color-on-solid` só depois de confirmar, senão a exceção certa (ver TOKENS.md).
 - [ ] Testado em tela estreita (abaixo de 720px) e nos dois temas.

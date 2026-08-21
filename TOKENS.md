@@ -121,6 +121,35 @@ valores antigos, ficam soltos por design.
 
 Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 
+## Texto/ícone sobre superfície sólida
+
+Fixas nos dois temas — usadas quando texto/ícone precisa ficar sobre
+um fundo de cor de marca saturado o bastante pra exigir contraste
+garantido, em vez de `var(--color-text)` normal (que assume a
+superfície neutra de vidro):
+
+```css
+--color-on-solid: #ffffff;      /* violet, avatar/carrossel — fundos com contraste real */
+--color-on-highlight: #1a1a2e;  /* exceção: sobre --color-highlight */
+--color-on-accent: #1a1a2e;     /* exceção: sobre --color-accent */
+--color-on-danger: #1a1a2e;     /* exceção: sobre --color-danger */
+```
+
+Nem toda cor de marca precisa de token próprio — só quando o par
+padrão (`--color-on-solid`, branco) mede abaixo de 4.5:1 (WCAG AA,
+texto normal). Medido: `accent` 2.51, `highlight` 1.47, `success`
+1.91, `danger` 3.21, `pink` 4.06, `orange` 2.96, `gray` 3.34 — todos
+abaixo do mínimo com branco; só `violet` (4.82) passa. `success`/
+`orange`/`gray` não ganharam token dedicado porque caem no mesmo
+`#1a1a2e` de `--color-on-accent` e nenhuma regra de CSS precisa
+referenciá-los por um nome próprio (o ícone do `Alert`, único
+consumidor desses três, usa `--color-on-accent` como padrão — ver
+`components.css` § `.ms-alert__icon svg`). `pink` foi o único caso sem
+solução só de token: `pink-500` falha nos dois sentidos (4.06 branco /
+4.20 escuro) — resolvido trocando o **fundo** do ícone pra `pink-600`
+(já existente na escala) com texto branco (5.39), não criando token de
+texto novo.
+
 ## Cores de dados (gráficos)
 
 ```css

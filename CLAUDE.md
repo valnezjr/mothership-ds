@@ -399,6 +399,23 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 
 ### Não lançado
 
+- [x] Contraste de texto sobre superfície sólida de marca
+      (`src/styles/tokens.css`, `src/styles/components.css`) — `Button
+      variant="solid"`, `Alert` (6 de 8 tons) e `Pagination` ativa
+      mediam abaixo de 4.5:1 com `--color-on-solid` branco fixo
+      (achado real via `axe-core`). `--color-on-accent`/
+      `--color-on-danger` (novos, `#1a1a2e` — mesmo valor de
+      `--color-on-highlight`) resolvem accent/danger; o ícone do
+      `Alert` usa esse par como padrão do próprio componente, cobrindo
+      success/orange/gray de graça (mesmo valor, sem token dedicado).
+      `pink` (único caso sem solução só de texto — falha nos dois
+      sentidos com o tom -500) trocou o fundo do ícone pra `pink-600`
+      com texto branco. `violet` não precisou de nada.
+- [x] `Drawer` (`src/components/drawer.tsx`) — painel fechado ganha
+      `visibility: hidden` (mesmo truque de delay que o véu de fundo
+      já usava) — antes só saía da tela por `transform`, então
+      continuava alcançável por Tab mesmo fechado, inclusive onde o
+      gatilho que abre o painel nunca aparece.
 - [x] `TooltipProvider` ganha `focusin`/`focusout` (`src/components/charts.tsx`)
       — somados a `pointerover`/`pointermove`/`pointerout`, mesmo
       listener delegado na `window`. Achado real de um consumidor
@@ -407,8 +424,13 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       refatorado pra receber coordenadas em vez de `PointerEvent` —
       evita duplicar clamp/offset entre os dois caminhos; ponto de
       ancoragem é o cursor pro ponteiro, o canto inferior-esquerdo do
-      próprio elemento (`getBoundingClientRect()`) pro foco. Zero
-      mudança de CSS ou de API pública.
+      próprio elemento (`getBoundingClientRect()`) pro foco. Duas
+      correções extras achadas pelo `axe-core` na sequência: `role`/
+      `id` do `<div role="tooltip">` só entram quando há tooltip ativo
+      (antes existia sempre, vazio — viola ARIA); `aria-describedby`
+      liga o elemento focado ao tooltip (antes só existia visualmente,
+      nunca chegava a leitor de tela pelo caminho de foco). Zero
+      mudança de API pública.
 - [x] `Gallery` com `itemsPerPage` — corrigido o bounce de entrada
       (`ms-gallery-in`) não repetir ao trocar de página
       (`src/components/disclosure.tsx`). A `key` de cada item era só a

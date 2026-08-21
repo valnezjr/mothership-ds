@@ -24,6 +24,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Corrigido
 
+- **Contraste de texto sobre superfície sólida de marca** — `Button
+  variant="solid"`, `Alert` (6 dos 8 tons) e `Pagination` ativa
+  mediam abaixo de 4.5:1 (WCAG AA) com o `--color-on-solid` branco
+  fixo (achado real via `axe-core` contra um consumidor). Dois tokens
+  novos, `--color-on-accent`/`--color-on-danger` (`#1a1a2e`, mesmo
+  valor já usado por `--color-on-highlight`), cobrem accent e danger;
+  o ícone do `Alert` usa esse par como padrão, o que também resolve
+  success/orange/gray de graça (mesmo `#1a1a2e`, sem token próprio).
+  `pink` (único caso sem solução só de token — falha nos dois sentidos
+  com o tom -500) teve o fundo do ícone trocado pra `pink-600`
+  (escala já existente) com texto branco. `violet` não precisou de
+  nada (já media 4.5:1+). Zero mudança visual pra quem já lia o texto
+  confortavelmente — só onde o contraste falhava de verdade.
+- `Drawer` (mothership-ds/src/components/drawer.tsx): painel fechado
+  ganha `visibility: hidden` (com o mesmo truque de delay que o véu de
+  fundo já usava) — antes só saía da tela por `transform`, então os
+  links de navegação continuavam alcançáveis por Tab mesmo fechado,
+  inclusive em telas onde o gatilho que abre o painel nunca aparece.
 - `TooltipProvider` reage a foco de teclado, não só a ponteiro
   (mouse/toque): `focusin`/`focusout` somam-se a
   `pointerover`/`pointermove`/`pointerout`, mesmo padrão de delegação
@@ -32,7 +50,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   nunca aparecia navegando por Tab, só passando o mouse — a informação
   ficava invisível pra quem usa teclado. O Provider continua sem
   decidir *se* um elemento é focável (isso é escolha de quem consome);
-  só passa a reagir quando já é.
+  só passa a reagir quando já é. Duas correções extras achadas pelo
+  `axe-core` na sequência: (1) o `<div role="tooltip">` do portal
+  existia sempre no DOM, mesmo vazio — um elemento com esse role sem
+  nome acessível viola ARIA independente de estar visível; `role`/`id`
+  agora só entram quando há um tooltip ativo de verdade. (2) o caminho
+  de foco mostrava o texto visualmente mas nunca ligava o elemento
+  focado ao tooltip — `aria-describedby` (`id` estável via `useId`)
+  resolve isso, só no caminho de foco (o de ponteiro já é visual pra
+  quem enxerga, sem relação com leitor de tela).
 - `Gallery` com `itemsPerPage`: trocar de página não repetia o bounce de
   entrada (`ms-gallery-in`, `var(--ease-bounce)`) que os itens já têm ao
   aparecer num filtro — a `key` de cada item era só a posição dentro da

@@ -28,11 +28,25 @@ export type ChartSlot = 1 | 2 | 3 | 4;
  * *se* um elemento é focável — isso continua sendo escolha de quem
  * consome (`tabIndex={0}` no elemento com `data-tip`, quando fizer
  * sentido ele ser um tab stop); o Provider só reage quando já é.
+ *
+ * Duas correções de acessibilidade (achado real, `axe-core` contra um
+ * consumidor real): (1) o `<div role="tooltip">` do portal existia
+ * sempre no DOM, mesmo vazio/sem nenhum tooltip ativo — um elemento
+ * com esse role e sem nome acessível viola ARIA, independente de
+ * estar visível (`aria-tooltip-name`). Corrigido só aplicando o role
+ * quando há de fato um `tip` ativo. (2) o caminho de FOCO mostrava o
+ * texto visualmente mas nunca ligava o elemento focado ao tooltip via
+ * `aria-describedby` — leitor de tela lia só o texto visível do
+ * elemento (ex. "Penpot"), nunca o conteúdo do tooltip. Corrigido só
+ * no caminho de foco (não no de ponteiro: mouse/toque já mostra o
+ * texto visualmente pra quem enxerga, sem relação com leitor de tela).
  */
 export function TooltipProvider({ children }: { children?: React.ReactNode }) {
   const [tip, setTip] = React.useState<{ text: string; x: number; y: number } | null>(null);
   const [mounted, setMounted] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const describedRef = React.useRef<Element | null>(null);
+  const tooltipId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-tooltip`;
 
   React.useEffect(() => setMounted(true), []);
 
@@ -70,18 +84,29 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
     // `focusin`/`focusout` (variantes que borbulham de `focus`/`blur`) —
     // mesmo padrão de delegação num listener só na window que
     // `pointerover`/`pointerout` já usam, em vez de um listener por
-    // elemento com `data-tip`.
+    // elemento com `data-tip`. `aria-describedby` liga o elemento
+    // focado ao `<div role="tooltip">` (id estável via useId) — sem
+    // isso, o texto só existia visualmente, nunca chegava a leitor de
+    // tela pelo caminho de teclado.
     const focusIn = (e: FocusEvent) => {
       const target = (e.target as Element)?.closest?.("[data-tip]");
       if (!target) return;
       const r = target.getBoundingClientRect();
       place(r.left, r.bottom, target.getAttribute("data-tip") ?? "");
+      target.setAttribute("aria-describedby", tooltipId);
+      describedRef.current = target;
     };
     const focusOut = (e: FocusEvent) => {
       const from = (e.target as Element)?.closest?.("[data-tip]");
       if (!from) return;
       const to = (e.relatedTarget as Element | null)?.closest?.("[data-tip]");
-      if (to !== from) setTip(null);
+      if (to !== from) {
+        setTip(null);
+        if (describedRef.current === from) {
+          from.removeAttribute("aria-describedby");
+          describedRef.current = null;
+        }
+      }
     };
     window.addEventListener("pointerover", over);
     window.addEventListener("pointermove", move);
@@ -95,20 +120,24 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
       window.removeEventListener("focusin", focusIn);
       window.removeEventListener("focusout", focusOut);
     };
-  }, []);
+  }, [tooltipId]);
 
   return (
     <>
       {children}
       {/* portal: `position: fixed` quebraria sob qualquer ancestral com
-          transform/filter — e o sistema usa backdrop-filter à vontade */}
+          transform/filter — e o sistema usa backdrop-filter à vontade.
+          `role="tooltip"`/`id` só entram quando `tip` existe de verdade
+          — um role="tooltip" permanente e vazio (sem `tip` ativo) viola
+          ARIA (nome acessível ausente), mesmo invisível. */}
       {mounted &&
         createPortal(
           <div
             ref={ref}
+            id={tip ? tooltipId : undefined}
+            role={tip ? "tooltip" : undefined}
             className={["ms-tooltip", tip && "ms-tooltip--show"].filter(Boolean).join(" ")}
             style={{ left: tip?.x ?? 0, top: tip?.y ?? 0 }}
-            role="tooltip"
           >
             {tip?.text}
           </div>,

@@ -65,12 +65,30 @@
   --indicator-size: 10px;
 
   /* ---------- Texto/ícone sobre superfície sólida ----------
-     Nenhuma cor semântica de "texto sobre marca" existe além destes
-     dois pares fixos (não variam por tema): usados sempre que texto ou
+     Cores fixas (não variam por tema): usadas sempre que texto ou
      ícone precisa ficar sobre um fundo saturado o bastante pra exigir
-     contraste fixo, em vez de var(--color-text) normal. */
-  --color-on-solid: #ffffff;      /* accent, danger, violet, cor de marca em geral */
+     contraste fixo, em vez de var(--color-text) normal.
+
+     --color-on-solid (branco) só funciona de verdade contra violet
+     (4.82:1) e contra fundos não-relacionados a cor de marca (avatar
+     placeholder, Carousel em modo foto — ver token block abaixo).
+     Medido (WCAG, texto normal, mínimo 4.5:1): accent 2.51, highlight
+     1.47, success 1.91, danger 3.21, pink 4.06, orange 2.96, gray
+     3.34 — todos falham com texto branco. --color-on-highlight já
+     resolvia isso pra highlight (único caso até agora); --color-on-accent
+     resolve accent (Button/Pagination) e serve de fallback padrão do
+     ícone do Alert (cobre também success/danger/orange/gray, que caem
+     no mesmo #1a1a2e — 8.95/5.31/5.77/5.10, todos ≥4.5:1 — sem
+     precisar de um token dedicado por tom, já que nenhuma regra
+     referencia esses nomes hoje). --color-on-danger serve o badge do
+     sino da Navbar (fundo danger fora do Alert). pink não ganhou
+     token novo: o tom -500 falha nos dois sentidos (4.06 branco /
+     4.20 escuro) — resolvido trocando o FUNDO do ícone pra pink-600
+     (5.39 com texto branco), não a cor do texto. */
+  --color-on-solid: #ffffff;      /* violet, avatar/carrossel — fundos onde branco já tem contraste real */
   --color-on-highlight: #1a1a2e;  /* exceção: highlight (amarelo) é claro demais pro branco */
+  --color-on-accent: #1a1a2e;     /* exceção: accent (ciano) — 2.51:1 com branco, falha WCAG AA */
+  --color-on-danger: #1a1a2e;     /* exceção: danger (vermelho) — 3.21:1 com branco, falha WCAG AA */
 
   /* ---------- Carousel: controles sobre foto ----------
      Modo "foto" do Carousel precisa de branco fixo, independente do
