@@ -103,9 +103,17 @@ function GalleryDemo() {
   const open = (title: string) =>
     notify({ title: "Item clicado.", message: `Abriria o case de "${title}" — ex. num Modal.`, tone: "neutral" });
 
+  // Hoje menos alguns dias (bem dentro de `newDays`, padrão 30) pra
+  // "Kit Aurora" nascer com o badge "Novo" já visível na demo, sem
+  // esperar 30 dias reais — mesmo cálculo relativo a Date.now() que o
+  // componente usa em produção.
+  const recentlyAdded = new Date();
+  recentlyAdded.setDate(recentlyAdded.getDate() - 3);
+
   return (
     <Gallery
       itemsPerPage={4}
+      sortable
       categories={[
         { key: "ui", label: "UI Design", tone: "accent" },
         { key: "web", label: "Web", tone: "success" },
@@ -117,7 +125,7 @@ function GalleryDemo() {
         { image: "linear-gradient(135deg,#2e3f5e,#00d68f)", title: "Landing Atmosfera", description: "Página de captura com hero flutuante.", categories: ["web"] },
         { image: "linear-gradient(135deg,#004357,#6b4796)", title: "App Constelação", description: "Interface mobile com navegação em pill.", categories: ["ui"] },
         { image: "linear-gradient(135deg,#ff4d6d,#63256b)", title: "Campanha Propulsão", description: "Do manual de marca ao site.", categories: ["branding", "web"] },
-        { image: "linear-gradient(135deg,#00a7da,#00d68f)", title: "Kit Aurora", description: "Biblioteca de componentes com escalas 100–900.", categories: ["ui"] },
+        { image: "linear-gradient(135deg,#00a7da,#00d68f)", title: "Kit Aurora", description: "Biblioteca de componentes com escalas 100–900.", categories: ["ui"], addedAt: recentlyAdded },
       ]}
     />
   );

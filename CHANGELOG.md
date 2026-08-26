@@ -8,6 +8,25 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Gallery` ganha destaque de item novo e ordenação por data**
+  (`GalleryItem.addedAt`): dentro de `newDays` (padrão 30, ~1 mês) o
+  item ganha o contorno reativo — que hoje só aparecia no hover — fixo,
+  mais um `<Badge>` (`newLabel`, padrão `"Novo"`); a cor de ambos vem
+  das categorias do próprio item (`colorsFor`), não de um tom fixo do
+  sistema — mesma ideia do `highlighted`/badge do `PricingCard`, mas
+  sem depender de `--color-accent`. O badge reaproveita
+  `ms-badge--{tone}` (fundo suave + borda) em vez de preenchimento
+  sólido porque a cor da categoria é arbitrária e não dá pra garantir
+  contraste de texto branco fixo contra qualquer uma delas. `sortable`
+  liga um botão asc/desc ao lado dos filtros — mesmo ícone/alternância
+  da `Table` (`SortIcon`, agora exportado) — que ordena por `addedAt`;
+  `defaultSortOrder` escolhe o estado inicial (padrão `"desc"`, mais
+  novos primeiro). Itens sem `addedAt` contam como a data mais antiga
+  possível e preservam a ordem original entre si (sort estável) — um
+  catálogo existente sem datas não embaralha ao ligar `sortable`.
+  Aditivo nas duas frentes: sem `addedAt`/`sortable`, `Gallery` se
+  comporta exatamente como antes.
+
 - **`Modal` ganha `size="full"`**: preenche quase toda a viewport
   (`width`/`height: 100%`, diferente das outras variantes que só
   encolhem pro tamanho do próprio conteúdo). Pensado pra conteúdo que

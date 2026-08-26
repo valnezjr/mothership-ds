@@ -2,9 +2,10 @@
 
 import React from "react";
 import { HoverEdge } from "./theme";
-import { Button } from "./primitives";
+import { Badge, Button } from "./primitives";
 import type { Tone } from "./primitives";
 import { StepIndicator } from "./StepIndicator";
+import { SortIcon } from "./table";
 
 /* ============================================================
    Accordion, carrossel e galeria.
@@ -369,6 +370,13 @@ export interface GalleryItem {
   /** Item vira um botão quando definido — ex.: abrir um Modal com o
    *  case completo. Sem `onClick`, o item continua só visual, como hoje. */
   onClick?: () => void;
+  /**
+   * Quando o item foi adicionado — ISO string, timestamp ou `Date`.
+   * Alimenta duas coisas, ambas opt-in (sem `addedAt` o item se
+   * comporta como sempre se comportou): o badge "novo" (`newDays`,
+   * padrão 30 dias corridos) e o seletor de ordenação (`sortable`).
+   */
+  addedAt?: string | number | Date;
 }
 
 export interface GalleryProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -384,37 +392,86 @@ export interface GalleryProps extends React.HTMLAttributes<HTMLDivElement> {
    * página.
    */
   itemsPerPage?: number;
+  /** Rótulo do badge sobre itens recém-adicionados (ver `GalleryItem.addedAt`). Padrão: "Novo". */
+  newLabel?: React.ReactNode;
+  /** Dias corridos que um item recém-adicionado continua marcado. Padrão: 30 (~1 mês). */
+  newDays?: number;
+  /**
+   * Liga o seletor de ordenação por data (`GalleryItem.addedAt`): um
+   * botão asc/desc ao lado dos filtros, mesmo ícone e alternância da
+   * `Table`. Sem essa prop, a grade mantém a ordem de `items` como
+   * veio (comportamento original).
+   */
+  sortable?: boolean;
+  /** Ordem inicial quando `sortable`. Padrão: `"desc"` (mais novos primeiro). */
+  defaultSortOrder?: "asc" | "desc";
+  /** Rótulos do botão de ordenação. Padrão: "Mais antigos" / "Mais novos". */
+  sortLabels?: { asc?: React.ReactNode; desc?: React.ReactNode };
+}
+
+/** `addedAt` ausente ou inválido vira época 0 — mais antigo que qualquer
+ *  data real, então itens sem data se agrupam no fim (ordem "mais novos
+ *  primeiro") sem quebrar a ordenação dos que têm data de verdade. Como
+ *  `Array.prototype.sort` é estável, esses itens preservam a ordem
+ *  original de `items` entre si. */
+function toTimestamp(value: GalleryItem["addedAt"]): number {
+  if (value == null) return 0;
+  const ts = value instanceof Date ? value.getTime() : new Date(value).getTime();
+  return Number.isNaN(ts) ? 0 : ts;
+}
+
+function isNewItem(value: GalleryItem["addedAt"], days: number): boolean {
+  if (value == null) return false;
+  const ts = toTimestamp(value);
+  return ts > 0 && Date.now() - ts < days * 24 * 60 * 60 * 1000;
 }
 
 /**
  * Filtros em pill + grade de itens com foto, badges e descrição.
  * No hover o item usa o contorno reativo com as cores das suas
  * categorias.
+ *
+ * Itens com `addedAt` recente (`newDays`, padrão 30) ganham esse mesmo
+ * contorno reativo fixo (não só no hover) mais um badge — mesma ideia
+ * do "Popular" do `PricingCard`, mas a cor vem do case (`colorsFor`),
+ * não de um tom fixo do sistema.
  */
 export function Gallery({
   items,
   categories,
   allLabel = "Todos",
   itemsPerPage,
+  newLabel = "Novo",
+  newDays = 30,
+  sortable,
+  defaultSortOrder = "desc",
+  sortLabels,
   className,
   ...rest
 }: GalleryProps) {
   const [filter, setFilter] = React.useState("*");
   const [page, setPage] = React.useState(0);
+  const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">(defaultSortOrder);
   const byKey = React.useMemo(
     () => Object.fromEntries(categories.map((c) => [c.key, c])),
     [categories]
   );
 
   const filtered = items.filter((item) => filter === "*" || item.categories.includes(filter));
-  const totalPages = itemsPerPage ? Math.max(1, Math.ceil(filtered.length / itemsPerPage)) : 1;
+  const ordered = sortable
+    ? [...filtered].sort((a, b) => {
+        const diff = toTimestamp(a.addedAt) - toTimestamp(b.addedAt);
+        return sortOrder === "asc" ? diff : -diff;
+      })
+    : filtered;
+  const totalPages = itemsPerPage ? Math.max(1, Math.ceil(ordered.length / itemsPerPage)) : 1;
   const currentPage = Math.min(page, totalPages - 1);
   const visibleItems = itemsPerPage
-    ? filtered.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage)
-    : filtered;
+    ? ordered.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage)
+    : ordered;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- só reage à troca de filtro, não a `items`/`categories` em si
-  React.useEffect(() => setPage(0), [filter]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- só reage à troca de filtro/ordem, não a `items`/`categories` em si
+  React.useEffect(() => setPage(0), [filter, sortOrder]);
   // Sobrevive a itemsPerPage encolher (reflow responsivo) ou o filtro
   // reduzir a lista o bastante pra invalidar a página atual.
   React.useEffect(() => setPage((p) => Math.min(p, totalPages - 1)), [totalPages]);
@@ -460,15 +517,37 @@ export function Gallery({
             {c.label}
           </button>
         ))}
+        {sortable && (
+          <button
+            type="button"
+            className="ms-gallery__sort"
+            onClick={() => setSortOrder((o) => (o === "desc" ? "asc" : "desc"))}
+            aria-label={`Ordenar por data de adição: ${
+              sortOrder === "desc" ? "mais novos primeiro" : "mais antigos primeiro"
+            }`}
+          >
+            <span>{sortOrder === "desc" ? sortLabels?.desc ?? "Mais novos" : sortLabels?.asc ?? "Mais antigos"}</span>
+            <SortIcon direction={sortOrder} />
+          </button>
+        )}
       </div>
       <div className="ms-gallery__grid">
         {visibleItems.map((item, i) => {
+          const isNew = isNewItem(item.addedAt, newDays);
           const card = (
-            <HoverEdge className="ms-gallery__item" colors={colorsFor(item.categories)}>
+            <HoverEdge
+              className={["ms-gallery__item", isNew && "ms-gallery__item--new"].filter(Boolean).join(" ")}
+              colors={colorsFor(item.categories)}
+            >
               <div
                 className="ms-gallery__photo"
                 style={{ ["--ms-photo" as string]: item.image }}
               />
+              {isNew && (
+                <Badge tone={byKey[item.categories[0]]?.tone} className="ms-gallery__badge-new">
+                  {newLabel}
+                </Badge>
+              )}
               <div className="ms-gallery__info">
                 <span className="ms-gallery__title">{item.title}</span>
                 <span className="ms-gallery__badges">

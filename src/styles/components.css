@@ -1544,6 +1544,56 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   margin-top: var(--space-4);
 }
 
+/* Item recém-adicionado (GalleryItem.addedAt dentro de `newDays`):
+   reaproveita o próprio anel reativo do hover (--ms-edge-a/--ms-edge-b,
+   já as cores das categorias do item — ver colorsFor em disclosure.tsx)
+   deixando-o sempre visível, em vez de só no hover. Mesma ideia do
+   contorno fixo de .ms-pricing--highlighted, só que a cor vem do case,
+   não de --color-accent fixo. */
+.ms-gallery__item--new {
+  border-color: transparent;
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--ms-edge-a, var(--color-accent)) 26%, transparent);
+}
+
+.ms-gallery__item--new::after { opacity: 1; }
+
+/* Badge "novo": é o próprio <Badge tone={...}> da categoria do item
+   (fundo suave + borda colorida — o mesmo par acessível já usado pelas
+   badges de categoria logo abaixo, ver ms-badge--*), só reposicionado
+   sobre a foto. Nunca um preenchimento sólido com texto branco fixo —
+   a cor da categoria é arbitrária (ou até um --color custom fora da
+   paleta de tons) e não dá pra garantir contraste 4.5:1 pra qualquer
+   uma delas, mesma lição do achado de contraste em CHANGELOG.md. */
+.ms-gallery__badge-new {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 3;
+}
+
+/* Botão de ordenação por data (addedAt), ao lado dos filtros — mesmo
+   ícone/alternância asc↔desc da Table (ver SortIcon, table.tsx), só
+   que sem o terceiro estado (ordem original): aqui são só as duas
+   direções, sempre uma ativa. */
+.ms-gallery__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition-slow);
+}
+
+.ms-gallery__sort:hover { color: var(--color-text); }
+.ms-gallery__sort svg { width: 14px; height: 14px; flex-shrink: 0; }
+
 /* ---------- Accordion ---------- */
 .ms-accordion {
   display: flex;

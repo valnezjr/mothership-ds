@@ -27,7 +27,8 @@ const DeleteIcon = (
   </svg>
 );
 
-function SortIcon({ direction }: { direction?: "asc" | "desc" }) {
+/** Exportado pra outros componentes com ordenação asc/desc (ex.: `Gallery`) reaproveitarem o mesmo ícone — uma só fonte de verdade pro afetado visual de "ordenável". */
+export function SortIcon({ direction }: { direction?: "asc" | "desc" }) {
   return (
     <svg
       viewBox="0 0 24 24"

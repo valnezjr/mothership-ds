@@ -526,10 +526,15 @@ pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
 
 | Prop | Tipo | |
 |---|---|---|
-| `items` | `{ image, title, description?, categories[], onClick? }[]` | |
+| `items` | `{ image, title, description?, categories[], onClick?, addedAt? }[]` | |
 | `categories` | `{ key, label, tone?, color? }[]` | |
 | `allLabel` | `ReactNode` | rótulo do filtro "todos" |
 | `itemsPerPage` | `number` | pagina a grade (`StepIndicator`) em vez de crescer em altura — sem essa prop, mostra tudo de uma vez |
+| `newLabel` | `ReactNode` | rótulo do badge "novo" (padrão `"Novo"`) |
+| `newDays` | `number` | dias corridos que um item recém-adicionado continua marcado (padrão `30`) |
+| `sortable` | `boolean` | liga o botão de ordenação por `addedAt` |
+| `defaultSortOrder` | `"asc" \| "desc"` | ordem inicial quando `sortable` (padrão `"desc"`, mais novos primeiro) |
+| `sortLabels` | `{ asc?, desc? }` | rótulos do botão de ordenação (padrão "Mais antigos"/"Mais novos") |
 
 Filtra por categoria; cada item ganha o contorno reativo com as cores das
 suas categorias — dois tons quando há duas categorias, a escala 300→600
@@ -547,6 +552,27 @@ pra primeira página. Pensado pra galerias que não podem crescer sem
 limite na tela (ex.: um portfólio dentro de uma página sem scroll) sem
 abrir mão dos filtros/badges/cores de categoria que fazem a `Gallery`
 parecer a `Gallery`.
+
+**Destaque de item novo** — `GalleryItem.addedAt` (ISO string, timestamp
+ou `Date`) marca quando o item foi adicionado. Dentro de `newDays`
+(padrão 30, ~1 mês), o item ganha o mesmo contorno reativo que hoje só
+aparece no hover, só que fixo — igual à ideia do `highlighted` do
+`PricingCard` — mais um `<Badge>` com o rótulo `newLabel` (padrão
+`"Novo"`). A cor do contorno **e** do tom do badge vêm das próprias
+categorias do item (a mesma lógica de `colorsFor` que já pinta o hover),
+nunca de um tom fixo do sistema — por isso o badge reaproveita
+`ms-badge--{tone}` (fundo suave + borda colorida) em vez de um
+preenchimento sólido: a cor da categoria é arbitrária e não dá pra
+garantir contraste de texto branco fixo contra qualquer uma delas. Sem
+`addedAt`, o item se comporta como sempre se comportou — aditivo.
+
+**Ordenação por data** — `sortable` liga um botão ao lado dos filtros
+que alterna asc/desc por `addedAt` (mesmo ícone/alternância da `Table`,
+ver `SortIcon`), com `defaultSortOrder` definindo o estado inicial.
+Itens sem `addedAt` contam como a data mais antiga possível e, entre si,
+mantêm a ordem original de `items` (`Array.prototype.sort` é estável) —
+então um catálogo existente sem datas não embaralha ao ligar `sortable`,
+só os itens com data real é que flutuam pra posição certa.
 
 ### `Marquee`
 
