@@ -65,3 +65,20 @@ navegação, o índice e as âncoras se atualizam sozinhos.
   senão servidor e cliente divergem e a hidratação quebra.
 - **Nada de reset global**: a folha da biblioteca não deve reescrever o
   CSS de quem a instala. Tudo é escopado em `.ms-page`.
+
+## O guardião — revisão automática por push
+
+Um hook local (`.githooks/pre-push`) roda a skill
+`design-system-maintainer` sobre o diff de qualquer push que toque `src/`,
+`styles/` ou `styleguide/stories.tsx`. Instala uma vez:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Precisa do [Claude Code](https://claude.com/claude-code) instalado e
+autenticado (`claude`). O hook nunca bloqueia o push — se o Claude não
+estiver disponível, ou a skill não achar nada digno de nota, ele não faz
+nada. Quando acha algo, o relatório aparece como agente na sala da
+Mothership Agency (etapa 6.5 de lá) — o hook em si não escreve nada neste
+repositório, só lê (`git diff`/`git log`, sem `Edit`/`Write`).
