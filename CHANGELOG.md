@@ -8,6 +8,19 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Capítulo `docs/3d.md`**: o vocabulário 3D que emergiu de um consumidor
+  real (Mothership Agency, react-three-fiber) usando os tokens deste
+  pacote numa cena 3D — sem nenhum componente 3D novo empacotado aqui.
+  Cobre níveis de superfície (derivar `--bg-base` por mistura com branco
+  em espaço **linear**, ao contrário da composição em sRGB da regra 2D),
+  o rig de iluminação (cor de marca como temperatura ambiente, sempre em
+  intensidade baixa, nunca como sinal de estado), o mapeamento
+  estado→token (par 3D do `tone` de `<Badge>`) e a regra irmã dos
+  `--color-on-*`: em 3D a legibilidade do sinal de estado não vem de um
+  par de cores, vem de um teto de valor nas superfícies passivas somado à
+  diferença de tipo de material (`MeshBasicMaterial` imune à luz da cena
+  vs. `MeshLambertMaterial` em tudo mais).
+
 - **Par de token espacial**: `--transition-spatial` (0.45s) e
   `--ease-spatial` (`cubic-bezier(0.34, 1, 0.64, 1)`). `--ease-bounce`
   existente tem overshoot (`y1: 1.56`) — bom pra botão/accordion, ruim pra

@@ -245,6 +245,7 @@ específico por conta própria.
 | [Componentes](docs/componentes.md) | Referência de props, com exemplos |
 | [Movimento](docs/movimento.md) | Fundo vivo, splash, loader e o easing do sistema |
 | [Arquitetura](docs/arquitetura.md) | Decisões técnicas e por que cada uma foi tomada |
+| [3D](docs/3d.md) | Vocabulário que emergiu consumindo os tokens numa cena 3D real |
 | [Contribuindo](CONTRIBUTING.md) | Como adicionar um componente ao sistema |
 
 ## Styleguide
