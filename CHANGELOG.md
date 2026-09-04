@@ -8,6 +8,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Par de token espacial**: `--transition-spatial` (0.45s) e
+  `--ease-spatial` (`cubic-bezier(0.34, 1, 0.64, 1)`). `--ease-bounce`
+  existente tem overshoot (`y1: 1.56`) — bom pra botão/accordion, ruim pra
+  algo grande e lento entrando em cena (painel largo, ponto de vista de
+  câmera): ultrapassar o alvo e voltar lê como solavanco, não como charme.
+  `--ease-spatial` é a mesma família (mesmos `x1`/`x2` de `--ease-bounce`,
+  mesma cadência de partida/chegada), só com `y1` travado em 1. Pedido de
+  um consumidor real (Mothership Agency) pra transição de câmera/painel
+  numa cena 3D.
+
 - **`Gallery` ganha destaque de item novo e ordenação por data**
   (`GalleryItem.addedAt`): dentro de `newDays` (padrão 30, ~1 mês) o
   item ganha o contorno reativo — que hoje só aparecia no hover — fixo,

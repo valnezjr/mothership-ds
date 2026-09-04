@@ -41,9 +41,19 @@
   --transition-fast: 0.1s;   /* outline do switch */
   --transition-base: 0.2s;   /* deslize do switch */
   --transition-slow: 0.3s;   /* backgrounds e cores */
+  --transition-spatial: 0.45s; /* câmera, gaveta de foco — algo que ocupa espaço físico entrando em cena */
 
-  /* Easing com leve bounce (overshoot) — accordion e microinterações */
+  /* Easing com leve bounce (overshoot) — accordion e microinterações.
+     Não serve pra tudo que "entra": um painel ou uma câmera que
+     ultrapassa o alvo e volta lê como solavanco, não como charme —
+     overshoot funciona em algo pequeno e rápido (botão, badge), não em
+     algo grande e lento (gaveta, ponto de vista). */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Mesma família do --ease-bounce (mesmos x1/x2 — mesma cadência de
+     partida/chegada), y1 travado em 1 em vez de 1.56: tira o overshoot
+     sem trocar de família de curva. Pareia com --transition-spatial. */
+  --ease-spatial: cubic-bezier(0.34, 1, 0.64, 1);
 
   /* ---------- Larguras ---------- */
   --container-max: 588px;
