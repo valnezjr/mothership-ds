@@ -157,7 +157,7 @@ export function Modal({
 
   return createPortal(
     <div
-      className={["ms-modal-backdrop", closing && "ms-modal-backdrop--closing"].filter(Boolean).join(" ")}
+      className={["ms-modal-backdrop", "ms-portal-root", closing && "ms-modal-backdrop--closing"].filter(Boolean).join(" ")}
       onClick={() => dismissable && requestClose()}
       role="presentation"
     >
@@ -253,7 +253,7 @@ export function StepModal({
 
   return createPortal(
     <div
-      className={["ms-modal-backdrop", closing && "ms-modal-backdrop--closing"].filter(Boolean).join(" ")}
+      className={["ms-modal-backdrop", "ms-portal-root", closing && "ms-modal-backdrop--closing"].filter(Boolean).join(" ")}
       onClick={() => dismissable && requestClose()}
       role="presentation"
     >

@@ -180,7 +180,7 @@ export function Navbar({
       ? createPortal(
           <div
             id={menuId}
-            className={["ms-navbar__menu", open && "ms-navbar__menu--open"].filter(Boolean).join(" ")}
+            className={["ms-navbar__menu", "ms-portal-root", open && "ms-navbar__menu--open"].filter(Boolean).join(" ")}
             style={{ top: menuBox.top, left: menuBox.left, width: menuBox.width }}
           >
             {links.map((l) => (

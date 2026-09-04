@@ -136,7 +136,7 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
             ref={ref}
             id={tip ? tooltipId : undefined}
             role={tip ? "tooltip" : undefined}
-            className={["ms-tooltip", tip && "ms-tooltip--show"].filter(Boolean).join(" ")}
+            className={["ms-tooltip", "ms-portal-root", tip && "ms-tooltip--show"].filter(Boolean).join(" ")}
             style={{ left: tip?.x ?? 0, top: tip?.y ?? 0 }}
           >
             {tip?.text}

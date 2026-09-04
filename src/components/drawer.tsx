@@ -60,7 +60,7 @@ export function Drawer({
         aria-hidden="true"
       />
       <div
-        className={["ms-drawer", side === "right" && "ms-drawer--right", open && "ms-drawer--open", className]
+        className={["ms-drawer", "ms-portal-root", side === "right" && "ms-drawer--right", open && "ms-drawer--open", className]
           .filter(Boolean)
           .join(" ")}
         {...rest}

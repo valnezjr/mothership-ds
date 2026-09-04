@@ -61,6 +61,27 @@ outro `backdrop-filter` **não se aplica**. Renderizado dentro da
 navbar, o menu perde o vidro; no `<body>`, funciona — o JS calcula a
 posição sob o header ao abrir.
 
+### `.ms-portal-root`
+
+Escapar do fluxo de layout não pode significar escapar do escopo de
+estilo. `font-family`, `color`, o reset de `box-sizing`/margem/
+lista/scrollbar e o anel de `:focus-visible` são aplicados em
+`.ms-page` — e um portal em `<body>` é *irmão* dela, não descendente,
+então nada disso chega lá por herança sozinho.
+
+Cada componente que porta (`Modal`/`StepModal`, `Drawer`, `Popover`,
+`DropdownMenu`, toasts, `TooltipProvider`) carrega `.ms-portal-root`
+na própria raiz, além da classe específica. A regra dobra a mesma
+folha de `.ms-page`, exceto o fundo vivo (`min-height`/`background-*`)
+— portal é sempre superfície flutuante com o próprio vidro
+(`--color-surface` + blur), nunca uma segunda página.
+
+Ao criar um componente novo com `createPortal`, adicione
+`.ms-portal-root` na raiz portada. Sem isso ele nasce sem fonte, sem
+cor, sem anel de foco e sem o reset de caixa — o bug é silencioso
+(nada quebra visualmente óbvio até alguém reparar que o texto está
+serifado e preto).
+
 ### Escala de z-index
 
 ```

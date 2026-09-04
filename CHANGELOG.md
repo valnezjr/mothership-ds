@@ -43,6 +43,22 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Corrigido
 
+- **Portais caíam pra fonte/cor padrão do navegador** — `Modal`,
+  `StepModal`, `Drawer`, `Popover`, `DropdownMenu`, toasts e
+  `TooltipProvider` renderizam via `createPortal(..., document.body)`
+  de propósito (ver ARCHITECTURE.md § Portais — evita que um ancestral
+  com `transform`/`filter`/`backdrop-filter` vire bloco de contenção de
+  `position: fixed`). O problema: `font-family`/`color`/o reset de
+  `box-sizing`/margem/lista/scrollbar e o anel de `:focus-visible`
+  eram aplicados só na regra `.ms-page`, e um portal em `document.body`
+  é *irmão* de `.ms-page`, não descendente — nada disso chegava lá.
+  Achado real com um consumidor: o título do `Modal` media
+  `font-family: "Times New Roman"` e `color: rgb(0, 0, 0)` no
+  navegador, em vez de `Outfit`/branco. Nova classe `.ms-portal-root`
+  carrega a mesma folha de `.ms-page` (sem o fundo vivo, que não faz
+  sentido numa superfície flutuante) e é aplicada na raiz de cada um
+  desses sete componentes — sem mudar onde eles portam, só sem perder
+  mais o escopo de estilo ao fazer isso.
 - **Contraste de texto sobre superfície sólida de marca** — `Button
   variant="solid"`, `Alert` (6 dos 8 tons) e `Pagination` ativa
   mediam abaixo de 4.5:1 (WCAG AA) com o `--color-on-solid` branco

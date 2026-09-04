@@ -212,7 +212,7 @@ export function DropdownMenu({
             ref={contentRef}
             id={baseId}
             role="menu"
-            className={cx("ms-dropdown-menu", className)}
+            className={cx("ms-dropdown-menu", "ms-portal-root", className)}
             style={{
               top: pos?.top ?? -9999,
               left: pos?.left ?? -9999,

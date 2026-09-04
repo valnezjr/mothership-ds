@@ -207,7 +207,7 @@ function AlertsHost({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: nu
   // A região viva fica sempre no DOM: leitores de tela só anunciam
   // conteúdo inserido em containers que já existiam.
   return createPortal(
-    <div className="ms-toast-stack" role="status" aria-live="polite" aria-atomic="false">
+    <div className="ms-toast-stack ms-portal-root" role="status" aria-live="polite" aria-atomic="false">
       {toasts.map((t) => (
         <div
           key={t.id}

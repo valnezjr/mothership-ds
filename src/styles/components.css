@@ -6,40 +6,62 @@
 /* ---------- Base ----------
    Nada de reset global aqui: uma biblioteca não deve reescrever o CSS
    da aplicação que a instala. O box-sizing e a zeragem de margens valem
-   apenas dentro de .ms-page. Quem quiser o reset completo pode importar
+   apenas dentro de .ms-page — e de .ms-portal-root, a mesma folha
+   aplicada às raízes portadas pro <body> (ARCHITECTURE.md § Portais):
+   Modal/StepModal, Drawer, Popover, DropdownMenu, toasts, tooltip e o
+   menu da Navbar escapam do DOM de .ms-page por causa do bloco de
+   contenção de `position: fixed`, mas não podem escapar do escopo de
+   estilo do sistema — sem isso caem no serifado/preto padrão do
+   navegador. Quem quiser o reset completo pode importar
    `mothership-ds/reset.css`. */
 .ms-page,
 .ms-page *,
 .ms-page *::before,
-.ms-page *::after {
+.ms-page *::after,
+.ms-portal-root,
+.ms-portal-root *,
+.ms-portal-root *::before,
+.ms-portal-root *::after {
   box-sizing: border-box;
 }
 
 .ms-page h1, .ms-page h2, .ms-page h3, .ms-page h4,
 .ms-page p, .ms-page figure, .ms-page blockquote,
-.ms-page dl, .ms-page dd, .ms-page ul, .ms-page ol {
+.ms-page dl, .ms-page dd, .ms-page ul, .ms-page ol,
+.ms-portal-root h1, .ms-portal-root h2, .ms-portal-root h3, .ms-portal-root h4,
+.ms-portal-root p, .ms-portal-root figure, .ms-portal-root blockquote,
+.ms-portal-root dl, .ms-portal-root dd, .ms-portal-root ul, .ms-portal-root ol {
   margin: 0;
   padding: 0;
 }
 
-.ms-page ul, .ms-page ol { list-style: none; }
+.ms-page ul, .ms-page ol,
+.ms-portal-root ul, .ms-portal-root ol { list-style: none; }
 
-.ms-page {
-  min-height: 100vh;
-  background-color: var(--bg-base);
-  background-image: var(--bg-page);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+.ms-page,
+.ms-portal-root {
   color: var(--color-text);
   font-family: var(--font-family);
   font-size: var(--text-md);
   line-height: var(--line-height-base);
 }
 
+/* Só .ms-page ganha o fundo vivo — .ms-portal-root é sempre conteúdo
+   flutuante com o próprio vidro (--color-surface + blur), nunca uma
+   segunda página. */
+.ms-page {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image: var(--bg-page);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 /* Herança em vez de força bruta: os controles nativos não herdam cor e
    fonte sozinhos, então só eles precisam ser instruídos. Isso é o que
    permite ao consumidor colorir o próprio conteúdo dentro da página. */
-.ms-page :where(input, textarea, select, button, a) {
+.ms-page :where(input, textarea, select, button, a),
+.ms-portal-root :where(input, textarea, select, button, a) {
   color: inherit;
   font-family: inherit;
 }
@@ -99,25 +121,33 @@
    detalhada abaixo, por isso a consulta de suporte. */
 @supports not selector(::-webkit-scrollbar) {
   .ms-page,
-  .ms-page * {
+  .ms-page *,
+  .ms-portal-root,
+  .ms-portal-root * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-border) transparent;
   }
 }
 
 .ms-page ::-webkit-scrollbar,
-.ms-page::-webkit-scrollbar {
+.ms-page::-webkit-scrollbar,
+.ms-portal-root ::-webkit-scrollbar,
+.ms-portal-root::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 .ms-page ::-webkit-scrollbar-track,
-.ms-page::-webkit-scrollbar-track {
+.ms-page::-webkit-scrollbar-track,
+.ms-portal-root ::-webkit-scrollbar-track,
+.ms-portal-root::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .ms-page ::-webkit-scrollbar-thumb,
-.ms-page::-webkit-scrollbar-thumb {
+.ms-page::-webkit-scrollbar-thumb,
+.ms-portal-root ::-webkit-scrollbar-thumb,
+.ms-portal-root::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: var(--radius-pill);
   background: var(--color-border);
@@ -127,20 +157,28 @@
 }
 
 .ms-page ::-webkit-scrollbar-thumb:hover,
-.ms-page::-webkit-scrollbar-thumb:hover {
+.ms-page::-webkit-scrollbar-thumb:hover,
+.ms-portal-root ::-webkit-scrollbar-thumb:hover,
+.ms-portal-root::-webkit-scrollbar-thumb:hover {
   background: var(--color-border-strong);
   background-clip: content-box;
 }
 
 .ms-page ::-webkit-scrollbar-corner,
-.ms-page::-webkit-scrollbar-corner {
+.ms-page::-webkit-scrollbar-corner,
+.ms-portal-root ::-webkit-scrollbar-corner,
+.ms-portal-root::-webkit-scrollbar-corner {
   background: transparent;
 }
 
 /* ---------- Foco visível ----------
    Sobre as superfícies de vidro escuras o anel padrão some. Um único
-   anel accent, aplicado só na navegação por teclado. */
+   anel accent, aplicado só na navegação por teclado. `.ms-portal-root`
+   cobre popover/dropdown-menu/toast/tooltip; os três seletores
+   explícitos abaixo ficam por compatibilidade e não fazem mais nada
+   sozinhos, já que Modal/Navbar/Drawer também carregam a classe. */
 .ms-page :is(a, button, input, textarea, select, [tabindex]):focus-visible,
+.ms-portal-root :is(a, button, input, textarea, select, [tabindex]):focus-visible,
 .ms-modal :is(a, button, input, textarea, select, [tabindex]):focus-visible,
 .ms-navbar__menu :is(a, button):focus-visible,
 .ms-drawer :is(a, button):focus-visible {

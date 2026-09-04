@@ -183,7 +183,7 @@ export function Popover({
           <div
             ref={contentRef}
             id={baseId}
-            className={cx("ms-popover", className)}
+            className={cx("ms-popover", "ms-portal-root", className)}
             style={{
               top: pos?.top ?? -9999,
               left: pos?.left ?? -9999,
