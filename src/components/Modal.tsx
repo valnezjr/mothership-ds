@@ -95,7 +95,13 @@ function useModalShell(open: boolean, onClose: () => void, dismissable: boolean)
     };
   }, [visible]);
 
-  /* Esc + ciclo de foco dentro do diálogo (focus trap) */
+  /* Foco inicial e devolução ao fechar — só na TRANSIÇÃO de `visible`, não
+     a cada render. Achado real: `onClose` inline (`onClose={() => ...}`,
+     o jeito mais natural de passar a prop) é uma função nova a cada
+     render do chamador; se isso estivesse na dependência deste efeito
+     (como estava, via `requestClose`), o modal roubava o foco de volta
+     pro primeiro elemento focável — o botão de fechar, antes de qualquer
+     input no corpo — a cada tecla digitada em QUALQUER campo lá dentro. */
   React.useEffect(() => {
     if (!visible) return;
     lastFocused.current = document.activeElement;
@@ -103,6 +109,19 @@ function useModalShell(open: boolean, onClose: () => void, dismissable: boolean)
     // foca o primeiro elemento útil, ou o próprio diálogo
     const first = node?.querySelector<HTMLElement>(FOCUSABLE);
     (first ?? node)?.focus?.();
+
+    return () => {
+      // devolve o foco a quem abriu
+      (lastFocused.current as HTMLElement | null)?.focus?.();
+    };
+  }, [visible]);
+
+  /* Esc + ciclo de foco (Tab) dentro do diálogo — pode reagir a
+     `dismissable`/`requestClose` sem tocar em foco nenhum, então não
+     compete com o efeito acima. */
+  React.useEffect(() => {
+    if (!visible) return;
+    const node = dialogRef.current;
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && dismissable) {
@@ -126,11 +145,7 @@ function useModalShell(open: boolean, onClose: () => void, dismissable: boolean)
     };
 
     document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      // devolve o foco a quem abriu
-      (lastFocused.current as HTMLElement | null)?.focus?.();
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [visible, dismissable, requestClose]);
 
   return { mounted, visible, closing, requestClose, dialogRef };

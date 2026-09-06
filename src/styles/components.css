@@ -2532,6 +2532,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   scrollbar-gutter: stable;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+  /* Achado real: sem essa folga, o anel de foco de um campo encostado na
+     borda (a maioria — `Stack` estica os filhos pra largura cheia, então
+     esquerda/direita SEMPRE encostam) fica cortado pelo próprio
+     `overflow` deste elemento — outline conta como ink overflow do
+     scrollport que o contém, não só do campo. `-3px` de margem compensa
+     o padding pra o texto não recuar visualmente. */
+  padding: 3px;
+  margin: -3px;
 }
 
 .ms-modal__footer {
@@ -2590,6 +2598,15 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-step-indicator__dots {
   display: flex;
   gap: var(--space-2);
+}
+
+/* Empurra os pontos pra esquerda só dentro do rodapé do StepModal (onde
+   Anterior/Próximo ficam à direita) — como margem própria do componente,
+   `margin-right: auto` também vencia um `justify-content: center` de
+   quem usasse `StepIndicator` sozinho fora de um modal (achado real:
+   paginação do Kanban ficava alinhada à esquerda mesmo dentro de um
+   wrapper centralizado). */
+.ms-modal__footer .ms-step-indicator__dots {
   margin-right: auto;
 }
 
@@ -2612,9 +2629,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-step-indicator__dot--done { background: var(--color-text-muted); }
 
 .ms-step-indicator__count {
-  margin-right: auto;
   font-size: var(--text-xs);
   color: var(--color-text-muted) !important;
+}
+
+/* Mesmo motivo do `.ms-step-indicator__dots` acima. */
+.ms-modal__footer .ms-step-indicator__count {
+  margin-right: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

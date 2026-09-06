@@ -108,6 +108,21 @@ export function useHashRoute({ ids, resolve }: UseHashRouteOptions): [string, (i
   return [active, navigate];
 }
 
+export interface LinkRenderProps {
+  href: string;
+  className?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+function defaultRenderLink({ href, className, children, onClick }: LinkRenderProps) {
+  return (
+    <a className={className} href={href} onClick={onClick}>
+      {children}
+    </a>
+  );
+}
+
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   /** Marca à esquerda. Sem ela, os links ficam centralizados. */
   brand?: React.ReactNode;
@@ -119,6 +134,15 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   variant?: "floating" | "static";
   /** Habilita o hamburguer + menu em telas estreitas. */
   responsive?: boolean;
+  /**
+   * Sobrescreve como marca e links são renderizados — ex.: `Link` de um
+   * router de SPA em vez de `<a>` nativo. Sem isso, `href` sempre vira
+   * `<a>` puro e clicar recarrega a página inteira; num app de página
+   * única com fundo persistente (canvas 3D, áudio, o que for), isso
+   * quebra a continuidade — o navegador não sabe que a navegação é
+   * "interna". Padrão preserva o comportamento de sempre.
+   */
+  renderLink?: (props: LinkRenderProps) => React.ReactNode;
   /** Sino de notificações, switch de tema etc. */
   children?: React.ReactNode;
 }
@@ -130,6 +154,7 @@ export function Navbar({
   spy = false,
   variant = "floating",
   responsive = true,
+  renderLink = defaultRenderLink,
   className,
   children,
   ...rest
@@ -184,19 +209,16 @@ export function Navbar({
             style={{ top: menuBox.top, left: menuBox.left, width: menuBox.width }}
           >
             {links.map((l) => (
-              <a
-                key={l.href}
-                className={[
-                  "ms-navbar__link",
-                  active === l.href && "ms-navbar__link--active",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                href={l.href}
-                onClick={() => setOpen(false)}
-              >
-                {l.label}
-              </a>
+              <React.Fragment key={l.href}>
+                {renderLink({
+                  href: l.href,
+                  className: ["ms-navbar__link", active === l.href && "ms-navbar__link--active"]
+                    .filter(Boolean)
+                    .join(" "),
+                  onClick: () => setOpen(false),
+                  children: l.label,
+                })}
+              </React.Fragment>
             ))}
           </div>,
           document.body
@@ -217,24 +239,17 @@ export function Navbar({
           .join(" ")}
         {...rest}
       >
-        {brand != null && (
-          <a className="ms-navbar__brand" href={brandHref}>
-            {brand}
-          </a>
-        )}
+        {brand != null && renderLink({ href: brandHref, className: "ms-navbar__brand", children: brand })}
         {links.map((l) => (
-          <a
-            key={l.href}
-            className={[
-              "ms-navbar__link",
-              active === l.href && "ms-navbar__link--active",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-            href={l.href}
-          >
-            {l.label}
-          </a>
+          <React.Fragment key={l.href}>
+            {renderLink({
+              href: l.href,
+              className: ["ms-navbar__link", active === l.href && "ms-navbar__link--active"]
+                .filter(Boolean)
+                .join(" "),
+              children: l.label,
+            })}
+          </React.Fragment>
         ))}
         {children}
         {responsive && links.length > 0 && (
