@@ -219,6 +219,24 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
     mostrar o número e preencher a barra pela proporção, algo como
     `value` + `max` e um `format` para o texto exibido. O Ambiente
     contorna pondo a quantidade no rótulo e a porcentagem no valor.
+- **`Grafo3D` — primeiro componente 3D, em `mothership-ds/3d`.** Grafo de
+  nós e arestas genéricos em 3D, com o movimento do `LivingBackground`:
+  parallax amortecido pelo ponteiro, deriva lenta quando ninguém mexe e
+  viagem da câmera até o nó selecionado com `--transition-spatial` /
+  `--ease-spatial`. Hover e seleção acendem o nó e os vizinhos e esmaecem
+  o resto; cores dos grupos vêm das cores de dados, convertidas para espaço
+  linear como manda [`docs/3d.md`](docs/3d.md). Layout de forças em 3D
+  escrito à mão e determinístico (`layoutForca3D`, exportado e testável).
+  Lista acessível dos nós ao lado do canvas (Tab seleciona, `aria-live`
+  anuncia), e `prefers-reduced-motion` desliga deriva e parallax.
+  - **Ponto de entrada separado:** `three` e `@react-three/fiber` entram em
+    `peerDependencies` **opcionais**; só quem importa `mothership-ds/3d`
+    instala. O princípio "sem dependências de runtime" passa a dizer isso
+    por escrito: vale para o pacote principal.
+  - API proposta: `nos` (`id`, `rotulo`, `grupo`, `peso?`), `arestas`
+    (`origem`, `destino`), `grupos` (`id`, `rotulo`, `slot`), `selecionado`,
+    `aoSelecionar`, `aoPassar`, `destaque`. Primeiro consumidor: a aba
+    Grafo do Ambiente Mothership (o vault de notas do autor, ~65 nós).
 
 ## Ícones
 
