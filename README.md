@@ -204,6 +204,21 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
   (Meta era v1.5; a v1.5.0 já saiu com outra coisa — `Splash.instant` e
   `LogoMark` `part="word"` — então a expansão do catálogo passa pra
   v1.8.)
+- **Adições futuras vindas do Ambiente Mothership** (interface do sistema
+  agêntico, primeiro app a consumir a `Dock`). Duas lacunas apareceram ao
+  montar a tela "Hoje":
+  - **`Prose`** — texto corrido vindo de markdown já convertido em HTML
+    (títulos, parágrafos, listas com marcador, links, código), com o
+    ritmo vertical e a tipografia do sistema. Hoje o reset de `.ms-page`
+    zera margens e tira os marcadores de lista, então cada consumidor
+    reescreve esse CSS por conta própria (o Ambiente tem um provisório,
+    só com tokens, em `src/telas/nota-do-dia.css`). Não converte nem
+    sanitiza markdown: recebe HTML já limpo, como `children` ou `html`.
+  - **`Meter` com valor absoluto** — hoje o `Meter` sempre mostra `value%`.
+    Para contagens (ex.: contatos por estágio de um funil) falta poder
+    mostrar o número e preencher a barra pela proporção, algo como
+    `value` + `max` e um `format` para o texto exibido. O Ambiente
+    contorna pondo a quantidade no rótulo e a porcentagem no valor.
 
 ## Ícones
 
