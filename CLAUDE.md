@@ -461,7 +461,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `<iframe>`/imagem com `height: 100%` dentro passa a preencher o
       espaço de verdade, não uma altura chutada em `vh`.
 - [x] `Dock` (`src/components/navbar.tsx`) — navegação principal de app:
-      coluna de ícones no vidro da Navbar que expande para ícone + título
+      coluna de ícones em pílula (Navbar) que expande para painel no formato do Sidebar
       (largura do `Sidebar`, par espacial na animação). Rótulo fica no DOM
       como nome acessível; recolhida, o tooltip assume a leitura visual
       (pede `TooltipProvider`). Abaixo de 720px vira um botão no lugar,

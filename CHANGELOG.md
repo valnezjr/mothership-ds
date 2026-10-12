@@ -9,9 +9,10 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 ### Adicionado
 
 - **`Dock`** (`src/components/navbar.tsx`): navegação principal de app —
-  coluna de ícones à esquerda, no vidro da Navbar, que expande para
-  ícone + título (largura do `Sidebar`, animada com o par espacial
-  `--transition-spatial`/`--ease-spatial`). Recolhida, o rótulo continua
+  coluna de ícones à esquerda, em pílula como a Navbar, que expande para
+  ícone + título no formato do `Sidebar` (`--radius-md`, `--space-4`,
+  240px); largura, raio e respiro animam com o par espacial
+  (`--transition-spatial`/`--ease-spatial`). Recolhida, o rótulo continua
   no DOM como nome acessível e o tooltip (`data-tip`) assume a leitura
   visual. Item ativo com o destaque do `Sidebar` e `aria-current="page"`;
   contador opcional por item. Abaixo de 720px a coluna vira um único

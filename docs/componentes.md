@@ -213,7 +213,7 @@ partir de `STORIES` (`styleguide/App.tsx`).
 ### `Dock`
 
 Navegação principal de um app: coluna de ícones à esquerda que expande
-para ícone + título. Mesmo vidro da Navbar, na vertical. Fica no fluxo e
+para ícone + título. Recolhida, fala a língua da Navbar na vertical (pílula, respiro `--space-3`); expandida, vira painel e segue o Sidebar (`--radius-md`, respiro `--space-4`). Fica no fluxo e
 estica na altura do pai — o host posiciona, como o `Sidebar
 variant="fill"` num `.ms-app-shell`.
 

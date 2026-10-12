@@ -1008,7 +1008,7 @@ export const STORIES: Story[] = [
     id: "dock",
     group: "Componentes",
     title: "Dock",
-    subtitle: "Navegação principal de app: coluna de ícones que expande para ícone + título, no mesmo vidro da Navbar. Abaixo de 720px vira um botão que abre a navegação numa gaveta — uma barra de ícones não comporta os destinos de um app.",
+    subtitle: "Navegação principal de app: coluna de ícones que expande para ícone + título, em pílula como a Navbar; expandida, vira painel no formato do Sidebar. Abaixo de 720px vira um botão que abre a navegação numa gaveta — uma barra de ícones não comporta os destinos de um app.",
     render: () => <DockDemo />,
   },
   {

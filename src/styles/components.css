@@ -203,8 +203,7 @@
 .ms-page .ms-button:focus-visible,
 .ms-page .ms-gallery__filter:focus-visible,
 .ms-page .ms-navbar__link:focus-visible,
-.ms-page .ms-dock__item:focus-visible,
-.ms-drawer .ms-dock__item:focus-visible,
+.ms-page .ms-dock:not(.ms-dock--expanded) .ms-dock__item:focus-visible,
 .ms-page .ms-carousel__bullet:focus-visible,
 .ms-step-indicator__dot:focus-visible {
   border-radius: var(--radius-pill);
@@ -2158,17 +2157,22 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 /* ---------- Dock ----------
-   Navegação principal de app: o vidro da Navbar na vertical. Item =
-   ícone de --space-5 com --space-3 de respiro (48px, o mesmo alvo do
-   IconButton). Recolhida, a largura é a de um item; expandida, a do
-   Sidebar (240px). A troca anima a largura com o par espacial
-   (--transition-spatial/--ease-spatial): algo que ocupa espaço
-   entrando em cena, sem overshoot. */
+   Navegação principal de app, em dois estados com regras diferentes:
+   - recolhida, é uma barra de ícones: fala a língua da Navbar na
+     vertical — painel e itens em pílula, respiro --space-3;
+   - expandida, vira painel com texto: segue o Sidebar — --radius-md
+     no painel e nos itens, respiro --space-4, largura de 240px.
+   Item = ícone de --space-5 com --space-3 de cada lado (48px, o mesmo
+   alvo do IconButton). Largura, raio e respiro animam juntos com o par
+   espacial (--transition-spatial/--ease-spatial). Animar `width` é
+   exceção consciente à regra de transform/opacity: a dock empurra o
+   conteúdo ao lado, então o reflow é o próprio efeito, num elemento. */
 .ms-dock {
   --dock-item: calc(var(--space-5) + 2 * var(--space-3));
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  /* + 2px: a borda de 1px dos dois lados (box-sizing: border-box). */
   width: calc(var(--dock-item) + 2 * var(--space-3) + 2px);
   height: 100%;
   min-height: 0;
@@ -2180,10 +2184,17 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  transition: width var(--transition-spatial) var(--ease-spatial);
+  transition:
+    width var(--transition-spatial) var(--ease-spatial),
+    padding var(--transition-spatial) var(--ease-spatial),
+    border-radius var(--transition-spatial) var(--ease-spatial);
 }
 
-.ms-dock--expanded { width: 240px; }
+.ms-dock--expanded {
+  width: 240px; /* mesma largura do Sidebar */
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+}
 
 .ms-dock__brand {
   display: flex;
@@ -2201,7 +2212,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
 .ms-dock__list {
@@ -2227,16 +2237,23 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: transparent;
   color: var(--color-text);
   font-family: inherit;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   text-align: left;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--transition-slow), color var(--transition-slow);
+  transition:
+    background var(--transition-slow),
+    color var(--transition-slow),
+    border-radius var(--transition-spatial) var(--ease-spatial);
 }
 
 .ms-dock__item:hover { background: var(--color-surface-hover); }
+
+/* Expandida (e na gaveta do mobile), o item vira linha de texto: canto do Sidebar. */
+.ms-dock--expanded .ms-dock__item,
+.ms-dock__drawer-content .ms-dock__item { border-radius: var(--radius-md); }
 
 /* Mesmo destaque do Sidebar; aria-current="page" carrega o estado. */
 .ms-dock__item--active,
@@ -2275,7 +2292,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-danger);
   color: var(--color-on-danger);
   font-size: var(--text-xs);
-  line-height: 1;
+  line-height: var(--space-4);
 }
 
 .ms-dock--expanded .ms-dock__badge,
@@ -2291,7 +2308,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   gap: var(--space-2);
 }
 
-.ms-dock--expanded .ms-dock__extras { align-items: flex-start; padding: 0 var(--space-1); }
+.ms-dock--expanded .ms-dock__extras { align-items: flex-start; }
 
 .ms-dock__toggle svg { transition: transform var(--transition-spatial) var(--ease-spatial); }
 
@@ -2304,7 +2321,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: var(--space-1);
   width: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
   height: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
   border: none;
@@ -2315,21 +2332,22 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-dock__menu-toggle span {
   display: block;
-  width: 20px;
-  height: 2px;
-  border-radius: 2px;
+  width: var(--space-5);
+  height: 2px; /* traço do ícone, mesmo do hambúrguer da Navbar */
+  border-radius: var(--radius-pill);
   background: var(--color-text);
-  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+  transition: transform var(--transition-slow) var(--ease-bounce), opacity var(--transition-base);
 }
 
-.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+/* 6px = gap (--space-1) + traço (2px): leva a 1ª e a 3ª barra ao centro. */
+.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 .ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
-.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .ms-dock__drawer-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-4);
 }
 
 @media (max-width: 720px) {
@@ -2339,7 +2357,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
     width: auto;
     height: auto;
     padding: var(--space-1);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-pill);
   }
   .ms-dock > :not(.ms-dock__menu-toggle) { display: none; }
   .ms-dock__menu-toggle { display: inline-flex; }
@@ -2352,6 +2370,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 @media (prefers-reduced-motion: reduce) {
   .ms-dock,
+  .ms-dock__item,
   .ms-dock__label,
   .ms-dock__toggle svg,
   .ms-dock__menu-toggle span { transition: none; }

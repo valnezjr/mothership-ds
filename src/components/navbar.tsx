@@ -439,9 +439,10 @@ export function Sidebar({
 
 /* ============================================================
    Dock — navegação principal de app: coluna de ícones à esquerda
-   que expande para ícone + título. Mesmo vidro da Navbar, na
-   vertical. Abaixo de 720px a coluna vira um único botão, no lugar
-   onde o host a pôs, que abre a versão expandida numa gaveta
+   que expande para ícone + título. Recolhida, pílula como a Navbar;
+   expandida, painel com os cantos e o respiro do Sidebar. Abaixo de 720px a
+   coluna vira um único botão, no lugar onde o host a pôs, que abre
+   a versão expandida numa gaveta
    (mesmo Drawer do Sidebar) — uma barra de ícones não comporta a
    quantidade de destinos de um app.
    ============================================================ */
