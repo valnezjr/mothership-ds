@@ -212,7 +212,7 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
     ritmo vertical e a tipografia do sistema. Hoje o reset de `.ms-page`
     zera margens e tira os marcadores de lista, então cada consumidor
     reescreve esse CSS por conta própria (o Ambiente tem um provisório,
-    só com tokens, em `src/telas/nota-do-dia.css`). Não converte nem
+    só com tokens, em `src/telas/prosa.css`). Não converte nem
     sanitiza markdown: recebe HTML já limpo, como `children` ou `html`.
   - **`Meter` com valor absoluto** — hoje o `Meter` sempre mostra `value%`.
     Para contagens (ex.: contatos por estágio de um funil) falta poder
