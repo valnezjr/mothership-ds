@@ -9,7 +9,7 @@ import {
   // tema e utilitários
   ThemeSwitch, HoverEdge,
   // interativos
-  Navbar, Accordion, Tabs, Carousel, Gallery, Marquee,
+  Navbar, Dock, Accordion, Tabs, Carousel, Gallery, Marquee,
   // marketing
   PricingCard, TestimonialCard, BentoGrid, BentoTile,
   // alertas
@@ -245,6 +245,53 @@ function DrawerDemo() {
         <p className="ms-text-sm ms-text-muted"><code>side="right"</code>.</p>
       </Drawer>
     </>
+  );
+}
+
+/* Ícones de traço desenhados à mão só para a story — a lib não traz
+   ícone nenhum (recomenda Lucide no app). */
+function DemoIcon({ d }: { d: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d={d} />
+    </svg>
+  );
+}
+
+const DOCK_ITEMS = [
+  { href: "#dock-hoje", label: "Hoje", icon: <DemoIcon d="M12 3v2M12 19v2M3 12h2M19 12h2M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" /> },
+  { href: "#dock-aprovacoes", label: "Aprovações", badge: 3, icon: <DemoIcon d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6Z" /> },
+  { href: "#dock-frentes", label: "Frentes", icon: <DemoIcon d="M4 4h4v16H4ZM10 4h4v10h-4ZM16 4h4v13h-4Z" /> },
+  { href: "#dock-copy", label: "Copy", icon: <DemoIcon d="M4 20h4L19 9l-4-4L4 16ZM13 7l4 4" /> },
+  { href: "#dock-atividade", label: "Atividade", icon: <DemoIcon d="M3 12h4l3-7 4 14 3-7h4" /> },
+  { href: "#dock-ajustes", label: "Ajustes", icon: <DemoIcon d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M16 4v4M10 10v4M18 16v4" /> },
+];
+
+function DockDemo() {
+  const [active, setActive] = React.useState("#dock-hoje");
+  const current = DOCK_ITEMS.find((i) => i.href === active);
+  return (
+    <div
+      style={{ display: "flex", gap: 16, height: 460 }}
+      // Só na story: o styleguide roteia por hash, então trocar o hash
+      // desmontaria a story. Num app, o href navega de verdade.
+      onClickCapture={(e) => {
+        const a = (e.target as Element).closest?.("a.ms-dock__item");
+        if (!a) return;
+        e.preventDefault();
+        setActive(a.getAttribute("href") ?? active);
+      }}
+    >
+      <Dock items={DOCK_ITEMS} active={active} brand={<span>MS</span>} />
+      <Card style={{ flex: 1 }}>
+        <h3 className="ms-card__title">{current?.label}</h3>
+        <CardText>
+          Recolhida, a dock mostra só os ícones (o nome aparece no tooltip). O botão do pé
+          expande para ícone + título. Abaixo de 720px ela vira um botão só, que abre a
+          mesma navegação numa gaveta.
+        </CardText>
+      </Card>
+    </div>
   );
 }
 
@@ -956,6 +1003,13 @@ export const STORIES: Story[] = [
         A seção-pai também é marcada quando um subtópico está ativo, nos dois modos.
       </p>
     ),
+  },
+  {
+    id: "dock",
+    group: "Componentes",
+    title: "Dock",
+    subtitle: "Navegação principal de app: coluna de ícones que expande para ícone + título, no mesmo vidro da Navbar. Abaixo de 720px vira um botão que abre a navegação numa gaveta — uma barra de ícones não comporta os destinos de um app.",
+    render: () => <DockDemo />,
   },
   {
     id: "breadcrumbs",

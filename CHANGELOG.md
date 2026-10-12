@@ -8,6 +8,19 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Dock`** (`src/components/navbar.tsx`): navegação principal de app —
+  coluna de ícones à esquerda, no vidro da Navbar, que expande para
+  ícone + título (largura do `Sidebar`, animada com o par espacial
+  `--transition-spatial`/`--ease-spatial`). Recolhida, o rótulo continua
+  no DOM como nome acessível e o tooltip (`data-tip`) assume a leitura
+  visual. Item ativo com o destaque do `Sidebar` e `aria-current="page"`;
+  contador opcional por item. Abaixo de 720px a coluna vira um único
+  botão, no lugar onde o host a pôs, que abre a navegação expandida no
+  `Drawer` — uma barra de ícones não comporta os destinos de um app.
+  Ícones chegam como `ReactNode` (Lucide continua só recomendação).
+  Consumidor real: a interface do sistema agêntico do autor. 51
+  componentes (era 50).
+
 - **Capítulo `docs/3d.md`**: o vocabulário 3D que emergiu de um consumidor
   real (Mothership Agency, react-three-fiber) usando os tokens deste
   pacote numa cena 3D — sem nenhum componente 3D novo empacotado aqui.

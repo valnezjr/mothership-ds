@@ -210,6 +210,50 @@ clique passa a acertar o que estiver por cima, não necessariamente o
 que o usuário via. Este próprio styleguide usa uma só, montada a
 partir de `STORIES` (`styleguide/App.tsx`).
 
+### `Dock`
+
+Navegação principal de um app: coluna de ícones à esquerda que expande
+para ícone + título. Mesmo vidro da Navbar, na vertical. Fica no fluxo e
+estica na altura do pai — o host posiciona, como o `Sidebar
+variant="fill"` num `.ms-app-shell`.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `items` | `{ href, label, icon, badge? }[]` | — | `label` é texto (vira o tooltip recolhido); `icon` é um `ReactNode` já renderizado; `badge` mostra um contador sobre o ícone |
+| `active` | `string` | — | `href` do destino atual: destaque + `aria-current="page"` |
+| `expanded` | `boolean` | — | controla de fora; sem isso, a dock guarda o próprio estado |
+| `defaultExpanded` | `boolean` | `false` | estado inicial quando não controlada |
+| `onExpandedChange` | `(expanded: boolean) => void` | — | avisa a troca (pra guardar a preferência, por exemplo) |
+| `brand` | `ReactNode` | — | marca no topo; recolhida sobra a largura de um ícone, então passe algo compacto |
+| `toggleLabel` | `string` | `"Mostrar nomes"` | nome acessível do botão que expande/recolhe |
+| `menuLabel` | `string` | `"Abrir navegação"` | nome acessível do botão do mobile |
+| `children` | `ReactNode` | — | extras no pé (sino, `IconButton`) — só na dock do desktop |
+
+```tsx
+import { Sun, Inbox } from "lucide-react";
+
+<TooltipProvider>
+  <div className="ms-app-shell" style={{ flexDirection: "row", gap: 16, padding: 16 }}>
+    <Dock
+      active={rota}
+      items={[
+        { href: "#hoje", label: "Hoje", icon: <Sun /> },
+        { href: "#aprovacoes", label: "Aprovações", icon: <Inbox />, badge: 3 },
+      ]}
+    />
+    <main style={{ flex: 1, overflowY: "auto" }}>…</main>
+  </div>
+</TooltipProvider>
+```
+
+Recolhida, o rótulo de cada item continua no DOM (é o nome acessível do
+link) e o nome aparece em tooltip — por isso a dock pede um
+`TooltipProvider` acima na árvore. Com muitos destinos, só a lista rola;
+marca e pé ficam fixos. Abaixo de 720px a coluna inteira vira um botão
+redondo (três barras), no lugar onde o host pôs a dock, que abre a
+versão expandida numa gaveta (`Drawer`); os extras do pé não entram na
+gaveta — no mobile, o app decide onde eles ficam.
+
 ### `useHashRoute`
 
 Hook que dá o estado de "qual view está ativa" sincronizado com o

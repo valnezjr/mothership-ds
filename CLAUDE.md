@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 48 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 51 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -460,6 +460,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `flex: 1` — com `height: 100%` no `.ms-modal`, um
       `<iframe>`/imagem com `height: 100%` dentro passa a preencher o
       espaço de verdade, não uma altura chutada em `vh`.
+- [x] `Dock` (`src/components/navbar.tsx`) — navegação principal de app:
+      coluna de ícones no vidro da Navbar que expande para ícone + título
+      (largura do `Sidebar`, par espacial na animação). Rótulo fica no DOM
+      como nome acessível; recolhida, o tooltip assume a leitura visual
+      (pede `TooltipProvider`). Abaixo de 720px vira um botão no lugar,
+      que abre a navegação no `Drawer` — decisão do autor: barra de
+      ícones não comporta os destinos de um app. Primeiro componente com
+      ícone obrigatório; ícone chega como `ReactNode`. 51 componentes
+      (era 50).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

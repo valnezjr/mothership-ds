@@ -195,6 +195,7 @@
 .ms-page .ms-alert__close:focus-visible,
 .ms-page .ms-table__action:focus-visible,
 .ms-sidebar__toggle:focus-visible,
+.ms-page .ms-dock__menu-toggle:focus-visible,
 .ms-modal__close:focus-visible {
   border-radius: var(--radius-full);
 }
@@ -202,6 +203,8 @@
 .ms-page .ms-button:focus-visible,
 .ms-page .ms-gallery__filter:focus-visible,
 .ms-page .ms-navbar__link:focus-visible,
+.ms-page .ms-dock__item:focus-visible,
+.ms-drawer .ms-dock__item:focus-visible,
 .ms-page .ms-carousel__bullet:focus-visible,
 .ms-step-indicator__dot:focus-visible {
   border-radius: var(--radius-pill);
@@ -2152,6 +2155,206 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 @media (prefers-reduced-motion: reduce) {
   .ms-sidebar__toggle span { transition: none; }
+}
+
+/* ---------- Dock ----------
+   Navegação principal de app: o vidro da Navbar na vertical. Item =
+   ícone de --space-5 com --space-3 de respiro (48px, o mesmo alvo do
+   IconButton). Recolhida, a largura é a de um item; expandida, a do
+   Sidebar (240px). A troca anima a largura com o par espacial
+   (--transition-spatial/--ease-spatial): algo que ocupa espaço
+   entrando em cena, sem overshoot. */
+.ms-dock {
+  --dock-item: calc(var(--space-5) + 2 * var(--space-3));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: calc(var(--dock-item) + 2 * var(--space-3) + 2px);
+  height: 100%;
+  min-height: 0;
+  flex-shrink: 0;
+  padding: var(--space-3);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  backdrop-filter: blur(var(--blur-glass));
+  transition: width var(--transition-spatial) var(--ease-spatial);
+}
+
+.ms-dock--expanded { width: 240px; }
+
+.ms-dock__brand {
+  display: flex;
+  align-items: center;
+  min-height: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
+  padding: 0 var(--space-3);
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Muitos destinos: só a lista rola, marca e pé ficam fixos. */
+.ms-dock__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.ms-dock__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  list-style: none;
+}
+
+.ms-page .ms-dock__list { padding: 0; }
+
+.ms-dock__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-slow), color var(--transition-slow);
+}
+
+.ms-dock__item:hover { background: var(--color-surface-hover); }
+
+/* Mesmo destaque do Sidebar; aria-current="page" carrega o estado. */
+.ms-dock__item--active,
+.ms-dock__item--active:hover { color: var(--color-accent); background: var(--color-accent-soft); }
+
+.ms-dock__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--space-5);
+  height: var(--space-5);
+}
+
+.ms-dock__icon svg { width: 100%; height: 100%; display: block; }
+
+.ms-dock__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity var(--transition-base);
+}
+
+/* Recolhida, o rótulo continua no DOM (é o nome acessível do link),
+   só some da vista; o tooltip assume a leitura visual. */
+.ms-dock:not(.ms-dock--expanded) .ms-dock__label { opacity: 0; }
+
+.ms-dock__badge {
+  position: absolute;
+  top: var(--space-1);
+  left: calc(var(--space-3) + var(--space-4));
+  min-width: var(--space-4);
+  height: var(--space-4);
+  padding: 0 var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+  font-size: var(--text-xs);
+  line-height: 1;
+}
+
+.ms-dock--expanded .ms-dock__badge,
+.ms-dock__drawer-content .ms-dock__badge {
+  position: static;
+  margin-left: auto;
+}
+
+.ms-dock__extras {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ms-dock--expanded .ms-dock__extras { align-items: flex-start; padding: 0 var(--space-1); }
+
+.ms-dock__toggle svg { transition: transform var(--transition-spatial) var(--ease-spatial); }
+
+.ms-dock--expanded .ms-dock__toggle svg { transform: rotate(180deg); }
+
+/* Abaixo de 720px: a coluna inteira vira este botão (3 barras, a
+   anatomia do hambúrguer da Navbar), no lugar onde o host pôs a dock. */
+.ms-dock__menu-toggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
+  height: var(--dock-item, calc(var(--space-5) + 2 * var(--space-3)));
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+}
+
+.ms-dock__menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-text);
+  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+}
+
+.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.ms-dock__menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.ms-dock__drawer-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .ms-dock,
+  .ms-dock--expanded {
+    align-self: flex-start;
+    width: auto;
+    height: auto;
+    padding: var(--space-1);
+    border-radius: var(--radius-full);
+  }
+  .ms-dock > :not(.ms-dock__menu-toggle) { display: none; }
+  .ms-dock__menu-toggle { display: inline-flex; }
+}
+
+@media (min-width: 720.001px) {
+  .ms-dock__drawer-backdrop,
+  .ms-dock__drawer-panel { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-dock,
+  .ms-dock__label,
+  .ms-dock__toggle svg,
+  .ms-dock__menu-toggle span { transition: none; }
 }
 
 /* ---------- Splash screen (logo Mothership) ----------

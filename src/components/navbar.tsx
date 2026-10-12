@@ -436,3 +436,160 @@ export function Sidebar({
     </>
   );
 }
+
+/* ============================================================
+   Dock — navegação principal de app: coluna de ícones à esquerda
+   que expande para ícone + título. Mesmo vidro da Navbar, na
+   vertical. Abaixo de 720px a coluna vira um único botão, no lugar
+   onde o host a pôs, que abre a versão expandida numa gaveta
+   (mesmo Drawer do Sidebar) — uma barra de ícones não comporta a
+   quantidade de destinos de um app.
+   ============================================================ */
+
+export interface DockItem {
+  href: string;
+  /** Texto, não ReactNode: vira o tooltip (`data-tip`) com a dock recolhida. */
+  label: string;
+  /** Ícone já renderizado (a lib recomenda Lucide, mas não importa nenhum). */
+  icon: React.ReactNode;
+  /** Contador sobre o ícone (ex.: pendências). `0` ou ausente esconde. */
+  badge?: number;
+}
+
+export interface DockProps extends React.HTMLAttributes<HTMLElement> {
+  items: DockItem[];
+  /** `href` do destino atual — recebe destaque e `aria-current="page"`. */
+  active?: string;
+  /** Controla o estado expandido de fora. Sem isso, a dock guarda o próprio estado. */
+  expanded?: boolean;
+  /** Estado inicial quando não controlado. Padrão `false` (só ícones). */
+  defaultExpanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
+  /** Marca no topo. Recolhida, sobra a largura de um ícone: passe algo compacto. */
+  brand?: React.ReactNode;
+  /** Nome acessível do botão que expande/recolhe. */
+  toggleLabel?: string;
+  /** Nome acessível do botão que abre a gaveta abaixo de 720px. */
+  menuLabel?: string;
+  /** Extras no pé (sino, IconButton). Só na dock do desktop, não na gaveta. */
+  children?: React.ReactNode;
+}
+
+/**
+ * Navegação principal de um app: ícones que expandem para ícone +
+ * título. Fica no fluxo e estica na altura do pai, como o Sidebar
+ * `variant="fill"` num `.ms-app-shell`. Tooltip dos ícones recolhidos
+ * depende de um `TooltipProvider` acima na árvore.
+ */
+export function Dock({
+  items,
+  active,
+  expanded: expandedProp,
+  defaultExpanded = false,
+  onExpandedChange,
+  brand,
+  toggleLabel = "Mostrar nomes",
+  menuLabel = "Abrir navegação",
+  className,
+  children,
+  ...rest
+}: DockProps) {
+  const [expandedState, setExpandedState] = React.useState(defaultExpanded);
+  const expanded = expandedProp ?? expandedState;
+  const [open, setOpen] = React.useState(false);
+  const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const listId = `${uid}-list`;
+  const drawerId = `${uid}-drawer`;
+
+  const toggle = () => {
+    const next = !expanded;
+    if (expandedProp === undefined) setExpandedState(next);
+    onExpandedChange?.(next);
+  };
+
+  React.useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    window.addEventListener("resize", close);
+    return () => window.removeEventListener("resize", close);
+  }, [open]);
+
+  const list = (tips: boolean, onNavigate?: () => void) => (
+    <ul className="ms-dock__list">
+      {items.map((it) => {
+        const isActive = active === it.href;
+        return (
+          <li key={it.href}>
+            <a
+              className={["ms-dock__item", isActive && "ms-dock__item--active"].filter(Boolean).join(" ")}
+              href={it.href}
+              aria-current={isActive ? "page" : undefined}
+              aria-label={it.badge ? `${it.label} (${it.badge})` : undefined}
+              data-tip={tips ? it.label : undefined}
+              onClick={onNavigate}
+            >
+              <span className="ms-dock__icon" aria-hidden="true">{it.icon}</span>
+              <span className="ms-dock__label">{it.label}</span>
+              {it.badge ? <span className="ms-dock__badge" aria-hidden="true">{it.badge}</span> : null}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
+  return (
+    <>
+      <nav
+        className={["ms-dock", expanded && "ms-dock--expanded", className].filter(Boolean).join(" ")}
+        aria-label="Navegação principal"
+        {...rest}
+      >
+        {brand != null && <div className="ms-dock__brand">{brand}</div>}
+        <div id={listId} className="ms-dock__scroll">
+          {list(!expanded)}
+        </div>
+        {children != null && <div className="ms-dock__extras">{children}</div>}
+        <button
+          type="button"
+          className="ms-dock__item ms-dock__toggle"
+          aria-expanded={expanded}
+          aria-controls={listId}
+          aria-label={toggleLabel}
+          data-tip={expanded ? undefined : toggleLabel}
+          onClick={toggle}
+        >
+          <span className="ms-dock__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        </button>
+        <button
+          type="button"
+          className="ms-dock__menu-toggle"
+          aria-label={menuLabel}
+          aria-expanded={open}
+          aria-controls={drawerId}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </nav>
+
+      <Drawer
+        open={open}
+        onClose={() => setOpen(false)}
+        className="ms-dock__drawer-panel"
+        backdropClassName="ms-dock__drawer-backdrop"
+      >
+        <nav id={drawerId} className="ms-dock__drawer-content" aria-label="Navegação principal">
+          {brand != null && <div className="ms-dock__brand">{brand}</div>}
+          {list(false, () => setOpen(false))}
+        </nav>
+      </Drawer>
+    </>
+  );
+}
