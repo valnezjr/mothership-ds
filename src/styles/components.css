@@ -3135,13 +3135,34 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-radius: var(--radius-md);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  pointer-events: none;
 }
 
+/* Cada cor é um botão de filtro. Com algum filtro ligado, as desligadas recuam. */
 .ms-grafo3d__legenda-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 2px var(--space-2);
+  margin: -2px calc(-1 * var(--space-2));
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color var(--transition-spatial) var(--ease-spatial),
+    border-color var(--transition-spatial) var(--ease-spatial),
+    opacity var(--transition-spatial) var(--ease-spatial);
+}
+
+.ms-grafo3d__legenda-item:hover { color: var(--color-text); }
+
+.ms-grafo3d__legenda--filtrando .ms-grafo3d__legenda-item { opacity: 0.55; }
+
+.ms-grafo3d__legenda--filtrando .ms-grafo3d__legenda-item[aria-pressed="true"] {
+  opacity: 1;
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
 .ms-grafo3d__legenda-cor {
@@ -3211,7 +3232,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-grafo3d__lista button[aria-pressed="true"] { color: var(--color-accent); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ms-grafo3d__rotulo { transition: none; }
+  .ms-grafo3d__rotulo,
+  .ms-grafo3d__legenda-item { transition: none; }
 }
 
 /* ---------- Dados: barras horizontais / progresso ---------- */

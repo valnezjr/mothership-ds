@@ -476,7 +476,11 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       de runtime. Cena imperativa em `cena.ts`, montada uma vez; o React só
       entrega dados e seleção. Layout `layoutForca3D` puro e testado com
       `node --test` (`npm test`). Texto (rótulos, legenda) é HTML por cima
-      do canvas, para herdar fonte e tema. 52 componentes (era 51).
+      do canvas, para herdar fonte e tema. Cada nó tem três posições:
+      `posicoes` (layout), `atual` (indo rumo ao layout ou ao anel do
+      filtro) e `exibida` (atual + respiração); desenho, clique e rótulos
+      leem `exibida`. A esfera de colisão do InstancedMesh é fixa e larga,
+      porque os nós se movem a cada quadro. 52 componentes (era 51).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

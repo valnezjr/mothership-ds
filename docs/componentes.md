@@ -1080,19 +1080,30 @@ npm i three
 | `aoSelecionar` | `(id \| null) => void` | clique num nó, ou no vazio (`null`) |
 | `aoPassar` | `(id \| null) => void` | hover |
 | `destaque` | `string[]` | realce quando nada está em hover nem selecionado (ex.: busca) |
-| `legenda` | `boolean` | legenda dos grupos no canto, padrão `true` |
+| `filtro` | `string[]` | grupos filtrados, na ordem dos anéis; passe para controlar |
+| `aoFiltrar` | `(grupos) => void` | clique numa cor da legenda |
+| `legenda` | `boolean` | legenda dos grupos no canto, que também é o filtro; padrão `true` |
 | `rotulo` | `string` | nome acessível do grafo |
 
 O tamanho vem do container (`width`/`height: 100%`, mínimo 320px). Arraste
 gira, a roda aproxima, clique viaja até o nó. Hover e seleção acendem o
-nó e os vizinhos. Nomes aparecem para o selecionado, os vizinhos, o
+nó e os vizinhos. Os nós respiram devagar em volta do lugar e as ligações
+esticam junto, como uma malha.
+
+Filtro: clicar numa cor da legenda reúne aquele grupo num anel no centro,
+sempre de frente para a câmera. Cada grupo a mais ganha um anel por fora
+do anterior (concêntricos, na ordem do clique); clicar de novo tira o
+grupo. Os nós de fora se afastam na mesma direção em que estavam e
+esmaecem, mas as ligações deles com os anéis continuam visíveis. A câmera
+recua para caber tudo e, com um nó selecionado, acompanha ele até o anel. Nomes aparecem para o selecionado, os vizinhos, o
 destaque e os mais ligados, escondendo os que colidiriam. Trocar `nos`
 mantém a seleção e a câmera, então dá para atualizar ao vivo.
 
 Acessibilidade: o canvas é `aria-hidden`; a mesma informação existe numa
 lista de botões que aparece quando recebe foco (Tab), e o nó selecionado
 é anunciado por `aria-live`. Com `prefers-reduced-motion`, sem deriva nem
-parallax e a viagem é instantânea. Sem WebGL, mostra um aviso no lugar.
+parallax nem respiração, e viagens e anéis se montam na hora. Sem WebGL,
+mostra um aviso no lugar.
 
 ```tsx
 import { Grafo3D } from "mothership-ds/3d";

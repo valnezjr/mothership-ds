@@ -49,6 +49,12 @@ const RAIO_LAYOUT = 10;
 const MAX_ROTULOS = 18;
 /** Distância da câmera na visão geral: o grafo inteiro cabe no campo de visão de 50°. */
 const RAIO_GERAL = RAIO_LAYOUT * 1.9;
+/** Respiração da malha: amplitude (unidades de cena) e períodos (s) de cada eixo. */
+const RESPIRO = 0.22;
+const PERIODOS = [5.3, 6.7, 7.9];
+/** Anéis do filtro: espaço por nó na circunferência e folga entre anéis. */
+const ESPACO_NO_ANEL = 1.9;
+const FOLGA_ANEIS = 2.2;
 
 /** Avalia uma cubic-bezier CSS (x1, y1, x2, y2) em t, por bisseção em x. */
 function bezier(curva: [number, number, number, number], t: number) {
@@ -88,7 +94,14 @@ export class CenaGrafo {
   // Dados
   private nos: NoCena[] = [];
   private arestas: [number, number][] = [];
+  /** Lugar de descanso dado pelo layout. */
   private posicoes: THREE.Vector3[] = [];
+  /** Onde o nó está agora, a caminho do lugar pedido (layout ou anel do filtro). */
+  private atual: THREE.Vector3[] = [];
+  /** O que se desenha: `atual` mais a respiração. Rótulos, arestas e clique leem daqui. */
+  private exibida: THREE.Vector3[] = [];
+  private fase: [number, number, number][] = [];
+  private grupoDoNo: string[] = [];
   private vizinhos: Set<number>[] = [];
   private corDoNo: THREE.Color[] = [];
   private corDoNoSlot: string[] = [];
@@ -101,6 +114,10 @@ export class CenaGrafo {
   private passando: number | null = null;
   private selecionado: number | null = null;
   private destaque = new Set<number>();
+  private filtro: string[] = [];
+  /** Para cada nó filtrado: [raio do anel, ângulo]. */
+  private noAnel = new Map<number, [number, number]>();
+  private raioExterno = 0;
   private arrastando = false;
   private moveu = 0;
   private ultimoPonteiro = { x: 0, y: 0 };
@@ -181,6 +198,8 @@ export class CenaGrafo {
 
   definirDados(nos: NoCena[], arestas: ArestaCena[], grupos: GrupoCena[]) {
     const selecionadoId = this.selecionado !== null ? this.nos[this.selecionado]?.id : null;
+    // Atualização ao vivo: quem já existia sai de onde está, sem salto; nó novo nasce no layout.
+    const anteriores = new Map(this.nos.map((n, i) => [n.id, this.atual[i]]).filter((e): e is [string, THREE.Vector3] => !!e[1]));
     this.nos = nos;
     this.indice = new Map(nos.map((n, i) => [n.id, i]));
     this.arestas = [];
@@ -199,6 +218,11 @@ export class CenaGrafo {
     }
     const layout = layoutForca3D(nos, arestas, { raio: RAIO_LAYOUT });
     this.posicoes = nos.map((n) => new THREE.Vector3(...(layout.get(n.id) ?? [0, 0, 0])));
+    this.atual = nos.map((n, i) => (anteriores.get(n.id) ?? this.posicoes[i]!).clone());
+    this.exibida = this.atual.map((p) => p.clone());
+    // Fases determinísticas (ângulo dourado): cada nó respira no seu tempo, sem Math.random.
+    this.fase = nos.map((_, i) => [i * 2.39996, i * 2.39996 * 2 + 1, i * 2.39996 * 3 + 2]);
+    this.grupoDoNo = nos.map((n) => n.grupo);
     this.maisPesados = nos
       .map((n, i) => [i, n.peso ?? this.vizinhos[i]!.size] as const)
       .sort((a, b) => b[1] - a[1])
@@ -228,6 +252,9 @@ export class CenaGrafo {
       mesh.setColorAt(i, this.corDoNo[i]!);
     });
     mesh.instanceMatrix.needsUpdate = true;
+    // Os nós se movem a cada quadro: a esfera de colisão é fixa e larga, e nada é recortado.
+    mesh.boundingSphere = new THREE.Sphere(new THREE.Vector3(), RAIO_LAYOUT * 8);
+    mesh.frustumCulled = false;
     this.nosMesh = mesh;
     this.cena.add(mesh);
 
@@ -249,7 +276,9 @@ export class CenaGrafo {
       geoLinhas,
       new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55 }),
     );
+    this.linhas.frustumCulled = false;
     this.cena.add(this.linhas);
+    this.calcularAneis();
 
     // Mantém a seleção se o nó continua existindo (atualização ao vivo sem perder a câmera).
     this.selecionado = selecionadoId ? (this.indice.get(selecionadoId) ?? null) : null;
@@ -261,9 +290,41 @@ export class CenaGrafo {
     const i = id ? (this.indice.get(id) ?? null) : null;
     if (i === this.selecionado) return;
     this.selecionado = i;
-    if (i !== null) this.viajar(this.posicoes[i]!, RAIO_LAYOUT * 1.3);
-    else this.viajar(new THREE.Vector3(), RAIO_GERAL);
+    if (i !== null) this.viajar(this.atual[i]!, RAIO_LAYOUT * 1.3);
+    else this.viajar(new THREE.Vector3(), this.raioDaVisaoGeral());
     this.pintar();
+  }
+
+  /** Grupos filtrados, na ordem dos anéis: o primeiro é o de dentro. */
+  definirFiltro(grupos: string[]) {
+    if (grupos.join("|") === this.filtro.join("|")) return;
+    this.filtro = grupos;
+    this.calcularAneis();
+    if (this.selecionado === null) this.viajar(new THREE.Vector3(), this.raioDaVisaoGeral());
+    this.pintar();
+  }
+
+  private raioDaVisaoGeral() {
+    // Com filtro, recua até os de fora (afastados para além do anel) caberem sem encostar na lente.
+    return this.noAnel.size ? Math.max(RAIO_GERAL, (this.raioExterno + 2 + RAIO_LAYOUT * 0.7) * 1.6) : RAIO_GERAL;
+  }
+
+  /** Um anel por grupo filtrado, concêntricos, cada um com o tamanho que seus nós pedem. */
+  private calcularAneis() {
+    this.noAnel = new Map();
+    this.raioExterno = 0;
+    let anterior = 0;
+    for (const grupo of this.filtro) {
+      const membros = this.grupoDoNo.flatMap((g, i) => (g === grupo ? [i] : []));
+      if (!membros.length) continue;
+      const pedido = Math.max(2.6, (membros.length * ESPACO_NO_ANEL) / (2 * Math.PI));
+      const raio = anterior ? Math.max(anterior + FOLGA_ANEIS, pedido) : pedido;
+      // Cada anel começa num ângulo diferente, para os nós não se alinharem em raios.
+      const giro = this.filtro.indexOf(grupo) * 0.7;
+      membros.forEach((i, j) => this.noAnel.set(i, [raio, giro + (2 * Math.PI * j) / membros.length]));
+      anterior = raio;
+      this.raioExterno = raio;
+    }
   }
 
   definirDestaque(ids: string[]) {
@@ -293,7 +354,8 @@ export class CenaGrafo {
   private emFoco(): Set<number> | null {
     const centro = this.passando ?? this.selecionado;
     if (centro !== null) return new Set([centro, ...this.vizinhos[centro]!]);
-    return this.destaque.size ? this.destaque : null;
+    if (this.destaque.size) return this.destaque;
+    return this.noAnel.size ? new Set(this.noAnel.keys()) : null;
   }
 
   private pintar() {
@@ -313,9 +375,12 @@ export class CenaGrafo {
     const cores = this.linhas.geometry.getAttribute("color") as THREE.BufferAttribute;
     const base = this.corTexto.clone().lerp(this.corFundo, 0.7);
     const apagada = this.corTexto.clone().lerp(this.corFundo, 0.93);
+    // No filtro puro, a ligação de um nó de fora com o anel continua visível.
+    const soFiltro = this.passando === null && this.selecionado === null && !this.destaque.size;
     this.arestas.forEach(([i, j], k) => {
       const acesa = foco ? foco.has(i) && foco.has(j) : true;
-      const c = foco ? (acesa ? this.corAcento : apagada) : base;
+      const meia = foco !== null && soFiltro && (foco.has(i) || foco.has(j));
+      const c = foco ? (acesa ? this.corAcento : meia ? base : apagada) : base;
       cores.setXYZ(k * 2, c.r, c.g, c.b);
       cores.setXYZ(k * 2 + 1, c.r, c.g, c.b);
     });
@@ -347,6 +412,11 @@ export class CenaGrafo {
     } else {
       const k = 1 - Math.exp(-dt * 6);
       this.raio += (this.raioDesejado - this.raio) * k;
+      // O nó selecionado pode estar indo para um anel: a câmera vai junto.
+      if (this.selecionado !== null) {
+        const alvoNo = this.atual[this.selecionado];
+        if (alvoNo) this.alvo.lerp(alvoNo, this.reduzido ? 1 : 1 - Math.exp(-dt * 4));
+      }
     }
 
     // Parallax: o ponteiro desloca o olhar de leve, com amortecimento.
@@ -369,10 +439,64 @@ export class CenaGrafo {
     fog.near = this.raio * 0.6;
     fog.far = this.raio + RAIO_LAYOUT * 2.2;
 
+    this.moverNos(dt, agora / 1000);
     this.encolherPertoDaLente();
     this.atualizarRotulos();
     this.renderer.render(this.cena, this.camera);
   };
+
+  /**
+   * Leva cada nó rumo ao seu lugar (layout, ou anel quando há filtro) e soma a respiração.
+   * Os anéis ficam sempre de frente para a câmera: a base sai dos ângulos da órbita.
+   */
+  private moverNos(dt: number, t: number) {
+    const k = this.reduzido ? 1 : 1 - Math.exp(-dt * 3.5);
+    const frente = new THREE.Vector3(
+      Math.sin(this.phi) * Math.sin(this.theta),
+      Math.cos(this.phi),
+      Math.sin(this.phi) * Math.cos(this.theta),
+    );
+    const direita = new THREE.Vector3().crossVectors(this.camera.up, frente).normalize();
+    const cima = new THREE.Vector3().crossVectors(frente, direita);
+    const destino = new THREE.Vector3();
+    const afastar = this.raioExterno + 2;
+    this.atual.forEach((atual, i) => {
+      const base = this.posicoes[i]!;
+      const anel = this.noAnel.get(i);
+      if (anel) {
+        const [raio, angulo] = anel;
+        destino
+          .copy(direita)
+          .multiplyScalar(Math.cos(angulo) * raio)
+          .addScaledVector(cima, Math.sin(angulo) * raio);
+      } else if (this.noAnel.size) {
+        // Os de fora abrem espaço: mesma direção do layout, empurrados para além do anel externo.
+        const dist = base.length();
+        if (dist > 1e-6) destino.copy(base).multiplyScalar((afastar + dist * 0.7) / dist);
+        else destino.copy(direita).multiplyScalar(afastar);
+      } else {
+        destino.copy(base);
+      }
+      atual.lerp(destino, k);
+      const exibida = this.exibida[i]!.copy(atual);
+      if (!this.reduzido) {
+        const [f1, f2, f3] = this.fase[i]!;
+        exibida.x += Math.sin((t * 2 * Math.PI) / PERIODOS[0]! + f1) * RESPIRO;
+        exibida.y += Math.sin((t * 2 * Math.PI) / PERIODOS[1]! + f2) * RESPIRO;
+        exibida.z += Math.sin((t * 2 * Math.PI) / PERIODOS[2]! + f3) * RESPIRO;
+      }
+    });
+    if (this.linhas) {
+      const pontos = this.linhas.geometry.getAttribute("position") as THREE.BufferAttribute;
+      this.arestas.forEach(([i, j], n) => {
+        const a = this.exibida[i]!;
+        const b = this.exibida[j]!;
+        pontos.setXYZ(n * 2, a.x, a.y, a.z);
+        pontos.setXYZ(n * 2 + 1, b.x, b.y, b.z);
+      });
+      pontos.needsUpdate = true;
+    }
+  }
 
   /** Nó quase encostado na câmera encolhe até sumir, em vez de virar uma bola que tapa a tela. */
   private encolherPertoDaLente() {
@@ -380,7 +504,7 @@ export class CenaGrafo {
     const matriz = new THREE.Matrix4();
     const perto = 1.5;
     const longe = 5;
-    this.posicoes.forEach((p, i) => {
+    this.exibida.forEach((p, i) => {
       const d = this.camera.position.distanceTo(p);
       const t = Math.min(Math.max((d - perto) / (longe - perto), 0), 1);
       // Nunca zero: matriz singular atrapalha o raycast.
@@ -399,9 +523,9 @@ export class CenaGrafo {
     }
     if (this.passando !== null) visiveis.add(this.passando);
     for (const d of this.destaque) visiveis.add(d);
-    // Sem seleção, os de maior peso ganham nome, para o grafo não ficar mudo.
+    // Sem seleção, ganham nome os do filtro ou, sem filtro, os de maior peso.
     if (this.selecionado === null) {
-      for (const i of this.maisPesados) visiveis.add(i);
+      for (const i of this.noAnel.size ? this.noAnel.keys() : this.maisPesados) visiveis.add(i);
     }
     // Os fortes (selecionado, sob o mouse) vêm primeiro para nunca perderem a vez.
     const forte = (i: number) => i === this.selecionado || i === this.passando;
@@ -415,14 +539,14 @@ export class CenaGrafo {
         r.style.opacity = "0";
         return;
       }
-      p.copy(this.posicoes[i]!).project(this.camera);
+      p.copy(this.exibida[i]!).project(this.camera);
       if (p.z > 1 || p.z < -1) {
         r.style.opacity = "0";
         return;
       }
       const x = (p.x * 0.5 + 0.5) * w;
       const y = (-p.y * 0.5 + 0.5) * h;
-      const distancia = this.camera.position.distanceTo(this.posicoes[i]!);
+      const distancia = this.camera.position.distanceTo(this.exibida[i]!);
       const fog = this.cena.fog as THREE.Fog;
       const nevoa = Math.min(Math.max((distancia - fog.near) / (fog.far - fog.near), 0), 1);
       if (r.textContent !== this.nos[i]!.rotulo) r.textContent = this.nos[i]!.rotulo;

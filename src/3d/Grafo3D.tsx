@@ -28,7 +28,13 @@ export interface Grafo3DProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   aoPassar?: (id: string | null) => void;
   /** Nós realçados (ex.: resultado de uma busca), quando nada está sob o mouse ou selecionado. */
   destaque?: string[];
-  /** Mostra a legenda dos grupos no canto. Padrão true. */
+  /**
+   * Grupos filtrados, na ordem dos anéis (o primeiro fica no centro). Passe para controlar;
+   * omita e a legenda cuida do filtro sozinha.
+   */
+  filtro?: string[];
+  aoFiltrar?: (grupos: string[]) => void;
+  /** Mostra a legenda dos grupos no canto, que também é o filtro. Padrão true. */
   legenda?: boolean;
   /** Rótulo acessível do grafo. */
   rotulo?: string;
@@ -53,6 +59,8 @@ export function Grafo3D({
   aoSelecionar,
   aoPassar,
   destaque,
+  filtro,
+  aoFiltrar,
   legenda = true,
   rotulo = "Grafo",
   className,
@@ -66,6 +74,11 @@ export function Grafo3D({
   const controlado = selecionado !== undefined;
   const [selecaoInterna, setSelecaoInterna] = React.useState<string | null>(null);
   const atual = controlado ? selecionado : selecaoInterna;
+
+  const filtroControlado = filtro !== undefined;
+  const [filtroInterno, setFiltroInterno] = React.useState<string[]>([]);
+  const filtroAtual = filtroControlado ? filtro : filtroInterno;
+  const chaveFiltro = filtroAtual.join("\u0000");
 
   // Os retornos mudam a cada render; a cena guarda só uma ponte estável.
   const retornosRef = React.useRef({ aoSelecionar, aoPassar, controlado });
@@ -117,6 +130,17 @@ export function Grafo3D({
     cenaRef.current?.definirDestaque(destaque ?? []);
   }, [destaque, nos]);
 
+  React.useEffect(() => {
+    cenaRef.current?.definirFiltro(chaveFiltro ? chaveFiltro.split("\u0000") : []);
+  }, [chaveFiltro, nos]);
+
+  /** Clicar numa cor liga ou desliga o grupo; cada grupo novo ganha o anel de fora. */
+  const alternarGrupo = (id: string) => {
+    const proximo = filtroAtual.includes(id) ? filtroAtual.filter((g) => g !== id) : [...filtroAtual, id];
+    if (!filtroControlado) setFiltroInterno(proximo);
+    aoFiltrar?.(proximo);
+  };
+
   const selecionar = (id: string | null) => {
     if (!controlado) setSelecaoInterna(id);
     aoSelecionar?.(id);
@@ -143,12 +167,24 @@ export function Grafo3D({
         </p>
       )}
       {legenda && grupos.length > 0 && (
-        <div className="ms-grafo3d__legenda" aria-hidden="true">
+        <div
+          className={["ms-grafo3d__legenda", filtroAtual.length ? "ms-grafo3d__legenda--filtrando" : ""]
+            .filter(Boolean)
+            .join(" ")}
+          role="group"
+          aria-label="Filtrar por grupo"
+        >
           {grupos.map((g) => (
-            <span className="ms-grafo3d__legenda-item" key={g.id}>
+            <button
+              type="button"
+              className="ms-grafo3d__legenda-item"
+              key={g.id}
+              aria-pressed={filtroAtual.includes(g.id)}
+              onClick={() => alternarGrupo(g.id)}
+            >
               <span className="ms-grafo3d__legenda-cor" style={{ background: COR_DO_SLOT[g.slot] }} />
               {g.rotulo}
-            </span>
+            </button>
           ))}
         </div>
       )}

@@ -16,8 +16,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   JS). Hover e seleção acendem o nó e os vizinhos e esmaecem o resto rumo
   a `--bg-base`; névoa na cor do fundo dá profundidade. Grupos coloridos
   por slot: 1–4 são `--chart-*`, 5–8 as cores de marca. Cores relidas dos
-  tokens quando o tema troca. Rótulos são HTML sobre o canvas, com os
-  fracos escondidos quando colidiriam. Lista de botões escondida (aparece
+  tokens quando o tema troca. Os nós respiram devagar em volta do lugar,
+  cada um no seu tempo, e as ligações esticam junto: o grafo se lê como
+  uma malha viva. A legenda é filtro: cada cor clicada reúne o grupo num
+  anel de frente para a câmera, no centro; grupos a mais viram anéis
+  concêntricos por fora, e o resto se afasta e esmaece, com as ligações
+  para o anel ainda visíveis (`filtro`/`aoFiltrar`, controlado ou não).
+  Rótulos são HTML sobre o canvas, com os fracos escondidos quando
+  colidiriam. Lista de botões escondida (aparece
   no foco) e anúncio `aria-live` para teclado e leitor de tela;
   `prefers-reduced-motion` desliga deriva e parallax e torna a viagem
   instantânea. Seleção controlada ou não. Layout por forças em 3D

@@ -752,6 +752,7 @@ const GRAFO_ARESTAS: Grafo3DAresta[] = ([
 
 function Grafo3DDemo() {
   const [selecionado, setSelecionado] = React.useState<string | null>(null);
+  const [filtro, setFiltro] = React.useState<string[]>([]);
   const [busca, setBusca] = React.useState("");
   const destaque = React.useMemo(() => {
     const termo = busca.trim().toLowerCase();
@@ -769,14 +770,18 @@ function Grafo3DDemo() {
           grupos={GRAFO_GRUPOS}
           selecionado={selecionado}
           aoSelecionar={setSelecionado}
+          filtro={filtro}
+          aoFiltrar={setFiltro}
           destaque={destaque}
           rotulo="Grafo de exemplo de uma base de notas"
         />
       </div>
       <p className="ms-text-xs ms-text-muted">
-        Selecionado: <strong>{selecionado ?? "nenhum"}</strong>. Arraste para girar, role para
-        aproximar, clique num nó para viajar até ele e no vazio para voltar. Pelo teclado, Tab
-        abre a lista de nós.
+        Selecionado: <strong>{selecionado ?? "nenhum"}</strong>. Filtro:{" "}
+        <strong>{filtro.length ? filtro.join(", ") : "nenhum"}</strong>. Arraste para girar, role
+        para aproximar, clique num nó para viajar até ele e no vazio para voltar. Clique nas cores
+        da legenda para reunir um grupo num anel no centro; cada grupo a mais ganha um anel por
+        fora. Pelo teclado, Tab abre a lista de nós.
       </p>
     </Stack>
   );
@@ -1822,7 +1827,7 @@ export const STORIES: Story[] = [
     id: "grafo-3d",
     group: "Dados",
     title: "Grafo 3D",
-    subtitle: "Grafo navegável em three.js puro, importado de mothership-ds/3d (three é peer opcional). Layout por forças determinístico, cores por grupo nos slots de dados e de marca, deriva e parallax como o fundo animado, viagem suave até o nó e vizinhos acesos no hover. Com movimento reduzido, fica parado e as viagens são instantâneas.",
+    subtitle: "Grafo navegável em three.js puro, importado de mothership-ds/3d (three é peer opcional). Layout por forças determinístico, cores por grupo nos slots de dados e de marca, deriva e parallax como o fundo animado, nós que respiram como uma malha, viagem suave até o nó e vizinhos acesos no hover. A legenda filtra: cada grupo vira um anel no centro e o resto abre espaço. Com movimento reduzido, fica parado e as transições são instantâneas.",
     render: () => <Grafo3DDemo />,
   },
   {
