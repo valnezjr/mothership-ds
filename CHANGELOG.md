@@ -8,6 +8,24 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Grafo3D`** e **`layoutForca3D`** (`src/3d/`, ponto de entrada novo
+  `mothership-ds/3d`): primeiro componente 3D do pacote. Grafo de nós e
+  arestas genéricos com o movimento do `LivingBackground` — deriva lenta,
+  parallax amortecido pelo ponteiro, viagem da câmera até o nó selecionado
+  com `--transition-spatial`/`--ease-spatial` (a curva CSS é avaliada no
+  JS). Hover e seleção acendem o nó e os vizinhos e esmaecem o resto rumo
+  a `--bg-base`; névoa na cor do fundo dá profundidade. Grupos coloridos
+  por slot: 1–4 são `--chart-*`, 5–8 as cores de marca. Cores relidas dos
+  tokens quando o tema troca. Rótulos são HTML sobre o canvas, com os
+  fracos escondidos quando colidiriam. Lista de botões escondida (aparece
+  no foco) e anúncio `aria-live` para teclado e leitor de tela;
+  `prefers-reduced-motion` desliga deriva e parallax e torna a viagem
+  instantânea. Seleção controlada ou não. Layout por forças em 3D
+  determinístico, puro e testado (`npm test`, `node --test`).
+  three.js puro, sem react-three-fiber (r3f 8 é só React 18, r3f 9 só
+  React 19). `three` entra como `peerDependency` **opcional**: o pacote
+  principal segue sem dependência de runtime. 52 componentes (era 51).
+
 - **`Dock`** (`src/components/navbar.tsx`): navegação principal de app —
   coluna de ícones à esquerda, em pílula como a Navbar, que expande para
   ícone + título no formato do `Sidebar` (`--radius-md`, `--space-4`,
@@ -24,7 +42,7 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 - **Capítulo `docs/3d.md`**: o vocabulário 3D que emergiu de um consumidor
   real (Mothership Agency, react-three-fiber) usando os tokens deste
-  pacote numa cena 3D — sem nenhum componente 3D novo empacotado aqui.
+  pacote numa cena 3D (escrito antes do `Grafo3D` existir).
   Cobre níveis de superfície (derivar `--bg-base` por mistura com branco
   em espaço **linear**, ao contrário da composição em sRGB da regra 2D),
   o rig de iluminação (cor de marca como temperatura ambiente, sempre em

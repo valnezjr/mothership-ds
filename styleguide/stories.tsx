@@ -21,6 +21,8 @@ import {
   // marca
   Splash, Loader,
 } from "../src/index";
+import { Grafo3D } from "../src/3d/index";
+import type { Grafo3DNo, Grafo3DAresta, Grafo3DGrupo } from "../src/3d/index";
 
 /* ============================================================
    Catálogo do styleguide.
@@ -711,6 +713,74 @@ const GITHUB = (
 );
 
 /* ---------- catálogo ---------- */
+
+/* ---------- Grafo 3D: base de notas fictícia ----------
+   Dados inventados sobre design. Este repositório é público: nunca usar
+   aqui nomes de notas, projetos ou clientes de uma base real. */
+const GRAFO_GRUPOS: Grafo3DGrupo[] = [
+  { id: "fundamentos", rotulo: "Fundamentos", slot: 1 },
+  { id: "projetos", rotulo: "Projetos", slot: 2 },
+  { id: "referencias", rotulo: "Referências", slot: 3 },
+  { id: "rascunhos", rotulo: "Rascunhos", slot: 4 },
+  { id: "diario", rotulo: "Diário", slot: 6 },
+];
+
+const GRAFO_NOS: Grafo3DNo[] = [
+  ["Tipografia", "fundamentos"], ["Cor", "fundamentos"], ["Grid", "fundamentos"],
+  ["Contraste", "fundamentos"], ["Movimento", "fundamentos"],
+  ["Projeto Aurora", "projetos"], ["Projeto Nimbus", "projetos"], ["Projeto Farol", "projetos"],
+  ["Projeto Seiva", "projetos"], ["Projeto Órbita", "projetos"],
+  ["Escalas modulares", "referencias"], ["Paletas acessíveis", "referencias"], ["Curvas de easing", "referencias"],
+  ["Leitura em tela", "referencias"], ["Sistemas de ícones", "referencias"], ["Ritmo vertical", "referencias"],
+  ["Ideia de logotipo", "rascunhos"], ["Texto da landing", "rascunhos"], ["Moodboard", "rascunhos"],
+  ["Segunda", "diario"], ["Terça", "diario"], ["Quarta", "diario"], ["Quinta", "diario"],
+].map(([rotulo, grupo]) => ({ id: rotulo!, rotulo: rotulo!, grupo: grupo! }));
+
+const GRAFO_ARESTAS: Grafo3DAresta[] = ([
+  ["Tipografia", "Escalas modulares"], ["Tipografia", "Ritmo vertical"], ["Tipografia", "Leitura em tela"],
+  ["Cor", "Paletas acessíveis"], ["Cor", "Contraste"], ["Contraste", "Paletas acessíveis"],
+  ["Grid", "Ritmo vertical"], ["Movimento", "Curvas de easing"], ["Sistemas de ícones", "Grid"],
+  ["Projeto Aurora", "Tipografia"], ["Projeto Aurora", "Cor"], ["Projeto Aurora", "Moodboard"],
+  ["Projeto Nimbus", "Movimento"], ["Projeto Nimbus", "Grid"], ["Projeto Nimbus", "Sistemas de ícones"],
+  ["Projeto Farol", "Texto da landing"], ["Projeto Farol", "Leitura em tela"], ["Projeto Farol", "Contraste"],
+  ["Projeto Seiva", "Ideia de logotipo"], ["Projeto Seiva", "Cor"], ["Projeto Órbita", "Curvas de easing"],
+  ["Projeto Órbita", "Projeto Nimbus"], ["Moodboard", "Ideia de logotipo"], ["Texto da landing", "Tipografia"],
+  ["Segunda", "Projeto Aurora"], ["Terça", "Projeto Farol"], ["Quarta", "Projeto Nimbus"],
+  ["Quinta", "Projeto Órbita"], ["Quinta", "Projeto Seiva"], ["Segunda", "Terça"],
+  ["Terça", "Quarta"], ["Quarta", "Quinta"],
+] as const).map(([origem, destino]) => ({ origem, destino }));
+
+function Grafo3DDemo() {
+  const [selecionado, setSelecionado] = React.useState<string | null>(null);
+  const [busca, setBusca] = React.useState("");
+  const destaque = React.useMemo(() => {
+    const termo = busca.trim().toLowerCase();
+    return termo ? GRAFO_NOS.filter((n) => n.rotulo.toLowerCase().includes(termo)).map((n) => n.id) : [];
+  }, [busca]);
+  return (
+    <Stack gap={4}>
+      <Field label="Realçar notas">
+        <Input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="ex.: projeto, cor, quinta" />
+      </Field>
+      <div style={{ height: 440 }}>
+        <Grafo3D
+          nos={GRAFO_NOS}
+          arestas={GRAFO_ARESTAS}
+          grupos={GRAFO_GRUPOS}
+          selecionado={selecionado}
+          aoSelecionar={setSelecionado}
+          destaque={destaque}
+          rotulo="Grafo de exemplo de uma base de notas"
+        />
+      </div>
+      <p className="ms-text-xs ms-text-muted">
+        Selecionado: <strong>{selecionado ?? "nenhum"}</strong>. Arraste para girar, role para
+        aproximar, clique num nó para viajar até ele e no vazio para voltar. Pelo teclado, Tab
+        abre a lista de nós.
+      </p>
+    </Stack>
+  );
+}
 
 export const STORIES: Story[] = [
   /* ============ Fundações ============ */
@@ -1747,6 +1817,13 @@ export const STORIES: Story[] = [
         />
       </div>
     ),
+  },
+  {
+    id: "grafo-3d",
+    group: "Dados",
+    title: "Grafo 3D",
+    subtitle: "Grafo navegável em three.js puro, importado de mothership-ds/3d (three é peer opcional). Layout por forças determinístico, cores por grupo nos slots de dados e de marca, deriva e parallax como o fundo animado, viagem suave até o nó e vizinhos acesos no hover. Com movimento reduzido, fica parado e as viagens são instantâneas.",
+    render: () => <Grafo3DDemo />,
   },
   {
     id: "tabela",

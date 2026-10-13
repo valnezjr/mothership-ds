@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-claro/escuro, fundo animado, 51 componentes. Nasceu de engenharia
+claro/escuro, fundo animado, 52 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -469,6 +469,14 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       ícones não comporta os destinos de um app. Primeiro componente com
       ícone obrigatório; ícone chega como `ReactNode`. 51 componentes
       (era 50).
+- [x] `Grafo3D` (`src/3d/`, entrada `mothership-ds/3d`) — primeiro
+      componente 3D. three.js puro, **sem react-three-fiber**: o r3f 8 só
+      aceita React 18 e o r3f 9 só React 19, e o DS promete os dois.
+      `three` é peer opcional; o pacote principal continua sem dependência
+      de runtime. Cena imperativa em `cena.ts`, montada uma vez; o React só
+      entrega dados e seleção. Layout `layoutForca3D` puro e testado com
+      `node --test` (`npm test`). Texto (rótulos, legenda) é HTML por cima
+      do canvas, para herdar fonte e tema. 52 componentes (era 51).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

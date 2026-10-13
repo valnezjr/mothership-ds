@@ -1,7 +1,7 @@
 {
   "name": "mothership-ds",
   "version": "1.7.0",
-  "description": "Design system em React + TypeScript: glassmorphism, temas claro/escuro, fundo animado e 51 componentes sem dependências de runtime.",
+  "description": "Design system em React + TypeScript: glassmorphism, temas claro/escuro, fundo animado e 52 componentes sem dependências de runtime (o Grafo3D, à parte, usa three).",
   "keywords": [
     "design-system",
     "react",
@@ -35,7 +35,8 @@
     "./styles.css": "./src/styles.css",
     "./tokens.css": "./src/styles/tokens.css",
     "./components.css": "./src/styles/components.css",
-    "./reset.css": "./src/reset.css"
+    "./reset.css": "./src/reset.css",
+    "./3d": "./src/3d/index.ts"
   },
   "files": [
     "src",
@@ -45,16 +46,25 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "styleguide": "node styleguide/build.mjs",
-    "styleguide:dev": "node styleguide/build.mjs --serve"
+    "styleguide:dev": "node styleguide/build.mjs --serve",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "three": ">=0.160"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.5.4",
-    "esbuild": "^0.23.0"
+    "@types/three": "^0.185.4",
+    "esbuild": "^0.23.0",
+    "three": "^0.185.1",
+    "typescript": "^5.5.4"
+  },
+  "peerDependenciesMeta": {
+    "three": {
+      "optional": true
+    }
   }
 }

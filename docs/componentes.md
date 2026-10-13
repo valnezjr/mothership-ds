@@ -1062,6 +1062,56 @@ Respeita `prefers-reduced-motion: reduce` (pulso desliga, fica parado
 no tom mais forte — ainda reconhecível como placeholder, não como
 conteúdo carregado).
 
+### `Grafo3D`
+
+Grafo navegável em 3D. Fica num ponto de entrada próprio, porque desenha
+com three.js — dependência opcional que o app instala:
+
+```bash
+npm i three
+```
+
+| Prop | Tipo | |
+|---|---|---|
+| `nos` | `{ id, rotulo, grupo, peso? }[]` | `peso` define o tamanho; padrão é o número de ligações |
+| `arestas` | `{ origem, destino }[]` | sem direção; repetidas e para nós ausentes são ignoradas |
+| `grupos` | `{ id, rotulo, slot }[]` | `slot` 1–4 = `--chart-*`, 5–8 = accent, violet, pink, orange |
+| `selecionado` | `string \| null` | passe para controlar; omita e o componente guarda a seleção |
+| `aoSelecionar` | `(id \| null) => void` | clique num nó, ou no vazio (`null`) |
+| `aoPassar` | `(id \| null) => void` | hover |
+| `destaque` | `string[]` | realce quando nada está em hover nem selecionado (ex.: busca) |
+| `legenda` | `boolean` | legenda dos grupos no canto, padrão `true` |
+| `rotulo` | `string` | nome acessível do grafo |
+
+O tamanho vem do container (`width`/`height: 100%`, mínimo 320px). Arraste
+gira, a roda aproxima, clique viaja até o nó. Hover e seleção acendem o
+nó e os vizinhos. Nomes aparecem para o selecionado, os vizinhos, o
+destaque e os mais ligados, escondendo os que colidiriam. Trocar `nos`
+mantém a seleção e a câmera, então dá para atualizar ao vivo.
+
+Acessibilidade: o canvas é `aria-hidden`; a mesma informação existe numa
+lista de botões que aparece quando recebe foco (Tab), e o nó selecionado
+é anunciado por `aria-live`. Com `prefers-reduced-motion`, sem deriva nem
+parallax e a viagem é instantânea. Sem WebGL, mostra um aviso no lugar.
+
+```tsx
+import { Grafo3D } from "mothership-ds/3d";
+
+<div style={{ height: 480 }}>
+  <Grafo3D
+    nos={[{ id: "t", rotulo: "Tipografia", grupo: "fundamentos" }, { id: "g", rotulo: "Grid", grupo: "fundamentos" }]}
+    arestas={[{ origem: "t", destino: "g" }]}
+    grupos={[{ id: "fundamentos", rotulo: "Fundamentos", slot: 1 }]}
+    aoSelecionar={(id) => console.log(id)}
+  />
+</div>
+```
+
+`layoutForca3D(nos, arestas, { raio?, iteracoes? })`, exportado junto, é
+o layout usado: forças em 3D, determinístico (mesma entrada, mesmo
+desenho), sem three nem DOM. Custo quadrático por iteração: bom até
+algumas centenas de nós.
+
 ---
 
 ## Marca
