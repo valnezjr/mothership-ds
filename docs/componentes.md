@@ -1079,7 +1079,7 @@ npm i three
 | `selecionado` | `string \| null` | passe para controlar; omita e o componente guarda a seleção |
 | `aoSelecionar` | `(id \| null) => void` | clique num nó, ou no vazio (`null`) |
 | `aoPassar` | `(id \| null) => void` | hover |
-| `destaque` | `string[]` | realce quando nada está em hover nem selecionado (ex.: busca) |
+| `destaque` | `string[]` | o que fica aceso (ex.: busca, um caminho); vence a seleção, que só leva a câmera; o hover vence os dois |
 | `filtro` | `string[]` | grupos filtrados, na ordem dos anéis; passe para controlar |
 | `aoFiltrar` | `(grupos) => void` | clique numa cor da legenda |
 | `legenda` | `boolean` | legenda dos grupos no canto, que também é o filtro; padrão `true` |

@@ -28,7 +28,9 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   `prefers-reduced-motion` desliga deriva e parallax e torna a viagem
   instantânea. Seleção controlada ou não. A viagem até um nó gira a
   câmera para chegar pelo lado de fora do grafo, com as outras notas
-  atrás dele. Layout por forças em 3D determinístico, puro e testado
+  atrás dele. O `destaque` vence a seleção (um caminho destacado continua
+  aceso com a câmera no destino); o hover vence os dois. Layout por forças
+  em 3D determinístico, puro e testado
   (`npm test`, `node --test`), com puxão ao centro forte o bastante para
   as notas sem ligação ficarem em volta do núcleo em vez de espremê-lo
   (medido num vault real com 29% de órfãs).

@@ -26,7 +26,10 @@ export interface Grafo3DProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   selecionado?: string | null;
   aoSelecionar?: (id: string | null) => void;
   aoPassar?: (id: string | null) => void;
-  /** Nós realçados (ex.: resultado de uma busca), quando nada está sob o mouse ou selecionado. */
+  /**
+   * Nós realçados (ex.: resultado de uma busca, um caminho). Vencem a seleção, que então só
+   * leva a câmera; o hover vence os dois.
+   */
   destaque?: string[];
   /**
    * Grupos filtrados, na ordem dos anéis (o primeiro fica no centro). Passe para controlar;

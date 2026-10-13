@@ -383,10 +383,17 @@ export class CenaGrafo {
   }
 
   /** O conjunto em foco: o nó sob o mouse ou o selecionado, mais os vizinhos dele. */
+  /**
+   * O que fica aceso: sob o mouse, o nó e os vizinhos; senão o destaque (com o selecionado),
+   * que vence a seleção para um caminho destacado continuar visível com a câmera no destino;
+   * senão o selecionado e os vizinhos; senão os nós do filtro.
+   */
   private emFoco(): Set<number> | null {
-    const centro = this.passando ?? this.selecionado;
-    if (centro !== null) return new Set([centro, ...this.vizinhos[centro]!]);
-    if (this.destaque.size) return this.destaque;
+    if (this.passando !== null) return new Set([this.passando, ...this.vizinhos[this.passando]!]);
+    if (this.destaque.size) {
+      return this.selecionado === null ? this.destaque : new Set([...this.destaque, this.selecionado]);
+    }
+    if (this.selecionado !== null) return new Set([this.selecionado, ...this.vizinhos[this.selecionado]!]);
     return this.noAnel.size ? new Set(this.noAnel.keys()) : null;
   }
 
