@@ -26,6 +26,12 @@ export interface OpcoesLayout {
 }
 
 const PHI = Math.PI * (3 - Math.sqrt(5)); // ângulo dourado
+/**
+ * Puxão ao centro. Fraco demais, as notas sem ligação fogem para a borda e, como o resultado
+ * é encaixado pelo nó mais distante, espremem o núcleo ligado num ponto (medido num vault real
+ * com 29% de órfãs: núcleo a 1/10 do raio com 0.01, a 1/2 com 0.4).
+ */
+const GRAVIDADE = 0.4;
 
 function esferaDeFibonacci(n: number, raio: number): Posicao[] {
   if (n === 1) return [[0, 0, 0]];
@@ -117,12 +123,12 @@ export function layoutForca3D(
       desloc[j]![2] += fz;
     }
 
-    // Leve puxão ao centro: componentes soltos não fogem para longe.
+    // Puxão ao centro: componentes soltos e órfãs ficam em volta do núcleo, não longe dele.
     for (let i = 0; i < n; i++) {
       const p = pos[i]!;
-      desloc[i]![0] -= p[0] * 0.01 * k;
-      desloc[i]![1] -= p[1] * 0.01 * k;
-      desloc[i]![2] -= p[2] * 0.01 * k;
+      desloc[i]![0] -= p[0] * GRAVIDADE * k;
+      desloc[i]![1] -= p[1] * GRAVIDADE * k;
+      desloc[i]![2] -= p[2] * GRAVIDADE * k;
     }
 
     // Move limitado pela temperatura, que esfria a cada passo.

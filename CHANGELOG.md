@@ -26,8 +26,12 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   colidiriam. Lista de botões escondida (aparece
   no foco) e anúncio `aria-live` para teclado e leitor de tela;
   `prefers-reduced-motion` desliga deriva e parallax e torna a viagem
-  instantânea. Seleção controlada ou não. Layout por forças em 3D
-  determinístico, puro e testado (`npm test`, `node --test`).
+  instantânea. Seleção controlada ou não. A viagem até um nó gira a
+  câmera para chegar pelo lado de fora do grafo, com as outras notas
+  atrás dele. Layout por forças em 3D determinístico, puro e testado
+  (`npm test`, `node --test`), com puxão ao centro forte o bastante para
+  as notas sem ligação ficarem em volta do núcleo em vez de espremê-lo
+  (medido num vault real com 29% de órfãs).
   three.js puro, sem react-three-fiber (r3f 8 é só React 18, r3f 9 só
   React 19). `three` entra como `peerDependency` **opcional**: o pacote
   principal segue sem dependência de runtime. 52 componentes (era 51).

@@ -48,7 +48,7 @@ interface Retornos {
 const RAIO_LAYOUT = 10;
 const MAX_ROTULOS = 18;
 /** Distância da câmera na visão geral: o grafo inteiro cabe no campo de visão de 50°. */
-const RAIO_GERAL = RAIO_LAYOUT * 1.9;
+const RAIO_GERAL = RAIO_LAYOUT * 2.4;
 /** Respiração da malha: amplitude (unidades de cena) e períodos (s) de cada eixo. */
 const RESPIRO = 0.22;
 const PERIODOS = [5.3, 6.7, 7.9];
@@ -131,7 +131,19 @@ export class CenaGrafo {
   private raio = RAIO_GERAL;
   private raioDesejado = RAIO_GERAL;
   private alvo = new THREE.Vector3();
-  private viagem: { de: THREE.Vector3; para: THREE.Vector3; raioDe: number; raioPara: number; inicio: number; duracao: number } | null = null;
+  private viagem: {
+    de: THREE.Vector3;
+    para: THREE.Vector3;
+    raioDe: number;
+    raioPara: number;
+    /** Giro da órbita durante a viagem (zero quando a câmera só se aproxima). */
+    thetaDe: number;
+    thetaGiro: number;
+    phiDe: number;
+    phiPara: number;
+    inicio: number;
+    duracao: number;
+  } | null = null;
 
   // Tokens
   private corFundo = new THREE.Color();
@@ -245,7 +257,7 @@ export class CenaGrafo {
     const matriz = new THREE.Matrix4();
     nos.forEach((n, i) => {
       const peso = n.peso ?? this.vizinhos[i]!.size;
-      const r = 0.32 + Math.min(Math.sqrt(peso), 6) * 0.12;
+      const r = 0.24 + Math.min(Math.sqrt(peso), 6) * 0.1;
       this.raioDoNo[i] = r;
       matriz.makeScale(r, r, r).setPosition(this.posicoes[i]!);
       mesh.setMatrixAt(i, matriz);
@@ -290,7 +302,7 @@ export class CenaGrafo {
     const i = id ? (this.indice.get(id) ?? null) : null;
     if (i === this.selecionado) return;
     this.selecionado = i;
-    if (i !== null) this.viajar(this.atual[i]!, RAIO_LAYOUT * 1.3);
+    if (i !== null) this.viajar(this.atual[i]!, RAIO_LAYOUT * 1.3, true);
     else this.viajar(new THREE.Vector3(), this.raioDaVisaoGeral());
     this.pintar();
   }
@@ -332,10 +344,25 @@ export class CenaGrafo {
     this.pintar();
   }
 
-  private viajar(para: THREE.Vector3, raioPara: number) {
+  /**
+   * Leva a câmera até `para`. Com `deFora`, ela também gira até chegar pelo lado de fora do
+   * grafo (alinhada com o centro e o nó), para as outras notas ficarem atrás, não na frente.
+   */
+  private viajar(para: THREE.Vector3, raioPara: number, deFora = false) {
+    let thetaPara = this.theta;
+    let phiPara = this.phi;
+    const dist = para.length();
+    if (deFora && dist > RAIO_LAYOUT * 0.15) {
+      thetaPara = Math.atan2(para.x, para.z);
+      phiPara = Math.min(Math.max(Math.acos(para.y / dist), 0.35), Math.PI - 0.35);
+    }
+    // Pelo caminho mais curto em volta do grafo.
+    const giro = ((((thetaPara - this.theta + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
     if (this.reduzido) {
       this.alvo.copy(para);
       this.raio = this.raioDesejado = raioPara;
+      this.theta += giro;
+      this.phi = phiPara;
       this.viagem = null;
       return;
     }
@@ -344,8 +371,13 @@ export class CenaGrafo {
       para: para.clone(),
       raioDe: this.raio,
       raioPara,
+      thetaDe: this.theta,
+      thetaGiro: giro,
+      phiDe: this.phi,
+      phiPara,
       inicio: performance.now(),
-      duracao: this.duracaoViagem,
+      // Meia volta em 0.45s seria um tranco: o giro grande alonga a viagem até o dobro.
+      duracao: this.duracaoViagem * (1 + Math.max(Math.abs(giro), Math.abs(phiPara - this.phi)) / Math.PI),
     };
     this.raioDesejado = raioPara;
   }
@@ -408,6 +440,8 @@ export class CenaGrafo {
       const e = bezier(this.curva, t);
       this.alvo.lerpVectors(this.viagem.de, this.viagem.para, e);
       this.raio = this.viagem.raioDe + (this.viagem.raioPara - this.viagem.raioDe) * e;
+      this.theta = this.viagem.thetaDe + this.viagem.thetaGiro * e;
+      this.phi = this.viagem.phiDe + (this.viagem.phiPara - this.viagem.phiDe) * e;
       if (t >= 1) this.viagem = null;
     } else {
       const k = 1 - Math.exp(-dt * 6);
