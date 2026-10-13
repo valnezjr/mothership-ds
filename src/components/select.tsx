@@ -40,6 +40,24 @@ function useOutsideClick(ref: React.RefObject<HTMLElement | null>, onOutside: ()
   }, [active, onOutside]);
 }
 
+/** Altura máxima da lista (`.ms-listbox`), para decidir se ela cabe embaixo do campo. */
+const LISTBOX_MAX = 240;
+
+/**
+ * Abre a lista para cima quando ela não cabe embaixo do campo e há mais espaço em cima —
+ * campo no pé da tela (caixa de mensagem, rodapé de formulário) sem empurrar a página.
+ */
+function useOpensAbove(ref: React.RefObject<HTMLElement | null>, open: boolean): boolean {
+  const [above, setAbove] = React.useState(false);
+  React.useLayoutEffect(() => {
+    if (!open || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const below = window.innerHeight - rect.bottom;
+    setAbove(below < LISTBOX_MAX + 16 && rect.top > below);
+  }, [open, ref]);
+  return above;
+}
+
 /** Próximo índice habilitado, ciclando e pulando `disabled`. */
 function nextEnabledIndex(options: SelectOption[], from: number, dir: 1 | -1): number {
   const n = options.length;
@@ -64,6 +82,7 @@ function OptionList({
   onHover,
   onSelect,
   emptyLabel,
+  above = false,
 }: {
   id: string;
   options: SelectOption[];
@@ -72,9 +91,10 @@ function OptionList({
   onHover: (i: number) => void;
   onSelect: (opt: SelectOption) => void;
   emptyLabel: string;
+  above?: boolean;
 }) {
   return (
-    <ul className="ms-listbox" role="listbox" id={id}>
+    <ul className={cx("ms-listbox", above && "ms-listbox--above")} role="listbox" id={id}>
       {options.length === 0 && <li className="ms-listbox__empty">{emptyLabel}</li>}
       {options.map((opt, i) => (
         <li
@@ -131,6 +151,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
   const listId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-listbox`;
 
   useOutsideClick(wrapRef, () => setOpen(false), open);
+  const above = useOpensAbove(wrapRef, open);
 
   const selected = options.find((o) => o.value === selectedValue);
 
@@ -211,6 +232,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
           onHover={setActiveIndex}
           onSelect={commit}
           emptyLabel="Nada por aqui."
+          above={above}
         />
       )}
       {name != null && <input type="hidden" name={name} value={selectedValue ?? ""} />}
@@ -267,6 +289,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
   }, [value]);
 
   useOutsideClick(wrapRef, () => setOpen(false), open);
+  const above = useOpensAbove(wrapRef, open);
 
   const filtered = query === "" ? options : options.filter((o) => filter(o, query));
 
@@ -329,6 +352,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
           onHover={setActiveIndex}
           onSelect={commit}
           emptyLabel={emptyLabel}
+          above={above}
         />
       )}
     </div>

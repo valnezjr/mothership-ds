@@ -8,6 +8,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Select` e `Combobox` abrem a lista para cima** quando ela não cabe
+  embaixo do campo e há mais espaço em cima (`.ms-listbox--above`). Campo
+  no pé da tela, como a caixa de mensagem de um chat, não empurra mais a
+  página para rolar. Consumidor real: a Conversa do Ambiente Mothership.
+
 - **`Grafo3D`** e **`layoutForca3D`** (`src/3d/`, ponto de entrada novo
   `mothership-ds/3d`): primeiro componente 3D do pacote. Grafo de nós e
   arestas genéricos com o movimento do `LivingBackground` — deriva lenta,
