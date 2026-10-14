@@ -117,7 +117,11 @@ rolagem.
 ## Cores semânticas — mudam com o tema
 
 Tema escuro é `:root` (padrão); tema claro é `.light` no `<html>`
-(aplicado pelo `ThemeProvider`).
+(aplicado pelo `ThemeProvider`). Há ainda a variante **`.darker`**: o
+escuro com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
+branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
+do escuro. Não é alternada pelo `ThemeSwitch`: quem quiser aplica a
+classe `darker` no `<html>`.
 
 | Token | Papel |
 |---|---|

@@ -311,6 +311,20 @@
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
+/* ---------- Cores — TEMA DARKER ----------
+   Variante do escuro: mesma base, glows, texto e bordas do :root, mas o
+   vidro é escuro (o fundo da página a 60%) em vez de claro. Lê como uma
+   camada de fumaça sobre os glows, não como um véu branco: mais baixo
+   contraste de luz, para uso noturno. Nasceu no rice do desktop do autor,
+   onde virou o tema da noite. Aplicado pela classe `darker` no <html>
+   (o ThemeProvider/ThemeSwitch continuam alternando só escuro/claro). */
+.darker {
+  --color-surface: color-mix(in srgb, var(--bg-base) 60%, transparent);
+  /* Hover sutil: o branco a 50% do escuro padrão acende demais sobre o
+     vidro escuro. */
+  --color-surface-hover: rgba(255, 255, 255, 0.15);
+}
+
 /* ---------- Cores — TEMA CLARO ---------- */
 .light {
   transition: var(--transition-slow);

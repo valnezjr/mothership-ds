@@ -31,6 +31,12 @@ como variáveis CSS, então você pode consumi-los no seu próprio código:
 O tema escuro é o padrão. O claro é ativado pela classe `light` no
 `<html>` — é o que o `ThemeProvider` faz.
 
+Há também o **Darker**, uma variante do escuro para uso noturno: a mesma
+base, os mesmos glows, texto e bordas, mas o vidro é escuro (o fundo da
+página a 60%) em vez de claro, e o hover é mais sutil. Ative com a classe
+`darker` no `<html>`. O `ThemeSwitch` continua alternando só entre escuro
+e claro.
+
 ### Marca — fixas nos dois temas
 
 São oito, cada uma disponível em três formas. Todas foram extraídas

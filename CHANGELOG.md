@@ -8,6 +8,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Tema Darker** (`.darker` em `src/styles/tokens.css`): variante do
+  escuro com vidro escuro (`--color-surface` = `--bg-base` a 60%) e hover
+  sutil (branco a 15%), para uso noturno. Texto, bordas, marca, glows e
+  fundo são os do escuro. Ativada pela classe `darker` no `<html>`; o
+  `ThemeSwitch` segue alternando só escuro/claro. Nasceu no rice do
+  desktop do autor.
+
 - **Tokens de sombra e opacidade** (`src/styles/tokens.css`):
   `--shadow-xs`…`--shadow-xl` (escala de elevação), `--shadow-glow-accent`,
   `--shadow-drop`, `--opacity-disabled`, `--opacity-dimmed`, `--border-width` (1px)
