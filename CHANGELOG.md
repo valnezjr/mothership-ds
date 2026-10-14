@@ -12,7 +12,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   o branco puro com texto preto (21:1) estourava em telas grandes.
   Fundo creme (`--bg-base` `#ebe4d8`), vidro marfim
   (`rgba(245, 240, 230, 0.6)`), texto marrom quase preto (`#26201a`,
-  13.6:1 sobre o vidro), bordas e muted no mesmo tom, polegar do switch
+  13.6:1 sobre o vidro), bordas (55%, 3.45:1 — acima do mínimo de 3:1
+  para controles) e muted no mesmo tom, polegar do switch
   marfim, chevron do Select e véus do Modal/Drawer acompanhando o fundo.
   Os glows seguem o degradê da logo.
 

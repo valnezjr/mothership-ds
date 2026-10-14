@@ -343,7 +343,7 @@
      segue muito acima de AA. */
   --color-text: #26201a;
   --color-text-muted: rgba(38, 32, 26, 0.7);
-  --color-border: rgba(38, 32, 26, 0.45);
+  --color-border: rgba(38, 32, 26, 0.55); /* 3.45:1 sobre o fundo — mínimo de 3:1 para bordas de controle */
   --color-border-strong: #26201a;
   /* Vidro esbranquiçado, não escurecido: sobre os glows saturados do
      fundo claro, um véu preto sujava a superfície pra um cinza/roxo
