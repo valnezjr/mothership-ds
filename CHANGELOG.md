@@ -8,11 +8,25 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`ThemeMenu`** (`src/components/theme.tsx`): seletor dos três temas
+  (escuro, Darker, claro) num `DropdownMenu`, aberto por um botão
+  redondo igual ao do `NotificationBell`, com o ícone do tema ativo.
+  Substitui o `ThemeSwitch` na navbar do styleguide e do exemplo; o
+  `ThemeSwitch` continua exportado, só com claro/escuro. 53 componentes
+  (era 52).
+
+- **`DropdownMenuItem checked`**: item de escolha única
+  (`role="menuitemradio"` + `aria-checked`), com check na opção
+  marcada.
+
+- **`Theme` com `"darker"`**: o `ThemeProvider` aplica a classe `darker`
+  com `setTheme("darker")` e a persiste com `persist`; `toggle` segue
+  alternando claro/escuro (do Darker, vai para o claro).
+
 - **Tema Darker** (`.darker` em `src/styles/tokens.css`): variante do
   escuro com vidro escuro (`--color-surface` = `--bg-base` a 60%) e hover
   sutil (branco a 15%), para uso noturno. Texto, bordas, marca, glows e
-  fundo são os do escuro. Ativada pela classe `darker` no `<html>`; o
-  `ThemeSwitch` segue alternando só escuro/claro. Nasceu no rice do
+  fundo são os do escuro. Ativada pela classe `darker` no `<html>`. Nasceu no rice do
   desktop do autor.
 
 - **Tokens de sombra e opacidade** (`src/styles/tokens.css`):

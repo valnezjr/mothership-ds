@@ -120,8 +120,8 @@ Tema escuro é `:root` (padrão); tema claro é `.light` no `<html>`
 (aplicado pelo `ThemeProvider`). Há ainda a variante **`.darker`**: o
 escuro com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
 branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
-do escuro. Não é alternada pelo `ThemeSwitch`: quem quiser aplica a
-classe `darker` no `<html>`.
+do escuro. Aplicada pelo `ThemeProvider` com `setTheme("darker")`; o `ThemeMenu`
+escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
 
 | Token | Papel |
 |---|---|

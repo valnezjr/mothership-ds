@@ -32,14 +32,17 @@ habilitam recursos específicos.
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
-| `defaultTheme` | `"dark" \| "light"` | `"dark"` | tema inicial |
+| `defaultTheme` | `"dark" \| "darker" \| "light"` | `"dark"` | tema inicial |
 | `persist` | `boolean` | `false` | guarda a escolha no `localStorage` |
 
-Aplica a classe `light` no `<html>`. Com `persist`, a leitura acontece
+Aplica a classe `light` (claro) ou `darker` (Darker) no `<html>`; o
+escuro padrão não tem classe. Com `persist`, a leitura acontece
 **depois** da hidratação, para não divergir do HTML do servidor — o custo
 é um flash na primeira pintura para quem escolheu o tema claro.
 
-`useTheme()` devolve `{ theme, setTheme, toggle }`.
+`useTheme()` devolve `{ theme, setTheme, toggle }`. `toggle` alterna
+entre claro e escuro (do Darker, vai para o claro); para os três temas,
+use `setTheme`.
 
 ### `AlertsProvider`
 
@@ -154,12 +157,12 @@ Pill de vidro flutuante. Largura `calc(100vw − 48px)`, no máximo 1100px.
   { href: "#contato", label: "Contato" },
 ]}>
   <NotificationBell />
-  <ThemeSwitch />
+  <ThemeMenu />
 </Navbar>
 ```
 
 Abaixo de 720px os links saem da barra — que passa a dividir o espaço
-entre marca, sino e switch — e o hambúrguer abre um menu de vidro logo
+entre marca, sino e menu de tema — e o hambúrguer abre um menu de vidro logo
 abaixo do header. O ícone transiciona de hambúrguer para X.
 
 ### `Sidebar`
@@ -533,10 +536,23 @@ Botão circular. `href` e `aria-label` são **obrigatórios** — um `<a>` sem
 | `initials` | `string` | exibido quando não há `src` |
 | `alt` | `string` | texto alternativo |
 
+### `ThemeMenu`
+
+Seletor dos três temas — escuro, Darker e claro — num `DropdownMenu`.
+O gatilho é o mesmo botão redondo do `NotificationBell`, com o ícone do
+tema ativo (lua, lua cheia, sol) e `aria-label` com o nome dele; cada
+tema é um `DropdownMenuItem` marcável (`menuitemradio`), com o check no
+ativo.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `align` | `"start" \| "center" \| "end"` | `"end"` | alinhamento do menu em relação ao botão |
+
 ### `ThemeSwitch`
 
 Interruptor claro/escuro. Renderiza um `<button role="switch">` com
-`aria-checked` — o estado é anunciado, não só visual.
+`aria-checked` — o estado é anunciado, não só visual. Só tem dois
+estados; para oferecer também o Darker, use `ThemeMenu`.
 
 ---
 
@@ -834,7 +850,10 @@ com um gatilho virtual de tamanho zero no ponto do clique.
 
 `DropdownMenuItem` aceita `disabled` e `tone="default" | "danger"`
 (ação destrutiva, mesma cor de `Badge tone="danger"`) — fecha o menu
-sozinho ao ser clicado. `DropdownMenuLabel` e `DropdownMenuDivider` são
+sozinho ao ser clicado. Com `checked` (`true`/`false`), vira uma opção
+de escolha única (`role="menuitemradio"` com `aria-checked`), e a
+marcada ganha um check na ponta direita — é o que o
+`ThemeMenu` usa. `DropdownMenuLabel` e `DropdownMenuDivider` são
 só apresentação (rótulo de grupo e separador).
 
 **"Leve" como o Popover**, mas o foco funciona diferente da listbox do

@@ -10,7 +10,7 @@ import {
   Sidebar,
   useHashRoute,
   NotificationBell,
-  ThemeSwitch,
+  ThemeMenu,
   Footer,
 } from "../src/index";
 import { STORIES, GROUPS, GROUP_IDS } from "./stories";
@@ -84,7 +84,7 @@ export function App() {
 
           <Navbar brand=".valnezJunior()" brandHref="#topo">
             <NotificationBell />
-            <ThemeSwitch />
+            <ThemeMenu />
           </Navbar>
 
           <div

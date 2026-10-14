@@ -30,7 +30,7 @@ espaçamento, o desfoque de vidro — foram extraídos do código original e
 sistematizados; os componentes que faltavam foram construídos em cima
 dessa mesma linguagem.
 
-São **52 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
+São **53 componentes**, do botão ao dashboard, todos em CSS e SVG puros:
 sem dependência de runtime além do próprio React. A exceção mora num
 ponto de entrada próprio: o `Grafo3D`, em `mothership-ds/3d`, desenha com
 three.js, que é dependência opcional — só quem importa dali instala.
@@ -160,7 +160,7 @@ export default function Home() {
 **Controles e superfícies**
 
 `Button` · `ButtonLink` · `IconButton` · `LinkList` · `Card` · `Badge` ·
-`Avatar` · `Profile` · `ThemeSwitch`
+`Avatar` · `Profile` · `ThemeMenu` · `ThemeSwitch`
 
 **Formulários**
 

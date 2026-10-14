@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Navbar, NotificationBell, ThemeSwitch,
+  Navbar, NotificationBell, ThemeMenu,
   Hero, HeroHighlight, Badge, ButtonLink,
   Gallery, Accordion, Carousel,
   StatGrid, StatTile, LineChart,
@@ -28,7 +28,7 @@ export default function Home() {
         spy
       >
         <NotificationBell />
-        <ThemeSwitch />
+        <ThemeMenu />
       </Navbar>
 
       <main style={{ maxWidth: 1000, margin: "0 auto", padding: "120px 24px 80px" }}>

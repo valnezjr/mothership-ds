@@ -7,7 +7,7 @@ import {
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
   Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
   // tema e utilitários
-  ThemeSwitch, HoverEdge,
+  ThemeSwitch, ThemeMenu, HoverEdge,
   // interativos
   Navbar, Dock, Accordion, Tabs, Carousel, Gallery, Marquee,
   // marketing
@@ -427,9 +427,9 @@ function ModalDemo() {
             content: (
               <>
                 <p style={{ marginBottom: 16 }}>
-                  Claro ou escuro — dá para trocar quando quiser pelo switch da navbar.
+                  Escuro, Darker ou claro — dá para trocar quando quiser pelo menu de tema da navbar.
                 </p>
-                <ThemeSwitch />
+                <ThemeMenu align="start" />
               </>
             ),
           },
@@ -1047,7 +1047,7 @@ export const STORIES: Story[] = [
           </div>
           <div>
             <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 8 }}>
-              Completa, com sino e switch:
+              Completa, com sino e menu de tema:
             </p>
             <Navbar
               variant="static"
@@ -1055,7 +1055,7 @@ export const STORIES: Story[] = [
               links={[{ href: "#", label: "Links" }, { href: "#", label: "Sobre" }]}
             >
               <NotificationBell />
-              <ThemeSwitch />
+              <ThemeMenu />
             </Navbar>
           </div>
         </div>
@@ -1170,13 +1170,16 @@ export const STORIES: Story[] = [
   {
     id: "switch",
     group: "Componentes",
-    title: "Switch de tema",
-    subtitle: "Controle de claro/escuro com o polegar deslizando (sol ↔ lua) de forma animada. É o mesmo switch usado na navbar deste styleguide.",
+    title: "Seletor de tema",
+    subtitle: "Três temas: escuro (o padrão, vidro claro sobre o fundo escuro), Darker (vidro escuro, para a noite) e claro. O ThemeMenu escolhe entre os três num DropdownMenu — é o que está na navbar deste styleguide. O ThemeSwitch, com o polegar deslizando entre sol e lua, segue disponível para quem só quer claro/escuro.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-        <ThemeSwitch />
+        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+          <ThemeMenu align="center" />
+          <ThemeSwitch />
+        </div>
         <p className="ms-text-xs ms-text-muted" style={{ textAlign: "center", maxWidth: 360 }}>
-          Usa <code>useTheme()</code>: alterna a classe <code>light</code> no <code>&lt;html&gt;</code>.
+          Usam <code>useTheme()</code>: aplicam as classes <code>light</code> ou <code>darker</code> no <code>&lt;html&gt;</code>.
         </p>
       </div>
     ),

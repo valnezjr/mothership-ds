@@ -27,7 +27,11 @@ function cx(...parts: Array<string | false | undefined | null>) {
 }
 
 function focusableItems(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])'));
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      '[role="menuitem"]:not([aria-disabled="true"]), [role="menuitemradio"]:not([aria-disabled="true"])'
+    )
+  );
 }
 
 interface MenuCtx {
@@ -232,19 +236,27 @@ export interface DropdownMenuItemProps extends React.ButtonHTMLAttributes<HTMLBu
   disabled?: boolean;
   /** `"danger"` — ações destrutivas (ex. excluir), mesma cor de `Badge tone="danger"`. */
   tone?: "default" | "danger";
+  /**
+   * Torna o item uma opção de escolha única (`role="menuitemradio"`):
+   * `true` marca a opção ativa com o check, `false` a deixa desmarcada.
+   * Omitido, o item é uma ação comum (`role="menuitem"`).
+   */
+  checked?: boolean;
 }
 
 /** Item clicável do menu — fecha o menu sozinho ao ser clicado. */
 export const DropdownMenuItem = React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>(function DropdownMenuItem(
-  { disabled, tone = "default", className, onClick, ...rest },
+  { disabled, tone = "default", checked, className, onClick, children, ...rest },
   ref
 ) {
   const { close } = React.useContext(Ctx);
+  const radio = checked !== undefined;
   return (
     <button
       ref={ref}
       type="button"
-      role="menuitem"
+      role={radio ? "menuitemradio" : "menuitem"}
+      aria-checked={radio ? checked : undefined}
       tabIndex={-1}
       disabled={disabled}
       aria-disabled={disabled || undefined}
@@ -254,7 +266,23 @@ export const DropdownMenuItem = React.forwardRef<HTMLButtonElement, DropdownMenu
         close();
       }}
       {...rest}
-    />
+    >
+      {children}
+      {radio && (
+        <svg
+          className="ms-dropdown-menu__check"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      )}
+    </button>
   );
 });
 

@@ -190,6 +190,7 @@
 .ms-page .ms-switch__thumb:focus-visible,
 .ms-page .ms-icon-button:focus-visible,
 .ms-page .ms-navbar__bell:focus-visible,
+.ms-page .ms-theme-menu__trigger:focus-visible,
 .ms-page .ms-navbar__burger:focus-visible,
 .ms-page .ms-carousel__arrow:focus-visible,
 .ms-page .ms-alert__close:focus-visible,
@@ -671,6 +672,27 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-dropdown-menu__item:focus-visible { background: var(--color-surface-hover); }
 .ms-dropdown-menu__item:disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
 .ms-dropdown-menu__item--danger { color: var(--color-danger); }
+
+.ms-dropdown-menu__item > svg:not(.ms-dropdown-menu__check) {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Opção de escolha única (menuitemradio): o check fica na ponta direita
+   e só aparece na opção marcada. Na cor do texto, não em accent: o
+   ciano sobre o vidro claro fica abaixo de 3:1 (WCAG para ícone), e o
+   menu é monocromático. O estado também vai em aria-checked. */
+.ms-dropdown-menu__check {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--color-text);
+  visibility: hidden;
+}
+
+.ms-dropdown-menu__item[aria-checked="true"] .ms-dropdown-menu__check { visibility: visible; }
 
 .ms-dropdown-menu__label {
   padding: var(--space-2) var(--space-3) var(--space-1);
@@ -1822,7 +1844,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-navbar:not(:has(.ms-navbar__brand)) { justify-content: center; }
 
 /* Sino de notificações (histórico de alertas) */
-.ms-navbar__bell {
+.ms-navbar__bell,
+.ms-theme-menu__trigger {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1837,9 +1860,15 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: background var(--transition-slow);
 }
 
-.ms-navbar__bell:hover { background: var(--color-surface-hover); }
+.ms-navbar__bell:hover,
+.ms-theme-menu__trigger:hover { background: var(--color-surface-hover); }
 
-.ms-navbar__bell svg { width: 20px; height: 20px; display: block; }
+.ms-navbar__bell svg,
+.ms-theme-menu__trigger svg { width: 20px; height: 20px; display: block; }
+
+/* O gatilho do ThemeMenu é o mesmo botão redondo do sino (mesma família
+   de ações da barra); a cor vem do texto do tema. */
+.ms-theme-menu__trigger { color: var(--color-text); }
 
 .ms-navbar__bell-badge {
   position: absolute;

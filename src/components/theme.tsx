@@ -1,16 +1,22 @@
 "use client";
 
 import React from "react";
+import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 
 /* ============================================================
    Tema, fundo vivo e o utilitário de contorno reativo.
    ============================================================ */
 
-export type Theme = "dark" | "light";
+/** `dark` é o padrão (vidro claro sobre o escuro); `darker`, a variante
+ *  noturna com vidro escuro; `light`, o claro. */
+export type Theme = "dark" | "darker" | "light";
+
+const THEMES: readonly Theme[] = ["dark", "darker", "light"];
 
 interface ThemeCtx {
   theme: Theme;
   setTheme: (t: Theme) => void;
+  /** Alterna entre claro e escuro (do Darker, vai para o claro). */
   toggle: () => void;
 }
 
@@ -33,8 +39,8 @@ export interface ThemeProviderProps {
 const STORAGE_KEY = "ms-theme";
 
 /**
- * Controla o tema aplicando/removendo a classe `light` no <html> —
- * o mesmo mecanismo do CSS do design system.
+ * Controla o tema aplicando/removendo as classes `light` e `darker` no
+ * <html> — o mesmo mecanismo do CSS do design system.
  */
 export function ThemeProvider({
   children,
@@ -47,11 +53,13 @@ export function ThemeProvider({
   React.useEffect(() => {
     if (!persist) return;
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "light" || saved === "dark") setTheme(saved);
+    if (saved && (THEMES as readonly string[]).includes(saved)) setTheme(saved as Theme);
   }, [persist]);
 
   React.useEffect(() => {
-    document.documentElement.classList.toggle("light", theme === "light");
+    const root = document.documentElement;
+    root.classList.toggle("light", theme === "light");
+    root.classList.toggle("darker", theme === "darker");
     if (persist) window.localStorage.setItem(STORAGE_KEY, theme);
   }, [theme, persist]);
 
@@ -67,7 +75,10 @@ export function ThemeProvider({
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
-/** Interruptor claro/escuro com o deslize animado do sistema. */
+/**
+ * Interruptor claro/escuro com o deslize animado do sistema. Só tem dois
+ * estados: para escolher também o Darker, use `ThemeMenu`.
+ */
 export function ThemeSwitch({ className }: { className?: string }) {
   const { theme, toggle } = useTheme();
   return (
@@ -88,6 +99,74 @@ export function ThemeSwitch({ className }: { className?: string }) {
       />
       <span className="ms-switch__track" />
     </div>
+  );
+}
+
+/* ---------- Menu de tema ---------- */
+
+const MoonIcon = ({ filled }: { filled?: boolean }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill={filled ? "currentColor" : "none"}
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
+  </svg>
+);
+
+const SunIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+  </svg>
+);
+
+const THEME_OPTIONS: { value: Theme; label: string; icon: React.ReactNode }[] = [
+  { value: "dark", label: "Escuro", icon: <MoonIcon /> },
+  { value: "darker", label: "Darker", icon: <MoonIcon filled /> },
+  { value: "light", label: "Claro", icon: <SunIcon /> },
+];
+
+export interface ThemeMenuProps {
+  className?: string;
+  /** Alinhamento do menu em relação ao botão (padrão: `"end"`, para a ponta direita da Navbar). */
+  align?: "start" | "center" | "end";
+}
+
+/**
+ * Seletor dos três temas (escuro, Darker, claro) num menu flutuante: um
+ * `DropdownMenu` aberto por um botão redondo (o mesmo do sino da Navbar)
+ * com o ícone do tema ativo. Cada tema é um item marcável
+ * (`menuitemradio`), com o ativo marcado pelo check.
+ */
+export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
+  const { theme, setTheme } = useTheme();
+  const current = THEME_OPTIONS.find((o) => o.value === theme) ?? THEME_OPTIONS[0];
+  return (
+    <DropdownMenu
+      align={align}
+      trigger={
+        <button
+          type="button"
+          className={["ms-theme-menu__trigger", className].filter(Boolean).join(" ")}
+          aria-label={`Tema: ${current.label}`}
+          title="Escolher tema"
+        >
+          {current.icon}
+        </button>
+      }
+    >
+      {THEME_OPTIONS.map((o) => (
+        <DropdownMenuItem key={o.value} checked={theme === o.value} onClick={() => setTheme(o.value)}>
+          {o.icon}
+          {o.label}
+        </DropdownMenuItem>
+      ))}
+    </DropdownMenu>
   );
 }
 
