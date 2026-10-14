@@ -10,7 +10,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 - **Tokens de sombra e opacidade** (`src/styles/tokens.css`):
   `--shadow-xs`…`--shadow-xl` (escala de elevação), `--shadow-glow-accent`,
-  `--shadow-drop`, `--opacity-disabled` e `--opacity-dimmed`. Os valores
+  `--shadow-drop`, `--opacity-disabled`, `--opacity-dimmed`, `--border-width` (1px)
+  e `--focus-width` (2px). Os valores
   estavam soltos em `components.css` e agora são consumidos de lá por
   `var()`, sem mudança visual. Motivo: consumidores fora do React (o rice
   do desktop do autor: Hyprland e Noctalia) precisam ler sombras e

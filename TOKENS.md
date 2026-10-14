@@ -88,6 +88,17 @@ seguem soltas de propósito: halos na própria cor do elemento
 (`drop-shadow(... currentColor)` em gráficos, brilho do `Meter`, borda
 nova da `Gallery`), porque dependem de variável do componente.
 
+## Larguras de traço
+
+```css
+--border-width: 1px;   /* borda padrão */
+--focus-width: 2px;    /* anel de foco */
+```
+
+Variações de componente seguem soltas de propósito: hover do `Button`
+(1.5px), `IconButton` e `Avatar` placeholder (2px), trilho da barra de
+rolagem.
+
 ## Larguras fixas
 
 ```css

@@ -54,6 +54,10 @@
   /* Mesma ideia como filter (fatia de pizza em hover). */
   --shadow-drop: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
 
+  /* ---------- Larguras de traço ---------- */
+  --border-width: 1px;   /* borda padrão de superfícies, campos e divisores */
+  --focus-width: 2px;    /* anel de foco (outline accent) */
+
   /* ---------- Opacidades ---------- */
   --opacity-disabled: 0.4;  /* controle desabilitado (Button, Input, Radio, Toggle, Tabs…) */
   --opacity-dimmed: 0.55;   /* item fora de foco, ainda legível (legenda do Grafo3D filtrando) */

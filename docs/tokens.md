@@ -172,6 +172,13 @@ As sombras formam uma escala de elevação: quanto mais alto o elemento
 flutua sobre a página, maior o token. São pretas nos dois temas, porque
 sombra escurece o que está embaixo.
 
+## Larguras de traço
+
+```css
+--border-width  1px   /* borda padrão de superfícies, campos e divisores */
+--focus-width   2px   /* anel de foco */
+```
+
 ## Fundo
 
 O fundo é uma cor base mais quatro manchas de luz, cada uma com cor,
