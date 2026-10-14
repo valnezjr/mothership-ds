@@ -155,6 +155,14 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 | `--color-orange` | laranja. Parada 100% de `assets/logo.svg` |
 | `--color-gray` | cinza — status neutro |
 
+**`--color-accent-text`** — o accent como **texto e anel de foco**
+(link/item ativo, opção selecionada, `:focus-visible`). `--color-accent`
+fica para preenchimento e borda: como texto ele não garante AA em todo
+tema. Escuro e Darker: `--color-accent-400` (5.12:1 sobre o
+`--color-accent-soft`). Claro: `#984a16`, o laranja do claro escurecido
+até AA (≥4.58:1 sobre fundo, vidro e soft). Nunca use `--color-accent`
+como `color:` ou `outline-color`.
+
 `accent`/`pink`/`orange` são as três paradas exatas do gradiente da
 logo (realinhado na v1.2). `--chart-3`/`--chart-4` não seguem
 `violet`/`pink` automaticamente — já validados contra daltonismo nos

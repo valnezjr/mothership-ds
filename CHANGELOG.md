@@ -25,6 +25,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`--color-accent-text`** (`src/styles/tokens.css`): o accent como
+  texto e anel de foco, com AA em todos os temas — `--color-accent-400`
+  no escuro/Darker (5.12:1 sobre o `--color-accent-soft`; o ciano puro
+  ficava em 4.16) e `#984a16` no claro (≥4.58:1; o laranja lavado ficava
+  em ~2:1). Os nove usos de `--color-accent` como `color`/`outline` em
+  `components.css` (foco, opção selecionada do Select, item ativo de
+  Sidebar/Dock, rodapé, Grafo3D) passam a usá-lo; preenchimentos e
+  bordas seguem no `--color-accent`.
+
 - **`ThemeMenu`** (`src/components/theme.tsx`): seletor dos três temas
   (escuro, Darker, claro) num `DropdownMenu`, aberto por um botão
   redondo igual ao do `NotificationBell`, com o ícone do tema ativo.

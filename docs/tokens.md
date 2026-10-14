@@ -55,6 +55,11 @@ destoar dela — nenhuma é um tom escolhido de forma solta.
 | `--color-orange` | laranja. Parada 100% do gradiente de `assets/logo.svg` |
 | `--color-gray` | cinza — status neutro |
 
+Para o accent como **texto ou anel de foco** há o `--color-accent-text`:
+o `--color-accent` é de preenchimento e borda, e como texto não chega a
+AA em todo tema. No escuro e no Darker ele é o `--color-accent-400`; no
+claro, `#984a16` — o laranja do claro escurecido até AA.
+
 `accent`, `pink` e `orange` são as três paradas exatas do gradiente da
 logo (realinhado na v1.2 — antes, `accent` e `pink` eram aproximações).
 `--chart-3`/`--chart-4` **não** seguem `violet`/`pink` automaticamente:

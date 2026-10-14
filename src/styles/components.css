@@ -182,7 +182,7 @@
 .ms-modal :is(a, button, input, textarea, select, [tabindex]):focus-visible,
 .ms-navbar__menu :is(a, button):focus-visible,
 .ms-drawer :is(a, button):focus-visible {
-  outline: var(--focus-width) solid var(--color-accent);
+  outline: var(--focus-width) solid var(--color-accent-text);
   outline-offset: 2px;
   border-radius: var(--radius-md);
 }
@@ -503,7 +503,7 @@
 .ms-input:hover:not(:disabled) { background: var(--color-surface-hover); }
 
 .ms-input:focus-visible {
-  outline: var(--focus-width) solid var(--color-accent);
+  outline: var(--focus-width) solid var(--color-accent-text);
   outline-offset: 1px;
 }
 
@@ -578,7 +578,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-listbox__option--active { background: var(--color-surface-hover); }
-.ms-listbox__option--selected { font-weight: var(--font-weight-medium); color: var(--color-accent) !important; }
+.ms-listbox__option--selected { font-weight: var(--font-weight-medium); color: var(--color-accent-text) !important; }
 .ms-listbox__option--disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
 
 .ms-listbox__empty {
@@ -1103,7 +1103,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   margin-bottom: var(--space-4);
   border-radius: var(--radius-md);
   background: var(--color-accent-soft);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .ms-bento__tile-icon svg { width: 20px; height: 20px; }
@@ -2101,7 +2101,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-sidebar__section:hover { background: var(--color-surface-hover); }
 
-.ms-sidebar__section--active { color: var(--color-accent); background: var(--color-accent-soft); }
+.ms-sidebar__section--active { color: var(--color-accent-text); background: var(--color-accent-soft); }
 
 .ms-sidebar__list {
   display: flex;
@@ -2129,7 +2129,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-sidebar__link:hover { background: var(--color-surface-hover); color: var(--color-text); }
 
-.ms-sidebar__link--active { color: var(--color-accent); background: var(--color-accent-soft); }
+.ms-sidebar__link--active { color: var(--color-accent-text); background: var(--color-accent-soft); }
 
 /* Botão flutuante que abre a gaveta — mesma anatomia (3 barras) do
    hambúrguer da Navbar, escondido por padrão (só aparece abaixo de
@@ -2298,7 +2298,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Mesmo destaque do Sidebar; aria-current="page" carrega o estado. */
 .ms-dock__item--active,
-.ms-dock__item--active:hover { color: var(--color-accent); background: var(--color-accent-soft); }
+.ms-dock__item--active:hover { color: var(--color-accent-text); background: var(--color-accent-soft); }
 
 .ms-dock__icon {
   display: inline-flex;
@@ -3270,7 +3270,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   cursor: pointer;
 }
 
-.ms-grafo3d__lista button[aria-pressed="true"] { color: var(--color-accent); }
+.ms-grafo3d__lista button[aria-pressed="true"] { color: var(--color-accent-text); }
 
 @media (prefers-reduced-motion: reduce) {
   .ms-grafo3d__rotulo,
@@ -3635,6 +3635,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: color var(--transition-slow);
 }
 
-.ms-footer a:hover { color: var(--color-accent) !important; }
+.ms-footer a:hover { color: var(--color-accent-text) !important; }
 
 .ms-footer .ms-flash { color: var(--color-highlight) !important; }

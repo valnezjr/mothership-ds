@@ -157,6 +157,12 @@
   --color-gray: rgb(139, 139, 158);
 
   --color-accent-soft: rgba(0, 175, 239, 0.2);
+  /* Accent como TEXTO e anel de foco (link ativo, opção selecionada,
+     foco de teclado). O --color-accent é de preenchimento e borda; como
+     texto ele não garante AA em todo tema — o ciano sobre o
+     --color-accent-soft fica em 4.16:1 no escuro. Aqui é o -400 (5.12
+     sobre o soft, 7.13 sobre o vidro). O claro redefine. */
+  --color-accent-text: var(--color-accent-400);
   --color-highlight-soft: rgba(255, 208, 0, 0.2);
   --color-success-soft: rgba(0, 214, 143, 0.2);
   --color-danger-soft: rgba(255, 77, 109, 0.2);
@@ -361,11 +367,14 @@
      demais sobre o creme (2.1:1 sobre o vidro, frio contra o fundo
      quente); o laranja combina com ele e continua dentro do degradê da
      logo. Como preenchimento passa com o --color-on-accent (7.0:1).
-     Como texto/foco fica ~2:1, o mesmo patamar do ciano antes — ver
-     pendência de um accent próprio para texto. É a única cor de marca
+     Como texto/foco fica ~2:1; para isso existe o --color-accent-text. É a única cor de marca
      que muda com o tema; as escalas --color-accent-* seguem ciano. */
   --color-accent: #e19460;
   --color-accent-soft: rgba(225, 148, 96, 0.22);
+  /* O mesmo laranja escurecido até AA: 5.32 sobre o vidro, 5.00 sobre
+     o fundo, 4.58 sobre o --color-accent-soft. Só para texto e foco —
+     escuro assim o laranja fica terroso, então não serve de preenchimento. */
+  --color-accent-text: #984a16;
 
   --bg-base: #ebe4d8;
   --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 65%, transparent);  /* ciano claro — canto superior direito */
