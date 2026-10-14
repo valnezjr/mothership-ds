@@ -13,6 +13,7 @@ sempre `var(--token)`.
 
 ```css
 --font-family: "Outfit", sans-serif;
+--font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 --font-weight-regular: 400;
 --font-weight-medium: 500;
 
@@ -29,6 +30,10 @@ sempre `var(--token)`.
 
 Utilitários prontos: `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
 `.ms-text-xs`, `.ms-text-muted`.
+
+`--font-mono` não é carregada pela lib (nenhum componente usa ainda):
+quem precisa importa a Maple Mono (`@fontsource/maple-mono`); sem ela,
+cai na mono do sistema.
 
 ## Espaçamento
 

@@ -7,6 +7,10 @@
 :root {
   /* ---------- Tipografia ---------- */
   --font-family: "Outfit", sans-serif;
+  /* Mono para código e dados alinhados. Maple Mono: "a" de um andar e
+     formas arredondadas como a Outfit, com ligaduras. Não vem carregada:
+     quem usa importa a fonte (ex.: @fontsource/maple-mono). */
+  --font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
 

@@ -100,6 +100,12 @@ fontes mainstream, carrega uma pegada mais orgânica.
 | `--text-xl` | 24px | título de seção |
 | `--text-2xl` | 32px | título de página |
 
+Para código e dados alinhados há `--font-mono`, com a
+[Maple Mono](https://github.com/subframe7536/maple-font): "a" de um
+andar e formas arredondadas como a Outfit, e com ligaduras. A lib não
+carrega essa fonte; instale `@fontsource/maple-mono` e importe onde
+for usar. Sem ela, o token cai na mono do sistema.
+
 Mais `--font-family`, `--font-weight-regular` (400),
 `--font-weight-medium` (500), `--line-height-base` e
 `--line-height-tight`.

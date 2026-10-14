@@ -11,7 +11,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - **Tokens de sombra e opacidade** (`src/styles/tokens.css`):
   `--shadow-xs`…`--shadow-xl` (escala de elevação), `--shadow-glow-accent`,
   `--shadow-drop`, `--opacity-disabled`, `--opacity-dimmed`, `--border-width` (1px)
-  e `--focus-width` (2px). Os valores
+  e `--focus-width` (2px).
+
+- **`--font-mono`** (`src/styles/tokens.css`): Maple Mono, com fallback
+  para a mono do sistema. A lib não carrega a fonte (nenhum componente
+  usa ainda); quem precisa importa `@fontsource/maple-mono`. Escolhida
+  ao lado da Outfit pelo "a" de um andar, pelas formas arredondadas e
+  pelas ligaduras. Os valores
   estavam soltos em `components.css` e agora são consumidos de lá por
   `var()`, sem mudança visual. Motivo: consumidores fora do React (o rice
   do desktop do autor: Hyprland e Noctalia) precisam ler sombras e
