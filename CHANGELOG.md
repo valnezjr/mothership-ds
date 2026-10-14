@@ -6,6 +6,22 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Alterado
+
+- **Tema claro em off-white quente** (`.light` em `src/styles/tokens.css`):
+  o branco puro com texto preto (21:1) estourava em telas grandes.
+  Fundo creme (`--bg-base` `#ebe4d8`), vidro marfim
+  (`rgba(245, 240, 230, 0.6)`), texto marrom quase preto (`#26201a`,
+  13.6:1 sobre o vidro), bordas e muted no mesmo tom, polegar do switch
+  marfim, chevron do Select e véus do Modal/Drawer acompanhando o fundo.
+  Os glows seguem o degradê da logo.
+
+- **Accent do claro: laranja lavado** (`--color-accent: #e19460`, o
+  laranja da logo menos saturado): o ciano ficava frio e apagado sobre o
+  creme. Como preenchimento passa com o `--color-on-accent` (7.0:1);
+  como texto/foco fica ~2:1, o mesmo patamar do ciano antes. As escalas
+  `--color-accent-*` seguem ciano.
+
 ### Adicionado
 
 - **`ThemeMenu`** (`src/components/theme.tsx`): seletor dos três temas

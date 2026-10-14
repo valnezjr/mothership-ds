@@ -1994,7 +1994,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: opacity var(--transition-slow), visibility 0s linear var(--transition-slow);
 }
 
-.light .ms-drawer-backdrop { background: rgba(244, 246, 252, 0.72); }
+.light .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-drawer-backdrop--open {
   opacity: 1;
@@ -2691,7 +2691,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* No tema claro o véu é CLARO: o modal (vidro sobre fundo claro, texto
    escuro) precisa de um entorno mais claro que ele para se destacar —
    um véu escuro atravessaria o vidro e derrubaria o contraste do texto. */
-.light .ms-modal-backdrop { background: rgba(244, 246, 252, 0.72); }
+.light .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out 0.2s ease forwards; }
 

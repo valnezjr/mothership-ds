@@ -38,7 +38,7 @@ aplica a classe `darker` no `<html>` com `setTheme("darker")`, e o
 `ThemeMenu` escolhe entre os três temas. O `ThemeSwitch` continua
 alternando só entre escuro e claro.
 
-### Marca — fixas nos dois temas
+### Marca — fixas em todos os temas (exceto o accent no claro)
 
 São oito, cada uma disponível em três formas. Todas foram extraídas
 direto da marca Mothership ou harmonizadas pra completar a paleta sem
@@ -46,7 +46,7 @@ destoar dela — nenhuma é um tom escolhido de forma solta.
 
 | Token | Origem |
 |---|---|
-| `--color-accent` | ciano — ação primária. Parada 0% do gradiente de `assets/logo.svg` |
+| `--color-accent` | ciano — ação primária. Parada 0% do gradiente de `assets/logo.svg`. No tema claro vira um laranja lavado (`#e19460`, o laranja da logo com menos saturação), que combina com o fundo creme |
 | `--color-highlight` | amarelo do ícone de raio da página original — atenção |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |

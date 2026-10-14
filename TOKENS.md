@@ -133,7 +133,7 @@ escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
 | `--color-surface-hover` | superfície de vidro em hover |
 | `--color-thumb` | thumb do switch |
 
-## Cores de marca — fixas nos dois temas
+## Cores de marca — fixas em todos os temas (exceto o accent no claro)
 
 Oito cores, cada uma em três formas:
 
@@ -146,7 +146,7 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 
 | Token base | Uso semântico |
 |---|---|
-| `--color-accent` | ciano — ação primária. Parada 0% de `assets/logo.svg` |
+| `--color-accent` | ciano — ação primária. Parada 0% de `assets/logo.svg`. **No claro vira laranja lavado** (`#e19460`, o orange da logo menos saturado): o ciano some sobre o creme. As escalas `--color-accent-*` seguem ciano |
 | `--color-highlight` | amarelo — atenção (ícone flash da página original, não da logo) |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |
