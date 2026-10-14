@@ -153,6 +153,25 @@ leve que aparece no accordion, no modal, nos bullets do carrossel e no
 contorno reativo. Usar sempre o mesmo easing é o que faz componentes
 diferentes parecerem da mesma família.
 
+## Sombras e opacidades
+
+```css
+--shadow-xs    0 1px 3px    preto 30%   /* polegar do Toggle */
+--shadow-sm    0 8px 32px   preto 25%   /* toast, botão da Sidebar */
+--shadow-md    0 12px 32px  preto 25%   /* Listbox, Popover, DropdownMenu */
+--shadow-lg    0 18px 44px  preto 35%   /* card pressionado */
+--shadow-xl    0 24px 64px  preto 45%   /* Modal */
+--shadow-glow-accent  0 12px 40px  accent 22%   /* card em destaque */
+--shadow-drop  drop-shadow(0 4px 14px preto 45%) /* para filter */
+
+--opacity-disabled  0.4    /* controle desabilitado */
+--opacity-dimmed    0.55   /* item fora de foco, ainda legível */
+```
+
+As sombras formam uma escala de elevação: quanto mais alto o elemento
+flutua sobre a página, maior o token. São pretas nos dois temas, porque
+sombra escurece o que está embaixo.
+
 ## Fundo
 
 O fundo é uma cor base mais quatro manchas de luz, cada uma com cor,

@@ -8,6 +8,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Tokens de sombra e opacidade** (`src/styles/tokens.css`):
+  `--shadow-xs`…`--shadow-xl` (escala de elevação), `--shadow-glow-accent`,
+  `--shadow-drop`, `--opacity-disabled` e `--opacity-dimmed`. Os valores
+  estavam soltos em `components.css` e agora são consumidos de lá por
+  `var()`, sem mudança visual. Motivo: consumidores fora do React (o rice
+  do desktop do autor: Hyprland e Noctalia) precisam ler sombras e
+  opacidades da mesma fonte que as cores.
+
 - **`Select` e `Combobox` abrem a lista para cima** quando ela não cabe
   embaixo do campo e há mais espaço em cima (`.ms-listbox--above`). Campo
   no pé da tela, como a caixa de mensagem de um chat, não empurra mais a

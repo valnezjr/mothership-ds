@@ -67,6 +67,27 @@ leve). Usar sempre este easing — nunca outro — é o que faz
 componentes diferentes parecerem da mesma família. Detalhe em
 [`docs/movimento.md`](docs/movimento.md).
 
+## Sombras e opacidades
+
+```css
+--shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.3);     /* polegar do Toggle */
+--shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.25);   /* flutuantes pequenos: toast, botão da Sidebar */
+--shadow-md: 0 12px 32px rgba(0, 0, 0, 0.25);  /* sobreposições: Listbox, Popover, DropdownMenu */
+--shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.35);  /* card pressionado (Gallery) */
+--shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.45);  /* Modal */
+--shadow-glow-accent: 0 12px 40px <accent 22%>; /* card em destaque (Pricing/Testimonial) */
+--shadow-drop: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45)); /* para `filter` (fatia de pizza) */
+
+--opacity-disabled: 0.4;   /* controle desabilitado */
+--opacity-dimmed: 0.55;    /* item fora de foco, ainda legível */
+```
+
+Escala de elevação: quanto mais alto o elemento flutua, maior o
+número. Sombra é sempre preta (não varia por tema). Exceções que
+seguem soltas de propósito: halos na própria cor do elemento
+(`drop-shadow(... currentColor)` em gráficos, brilho do `Meter`, borda
+nova da `Gallery`), porque dependem de variável do componente.
+
 ## Larguras fixas
 
 ```css

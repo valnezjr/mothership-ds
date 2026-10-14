@@ -38,6 +38,26 @@
   --blur-glass: 20px;    /* glassmorphism dos botões/cards */
   --blur-soft: 4px;      /* trilho do switch */
 
+  /* ---------- Sombras (elevação) ----------
+     Escala do mais rente ao mais alto. Valores exatos de antes da
+     promoção a token (estavam soltos em components.css), sem mudança
+     visual. Preto fixo nos dois temas: sombra escurece o que está
+     embaixo, não segue a cor do texto. */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.3);       /* polegar do Toggle */
+  --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.25);     /* flutuantes pequenos: toast, botão da Sidebar */
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.25);    /* sobreposições: Listbox, Popover, DropdownMenu */
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.35);    /* card pressionado (Gallery) */
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.45);    /* Modal */
+  /* Brilho de destaque (PricingCard/TestimonialCard em evidência):
+     sombra na cor de marca em vez de preto. */
+  --shadow-glow-accent: 0 12px 40px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  /* Mesma ideia como filter (fatia de pizza em hover). */
+  --shadow-drop: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
+
+  /* ---------- Opacidades ---------- */
+  --opacity-disabled: 0.4;  /* controle desabilitado (Button, Input, Radio, Toggle, Tabs…) */
+  --opacity-dimmed: 0.55;   /* item fora de foco, ainda legível (legenda do Grafo3D filtrando) */
+
   --transition-fast: 0.1s;   /* outline do switch */
   --transition-base: 0.2s;   /* deslize do switch */
   --transition-slow: 0.3s;   /* backgrounds e cores */
