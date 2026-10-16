@@ -423,14 +423,11 @@ Teclado: `↓`/`↑` navegam (pulando opções `disabled`, com wrap),
 primeiro/último item habilitado. Clique fora fecha. Encaminha `ref`
 (pro `<button>` gatilho).
 
-**Limite conhecido, deliberado:** o popup é `position: absolute` num
-wrapper `position: relative` — não é portal no `<body>` como
-Modal/menu da Navbar. Se o gatilho viver dentro de um ancestral com
-`overflow: hidden`, o popup pode cortar. Isso é intencional: o
-mecanismo de posicionamento robusto (portal + cálculo de posição) é o
-que o `Popover` (próximo do roadmap) resolve de vez — construir isso
-aqui antes seria antecipar trabalho que muda de qualquer forma quando
-o `Popover` existir.
+**Limite conhecido:** o popup é `position: absolute` num wrapper
+`position: relative` — não é portal no `<body>` como Modal/menu da
+Navbar. Se o gatilho viver dentro de um ancestral com
+`overflow: hidden`, o popup pode cortar. A correção (usar o portal e o
+posicionamento do `Popover`) está prevista para a v1.8.
 
 ### `Combobox`
 
@@ -654,9 +651,9 @@ exatamente metade da faixa, sem costura. Toda a animação é CSS puro
 (`@keyframes` + `animation-play-state`); nenhum JS move o elemento.
 Empilhe vários `<Marquee>` para linhas independentes.
 
-Ainda não implementadas — só composições futuras do mesmo primitive,
-sem lógica própria: `LogoMarquee`, `TechMarquee`, `IconMarquee`,
-`TestimonialMarquee`.
+Faixas de logos, tecnologias ou depoimentos são composições diretas:
+um `<Marquee>` com os itens dentro. A biblioteca não exporta variações
+prontas para cada caso.
 
 ### `HoverEdge`
 

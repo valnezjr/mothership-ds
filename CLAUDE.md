@@ -187,7 +187,9 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       absolute` num wrapper `position: relative` — **não** é portal no
       `<body>` como Modal/menu da Navbar; decisão deliberada, sabendo
       que o `Popover` (próximo do roadmap) resolve posicionamento
-      robusto de vez, então não vale antecipar isso agora.
+      robusto de vez, então não vale antecipar isso agora. (O
+      `Popover` saiu na v1.3.0; a migração do popup é o ticket 02 de
+      `.scratch/identidade-v1.9/`.)
 - [x] `Combobox` (`src/components/select.tsx`) — quarto lote,
       construído junto com a revisão do `Select` acima (mesmo
       arquivo, mesma listbox/`OptionList`/`useOutsideClick`

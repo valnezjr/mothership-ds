@@ -10,13 +10,11 @@ import React from "react";
    acrescenta filtro por texto (gatilho é um <input>).
 
    O popup é `position: absolute` dentro de um wrapper `position:
-   relative` — não é portal no <body> como Modal/menu da Navbar. Isso é
-   uma simplificação deliberada: o mecanismo de posicionamento robusto
-   (portal + cálculo de posição) é o que o `Popover` (próximo do
-   roadmap) vai resolver de vez — construir isso aqui agora seria
-   antecipar trabalho que muda de qualquer forma quando o Popover
-   existir. Limite conhecido enquanto isso: se o gatilho viver dentro
-   de um ancestral com `overflow: hidden`, o popup pode cortar.
+   relative` — não é portal no <body> como Modal/menu da Navbar. Limite
+   conhecido: se o gatilho viver dentro de um ancestral com `overflow:
+   hidden`, o popup pode cortar. O `Popover` já tem o mecanismo
+   (portal + `computePosition`); migrar o popup para ele é o ticket 02
+   de `.scratch/identidade-v1.9/`.
    ============================================================ */
 
 function cx(...parts: Array<string | false | undefined | null>) {
