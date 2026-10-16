@@ -1,7 +1,7 @@
 # 09: EmptyState
 
 Blocked by: 08
-Status: review
+Status: done
 
 **What to build:** `EmptyState` com ilustração (padrão: `Mascote` `dormindo`; aceita `ReactNode`), título, descrição e ação opcional. Sem `"use client"` se não tiver estado.
 
