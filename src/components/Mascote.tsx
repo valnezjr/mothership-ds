@@ -15,7 +15,8 @@ const VIEWBOX = "1997 5600 1000 1350";
 const MOUTH_D = {
   procurando: "M2400 6770Q2505 6762 2610 6730",
   confuso: "M2385 6760l58 -40l58 40l58 -40l58 40",
-  pensando: "M2410 6748H2545",
+  // sorriso de canto: sobe na ponta, do lado para onde o olhar vai
+  pensando: "M2390 6740Q2470 6780 2560 6740q40 -18 50 -60",
 } as const;
 /** Pupila menor no confuso, deslocada para cima e à direita no pensando. */
 const IRIS_TRANSFORM: Partial<Record<MascoteExpressao, string>> = {
