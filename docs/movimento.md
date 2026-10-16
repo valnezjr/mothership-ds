@@ -1,11 +1,63 @@
 # Movimento
 
-O movimento aqui não é enfeite: é parte da identidade. Três coisas
-sustentam isso — um easing único que assina as microinterações, um fundo
-que nunca fica completamente parado, e duas peças de marca (splash e
-loader) construídas sobre a própria logo.
+O movimento aqui não é enfeite: é parte da identidade. Quatro coisas
+sustentam isso: um vocabulário de quatro gestos, um easing com
+overshoot que assina as entradas e os cliques, um fundo que nunca fica completamente parado,
+e duas peças de marca (splash e loader) construídas sobre a própria
+logo.
 
 Tudo respeita `prefers-reduced-motion`.
+
+## Os quatro gestos
+
+Todo movimento de componente é um destes quatro gestos. Cada um tem
+curva e duração em token, então um modal e um toast entram do mesmo
+jeito sem combinar nada entre si.
+
+| Gesto | Curva | Duração | Quando |
+|---|---|---|---|
+| **assentar** | `--ease-bounce` | 0.3s | algo entra: modal, toast, popover, janela |
+| **recolher** | ease-in, sem overshoot | 0.15s | algo sai, qualquer coisa |
+| **pulso** | `--ease-bounce` | 0.2s | confirmação de clique |
+| **deriva** | linear, contínuo | depende do uso | fundo vivo, giro de borda |
+
+```css
+--motion-assentar-ease: var(--ease-bounce);
+--motion-assentar-duration: 0.3s;
+--motion-recolher-ease: cubic-bezier(0.36, 0, 0.66, 0);
+--motion-recolher-duration: 0.15s;
+--motion-pulso-ease: var(--ease-bounce);
+--motion-pulso-duration: 0.2s;
+--motion-deriva-ease: linear;
+```
+
+**Assentar ao entrar, recolher ao sair.** A entrada tem tempo para o
+overshoot: o elemento chega, passa um pouco do ponto e assenta, e é aí
+que a marca aparece. A saída é a metade do tempo e só acelera. Quem
+fechou algo já decidiu, e um overshoot na saída faria o elemento
+"voltar" por um instante, contrariando o gesto. A curva do recolher é a
+do `--ease-spatial` espelhada no tempo: mesma família, só que acelera em
+vez de frear.
+
+**Pulso** é o assentar em miniatura: um clique que encolhe o elemento e
+o deixa voltar com o mesmo overshoot, mais rápido, para confirmar que a
+ação foi registrada.
+
+**Deriva** é o único gesto sem começo nem fim: o fundo vivo, o gradiente
+que corre pela logo, o giro de uma borda. É linear porque qualquer curva
+num loop marca a emenda de cada volta. Não tem token de duração: o
+período de cada uso é escolhido para o seu tamanho e distância.
+
+```css
+.meu-painel        { animation: entra var(--motion-assentar-duration) var(--motion-assentar-ease); }
+.meu-painel.saindo { animation: sai   var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
+.meu-botao:active  { animation: pulso var(--motion-pulso-duration) var(--motion-pulso-ease); }
+```
+
+Com `prefers-reduced-motion: reduce`, as durações de assentar, recolher
+e pulso viram `0.01s` no próprio `tokens.css`: quem usa os tokens já
+respeita a preferência. A deriva para em vez de encurtar, e quem a usa
+pausa a animação na sua própria regra.
 
 ## O easing do sistema
 
@@ -15,9 +67,11 @@ Tudo respeita `prefers-reduced-motion`.
 
 Um overshoot leve: o elemento passa um pouco do ponto e assenta. Ele
 aparece no accordion, na entrada do modal, no deslize dos bullets do
-carrossel, no contorno reativo, no nível do loader. Usar sempre o mesmo
-easing é o que faz componentes muito diferentes parecerem da mesma
-família.
+carrossel, no contorno reativo, no nível do loader. É a curva de
+assentar e de pulso: usar a mesma curva em toda entrada e todo clique é
+o que faz componentes muito diferentes parecerem da mesma família. As
+saídas (recolher) e os loops (deriva) usam curvas próprias, pelos
+motivos explicados nos gestos acima.
 
 ## Fundo vivo
 
@@ -132,5 +186,6 @@ gráfico, destacando-se radialmente das vizinhas.
 
 Com `prefers-reduced-motion: reduce`, o sistema desliga a deriva e a
 pulsação do fundo, a piscada do olho, a flutuação do dirigível, a onda do
-loader e encurta as transições do modal e da splash. O parallax do mouse
+loader e encurta as transições do modal e da splash. Os gestos assentar,
+recolher e pulso encolhem para `0.01s` direto nos tokens. O parallax do mouse
 permanece, por ser resposta direta a uma ação do usuário.

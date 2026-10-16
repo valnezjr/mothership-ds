@@ -168,8 +168,34 @@ um blur ou um easing próprio), coesão visual e performance.
 
 O `--ease-bounce` é a assinatura de movimento do sistema: um overshoot
 leve que aparece no accordion, no modal, nos bullets do carrossel e no
-contorno reativo. Usar sempre o mesmo easing é o que faz componentes
-diferentes parecerem da mesma família.
+contorno reativo. Usar a mesma curva em toda entrada e todo clique é o
+que faz componentes diferentes parecerem da mesma família; saídas e
+loops usam as curvas dos gestos abaixo.
+
+### Gestos de movimento
+
+Quatro gestos nomeados cobrem todo movimento de componente, cada um com
+curva e duração próprias. A regra é **assentar ao entrar, recolher ao
+sair**. Explicação completa em [Movimento](movimento.md#os-quatro-gestos).
+
+```css
+--motion-assentar-ease      var(--ease-bounce)           /* entrada */
+--motion-assentar-duration  0.3s
+--motion-recolher-ease      cubic-bezier(0.36, 0, 0.66, 0) /* saída */
+--motion-recolher-duration  0.15s
+--motion-pulso-ease         var(--ease-bounce)           /* clique */
+--motion-pulso-duration     0.2s
+--motion-deriva-ease        linear                       /* contínuo */
+```
+
+```css
+.meu-painel        { animation: entra var(--motion-assentar-duration) var(--motion-assentar-ease); }
+.meu-painel.saindo { animation: sai   var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
+```
+
+Com `prefers-reduced-motion: reduce`, as durações dos gestos encolhem
+para `0.01s` sozinhas. A deriva não tem duração: quem a usa pausa a
+animação nessa preferência.
 
 ## Sombras e opacidades
 

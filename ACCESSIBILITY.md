@@ -94,6 +94,10 @@ Tudo que anima respeita `prefers-reduced-motion: reduce`:
 - `Splash`: piscada do olho e flutuação do dirigível desligam.
 - `Loader`: onda do preenchimento desliga.
 - `Modal` / `Splash`: transições encurtadas.
+- Gestos (`--motion-assentar/recolher/pulso-duration`): viram `0.01s`
+  no próprio `tokens.css` — componente que usa o token não precisa de
+  media query. `deriva` não tem duração: quem a usa pausa a animação
+  na própria regra.
 - `Marquee`: a rolagem para completamente (`animation: none`), e a
   cópia duplicada (existe só pra fechar o loop sem costura) some —
   sem isso, o usuário veria o mesmo conteúdo duas vezes, parado, o

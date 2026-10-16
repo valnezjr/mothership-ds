@@ -570,6 +570,110 @@ function TableDemo() {
   );
 }
 
+/* Lê o gesto dos tokens já resolvidos (var() substituído), então a demo
+   acompanha qualquer ajuste em tokens.css — inclusive o 0.01s da redução
+   de movimento. */
+type Gesto = "assentar" | "recolher" | "pulso" | "deriva";
+
+function motionToken(el: Element, gesto: Gesto) {
+  const css = getComputedStyle(el);
+  const easing = css.getPropertyValue(`--motion-${gesto}-ease`).trim();
+  const duration = parseFloat(css.getPropertyValue(`--motion-${gesto}-duration`)) * 1000;
+  return { easing, duration };
+}
+
+const motionShape: React.CSSProperties = {
+  width: 48,
+  height: 48,
+  border: 0,
+  padding: 0,
+  borderRadius: "var(--radius-md)",
+  background: "var(--color-accent)",
+};
+
+function MotionDemo() {
+  const assentar = React.useRef<HTMLDivElement>(null);
+  const recolher = React.useRef<HTMLDivElement>(null);
+  const pulso = React.useRef<HTMLButtonElement>(null);
+  const deriva = React.useRef<HTMLDivElement>(null);
+  const resetRecolher = React.useRef<number>();
+
+  React.useEffect(() => () => clearTimeout(resetRecolher.current), []);
+
+  React.useEffect(() => {
+    const el = deriva.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const anim = el.animate(
+      [{ transform: "rotate(0turn)" }, { transform: "rotate(1turn)" }],
+      { duration: 6000, iterations: Infinity, easing: motionToken(el, "deriva").easing },
+    );
+    return () => anim.cancel();
+  }, []);
+
+  const playAssentar = () => {
+    const el = assentar.current!;
+    el.animate(
+      [{ opacity: 0, transform: "translateY(16px) scale(0.8)" }, { opacity: 1, transform: "none" }],
+      motionToken(el, "assentar"),
+    );
+  };
+
+  const playRecolher = () => {
+    const el = recolher.current!;
+    const anim = el.animate(
+      [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(0.8)" }],
+      { ...motionToken(el, "recolher"), fill: "forwards" },
+    );
+    anim.onfinish = () => {
+      resetRecolher.current = window.setTimeout(() => anim.cancel(), 600);
+    };
+  };
+
+  const playPulso = () => {
+    const el = pulso.current!;
+    el.animate([{ transform: "scale(0.88)" }, { transform: "scale(1)" }], motionToken(el, "pulso"));
+  };
+
+  const tiles: { gesto: Gesto; uso: string; stage: React.ReactNode; action?: React.ReactNode }[] = [
+    {
+      gesto: "assentar",
+      uso: "Entrada: chega, passa do ponto e assenta. 0.3s, com overshoot.",
+      stage: <div ref={assentar} style={motionShape} />,
+      action: <Button inline size="sm" variant="ghost" onClick={playAssentar}>Entrar</Button>,
+    },
+    {
+      gesto: "recolher",
+      uso: "Saída: acelera e some, sem overshoot. 0.15s, ease-in.",
+      stage: <div ref={recolher} style={motionShape} />,
+      action: <Button inline size="sm" variant="ghost" onClick={playRecolher}>Sair</Button>,
+    },
+    {
+      gesto: "pulso",
+      uso: "Confirmação de clique. 0.2s, com overshoot. Clique no quadrado.",
+      stage: <button ref={pulso} type="button" aria-label="Pulsar" onClick={playPulso} style={{ ...motionShape, cursor: "pointer" }} />,
+    },
+    {
+      gesto: "deriva",
+      uso: "Contínuo e linear; o período é de cada uso. Para sob redução de movimento.",
+      stage: <div ref={deriva} style={motionShape} />,
+    },
+  ];
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+      {tiles.map((t) => (
+        <Card key={t.gesto} title={t.gesto}>
+          <div style={{ height: 96, display: "grid", placeItems: "center" }}>{t.stage}</div>
+          <CardText>
+            <code>--motion-{t.gesto}-*</code>. {t.uso}
+          </CardText>
+          {t.action && <div style={{ marginTop: 12 }}>{t.action}</div>}
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 function PaginationDemo() {
   const [page, setPage] = React.useState(1);
   return <Pagination page={page} totalPages={12} onChange={setPage} />;
@@ -893,7 +997,7 @@ export const STORIES: Story[] = [
     id: "efeitos",
     group: "Fundações",
     title: "Efeitos",
-    subtitle: "O vidro (glassmorphism), o easing com overshoot que assina as microinterações e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente.",
+    subtitle: "O vidro (glassmorphism), os quatro gestos de movimento (assentar, recolher, pulso, deriva) e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Vidro">
@@ -904,10 +1008,12 @@ export const STORIES: Story[] = [
         </Card>
         <Card title="Movimento">
           <CardText>
-            <code>--transition-fast/base/slow</code> (0.1s / 0.2s / 0.3s) e{" "}
-            <code>--ease-bounce</code>, o easing com overshoot que assina as microinterações.
+            Quatro gestos, cada um com curva e duração em token (<code>--motion-&lt;gesto&gt;-ease</code>{" "}
+            e <code>-duration</code>). A regra: <strong>assentar ao entrar, recolher ao sair</strong>.
+            Mudança de cor e fundo segue em <code>--transition-fast/base/slow</code>.
           </CardText>
         </Card>
+        <MotionDemo />
         <Card title="Fundo vivo">
           <CardText>
             Quatro glows (<code>--bg-glow-1..4</code>) com cor, posição e tamanho em tokens.

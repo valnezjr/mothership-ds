@@ -83,6 +83,26 @@
      sem trocar de família de curva. Pareia com --transition-spatial. */
   --ease-spatial: cubic-bezier(0.34, 1, 0.64, 1);
 
+  /* ---------- Gestos de movimento ----------
+     Quatro gestos nomeados; todo movimento de componente é um deles.
+     Regra: assentar ao entrar, recolher ao sair. Detalhe em
+     docs/movimento.md. */
+  /* Assentar: chega, passa um pouco do ponto e assenta. Entrada de
+     modal, toast, popover, janela. */
+  --motion-assentar-ease: var(--ease-bounce);
+  --motion-assentar-duration: 0.3s;
+  /* Recolher: sai acelerando, sem overshoot — saída de qualquer coisa.
+     A curva é o --ease-spatial espelhado no tempo, mesma família. */
+  --motion-recolher-ease: cubic-bezier(0.36, 0, 0.66, 0);
+  --motion-recolher-duration: 0.15s;
+  /* Pulso: confirmação de clique, curto e com o mesmo overshoot. */
+  --motion-pulso-ease: var(--ease-bounce);
+  --motion-pulso-duration: 0.2s;
+  /* Deriva: contínuo e linear (fundo vivo, giro de borda). Sem token de
+     duração: o período depende de cada uso, e sob redução de movimento
+     a deriva para em vez de encurtar. */
+  --motion-deriva-ease: linear;
+
   /* ---------- Larguras ---------- */
   --container-max: 588px;
   --avatar-size: 112px;
@@ -329,6 +349,19 @@
   /* Hover sutil: o branco a 50% do escuro padrão acende demais sobre o
      vidro escuro. */
   --color-surface-hover: rgba(255, 255, 255, 0.15);
+}
+
+/* Redução de movimento: os gestos com duração encolhem até quase zero,
+   então quem usa os tokens já respeita a preferência sem media query
+   própria. A deriva não tem duração para encolher — quem a usa pausa a
+   animação na sua própria regra. Um tema que redefinir essas durações
+   precisa repetir este bloco, senão anula o 0.01s. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-assentar-duration: 0.01s;
+    --motion-recolher-duration: 0.01s;
+    --motion-pulso-duration: 0.01s;
+  }
 }
 
 /* ---------- Cores — TEMA CLARO ---------- */

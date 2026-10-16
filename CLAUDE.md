@@ -503,6 +503,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 
 ### Não lançado
 
+- [x] Tokens dos quatro gestos de movimento (`src/styles/tokens.css`):
+      `--motion-<gesto>-ease`/`-duration` para assentar (bounce, 0.3s),
+      recolher (`--ease-spatial` espelhado no tempo, 0.15s), pulso
+      (bounce, 0.2s) e deriva (linear, sem duração). Sob
+      `prefers-reduced-motion`, as durações viram `0.01s` no próprio
+      token. Regra "assentar ao entrar, recolher ao sair" em
+      `docs/movimento.md`; demo lado a lado na story de Efeitos. Os
+      componentes ainda não migraram (ticket 05).
+
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
 só recomendação; componentes que precisam de ícone aceitam `ReactNode`

@@ -9,3 +9,5 @@ Status: ready-for-agent
 - [ ] Nenhuma saída com overshoot
 - [ ] `prefers-reduced-motion` respeitado em todos
 - [ ] Conferido no styleguide nos três temas
+
+**Decidir antes de migrar:** o par `--transition-spatial`/`--ease-spatial` (gaveta, câmera do 3D, sem overshoot) não é um dos quatro gestos. Drawer, Dock e Grafo3D usam esse par — vira exceção documentada ou é absorvido por assentar/recolher? (Levantado na revisão do 04; ver TOKENS.md § Gestos.)

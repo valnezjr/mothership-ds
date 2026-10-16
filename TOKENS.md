@@ -68,9 +68,37 @@ Escala de oito passos:
 ```
 
 `--ease-bounce` é a assinatura de movimento do sistema (overshoot
-leve). Usar sempre este easing — nunca outro — é o que faz
-componentes diferentes parecerem da mesma família. Detalhe em
-[`docs/movimento.md`](docs/movimento.md).
+leve). Detalhe em [`docs/movimento.md`](docs/movimento.md).
+
+### Gestos
+
+Todo movimento de componente é um dos quatro gestos. Regra: **assentar
+ao entrar, recolher ao sair**. Não escrever `0.3s var(--ease-bounce)`
+numa entrada — usar o par do gesto.
+
+```css
+--motion-assentar-ease: var(--ease-bounce);          /* entrada: modal, toast, popover, janela */
+--motion-assentar-duration: 0.3s;
+--motion-recolher-ease: cubic-bezier(0.36, 0, 0.66, 0); /* saída de qualquer coisa, sem overshoot */
+--motion-recolher-duration: 0.15s;
+--motion-pulso-ease: var(--ease-bounce);             /* confirmação de clique */
+--motion-pulso-duration: 0.2s;
+--motion-deriva-ease: linear;                        /* contínuo: fundo vivo, giro de borda */
+```
+
+- `recolher` é o `--ease-spatial` espelhado no tempo (mesma família,
+  acelera em vez de frear).
+- Sob `prefers-reduced-motion`, as três durações viram `0.01s` no
+  próprio `tokens.css` — quem usa o token não precisa de media query.
+- `deriva` não tem token de duração (o período é de cada uso). Sob
+  redução de movimento ela **para**: quem a usa pausa a animação na
+  própria regra.
+- `--transition-*` seguem existindo para mudança de cor/fundo, que não
+  é entrada nem saída.
+- Em aberto para o ticket 05: o par `--transition-spatial`/
+  `--ease-spatial` (gaveta, câmera do 3D) não é um dos quatro gestos.
+  Ao migrar Drawer/Dock/Grafo3D, decidir se vira exceção documentada ou
+  é absorvido por assentar/recolher.
 
 ## Sombras e opacidades
 
