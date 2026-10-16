@@ -70,7 +70,8 @@ lista/scrollbar e o anel de `:focus-visible` são aplicados em
 então nada disso chega lá por herança sozinho.
 
 Cada componente que porta (`Modal`/`StepModal`, `Drawer`, `Popover`,
-`DropdownMenu`, toasts, `TooltipProvider`) carrega `.ms-portal-root`
+`DropdownMenu`, a lista do `Select`/`Combobox`, toasts,
+`TooltipProvider`) carrega `.ms-portal-root`
 na própria raiz, além da classe específica. A regra dobra a mesma
 folha de `.ms-page`, exceto o fundo vivo (`min-height`/`background-*`)
 — portal é sempre superfície flutuante com o próprio vidro
@@ -92,16 +93,20 @@ modal        500      toasts            600
 histórico    610      tooltip           700
                       popover           700
                       dropdown-menu     700
+                      listbox           700
 ```
 
 Toasts e histórico ficam **acima** do modal de propósito: uma
 notificação disparada com um diálogo aberto precisa continuar visível.
 
-`Popover` e `DropdownMenu` dividem a camada do tooltip (700) — os três
-são overlays leves e flutuantes que não bloqueiam a página como o
-`Modal` (500); nenhum precisa ficar acima dos outros porque não faz
-sentido um conter um tooltip/popover/menu ativo de outro tipo na
-prática.
+`Popover`, `DropdownMenu` e a lista do `Select`/`Combobox` dividem a
+camada do tooltip (700) — os quatro são overlays leves e flutuantes que
+não bloqueiam a página como o `Modal` (500). Quando um contém outro (um
+`Select` dentro de um `Popover`), o de dentro abre depois e é anexado
+depois no `<body>`, então fica por cima sem precisar de camada própria.
+O clique numa lista portada assim não conta como "clique fora" do
+`Popover` (`isInOwnedPortal`, em `popover.tsx`: o painel portado tem
+`id`, e algo dentro do Popover aponta para ele com `aria-controls`).
 
 `drawer-backdrop`/`drawer` são do `Drawer` (`src/components/drawer.tsx`)
 — genérico, não exclusivo da `Sidebar`: ela é só a primeira consumidora

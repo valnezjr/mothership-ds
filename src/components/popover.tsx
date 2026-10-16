@@ -61,7 +61,6 @@ export function computePosition(
   align: "start" | "center" | "end"
 ): Position {
   const gap = 8;
-  const vw = window.innerWidth;
   const vh = window.innerHeight;
 
   const fitsBelow = trigger.bottom + gap + content.height <= vh;
@@ -75,10 +74,25 @@ export function computePosition(
   if (align === "center") left = trigger.left + trigger.width / 2 - content.width / 2;
   else if (align === "end") left = trigger.right - content.width;
 
-  // nunca deixa o popover sair da viewport horizontalmente
-  left = Math.min(Math.max(left, 8), Math.max(8, vw - content.width - 8));
+  return { top, left: clampLeft(left, content.width) };
+}
 
-  return { top, left };
+/** Nunca deixa um painel flutuante sair da viewport horizontalmente. Exportado para a lista do `Select`. */
+export function clampLeft(left: number, width: number): number {
+  const margin = 8;
+  return Math.min(Math.max(left, margin), Math.max(margin, window.innerWidth - width - margin));
+}
+
+/**
+ * O alvo está numa lista/painel em portal controlado (`aria-controls`) por algo dentro de
+ * `container`? Ex.: a lista de um `Select` aberto dentro do Popover mora no <body>, fora do
+ * Popover no DOM, mas clicar nela não é "clique fora".
+ */
+export function isInOwnedPortal(target: Node, container: HTMLElement | null): boolean {
+  if (!container || !(target instanceof Element)) return false;
+  const portal = target.closest<HTMLElement>(".ms-portal-root[id]");
+  if (!portal) return false;
+  return container.querySelector(`[aria-controls="${CSS.escape(portal.id)}"]`) != null;
 }
 
 /** Painel flutuante disparado por clique — o `Popover` "leve" que Select/Combobox deixaram pra depois. */
@@ -140,6 +154,7 @@ export function Popover({
       const target = e.target as Node;
       if (triggerWrapRef.current?.contains(target)) return;
       if (contentRef.current?.contains(target)) return;
+      if (isInOwnedPortal(target, contentRef.current)) return;
       setOpen(false);
     }
     function onKeyDown(e: KeyboardEvent) {

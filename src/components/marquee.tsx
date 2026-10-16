@@ -12,12 +12,9 @@ import React from "react";
    (`<div inert="">` some do HTML renderizado), então setamos a
    propriedade DOM direto via ref, uma vez, fora do ciclo de animação.
 
-   Composições futuras (não implementadas ainda — só a primitive):
-   LogoMarquee, TechMarquee, IconMarquee, TestimonialMarquee. Cada uma
-   seria só <Marquee> com um jeito específico de montar os children
-   (ex.: LogoMarquee mapeia uma lista de logos para <img> dentro do
-   Marquee) — nenhuma precisa de estado ou lógica própria além de
-   compor, então entram neste mesmo arquivo quando existirem.
+   Faixas de logos, tecnologias ou depoimentos são composições diretas
+   (<Marquee> com os itens dentro); a biblioteca não exporta variações
+   prontas para cada caso.
 
    Sem prop `loop`: um marquee sem loop é outro componente (uma
    "esteira" de passagem única) — saber quando o conteúdo saiu

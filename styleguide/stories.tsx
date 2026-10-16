@@ -1248,6 +1248,45 @@ export const STORIES: Story[] = [
     ),
   },
   {
+    id: "select-overflow",
+    group: "Componentes",
+    title: "Select dentro de overflow: hidden",
+    subtitle: "A lista do Select e do Combobox vive num portal no <body>, então um container que corta o próprio conteúdo (card com overflow: hidden, linha de tabela, modal com rolagem) não corta mais o popup. Perto do pé da tela, ela abre para cima. Dentro de um Popover, escolher uma opção não fecha o Popover.",
+    render: () => (
+      <Stack gap={4}>
+      <div
+        style={{
+          maxWidth: 320,
+          height: 96,
+          padding: "var(--space-4)",
+          overflow: "hidden",
+          border: "var(--border-width) dashed var(--color-border)",
+          borderRadius: "var(--radius-md)",
+        }}
+      >
+        <Field label="Estado (container de 96px, overflow: hidden)">
+          <Select
+            placeholder="Escolha…"
+            options={["AC", "AL", "AM", "BA", "CE", "PB", "PE", "RN", "SE"].map((uf) => ({ value: uf, label: uf }))}
+          />
+        </Field>
+      </div>
+      <Popover trigger={<Button>Filtrar</Button>}>
+        <Field label="Ordenar por">
+          <Select
+            defaultValue="recentes"
+            options={[
+              { value: "recentes", label: "Mais recentes" },
+              { value: "antigos", label: "Mais antigos" },
+              { value: "nome", label: "Nome" },
+            ]}
+          />
+        </Field>
+      </Popover>
+      </Stack>
+    ),
+  },
+  {
     id: "selecao",
     group: "Componentes",
     title: "Checkbox, Radio & Switch",

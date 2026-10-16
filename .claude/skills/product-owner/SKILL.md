@@ -115,11 +115,11 @@ de `Navbar`.
 
 ### Composição (componente fino, sem lógica própria)
 **Não introduz comportamento novo** — é o mesmo primitive com props
-pré-configuradas para um caso de uso comum. Precedente real e já
-documentado no próprio roadmap: `LogoMarquee`/`TechMarquee`/
-`IconMarquee`/`TestimonialMarquee` são "composições futuras do mesmo
-primitive [`Marquee`], sem lógica própria" (`docs/componentes.md`,
-`CHANGELOG.md`). Vale a pena ter como componente exportado **só** se o
+pré-configuradas para um caso de uso comum. Precedente real:
+`LogoMarquee`/`TechMarquee`/`IconMarquee`/`TestimonialMarquee` foram
+planejadas como composições do `Marquee` e saíram do roadmap em
+2026-10-16, porque montar com o próprio `Marquee` é direto — exemplo
+de composição que não passou na barra abaixo. Vale a pena ter como componente exportado **só** se o
 padrão de uso for comum o bastante para justificar o nome curto e a
 entrada no catálogo — o custo de manutenção de uma composição é baixo
 (delega tudo pro primitive), então a barra de aprovação é mais baixa

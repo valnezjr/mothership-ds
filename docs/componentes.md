@@ -423,11 +423,11 @@ Teclado: `↓`/`↑` navegam (pulando opções `disabled`, com wrap),
 primeiro/último item habilitado. Clique fora fecha. Encaminha `ref`
 (pro `<button>` gatilho).
 
-**Limite conhecido:** o popup é `position: absolute` num wrapper
-`position: relative` — não é portal no `<body>` como Modal/menu da
-Navbar. Se o gatilho viver dentro de um ancestral com
-`overflow: hidden`, o popup pode cortar. A correção (usar o portal e o
-posicionamento do `Popover`) está prevista para a v1.8.
+A lista é portal no `<body>` (mesma mecânica do `Popover`): um
+ancestral com `overflow: hidden` não a corta. Abre embaixo do campo,
+vira para cima quando não cabe e, se não couber em nenhum dos lados,
+vai para o lado com mais espaço e encolhe com rolagem. Tem a largura
+do campo.
 
 ### `Combobox`
 

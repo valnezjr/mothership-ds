@@ -358,7 +358,7 @@ Uma composição está pronta quando:
 **"Monta uma landing page para um SaaS de gestão financeira."**
 → Mapa da página: Navbar → Hero (protagonista, `HeroHighlight` no
 termo-chave) → BentoGrid de features → Marquee de logos de clientes
-(ou `TestimonialMarquee`, se já promovida do roadmap) → PricingCard ×3
+→ PricingCard ×3
 → Accordion de FAQ → Footer. Providers padrão do README. Nenhuma lacuna
 esperada — é o caso mais coberto pelo inventário atual.
 

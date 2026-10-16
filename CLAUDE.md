@@ -47,9 +47,9 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       translate3d de -50%). Único arquivo do repo com `"use client"`
       só por causa do `inert` (React 18 descarta `inert=""` via JSX;
       precisa setar a propriedade DOM via ref) — a animação em si
-      dispensaria a diretiva. `LogoMarquee`/`TechMarquee`/`IconMarquee`/
-      `TestimonialMarquee` ficam como composições futuras, documentadas
-      mas não implementadas.
+      dispensaria a diretiva. As composições `LogoMarquee`/`TechMarquee`/
+      `IconMarquee`/`TestimonialMarquee`, planejadas aqui, saíram do
+      roadmap em 2026-10-16: montar com o próprio `Marquee` é direto.
 
 ### v1.2.2 — lançada em 2026-07-28
 
@@ -187,9 +187,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       absolute` num wrapper `position: relative` — **não** é portal no
       `<body>` como Modal/menu da Navbar; decisão deliberada, sabendo
       que o `Popover` (próximo do roadmap) resolve posicionamento
-      robusto de vez, então não vale antecipar isso agora. (O
-      `Popover` saiu na v1.3.0; a migração do popup é o ticket 02 de
-      `.scratch/identidade-v1.9/`.)
+      robusto de vez, então não vale antecipar isso agora. (Superado:
+      na v1.8 a lista virou portal no `<body>` — ver "Não lançado".)
 - [x] `Combobox` (`src/components/select.tsx`) — quarto lote,
       construído junto com a revisão do `Select` acima (mesmo
       arquivo, mesma listbox/`OptionList`/`useOutsideClick`

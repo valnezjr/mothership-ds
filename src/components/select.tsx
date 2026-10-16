@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { createPortal } from "react-dom";
+import { clampLeft } from "./popover";
 
 /* ============================================================
    Select e Combobox — listbox própria (customizada), não o
@@ -9,12 +11,11 @@ import React from "react";
    nextEnabled); Select é só-escolha (gatilho é um <button>), Combobox
    acrescenta filtro por texto (gatilho é um <input>).
 
-   O popup é `position: absolute` dentro de um wrapper `position:
-   relative` — não é portal no <body> como Modal/menu da Navbar. Limite
-   conhecido: se o gatilho viver dentro de um ancestral com `overflow:
-   hidden`, o popup pode cortar. O `Popover` já tem o mecanismo
-   (portal + `computePosition`); migrar o popup para ele é o ticket 02
-   de `.scratch/identidade-v1.9/`.
+   O popup é portal no <body> com `position: fixed` e a largura do
+   campo — assim um ancestral com `overflow: hidden` não o corta. Abre
+   embaixo, vira para cima ou encolhe (ver `useListPosition`); o clamp
+   horizontal é o do `Popover`. O foco nunca sai do gatilho: a lista
+   cancela o mousedown, e o destaque anda por `aria-activedescendant`.
    ============================================================ */
 
 function cx(...parts: Array<string | false | undefined | null>) {
@@ -27,33 +28,90 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-function useOutsideClick(ref: React.RefObject<HTMLElement | null>, onOutside: () => void, active: boolean) {
+/** Fecha ao clicar fora do campo e fora da lista (que mora num portal, fora do campo no DOM). */
+function useOutsideClick(
+  refs: Array<React.RefObject<HTMLElement | null>>,
+  onOutside: () => void,
+  active: boolean
+) {
   React.useEffect(() => {
     if (!active) return;
     function handle(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) onOutside();
+      const target = e.target as Node;
+      if (refs.some((r) => r.current?.contains(target))) return;
+      onOutside();
     }
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, onOutside]);
 }
 
-/** Altura máxima da lista (`.ms-listbox`), para decidir se ela cabe embaixo do campo. */
+interface ListPosition {
+  top: number;
+  left: number;
+  above: boolean;
+}
+
+/** Altura máxima da lista (`.ms-listbox`), encolhida quando nenhum dos lados do campo tem esse espaço. */
 const LISTBOX_MAX = 240;
+/** Respiro entre o campo e a lista, e entre a lista e a borda da tela (`--space-1`, o do CSS antigo). */
+const LISTBOX_GAP = 4;
 
 /**
- * Abre a lista para cima quando ela não cabe embaixo do campo e há mais espaço em cima —
- * campo no pé da tela (caixa de mensagem, rodapé de formulário) sem empurrar a página.
+ * Posição da lista flutuante. Abre embaixo; vira para cima quando não cabe e há espaço em
+ * cima; se não cabe em nenhum dos dois, vai para o lado com mais espaço e encolhe até caber.
+ * O clamp horizontal é o do `Popover`. Acompanha scroll e resize, e a mudança no número de
+ * opções (o filtro do Combobox muda a altura da lista).
  */
-function useOpensAbove(ref: React.RefObject<HTMLElement | null>, open: boolean): boolean {
-  const [above, setAbove] = React.useState(false);
+function useListPosition(
+  anchorRef: React.RefObject<HTMLElement | null>,
+  listRef: React.RefObject<HTMLElement | null>,
+  open: boolean,
+  optionCount: number
+): ListPosition | null {
+  const [pos, setPos] = React.useState<ListPosition | null>(null);
+
+  const reposition = React.useCallback(() => {
+    const anchor = anchorRef.current;
+    const list = listRef.current;
+    if (!anchor || !list) return;
+    const rect = anchor.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom - 2 * LISTBOX_GAP;
+    const spaceAbove = rect.top - 2 * LISTBOX_GAP;
+    // Largura e altura são escritas direto no DOM (não pelo `style` do JSX): a altura natural
+    // precisa ser medida já na largura do campo, sem o limite de uma medição anterior.
+    list.style.width = `${rect.width}px`;
+    list.style.maxHeight = `${LISTBOX_MAX}px`;
+    const natural = list.offsetHeight;
+    const above = natural > spaceBelow && spaceAbove > spaceBelow;
+    const height = Math.min(natural, Math.max(above ? spaceAbove : spaceBelow, 0));
+    list.style.maxHeight = `${height}px`;
+    const top = above ? rect.top - LISTBOX_GAP - height : rect.bottom + LISTBOX_GAP;
+    setPos({ top, left: clampLeft(rect.left, rect.width), above });
+  }, [anchorRef, listRef]);
+
   React.useLayoutEffect(() => {
-    if (!open || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const below = window.innerHeight - rect.bottom;
-    setAbove(below < LISTBOX_MAX + 16 && rect.top > below);
-  }, [open, ref]);
-  return above;
+    if (open) reposition();
+    else setPos(null);
+  }, [open, reposition, optionCount]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    // Rolar a própria lista não move o campo; reposicionar ali remediria a altura e desalinharia a rolagem.
+    function onScroll(e: Event) {
+      if (listRef.current?.contains(e.target as Node)) return;
+      reposition();
+    }
+    window.addEventListener("resize", reposition);
+    window.addEventListener("scroll", onScroll, true);
+    return () => {
+      window.removeEventListener("resize", reposition);
+      window.removeEventListener("scroll", onScroll, true);
+    };
+  }, [open, reposition, listRef]);
+
+  return pos;
 }
 
 /** Próximo índice habilitado, ciclando e pulando `disabled`. */
@@ -72,27 +130,40 @@ function firstEnabledIndex(options: SelectOption[]): number {
   return options.findIndex((o) => !o.disabled);
 }
 
-function OptionList({
-  id,
-  options,
-  activeIndex,
-  selectedValue,
-  onHover,
-  onSelect,
-  emptyLabel,
-  above = false,
-}: {
-  id: string;
-  options: SelectOption[];
-  activeIndex: number;
-  selectedValue: string | undefined;
-  onHover: (i: number) => void;
-  onSelect: (opt: SelectOption) => void;
-  emptyLabel: string;
-  above?: boolean;
-}) {
-  return (
-    <ul className={cx("ms-listbox", above && "ms-listbox--above")} role="listbox" id={id}>
+const OptionList = React.forwardRef<
+  HTMLUListElement,
+  {
+    id: string;
+    options: SelectOption[];
+    activeIndex: number;
+    selectedValue: string | undefined;
+    onHover: (i: number) => void;
+    onSelect: (opt: SelectOption) => void;
+    emptyLabel: string;
+    pos: ListPosition | null;
+  }
+>(function OptionList({ id, options, activeIndex, selectedValue, onHover, onSelect, emptyLabel, pos }, ref) {
+  // Mantém a opção destacada à vista — só depois de posicionada, já com a altura final.
+  const placed = pos != null;
+  React.useEffect(() => {
+    if (placed) document.getElementById(`${id}-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [id, activeIndex, placed]);
+
+  return createPortal(
+    <ul
+      ref={ref}
+      className={cx("ms-listbox", "ms-portal-root", pos?.above && "ms-listbox--above")}
+      role="listbox"
+      id={id}
+      style={{
+        top: pos?.top ?? -9999,
+        left: pos?.left ?? -9999,
+        // Nasce escondida até a posição ser medida — não pisca no lugar errado.
+        visibility: pos ? "visible" : "hidden",
+      }}
+      // Clique na lista (inclusive na barra de rolagem) não tira o foco do gatilho.
+      onMouseDown={(e) => e.preventDefault()}
+    >
       {options.length === 0 && <li className="ms-listbox__empty">{emptyLabel}</li>}
       {options.map((opt, i) => (
         <li
@@ -118,9 +189,10 @@ function OptionList({
           {opt.label}
         </li>
       ))}
-    </ul>
+    </ul>,
+    document.body
   );
-}
+});
 
 export interface SelectProps extends Omit<React.HTMLAttributes<HTMLButtonElement>, "onChange" | "defaultValue"> {
   options: SelectOption[];
@@ -146,10 +218,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
     return i >= 0 ? i : firstEnabledIndex(options);
   });
   const wrapRef = React.useRef<HTMLDivElement>(null);
+  const listRef = React.useRef<HTMLUListElement>(null);
   const listId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-listbox`;
 
-  useOutsideClick(wrapRef, () => setOpen(false), open);
-  const above = useOpensAbove(wrapRef, open);
+  useOutsideClick([wrapRef, listRef], () => setOpen(false), open);
+  const pos = useListPosition(wrapRef, listRef, open, options.length);
 
   const selected = options.find((o) => o.value === selectedValue);
 
@@ -230,7 +303,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
           onHover={setActiveIndex}
           onSelect={commit}
           emptyLabel="Nada por aqui."
-          above={above}
+          pos={pos}
+          ref={listRef}
         />
       )}
       {name != null && <input type="hidden" name={name} value={selectedValue ?? ""} />}
@@ -274,6 +348,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
   const [open, setOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
   const wrapRef = React.useRef<HTMLDivElement>(null);
+  const listRef = React.useRef<HTMLUListElement>(null);
   const listId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-listbox`;
 
   // Sincroniza quando controlado de fora — não roda no primeiro render
@@ -286,10 +361,10 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  useOutsideClick(wrapRef, () => setOpen(false), open);
-  const above = useOpensAbove(wrapRef, open);
+  useOutsideClick([wrapRef, listRef], () => setOpen(false), open);
 
   const filtered = query === "" ? options : options.filter((o) => filter(o, query));
+  const pos = useListPosition(wrapRef, listRef, open, filtered.length);
 
   function commit(opt: SelectOption) {
     if (!isControlled) setSelectedValue(opt.value);
@@ -350,7 +425,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
           onHover={setActiveIndex}
           onSelect={commit}
           emptyLabel={emptyLabel}
-          above={above}
+          pos={pos}
+          ref={listRef}
         />
       )}
     </div>
