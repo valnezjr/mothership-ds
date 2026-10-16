@@ -884,10 +884,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   top: 50%;
   left: 0;
   transform: translateY(-50%);
+  box-sizing: border-box;
   width: var(--switch-thumb);
   height: var(--switch-thumb);
+  border: var(--border-width) solid transparent;
   border-radius: var(--radius-full);
-  background: var(--color-thumb);
+  background: var(--color-thumb) border-box;
   /* ThemeSwitch não precisa de sombra porque o ícone sol/lua desenhado
      no polegar já garante contraste. Este polegar é liso — sem sombra,
      fica quase invisível no tema claro (branco sobre o tom "soft"
@@ -910,8 +912,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-color: transparent;
 }
 
+/* Polegar ligado: contorno no gradiente, como Checkbox/Radio marcados. */
 .ms-toggle:checked::after {
   left: calc(100% - var(--switch-thumb));
+  background:
+    linear-gradient(var(--color-thumb), var(--color-thumb)) padding-box,
+    var(--gradient-active) border-box;
 }
 
 .ms-toggle:disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }

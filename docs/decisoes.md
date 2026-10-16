@@ -72,7 +72,9 @@ nas caixas de texto ativas e em "highlights de texto".
   preenchimento (caixa do Checkbox, miolo do Radio) é `--color-text`:
   branco no escuro, quase preto no claro. A marca do Checkbox fica na
   cor do fundo do tema. Preencher com o gradiente foi testado e
-  descartado na validação.
+  descartado na validação. O polegar do `Switch` ligado segue o mesmo
+  desenho (contorno no gradiente, preenchimento `--color-thumb`); o
+  trilho continua preenchido.
 - Campos de texto focados (Input, Textarea, Combobox, gatilho do
   Select, que também conta com a lista aberta) trocam o anel sólido por
   uma borda no gradiente. É a única exceção ao foco sólido: botões,
