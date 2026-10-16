@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-escuro/Darker/claro, fundo animado, 55 componentes. Nasceu de engenharia
+escuro/Darker/claro, fundo animado, 56 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -562,6 +562,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `Gallery` recolhe na troca de vista, como os itens. A listbox de
       `Select`/`Combobox` segue só texto: é uma linha da lista. 55
       componentes (era 54).
+- [x] `Tooltip` (`src/components/Tooltip.tsx`, sem `"use client"`,
+      ticket 10): `<Tooltip content>` em volta do gatilho. Não desenha
+      nada: é um `<span data-tip>` com `display: contents`, então o
+      renderizador é o do `TooltipProvider`, um só para os dois
+      caminhos. Para isso o Provider passou a pôr o `aria-describedby`
+      no elemento *focado* (não no dono do `data-tip`, que no `Tooltip`
+      é o wrapper) e a ancorar no focado quando o dono não tem caixa.
+      De quebra, o `aria-describedby` de quem consome deixa de ser
+      sobrescrito: o id do tooltip entra somado e sai sozinho.
+      56 componentes (era 55).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
@@ -604,7 +614,7 @@ examples/next-app/        # landing page de exemplo, buildável — export está
   cor solta — sempre `var(--espaço-do-token)`. Detalhe: TOKENS.md.
 - **`"use client"` só quando precisa.** Componente sem estado/efeito/
   handler fica sem a diretiva (hoje `primitives.tsx`, `LogoMark.tsx`,
-  `Mascote.tsx` e `EmptyState.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
+  `Mascote.tsx`, `EmptyState.tsx` e `Tooltip.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
 - **IDs de SVG sempre via `React.useId()`.** Nunca um contador de
   módulo — quebra a hidratação. Todo componente com SVG referenciado
   por `url(#...)` já segue isso (Loader, LogoMark, Mascote, Modal, charts,

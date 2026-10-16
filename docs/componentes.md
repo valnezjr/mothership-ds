@@ -55,7 +55,7 @@ Dá tooltip a qualquer elemento com `data-tip` na árvore — inclusive nós
 SVG dentro dos gráficos. Reage a ponteiro (mouse/toque) e a foco de
 teclado (Tab) — quem consome decide se o elemento com `data-tip` é
 focável (`tabIndex={0}` quando fizer sentido); o Provider só reage
-quando já é.
+quando já é. A forma em componente é o [`Tooltip`](#tooltip).
 
 ### `LivingBackground`
 
@@ -769,10 +769,40 @@ pra página 7 de 20) importa mais que o passo a passo — aí é `Pagination`
 botões de anterior/próximo (como o `StepModal` faz) se precisar de
 navegação nesse modo.
 
+### `Tooltip`
+
+Texto curto que aparece no hover e no foco por teclado, em volta de um
+gatilho. É a forma em componente do `data-tip`: não desenha nada, só
+marca o gatilho, e quem posiciona, mostra e liga o `aria-describedby` é
+o mesmo [`TooltipProvider`](#tooltipprovider) — por isso pede um acima
+na árvore. Renderizável no servidor, sem `"use client"`.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `content` | `string` | — | texto do tooltip; `\n` vira linha nova. Vazio: sem tooltip |
+| `children` | `ReactNode` | — | o gatilho |
+
+```tsx
+<Tooltip content="Salva o rascunho sem publicar">
+  <Button inline>Salvar</Button>
+</Tooltip>
+```
+
+O wrapper é um `<span>` com `display: contents`: não tem caixa, então
+não muda o layout de quem envolve. Para chegar por Tab, o gatilho
+precisa ser focável (um `Button` já é). Pela mesma falta de caixa,
+atributos de acessibilidade (`aria-label` etc.) vão no gatilho, não no
+`Tooltip`. No foco, o `aria-describedby`
+vai no elemento focado, somado aos ids que ele já tivesse. Só texto:
+conteúdo interativo é `Popover`.
+
+`<Tooltip content="x">` e `data-tip="x"` direto no elemento dão o mesmo
+resultado; o `data-tip` segue o caminho para nós SVG e listas geradas.
+
 ### `Popover`
 
 Painel flutuante disparado por clique, com conteúdo livre e
-interativo — diferente do `TooltipProvider` (hover, só texto simples).
+interativo — diferente do `Tooltip` (hover e foco, só texto simples).
 Portal no `<body>`, posição calculada de verdade (não CSS puro): mede
 gatilho e conteúdo, vira de lado se não couber no sentido pedido, e
 nunca deixa o popover sair da viewport horizontalmente.

@@ -17,7 +17,7 @@ import {
   // dados
   LineChart, Meter, PieChart, ProgressRing, Sparkline, StatGrid, StatTile, Legend, Table,
   // sobreposições
-  Modal, StepModal, StepIndicator, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
+  Modal, StepModal, StepIndicator, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider, Tooltip,
   // marca
   Splash, Loader, Mascote, EmptyState,
 } from "../src/index";
@@ -1725,6 +1725,25 @@ export const STORIES: Story[] = [
         >
           <p className="ms-text-sm">Alinhado à direita do gatilho (align="end").</p>
         </Popover>
+      </div>
+    ),
+  },
+  {
+    id: "tooltip",
+    group: "Componentes",
+    title: "Tooltip",
+    subtitle: "Texto curto que aparece no hover e no foco por teclado — só texto, não interativo (para conteúdo livre, use o Popover). Envolva o gatilho em <Tooltip content> ou ponha data-tip direto no elemento: os dois passam pelo mesmo TooltipProvider, com a mesma posição e o mesmo aria-describedby. O gatilho precisa ser focável para chegar por Tab.",
+    render: () => (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
+        <Tooltip content="Salva o rascunho sem publicar">
+          <Button inline>Salvar</Button>
+        </Tooltip>
+        <Tooltip content={"Duas linhas:\na quebra vira linha nova"}>
+          <Button inline variant="solid">Publicar</Button>
+        </Tooltip>
+        <Badge tone="accent" tabIndex={0} data-tip="Mesmo efeito, via data-tip">
+          data-tip
+        </Badge>
       </div>
     ),
   },

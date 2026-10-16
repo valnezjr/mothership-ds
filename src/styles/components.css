@@ -3323,6 +3323,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: opacity var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
+/* Wrapper do <Tooltip>: sem caixa própria, o gatilho fica no lugar. */
+.ms-tooltip-trigger { display: contents; }
+
 /* ---------- Dados: estrutura de gráfico ---------- */
 .ms-chart {
   display: flex;

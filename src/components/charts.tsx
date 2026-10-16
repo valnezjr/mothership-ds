@@ -88,25 +88,44 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
     // focado ao `<div role="tooltip">` (id estável via useId) — sem
     // isso, o texto só existia visualmente, nunca chegava a leitor de
     // tela pelo caminho de teclado.
+    //
+    // A descrição vai no elemento *focado*, não no dono do `data-tip`:
+    // com `<Tooltip>`, o `data-tip` mora num wrapper e o foco cai no
+    // gatilho dentro dele. Com `data-tip` no próprio elemento focável,
+    // os dois são o mesmo nó. Tokens que já existiam no
+    // `aria-describedby` de quem consome são preservados.
+    const describedIds = (el: Element) => (el.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
+    const describe = (el: Element) => {
+      const ids = describedIds(el);
+      if (!ids.includes(tooltipId)) el.setAttribute("aria-describedby", [...ids, tooltipId].join(" "));
+      describedRef.current = el;
+    };
+    const undescribe = () => {
+      const el = describedRef.current;
+      if (!el) return;
+      const ids = describedIds(el).filter((id) => id !== tooltipId);
+      if (ids.length) el.setAttribute("aria-describedby", ids.join(" "));
+      else el.removeAttribute("aria-describedby");
+      describedRef.current = null;
+    };
     const focusIn = (e: FocusEvent) => {
-      const target = (e.target as Element)?.closest?.("[data-tip]");
+      const focused = e.target as Element;
+      const target = focused?.closest?.("[data-tip]");
       if (!target) return;
-      const r = target.getBoundingClientRect();
+      // o wrapper do <Tooltip> é `display: contents` (sem caixa): ancora
+      // no elemento focado quando o dono do `data-tip` não tem retângulo
+      const anchor = target.getClientRects().length ? target : focused;
+      const r = anchor.getBoundingClientRect();
       place(r.left, r.bottom, target.getAttribute("data-tip") ?? "");
-      target.setAttribute("aria-describedby", tooltipId);
-      describedRef.current = target;
+      undescribe();
+      describe(focused);
     };
     const focusOut = (e: FocusEvent) => {
       const from = (e.target as Element)?.closest?.("[data-tip]");
       if (!from) return;
       const to = (e.relatedTarget as Element | null)?.closest?.("[data-tip]");
-      if (to !== from) {
-        setTip(null);
-        if (describedRef.current === from) {
-          from.removeAttribute("aria-describedby");
-          describedRef.current = null;
-        }
-      }
+      if (to !== from) setTip(null);
+      if (describedRef.current === e.target) undescribe();
     };
     window.addEventListener("pointerover", over);
     window.addEventListener("pointermove", move);

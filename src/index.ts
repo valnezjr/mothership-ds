@@ -31,3 +31,5 @@ export { Mascote } from "./components/Mascote";
 export type { MascoteProps, MascoteExpressao } from "./components/Mascote";
 export { EmptyState } from "./components/EmptyState";
 export type { EmptyStateProps } from "./components/EmptyState";
+export { Tooltip } from "./components/Tooltip";
+export type { TooltipProps } from "./components/Tooltip";

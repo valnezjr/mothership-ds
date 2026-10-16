@@ -24,6 +24,12 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   prop nova na `Gallery`: texto vira o título; outro nó entra como veio)
   e do histórico de alertas (`compact`). Na `Gallery`, um filtro sem
   itens mostrava a grade vazia, sem aviso. 55 componentes (era 54).
+- **`Tooltip`** (`src/components/Tooltip.tsx`, sem `"use client"`):
+  `<Tooltip content>` em volta de um gatilho — a forma em componente do
+  `data-tip`, com o mesmo renderizador do `TooltipProvider` (posição,
+  foco por teclado, `aria-describedby`); pede o Provider acima na
+  árvore. O wrapper não tem caixa (`display: contents`). O `data-tip`
+  continua igual. 56 componentes (era 55).
 - **`--gradient-active`** (`src/styles/tokens.css`): o gradiente da logo
   como sinal de ativo/selecionado, e só isso. Paradas `-500` no
   escuro/Darker; `accent-700`/`pink-600`/`orange-600` no claro, todas
@@ -95,6 +101,10 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   gradiente de ativo (D4 em `docs/decisoes.md`). Quem
   carrega a Outfit precisa incluir o peso 600 na URL do Google Fonts
   (`wght@400;500;600`); sem ele, o navegador sintetiza o negrito.
+- **`TooltipProvider`** sobrescrevia o `aria-describedby` do elemento
+  focado e, ao sair, apagava o atributo inteiro — junto com o que quem
+  consome tivesse posto ali. Agora o id do tooltip entra somado aos que
+  já existiam e sai sozinho.
 
 ## [1.8.0] — 2026-10-16
 
