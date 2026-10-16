@@ -224,6 +224,11 @@ o creme). Todas ≥3:1 sobre o fundo e o vidro dos três temas; os valores
 medidos estão no comentário do token. Abaixo de 3:1 só no centro dos
 glows do fundo (limite que o `--color-accent` sólido já tinha).
 
+**`--color-surface-selected`** / **`--shadow-selected`**: fundo e sombra
+do item atual de Navbar/Sidebar/Dock. No escuro/Darker, o próprio vidro
+e sem sombra; no claro, marfim quase opaco (`rgba(255,253,248,.9)`) com
+`--shadow-xs`, porque vidro marfim sobre o painel marfim não aparecia.
+
 **`--gradient-active-text`**: o mesmo sinal como texto (rótulo da opção
 selecionada do Select/Combobox e do item marcado do DropdownMenu), com
 paradas que passam de 4.5:1: `-400` no escuro/Darker, `-800` no claro.

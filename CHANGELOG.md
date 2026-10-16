@@ -28,6 +28,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - **Item atual de `Sidebar` e `Dock` sem o azul**: o texto ciano sobre o
   fundo `--color-accent-soft` vira vidro branco (`--color-surface`) com
   texto normal e o anel no gradiente, igual ao link ativo da `Navbar`.
+  No claro, os três usam `--color-surface-selected` (marfim a 90%) e
+  `--shadow-selected`, para o item não sumir sobre o painel.
 - **`Card` ganha `selected`**: anel no gradiente de ativo e
   `aria-current="true"`.
 - **`Navbar`: link atual com `aria-current="location"`**. Antes só a

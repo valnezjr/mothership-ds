@@ -79,7 +79,10 @@ nas caixas de texto ativas e em "highlights de texto".
   `--color-accent-text` sobre `--color-accent-soft`): fica vidro branco
   (`--color-surface`) com texto na cor normal, mais o anel no gradiente,
   o mesmo desenho do link ativo da `Navbar`. O ciano ao lado do
-  gradiente sujava o visual, e os três navs passam a falar igual.
+  gradiente sujava o visual, e os três navs passam a falar igual. No
+  claro o vidro sobre o painel de vidro sumia, então o fundo do item
+  atual vira token (`--color-surface-selected`, marfim a 90%, com
+  `--shadow-selected`).
 - Campos de texto focados (Input, Textarea, Combobox, gatilho do
   Select, que também conta com a lista aberta) trocam o anel sólido por
   uma borda no gradiente. É a única exceção ao foco sólido: botões,

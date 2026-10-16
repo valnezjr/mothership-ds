@@ -199,6 +199,10 @@
      50% e nenhuma parada passa ali (o -400 cai para 1.0–1.5:1), então
      vira a cor do texto. Darker e claro repetem o gradiente. */
   --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+  /* Fundo do item atual de Navbar/Sidebar/Dock (vidro branco + anel no
+     gradiente). No escuro é o próprio vidro; o claro redefine. */
+  --color-surface-selected: var(--color-surface);
+  --shadow-selected: none;
   /* Borda em gradiente num elemento sem ::before (Input, Radio): use com
      border transparente. O vidro fica no padding-box; o fundo da página
      embaixo dele impede o gradiente de vazar pelo vidro translúcido. */
@@ -449,6 +453,10 @@
      com o hover escurecendo). */
   --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));
   --gradient-active-text-hover: var(--gradient-active-text);
+  /* Vidro marfim sobre o painel de vidro marfim sumia: o item atual fica
+     quase opaco e um pouco mais claro que o painel, com sombra leve. */
+  --color-surface-selected: rgba(255, 253, 248, 0.9);
+  --shadow-selected: var(--shadow-xs);
 
   --bg-base: #ebe4d8;
   --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 65%, transparent);  /* ciano claro — canto superior direito */
