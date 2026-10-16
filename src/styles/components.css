@@ -811,11 +811,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-checkbox { border-radius: 6px; }
 .ms-radio { border-radius: var(--radius-full); }
 
+/* Marca na cor do fundo do tema, recortada sobre o gradiente de ativo:
+   ≥3:1 nos três temas (o branco ficava em 2.51 sobre o ciano). */
 .ms-checkbox::after {
   content: "";
   width: 11px;
   height: 11px;
-  background: var(--color-thumb);
+  background: var(--bg-base);
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
   transform: scale(0);
   transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
