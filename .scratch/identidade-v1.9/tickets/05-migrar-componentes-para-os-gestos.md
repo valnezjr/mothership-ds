@@ -10,4 +10,4 @@ Status: ready-for-agent
 - [ ] `prefers-reduced-motion` respeitado em todos
 - [ ] Conferido no styleguide nos três temas
 
-**Decidir antes de migrar:** o par `--transition-spatial`/`--ease-spatial` (gaveta, câmera do 3D, sem overshoot) não é um dos quatro gestos. Drawer, Dock e Grafo3D usam esse par — vira exceção documentada ou é absorvido por assentar/recolher? (Levantado na revisão do 04; ver TOKENS.md § Gestos.)
+**Decidido (D1, `docs/decisoes.md`):** o par `--transition-spatial`/`--ease-spatial` fica como exceção para transformação em cena. Expandir/recolher do Dock, câmera e legenda do Grafo3D **não** migram. O `Drawer` (hoje `0.35s var(--ease-bounce)` na entrada e na saída) migra: assentar ao abrir, recolher ao fechar.

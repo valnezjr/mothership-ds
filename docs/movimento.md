@@ -10,9 +10,10 @@ Tudo respeita `prefers-reduced-motion`.
 
 ## Os quatro gestos
 
-Todo movimento de componente é um destes quatro gestos. Cada um tem
-curva e duração em token, então um modal e um toast entram do mesmo
-jeito sem combinar nada entre si.
+Todo movimento de componente que entra, sai, confirma um clique ou roda
+em loop é um destes quatro gestos. Cada um tem curva e duração em token,
+então um modal e um toast entram do mesmo jeito sem combinar nada entre
+si.
 
 | Gesto | Curva | Duração | Quando |
 |---|---|---|---|
@@ -58,6 +59,23 @@ Com `prefers-reduced-motion: reduce`, as durações de assentar, recolher
 e pulso viram `0.01s` no próprio `tokens.css`: quem usa os tokens já
 respeita a preferência. A deriva para em vez de encurtar, e quem a usa
 pausa a animação na sua própria regra.
+
+### Transformação em cena
+
+Fica fora dos gestos o que já está na tela e muda de forma ou de ponto
+de vista: o `Dock` expandindo em painel, a câmera do `Grafo3D` indo até
+um nó, a legenda escurecendo ao filtrar. Nada entra nem sai, e são
+objetos grandes. Um overshoot ali lê como solavanco, não como charme.
+Esses usam o par espacial, mais longo e sem overshoot:
+
+```css
+--transition-spatial: 0.45s;
+--ease-spatial: cubic-bezier(0.34, 1, 0.64, 1);
+```
+
+O critério é simples: entrou ou saiu de cena, é gesto; já estava e se
+transformou, é o par espacial. Uma gaveta (`Drawer`) entra e sai, então
+assenta e recolhe como qualquer outra coisa.
 
 ## O easing do sistema
 

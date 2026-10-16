@@ -174,8 +174,8 @@ loops usam as curvas dos gestos abaixo.
 
 ### Gestos de movimento
 
-Quatro gestos nomeados cobrem todo movimento de componente, cada um com
-curva e duração próprias. A regra é **assentar ao entrar, recolher ao
+Quatro gestos nomeados cobrem tudo que entra, sai, confirma um clique ou
+roda em loop, cada um com curva e duração próprias. A regra é **assentar ao entrar, recolher ao
 sair**. Explicação completa em [Movimento](movimento.md#os-quatro-gestos).
 
 ```css
@@ -196,6 +196,10 @@ sair**. Explicação completa em [Movimento](movimento.md#os-quatro-gestos).
 Com `prefers-reduced-motion: reduce`, as durações dos gestos encolhem
 para `0.01s` sozinhas. A deriva não tem duração: quem a usa pausa a
 animação nessa preferência.
+
+O que já está na tela e só muda de forma (o `Dock` expandindo, a câmera
+do `Grafo3D`) fica fora dos gestos e usa `--transition-spatial`/
+`--ease-spatial`. Detalhe em [Movimento](movimento.md#transformação-em-cena).
 
 ## Sombras e opacidades
 

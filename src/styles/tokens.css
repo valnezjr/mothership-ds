@@ -84,9 +84,10 @@
   --ease-spatial: cubic-bezier(0.34, 1, 0.64, 1);
 
   /* ---------- Gestos de movimento ----------
-     Quatro gestos nomeados; todo movimento de componente é um deles.
-     Regra: assentar ao entrar, recolher ao sair. Detalhe em
-     docs/movimento.md. */
+     Quatro gestos nomeados para o que entra, sai, confirma clique ou
+     roda em loop. Regra: assentar ao entrar, recolher ao sair. O que já
+     está em cena e só muda de forma usa o par spatial acima (D1 em
+     docs/decisoes.md). */
   /* Assentar: chega, passa um pouco do ponto e assenta. Entrada de
      modal, toast, popover, janela. */
   --motion-assentar-ease: var(--ease-bounce);

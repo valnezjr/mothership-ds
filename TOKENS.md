@@ -72,8 +72,9 @@ leve). Detalhe em [`docs/movimento.md`](docs/movimento.md).
 
 ### Gestos
 
-Todo movimento de componente é um dos quatro gestos. Regra: **assentar
-ao entrar, recolher ao sair**. Não escrever `0.3s var(--ease-bounce)`
+Todo movimento de componente que entra, sai, confirma um clique ou roda
+em loop é um dos quatro gestos. Regra: **assentar ao entrar, recolher ao
+sair**. Não escrever `0.3s var(--ease-bounce)`
 numa entrada — usar o par do gesto.
 
 ```css
@@ -95,10 +96,12 @@ numa entrada — usar o par do gesto.
   própria regra.
 - `--transition-*` seguem existindo para mudança de cor/fundo, que não
   é entrada nem saída.
-- Em aberto para o ticket 05: o par `--transition-spatial`/
-  `--ease-spatial` (gaveta, câmera do 3D) não é um dos quatro gestos.
-  Ao migrar Drawer/Dock/Grafo3D, decidir se vira exceção documentada ou
-  é absorvido por assentar/recolher.
+- **Exceção: transformação em cena.** Algo que já está na tela e muda
+  de forma ou de ponto de vista (Dock expandindo, câmera do Grafo3D,
+  legenda filtrando) usa `--transition-spatial`/`--ease-spatial`, não
+  um gesto. Critério: entrou ou saiu de cena → gesto; já estava e se
+  transformou → par spatial. O `Drawer` entra e sai, então é gesto.
+  Decisão D1 em `docs/decisoes.md`.
 
 ## Sombras e opacidades
 
