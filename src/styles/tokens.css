@@ -177,6 +177,19 @@
   --color-orange: rgb(242, 111, 53);
   --color-gray: rgb(139, 139, 158);
 
+  /* Gradiente da logo como sinal de "ativo/selecionado", e só isso:
+     indicador das Tabs, item atual de Navbar/Sidebar/Dock, ponto ativo
+     do StepIndicator, Card selected e Switch ligado. Nenhum outro uso:
+     se virar decoração, deixa de dizer "ativo". Estático, e o anel de
+     foco continua sólido (--color-accent-text). A cor nunca carrega o
+     estado sozinha; quem usa já tem aria-current/aria-selected/checked.
+     Mesma direção do assets/logo.svg: ciano à direita, rosa em 60%,
+     laranja à esquerda. Paradas -500 no escuro e no Darker. Contraste
+     sobre o fundo e o vidro (mínimo 3:1): ciano 7.52/5.79, rosa
+     4.64/3.57, laranja 6.37/4.90. No Darker o vidro é o próprio fundo
+     a 60%, então dá 7.52/4.64/6.37 nos dois. O claro redefine. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
+
   --color-accent-soft: rgba(0, 175, 239, 0.2);
   /* Accent como TEXTO e anel de foco (link ativo, opção selecionada,
      foco de teclado). O --color-accent é de preenchimento e borda; como
@@ -409,6 +422,11 @@
      o fundo, 4.58 sobre o --color-accent-soft. Só para texto e foco —
      escuro assim o laranja fica terroso, então não serve de preenchimento. */
   --color-accent-text: #984a16;
+
+  /* Paradas escurecidas até 3:1 sobre o creme e o vidro marfim: ciano
+     -700 3.83/4.08 (o -600 fica em 2.70), rosa -600 4.26/4.54,
+     laranja -600 3.16/3.36. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
 
   --bg-base: #ebe4d8;
   --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 65%, transparent);  /* ciano claro — canto superior direito */

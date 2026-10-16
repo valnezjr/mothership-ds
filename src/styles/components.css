@@ -283,6 +283,41 @@
 .ms-gallery__item:hover::after,
 .ms-gallery__item:active::after { opacity: 1; }
 
+/* ---------- Sinal de ativo: anel no gradiente da logo ----------
+   Item atual de Navbar/Sidebar/Dock e Card selected. Mesma máscara do
+   contorno reativo acima, só que estático e no --gradient-active. No
+   ::before, para não brigar com o ::after do .ms-hover-edge num card
+   que tenha os dois. Onde o elemento tem borda, o anel cobre ela
+   (inset negativo) e a borda fica transparente. No Sidebar, só o item
+   com aria-current: a seção-mãe de um subtópico ativo fica no fundo
+   "soft", senão seriam dois anéis e um deles sem estado em aria. */
+.ms-navbar__link--active,
+.ms-sidebar__section[aria-current],
+.ms-sidebar__link[aria-current],
+.ms-dock__item--active,
+.ms-card--selected { position: relative; }
+
+.ms-navbar__link--active::before,
+.ms-sidebar__section[aria-current]::before,
+.ms-sidebar__link[aria-current]::before,
+.ms-dock__item--active::before,
+.ms-card--selected::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--border-width);
+  background: var(--gradient-active);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.ms-navbar__link--active::before,
+.ms-card--selected::before { inset: calc(-1 * var(--border-width)); }
+
 /* ---------- Botão (glassmorphism, herdado dos links da página) ---------- */
 .ms-button {
   display: flex;
@@ -821,11 +856,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    pseudo-elemento. */
 .ms-toggle:hover:not(:disabled)::after { outline: var(--switch-hover-ring) solid var(--color-border); }
 
-/* Ativo continua vidro — só ganha o tom "soft" de marca (mesmo par
-   fundo/borda que Badge tone="accent"), não uma cor sólida. */
+/* Ligado ganha o gradiente de ativo. A borda some e o degradê começa
+   nela (border-box), senão ele se repete na faixa da borda. O polegar
+   segue legível pela sombra. */
 .ms-toggle:checked {
-  background: var(--color-accent-soft);
-  border-color: var(--color-accent);
+  background: var(--gradient-active) border-box;
+  border-color: transparent;
 }
 
 .ms-toggle:checked::after {
@@ -843,6 +879,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
 }
+
+.ms-card--selected { border-color: transparent; }
 
 .ms-card__title {
   font-size: var(--text-lg);
@@ -1792,7 +1830,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   position: absolute;
   bottom: -1px;
   height: 2px;
-  background: var(--color-accent);
+  background: var(--gradient-active);
   border-radius: var(--radius-pill);
   transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease), width var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
@@ -1854,10 +1892,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-navbar__link:hover { background: var(--color-surface-hover); }
 
-.ms-navbar__link--active {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-}
+.ms-navbar__link--active { background: var(--color-surface); }
 
 .ms-navbar .ms-switch { margin: 0 var(--space-1); flex-shrink: 0; }
 
@@ -2899,7 +2934,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-step-indicator__dot--active {
   width: var(--dot-size-active);
-  background: var(--color-text);
+  background: var(--gradient-active);
 }
 
 .ms-step-indicator__dot--done { background: var(--color-text-muted); }

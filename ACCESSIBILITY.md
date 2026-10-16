@@ -16,6 +16,8 @@ leitores de tela e falha para daltonismo.
 | `Accordion` | item aberto/fechado | `aria-expanded` |
 | `Navbar` (hambúrguer) | menu aberto/fechado | `aria-expanded` |
 | `StepModal` / `Breadcrumbs` | etapa/item atual | `aria-current` |
+| `Navbar` / `Sidebar` / `Dock` | item atual (anel em `--gradient-active`) | `aria-current`: `location` em Navbar/Sidebar (âncoras da página), `page` no Dock (destinos de app) |
+| `Card selected` | card escolhido num conjunto | `aria-current="true"`; se o card for controle, quem usa troca pelo `aria-*` do controle |
 | `ThemeSwitch` | ligado/desligado | `aria-checked` (é `role="switch"`, não checkbox nativo) |
 | `ThemeMenu` / `DropdownMenuItem checked` | tema/opção ativa | `aria-checked` em `role="menuitemradio"`; o gatilho diz o tema ativo no `aria-label` |
 | `Table` (coluna `sortable`) | ordenação asc/desc/nenhuma | `aria-sort` no `<th>` — nativo de tabela, não `aria-label` |

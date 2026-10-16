@@ -1436,6 +1436,12 @@ export const STORIES: Story[] = [
             <CardText>Passe o mouse — o anel gira acompanhando o cursor.</CardText>
           </Card>
         </HoverEdge>
+        <Card title="Card selecionado" selected>
+          <CardText>
+            <code>selected</code> troca a borda pelo anel no gradiente de ativo
+            (<code>--gradient-active</code>) e marca <code>aria-current="true"</code>.
+          </CardText>
+        </Card>
       </div>
     ),
   },

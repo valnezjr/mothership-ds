@@ -113,11 +113,13 @@ export interface LinkRenderProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  /** Presente no link ativo. Repasse ao elemento num `renderLink` próprio. */
+  "aria-current"?: "location";
 }
 
-function defaultRenderLink({ href, className, children, onClick }: LinkRenderProps) {
+function defaultRenderLink({ href, className, children, onClick, "aria-current": ariaCurrent }: LinkRenderProps) {
   return (
-    <a className={className} href={href} onClick={onClick}>
+    <a className={className} href={href} onClick={onClick} aria-current={ariaCurrent}>
       {children}
     </a>
   );
@@ -200,6 +202,12 @@ export function Navbar({
     };
   }, [open]);
 
+  const linkProps = (href: string) => ({
+    href,
+    className: ["ms-navbar__link", active === href && "ms-navbar__link--active"].filter(Boolean).join(" "),
+    "aria-current": active === href ? ("location" as const) : undefined,
+  });
+
   const menu =
     mounted && menuBox
       ? createPortal(
@@ -211,10 +219,7 @@ export function Navbar({
             {links.map((l) => (
               <React.Fragment key={l.href}>
                 {renderLink({
-                  href: l.href,
-                  className: ["ms-navbar__link", active === l.href && "ms-navbar__link--active"]
-                    .filter(Boolean)
-                    .join(" "),
+                  ...linkProps(l.href),
                   onClick: () => setOpen(false),
                   children: l.label,
                 })}
@@ -243,10 +248,7 @@ export function Navbar({
         {links.map((l) => (
           <React.Fragment key={l.href}>
             {renderLink({
-              href: l.href,
-              className: ["ms-navbar__link", active === l.href && "ms-navbar__link--active"]
-                .filter(Boolean)
-                .join(" "),
+              ...linkProps(l.href),
               children: l.label,
             })}
           </React.Fragment>

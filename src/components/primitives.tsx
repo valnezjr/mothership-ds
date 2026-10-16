@@ -110,11 +110,19 @@ export function LinkList({
 
 export interface CardProps extends Omit<Div, "title"> {
   title?: React.ReactNode;
+  /** Card escolhido num conjunto: anel no gradiente de ativo e `aria-current="true"`.
+   *  Se o card for um controle (`role="radio"`, `aria-pressed`…), passe o `aria-*`
+   *  dele e `aria-current={undefined}`, que vence o padrão. */
+  selected?: boolean;
 }
 
-export function Card({ title, className, children, ...rest }: CardProps) {
+export function Card({ title, selected, className, children, ...rest }: CardProps) {
   return (
-    <div className={cx("ms-card", className)} {...rest}>
+    <div
+      className={cx("ms-card", selected && "ms-card--selected", className)}
+      aria-current={selected ? "true" : undefined}
+      {...rest}
+    >
       {title != null && <div className="ms-card__title">{title}</div>}
       {children}
     </div>

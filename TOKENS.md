@@ -209,6 +209,19 @@ valores antigos, ficam soltos por design.
 
 Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 
+**`--gradient-active`**: o gradiente da logo (ciano à direita, rosa em
+60%, laranja à esquerda, mesma direção do SVG). **Uso exclusivo** como
+sinal de ativo/selecionado: indicador das `Tabs`, item atual de
+`Navbar`/`Sidebar`/`Dock` (anel), ponto ativo do `StepIndicator`,
+`Card selected` (anel) e `Switch` ligado. Nada além disso, nem
+decoração: se aparecer em outro lugar, deixa de dizer "ativo". Estático.
+O anel de foco continua sólido (`--color-accent-text`), e o estado vai
+sempre também em `aria-*`. Paradas `-500` no escuro/Darker; no claro
+`accent-700`/`pink-600`/`orange-600` (o `accent-600` fica em 2.70:1 sobre
+o creme). Todas ≥3:1 sobre o fundo e o vidro dos três temas; os valores
+medidos estão no comentário do token. Abaixo de 3:1 só no centro dos
+glows do fundo (limite que o `--color-accent` sólido já tinha).
+
 ## Texto/ícone sobre superfície sólida
 
 Fixas nos dois temas — usadas quando texto/ícone precisa ficar sobre

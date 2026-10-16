@@ -6,6 +6,20 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- **`--gradient-active`** (`src/styles/tokens.css`): o gradiente da logo
+  como sinal de ativo/selecionado, e só isso. Paradas `-500` no
+  escuro/Darker; `accent-700`/`pink-600`/`orange-600` no claro, todas
+  ≥3:1 sobre fundo e vidro. Aplicado no indicador das `Tabs`, no ponto
+  ativo do `StepIndicator`, no `Switch` ligado (antes o tom "soft" do
+  accent) e, como anel, no item atual de `Navbar`/`Sidebar`/`Dock`.
+- **`Card` ganha `selected`**: anel no gradiente de ativo e
+  `aria-current="true"`.
+- **`Navbar`: link atual com `aria-current="location"`**. Antes só a
+  classe marcava o estado. `LinkRenderProps` ganha o campo
+  `"aria-current"`; um `renderLink` próprio deve repassá-lo.
+
 ### Alterado
 
 - **Componentes nos gestos de movimento** (`src/styles/components.css`):

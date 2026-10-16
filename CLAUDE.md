@@ -522,6 +522,14 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       leva nova assentar, hover reativo assenta/recolhe, trilho do
       `Carousel` vai pro par espacial. Fora: valores de gráfico,
       Splash/Loader (ver auditoria no ticket 05).
+- [x] `--gradient-active` (ticket 06): gradiente da logo como sinal de
+      ativo, uso exclusivo. Preenche indicador das `Tabs`, ponto do
+      `StepIndicator` e `Switch` ligado; vira anel (máscara do
+      `.ms-hover-edge`, no `::before`) no item atual de Navbar/Sidebar/
+      Dock e no `Card` com a prop nova `selected`. Claro usa
+      `accent-700`/`pink-600`/`orange-600` (o `accent-600` não chega a
+      3:1 no creme). No Sidebar, anel só em quem tem `aria-current`.
+      `Navbar` passa a marcar o link atual com `aria-current`.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

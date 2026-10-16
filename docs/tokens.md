@@ -78,6 +78,28 @@ var(--color-violet-soft)  /* alfa 0.2, fundo de badges e alertas */
 
 Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 
+### Gradiente de ativo
+
+`--gradient-active` é o gradiente da logo, e serve para uma coisa só:
+dizer **"isto está ativo ou selecionado"**. Aparece no indicador das
+`Tabs`, no item atual da `Navbar`, do `Sidebar` e do `Dock` (como anel),
+no ponto ativo do `StepIndicator`, no `Card` com `selected` (anel) e no
+`Switch` ligado. Fora desses lugares ele não entra, nem como enfeite: o
+gradiente só funciona como sinal enquanto for raro.
+
+É estático, e o anel de foco continua sólido (`--color-accent-text`).
+A cor nunca carrega o estado sozinha: cada um desses componentes também
+marca o estado em `aria-current`, `aria-selected` ou `checked`.
+
+| Tema | Paradas (direita → esquerda) |
+|---|---|
+| Escuro e Darker | `accent-500` → `pink-500` → `orange-500` |
+| Claro | `accent-700` → `pink-600` → `orange-600` |
+
+Todas as paradas ficam em 3:1 ou mais sobre o fundo e o vidro dos três
+temas. No claro, o ciano desce até o `-700` porque o `-600` fica em 2.70:1
+sobre o creme.
+
 ### Dados
 
 ```css

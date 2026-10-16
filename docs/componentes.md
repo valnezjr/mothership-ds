@@ -161,6 +161,10 @@ Pill de vidro flutuante. Largura `calc(100vw − 48px)`, no máximo 1100px.
 </Navbar>
 ```
 
+O link atual ganha um anel no gradiente de ativo e `aria-current="location"`.
+Num `renderLink` próprio (ex.: `next/link`), repasse o `aria-current`
+que chega nas props.
+
 Abaixo de 720px os links saem da barra — que passa a dividir o espaço
 entre marca, sino e menu de tema — e o hambúrguer abre um menu de vidro logo
 abaixo do header. O ícone transiciona de hambúrguer para X.
@@ -519,6 +523,11 @@ Botão circular. `href` e `aria-label` são **obrigatórios** — um `<a>` sem
 ### `Card` · `CardText`
 
 `title` opcional. Combine com `HoverEdge` para o contorno reativo.
+
+`selected` marca o card escolhido num conjunto: a borda vira um anel no
+gradiente de ativo e o card ganha `aria-current="true"`. Se o card for
+um controle (`role="radio"`, `aria-pressed`…), passe o `aria-*` dele e
+`aria-current={undefined}`.
 
 ### `Badge`
 
