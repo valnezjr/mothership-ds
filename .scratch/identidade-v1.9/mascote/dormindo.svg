@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--dormindo" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="breath">
+    <path class="lid" d="M2252 6260Q2497 6400 2742 6260" fill="none" stroke="#fefefe" stroke-width="110" stroke-linecap="round"/>
+    <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)" transform="translate(2502 6750) scale(.7) translate(-2502 -6750)"/>
+  </g>
+  <path class="z z1" d="M2770 5930h130l-130 130h130" fill="none" stroke="#fefefe" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z2" d="M2850 5790h95l-95 95h95" fill="none" stroke="#fefefe" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z3" d="M2905 5680h65l-65 65h65" fill="none" stroke="#fefefe" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

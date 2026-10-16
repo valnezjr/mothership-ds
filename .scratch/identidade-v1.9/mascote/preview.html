@@ -1,0 +1,63 @@
+<!doctype html><meta charset="utf-8"><title>Mascote — esboço</title><style>
+:root{--bounce:cubic-bezier(.34,1.56,.64,1)}
+body{margin:0;font-family:system-ui;display:grid;gap:24px;padding:24px}
+.row{display:flex;gap:24px;flex-wrap:wrap;padding:24px;border-radius:16px}
+.dark{background:#0f0f1f;color:#fefefe}.darker{background:#05050b;color:#fefefe}.light{background:#f6f1e7;color:#191933}
+figure{margin:0;text-align:center}.m{width:180px;height:auto;overflow:visible}
+.eye,.pupil,.breath,.z{transform-box:fill-box;transform-origin:center}
+.m--piscando .eye{animation:blink 4s infinite}
+@keyframes blink{0%,84%,100%{transform:scaleY(1)}87%{transform:scaleY(.08)}90%{transform:scaleY(1)}93%{transform:scaleY(.08)}96%{transform:scaleY(1)}}
+.m--dormindo .breath{animation:breath 4.8s ease-in-out infinite}
+@keyframes breath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.m--dormindo .z{animation:drift 4.8s linear infinite;opacity:0}
+.m--dormindo .z2{animation-delay:1.6s}.m--dormindo .z3{animation-delay:3.2s}
+@keyframes drift{0%{opacity:0;transform:translate(-60px,120px) scale(.6)}20%{opacity:1}70%{opacity:1}100%{opacity:0;transform:translate(40px,-80px) scale(1)}}
+.m--procurando .pupil{animation:look 3.6s infinite}
+@keyframes look{0%,12%{transform:translate(0,0)}
+ 16%,40%{transform:translate(-125px,-35px);animation-timing-function:var(--bounce)}
+ 44%,68%{transform:translate(125px,-35px);animation-timing-function:var(--bounce)}
+ 72%,100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){.m *{animation:none!important}.m--dormindo .z{opacity:1}}
+</style><div class="row dark"><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--piscando" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g>
+  <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)"/>
+</svg><figcaption>piscando</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--dormindo" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="breath">
+    <path class="lid" d="M2252 6260Q2497 6400 2742 6260" fill="none" stroke="var(--ink)" stroke-width="110" stroke-linecap="round"/>
+    <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)" transform="translate(2502 6750) scale(.7) translate(-2502 -6750)"/>
+  </g>
+  <path class="z z1" d="M2770 5930h130l-130 130h130" fill="none" stroke="var(--ink)" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z2" d="M2850 5790h95l-95 95h95" fill="none" stroke="var(--ink)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z3" d="M2905 5680h65l-65 65h65" fill="none" stroke="var(--ink)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><figcaption>dormindo</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--procurando" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><g class="pupil"><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g></g>
+  <path class="mouth" d="M2400 6770Q2505 6762 2610 6730" fill="none" stroke="url(#g)" stroke-width="90" stroke-linecap="round"/>
+</svg><figcaption>procurando</figcaption></figure><span>dark</span></div><div class="row darker"><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--piscando" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g>
+  <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)"/>
+</svg><figcaption>piscando</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--dormindo" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="breath">
+    <path class="lid" d="M2252 6260Q2497 6400 2742 6260" fill="none" stroke="var(--ink)" stroke-width="110" stroke-linecap="round"/>
+    <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)" transform="translate(2502 6750) scale(.7) translate(-2502 -6750)"/>
+  </g>
+  <path class="z z1" d="M2770 5930h130l-130 130h130" fill="none" stroke="var(--ink)" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z2" d="M2850 5790h95l-95 95h95" fill="none" stroke="var(--ink)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z3" d="M2905 5680h65l-65 65h65" fill="none" stroke="var(--ink)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><figcaption>dormindo</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--procurando" style="--ink:#fefefe" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><g class="pupil"><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g></g>
+  <path class="mouth" d="M2400 6770Q2505 6762 2610 6730" fill="none" stroke="url(#g)" stroke-width="90" stroke-linecap="round"/>
+</svg><figcaption>procurando</figcaption></figure><span>darker</span></div><div class="row light"><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--piscando" style="--ink:#191933" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g>
+  <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)"/>
+</svg><figcaption>piscando</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--dormindo" style="--ink:#191933" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="breath">
+    <path class="lid" d="M2252 6260Q2497 6400 2742 6260" fill="none" stroke="var(--ink)" stroke-width="110" stroke-linecap="round"/>
+    <path class="mouth" d="M2242 6636.03c-143.64,57.76 241.08,417.4 523.47,108.29 68.57,-75.06 -3.75,-149.17 -65.88,-94.07 -25.95,23.02 -31.91,74 -130.67,102.42 -219.04,63.02 -248.15,-148.32 -326.92,-116.64z" fill="url(#g)" transform="translate(2502 6750) scale(.7) translate(-2502 -6750)"/>
+  </g>
+  <path class="z z1" d="M2770 5930h130l-130 130h130" fill="none" stroke="var(--ink)" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z2" d="M2850 5790h95l-95 95h95" fill="none" stroke="var(--ink)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="z z3" d="M2905 5680h65l-65 65h65" fill="none" stroke="var(--ink)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><figcaption>dormindo</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="1997 5600 1000 1350" class="m m--procurando" style="--ink:#191933" ><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8185.85" y1="3472.64" x2="549.16" y2="3545.48"><stop offset="0" stop-color="#00AFEF"/><stop offset="0.6" stop-color="#ED2D66"/><stop offset="1" stop-color="#F26F35"/></linearGradient></defs>
+  <g class="eye"><path d="M2449.7 6004.21c278.21,-76.19 380.78,366.1 100.07,431.42 -140.58,32.71 -241.56,-58.32 -265.64,-167.04 -33.28,-150.25 55.69,-234.29 165.57,-264.38zm-31.88 -105.62c-416.35,110.29 -285.62,727.32 158.68,638.01 158.18,-31.8 291.49,-199.94 244.8,-397.4 -36.7,-155.19 -206.42,-292.81 -403.48,-240.61z" fill="var(--ink)"/><g class="pupil"><path d="M2475.49 6158.98c-87.29,38.7 -25.34,148.85 51.01,114.62 73.33,-32.86 26.98,-149.2 -51.01,-114.62z" fill="#00AEED"/></g></g>
+  <path class="mouth" d="M2400 6770Q2505 6762 2610 6730" fill="none" stroke="url(#g)" stroke-width="90" stroke-linecap="round"/>
+</svg><figcaption>procurando</figcaption></figure><span>light</span></div>
