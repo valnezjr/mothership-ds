@@ -26,6 +26,7 @@
 
   --line-height-tight: 24px; /* handle do perfil */
   --line-height-base: 1.5;
+  --line-height-prose: 1.6; /* texto corrido longo (Prose) */
 
   /* ---------- Espaçamento (escala observada na página) ---------- */
   --space-1: 4px;

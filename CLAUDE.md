@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-escuro/Darker/claro, fundo animado, 56 componentes. Nasceu de engenharia
+escuro/Darker/claro, fundo animado, 57 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -572,6 +572,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       De quebra, o `aria-describedby` de quem consome deixa de ser
       sobrescrito: o id do tooltip entra somado e sai sozinho.
       56 componentes (era 55).
+- [x] `Prose` (`src/components/Prose.tsx`, sem `"use client"`, ticket
+      11): HTML já convertido de markdown (`html`) ou JSX (`children`)
+      no ritmo do sistema. Não converte nem sanitiza. Devolve, só dentro
+      de `.ms-prose`, margens e marcadores que o reset da `.ms-page`
+      tira — mesma especificidade, declarado depois. Cobre o
+      `src/telas/prosa.css` provisório do Ambiente; o `h1` escondido de
+      lá é regra daquela tela e segue local. Token novo
+      `--line-height-prose` (1.6, o valor do Ambiente). 57 componentes
+      (era 56).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
@@ -614,7 +623,7 @@ examples/next-app/        # landing page de exemplo, buildável — export está
   cor solta — sempre `var(--espaço-do-token)`. Detalhe: TOKENS.md.
 - **`"use client"` só quando precisa.** Componente sem estado/efeito/
   handler fica sem a diretiva (hoje `primitives.tsx`, `LogoMark.tsx`,
-  `Mascote.tsx`, `EmptyState.tsx` e `Tooltip.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
+  `Mascote.tsx`, `EmptyState.tsx`, `Tooltip.tsx` e `Prose.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
 - **IDs de SVG sempre via `React.useId()`.** Nunca um contador de
   módulo — quebra a hidratação. Todo componente com SVG referenciado
   por `url(#...)` já segue isso (Loader, LogoMark, Mascote, Modal, charts,

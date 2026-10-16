@@ -30,6 +30,13 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   foco por teclado, `aria-describedby`); pede o Provider acima na
   árvore. O wrapper não tem caixa (`display: contents`). O `data-tip`
   continua igual. 56 componentes (era 55).
+- **`Prose`** (`src/components/Prose.tsx`, sem `"use client"`): texto
+  corrido já em HTML — o que sai de um conversor de markdown — com o
+  ritmo vertical e a tipografia do sistema (títulos, parágrafos, listas
+  com marcador, links em `--color-accent-text`, código em `--font-mono`,
+  citações, divisor). Recebe `html` ou `children`. Não converte nem
+  sanitiza. Token novo `--line-height-prose` (1.6). 57 componentes
+  (era 56).
 - **`--gradient-active`** (`src/styles/tokens.css`): o gradiente da logo
   como sinal de ativo/selecionado, e só isso. Paradas `-500` no
   escuro/Darker; `accent-700`/`pink-600`/`orange-600` no claro, todas

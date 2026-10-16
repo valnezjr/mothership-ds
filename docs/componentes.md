@@ -117,6 +117,38 @@ Horizontal renderiza um `<hr>` (semântica nativa de separador).
 Vertical renderiza um `<div role="separator" aria-orientation="vertical">`,
 já que `<hr>` é sempre horizontal por especificação.
 
+### `Prose`
+
+Texto corrido já em HTML — o que sai de um conversor de markdown —
+com o ritmo vertical e a tipografia do sistema: títulos (`h1`–`h4`),
+parágrafos, listas com marcador, links, código inline e em bloco,
+citações e divisor. Renderizável no servidor, sem `"use client"`.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `html` | `string` | — | HTML pronto, injetado como está |
+| `children` | `ReactNode` | — | o mesmo conteúdo em JSX, no lugar de `html` |
+
+```tsx
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+
+<Prose html={DOMPurify.sanitize(marked.parse(texto))} />
+```
+
+O `Prose` **não converte nem sanitiza**: escolher o conversor e limpar
+HTML de terceiros (email, comentário, qualquer texto que não é seu) é
+de quem chama — o `html` entra direto no DOM. `html` e `children` são
+excludentes; o tipo não deixa passar os dois.
+
+O reset da `.ms-page` tira margens e marcadores de lista do resto da
+página; o `Prose` devolve os dois, só aqui dentro. A primeira e a
+última peça não levam margem para fora, então o bloco encaixa num
+`Card` ou `Accordion` sem sobra. Links usam `--color-accent-text`
+(AA nos três temas); código usa `--font-mono`, que a lib não carrega
+(ver [tokens](tokens.md)). Para ajustar algo de uma tela só, escreva
+por cima de `.ms-prose` (ex.: `.minha-tela .ms-prose h1 { display: none }`).
+
 ### `Hero` · `HeroHighlight`
 
 | Prop | Tipo | |

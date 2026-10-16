@@ -33,3 +33,5 @@ export { EmptyState } from "./components/EmptyState";
 export type { EmptyStateProps } from "./components/EmptyState";
 export { Tooltip } from "./components/Tooltip";
 export type { TooltipProps } from "./components/Tooltip";
+export { Prose } from "./components/Prose";
+export type { ProseProps } from "./components/Prose";

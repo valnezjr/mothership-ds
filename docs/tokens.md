@@ -152,7 +152,8 @@ for usar. Sem ela, o token cai na mono do sistema.
 
 Mais `--font-family`, `--font-weight-regular` (400),
 `--font-weight-medium` (500), `--font-weight-display` (600),
-`--line-height-base` e `--line-height-tight`.
+`--line-height-base`, `--line-height-tight` e `--line-height-prose`
+(1.6, mais aberto para texto corrido longo — usado pelo `Prose`).
 
 O peso de exibição anda sempre junto com `--text-display` e só em dois
 lugares: o número do `StatTile` e o título do `Hero`. Em qualquer outro

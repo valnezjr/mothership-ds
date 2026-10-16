@@ -27,6 +27,7 @@ sempre `var(--token)`.
 --text-display: 48px; /* número de StatTile, título do Hero */
 
 --line-height-base: 1.5;
+--line-height-prose: 1.6; /* texto corrido longo, só no Prose */
 --line-height-tight: 24px;
 ```
 

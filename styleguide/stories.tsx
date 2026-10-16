@@ -5,7 +5,7 @@ import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
-  Footer, Flash, Stack, Divider, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
+  Footer, Flash, Stack, Divider, Prose, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
   // tema e utilitários
   ThemeSwitch, ThemeMenu, HoverEdge,
   // interativos
@@ -892,6 +892,25 @@ function Grafo3DDemo() {
   );
 }
 
+// Saída típica de um conversor de markdown (marked, remark…), como string.
+const PROSE_EXEMPLO = `<h2>Nota do dia</h2>
+<p>Revisão da <a href="#prose">proposta da padaria</a> e duas pendências da semana. O texto corre com <code>--line-height-prose</code>, um pouco mais aberto que o do resto da interface.</p>
+<ul>
+<li>Fechar o orçamento do site</li>
+<li>Responder o email do fornecedor
+<ul><li>prazo até sexta</li></ul>
+</li>
+</ul>
+<h3>Próximos passos</h3>
+<ol>
+<li>Mandar o contrato</li>
+<li>Agendar a visita</li>
+</ol>
+<blockquote><p>Citação: recua e passa para o texto secundário.</p></blockquote>
+<pre><code>npm install mothership-ds</code></pre>
+<hr>
+<p>Depois do divisor, o ritmo continua.</p>`;
+
 export const STORIES: Story[] = [
   /* ============ Fundações ============ */
   {
@@ -1496,6 +1515,17 @@ export const STORIES: Story[] = [
           <CardText>Segunda linha.</CardText>
         </Stack>
       </Stack>
+    ),
+  },
+  {
+    id: "prose",
+    group: "Componentes",
+    title: "Prose",
+    subtitle: "Texto corrido já em HTML — o que sai de um conversor de markdown — com o ritmo vertical e a tipografia do sistema: títulos, parágrafos, listas, links, código e citações. Recebe html (string) ou children (JSX). Não converte nem sanitiza: HTML de terceiros passa por um sanitizador antes de chegar aqui.",
+    render: () => (
+      <Card>
+        <Prose html={PROSE_EXEMPLO} />
+      </Card>
     ),
   },
   {
