@@ -70,6 +70,7 @@ export function Accordion({ items, single, className, ...rest }: AccordionProps)
               .join(" ")}
           >
             <button
+              id={`${baseId}-${i}-header`}
               className="ms-accordion__header"
               type="button"
               aria-expanded={isOpen}
@@ -79,7 +80,12 @@ export function Accordion({ items, single, className, ...rest }: AccordionProps)
               <span>{item.title}</span>
               {Chevron}
             </button>
-            <div className="ms-accordion__body" id={`${baseId}-${i}`} role="region">
+            <div
+              className="ms-accordion__body"
+              id={`${baseId}-${i}`}
+              role="region"
+              aria-labelledby={`${baseId}-${i}-header`}
+            >
               <div className="ms-accordion__inner">
                 <div className="ms-accordion__content">{item.content}</div>
               </div>

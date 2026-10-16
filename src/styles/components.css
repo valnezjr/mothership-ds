@@ -1071,7 +1071,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   padding: var(--space-1) var(--space-4);
   border-radius: var(--radius-pill);
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;

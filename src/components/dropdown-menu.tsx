@@ -183,9 +183,13 @@ export function DropdownMenu({
   }
 
   const clonedTrigger = React.cloneElement(trigger, {
-    "aria-haspopup": "menu",
-    "aria-expanded": open,
-    "aria-controls": open ? baseId : undefined,
+    // No modo "context" o gatilho costuma ser uma área sem papel (um Card,
+    // uma linha); aria-expanded/haspopup ali é ARIA inválido.
+    ...(triggerOn === "click" && {
+      "aria-haspopup": "menu",
+      "aria-expanded": open,
+      "aria-controls": open ? baseId : undefined,
+    }),
     onClick:
       triggerOn === "click"
         ? (e: React.MouseEvent) => {

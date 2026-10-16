@@ -501,7 +501,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       — portais no `<body>` herdavam a fonte/cor padrão do navegador
       por estarem fora do `.ms-page`.
 
-### Não lançado
+### v1.9.0 — lançada em 2026-10-16
 
 - [x] Tokens dos quatro gestos de movimento (`src/styles/tokens.css`):
       `--motion-<gesto>-ease`/`-duration` para assentar (bounce, 0.3s),
@@ -581,6 +581,18 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       lá é regra daquela tela e segue local. Token novo
       `--line-height-prose` (1.6, o valor do Ambiente). 57 componentes
       (era 56).
+- [x] Auditoria `axe-core` (ticket 12): as 57 stories nos três temas,
+      a 1280px e 390px, comparadas com o build da v1.8.0. Nenhuma
+      violação nova. Três herdadas corrigidas de passagem: badge do
+      `PricingCard` com `#fff` cru (2.5:1, vira `--color-on-accent`),
+      `region` do Accordion sem nome (`aria-labelledby` no cabeçalho) e
+      `aria-expanded` no gatilho do `DropdownMenu` em modo `"context"`.
+      Ficam as das stories que repetem `Navbar`/`Breadcrumbs` na mesma
+      página (`landmark-unique`) e o `label-content-name-mismatch` do
+      badge da `Dock`. Texto em gradiente (`background-clip: text`)
+      o axe não mede; os contrastes vêm de D3/D4.
+
+### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

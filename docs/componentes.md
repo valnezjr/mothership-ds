@@ -903,7 +903,7 @@ com um gatilho virtual de tamanho zero no ponto do clique.
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
 | `trigger` | `ReactElement` | — | elemento que abre o menu — não precisa encaminhar `ref` |
-| `triggerOn` | `"click" \| "context"` | `"click"` | `"context"` é o antigo `ContextMenu` (clique direito) |
+| `triggerOn` | `"click" \| "context"` | `"click"` | `"context"` é o antigo `ContextMenu` (clique direito); nesse modo o gatilho não recebe `aria-haspopup`/`aria-expanded` |
 | `open`/`defaultOpen` | `boolean` | — | controlado/não-controlado |
 | `onOpenChange` | `(open: boolean) => void` | — | |
 | `placement` | `"top" \| "bottom"` | `"bottom"` | |

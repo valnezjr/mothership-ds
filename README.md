@@ -201,24 +201,9 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
 
 ## Roadmap
 
-- **v1.9 — identidade.** O gradiente da logo vira o sinal exclusivo de
-  "ativo/selecionado"; o movimento ganha um vocabulário de gestos
-  (assentar, recolher, pulso, deriva); a mascote ganha expressões (componente
-  `Mascote`); entra um peso de exibição para números grandes. Na mesma
-  versão, `EmptyState`, `Tooltip` como componente e `Prose` (abaixo).
-  `Timeline`, `Toolbar` e `FilterBar` ficam para depois. As composições
-  prontas do `Marquee` saíram do plano: montá-las com o próprio
-  `Marquee` é direto.
 - **Adições futuras vindas do Ambiente Mothership** (interface do sistema
   agêntico, primeiro app a consumir a `Dock`). Duas lacunas apareceram ao
-  montar a tela "Hoje":
-  - **`Prose`** — texto corrido vindo de markdown já convertido em HTML
-    (títulos, parágrafos, listas com marcador, links, código), com o
-    ritmo vertical e a tipografia do sistema. Hoje o reset de `.ms-page`
-    zera margens e tira os marcadores de lista, então cada consumidor
-    reescreve esse CSS por conta própria (o Ambiente tem um provisório,
-    só com tokens, em `src/telas/prosa.css`). Não converte nem
-    sanitiza markdown: recebe HTML já limpo, como `children` ou `html`.
+  montar a tela "Hoje"; o `Prose` saiu na v1.9, falta uma:
   - **`Meter` com valor absoluto** — hoje o `Meter` sempre mostra `value%`.
     Para contagens (ex.: contatos por estágio de um funil) falta poder
     mostrar o número e preencher a barra pela proporção, algo como

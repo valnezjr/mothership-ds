@@ -6,6 +6,8 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.9.0] — 2026-10-16
+
 ### Adicionado
 
 - **`Mascote`** (`src/components/Mascote.tsx`, sem `"use client"`): o
@@ -112,6 +114,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   focado e, ao sair, apagava o atributo inteiro — junto com o que quem
   consome tivesse posto ali. Agora o id do tooltip entra somado aos que
   já existiam e sai sozinho.
+- **Badge do `PricingCard`** usava `#fff` cru sobre `--color-accent`:
+  2.5:1, abaixo do AA. Passa para `--color-on-accent`, o mesmo par do
+  `Button variant="solid"`. Achado pelo `axe-core` na auditoria da v1.9.
+- **Corpo do `Accordion`** (`role="region"`) não tinha nome; com vários
+  itens, o leitor de tela via regiões iguais. Agora é rotulado pelo
+  próprio cabeçalho (`aria-labelledby`).
+- **`DropdownMenu` com `triggerOn="context"`** punha `aria-haspopup`/
+  `aria-expanded` no gatilho, em geral uma área sem papel (um `Card`, uma
+  linha) — ARIA inválido. Esses atributos ficam só no modo `"click"`.
 
 ## [1.8.0] — 2026-10-16
 

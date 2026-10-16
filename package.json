@@ -1,6 +1,6 @@
 {
   "name": "mothership-ds",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Design system em React + TypeScript: glassmorphism, temas escuro/Darker/claro, fundo animado e 57 componentes sem dependências de runtime (o Grafo3D, à parte, usa three).",
   "keywords": [
     "design-system",
