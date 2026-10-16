@@ -187,8 +187,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       absolute` num wrapper `position: relative` — **não** é portal no
       `<body>` como Modal/menu da Navbar; decisão deliberada, sabendo
       que o `Popover` (próximo do roadmap) resolve posicionamento
-      robusto de vez, então não vale antecipar isso agora. (Superado:
-      na v1.8 a lista virou portal no `<body>` — ver "Não lançado".)
+      robusto de vez, então não vale antecipar isso agora. (Superado na
+      v1.8.0: a lista virou portal no `<body>`.)
 - [x] `Combobox` (`src/components/select.tsx`) — quarto lote,
       construído junto com a revisão do `Select` acima (mesmo
       arquivo, mesma listbox/`OptionList`/`useOutsideClick`
@@ -398,7 +398,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       pequenos mantêm a página válida ao trocar de filtro ou
       `itemsPerPage` encolher num reflow responsivo.
 
-### Não lançado
+### v1.8.0 — lançada em 2026-10-16
 
 - [x] Contraste de texto sobre superfície sólida de marca
       (`src/styles/tokens.css`, `src/styles/components.css`) — `Button
@@ -482,6 +482,26 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       filtro) e `exibida` (atual + respiração); desenho, clique e rótulos
       leem `exibida`. A esfera de colisão do InstancedMesh é fixa e larga,
       porque os nós se movem a cada quadro. 52 componentes (era 51).
+- [x] Temas: claro em off-white quente (creme, accent laranja lavado),
+      tema `"darker"` no `ThemeProvider`, `--color-accent-text` (accent
+      como texto/foco com AA nos três temas) e `ThemeMenu`
+      (`src/components/theme.tsx`, seletor dos três temas num
+      `DropdownMenu`, com `DropdownMenuItem checked`). `ThemeSwitch`
+      segue exportado, só claro/escuro. 53 componentes (era 52).
+      Valores e contrastes no CHANGELOG § 1.8.0.
+- [x] `Select`/`Combobox` com a lista em portal no `<body>`
+      (`src/components/select.tsx`), posicionada pelo clamp do
+      `Popover`, camada 700; abre para cima quando não cabe embaixo.
+      `isInOwnedPortal` (`popover.tsx`) impede um `Select` dentro de um
+      `Popover` de fechar o `Popover` ao escolher.
+- [x] Menores, detalhados no CHANGELOG § 1.8.0: tokens de sombra e
+      opacidade, `--font-mono` (Maple Mono), par espacial
+      `--transition-spatial`/`--ease-spatial`, capítulo `docs/3d.md`,
+      `Gallery` com `addedAt`/`newDays`/`sortable`, e `.ms-portal-root`
+      — portais no `<body>` herdavam a fonte/cor padrão do navegador
+      por estarem fora do `.ms-page`.
+
+### Não lançado
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

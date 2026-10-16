@@ -200,10 +200,6 @@ A referência completa de props está em [`docs/componentes.md`](docs/componente
 
 ## Roadmap
 
-- **v1.8** — lança o que hoje está em "Não lançado" (tema claro em
-  creme, Darker, `ThemeMenu`, `Dock`, `Grafo3D` e as correções de
-  contraste e acessibilidade) e corrige o popup do `Select`/`Combobox`,
-  que passa a usar o portal do `Popover`.
 - **v1.9 — identidade.** O gradiente da logo vira o sinal exclusivo de
   "ativo/selecionado"; o movimento ganha um vocabulário de gestos
   (assentar, recolher, pulso, deriva); a mascote ganha expressões (componente

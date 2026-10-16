@@ -6,17 +6,7 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
-### Corrigido
-
-- **`Select` e `Combobox` não são mais cortados por `overflow: hidden`**
-  (`src/components/select.tsx`): a lista virou portal no `<body>`,
-  posicionada com o clamp horizontal do `Popover` e com a largura do
-  campo, na camada 700 (acima do `Modal`). Abre para cima quando não cabe
-  embaixo; se não cabe em nenhum lado, vai para o lado com mais espaço e
-  encolhe. Clicar na lista (inclusive na barra de rolagem) não tira mais
-  o foco do campo, e a opção destacada pelo teclado rola para a vista.
-  Um `Select` dentro de um `Popover` não fecha mais o `Popover` ao
-  escolher uma opção (`isInOwnedPortal`, em `popover.tsx`).
+## [1.8.0] — 2026-10-16
 
 ### Alterado
 
@@ -188,6 +178,16 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   sem mudança de comportamento pra quem já usa `Gallery`.
 
 ### Corrigido
+
+- **`Select` e `Combobox` não são mais cortados por `overflow: hidden`**
+  (`src/components/select.tsx`): a lista virou portal no `<body>`,
+  posicionada com o clamp horizontal do `Popover` e com a largura do
+  campo, na camada 700 (acima do `Modal`). Abre para cima quando não cabe
+  embaixo; se não cabe em nenhum lado, vai para o lado com mais espaço e
+  encolhe. Clicar na lista (inclusive na barra de rolagem) não tira mais
+  o foco do campo, e a opção destacada pelo teclado rola para a vista.
+  Um `Select` dentro de um `Popover` não fecha mais o `Popover` ao
+  escolher uma opção (`isInOwnedPortal`, em `popover.tsx`).
 
 - **Portais caíam pra fonte/cor padrão do navegador** — `Modal`,
   `StepModal`, `Drawer`, `Popover`, `DropdownMenu`, toasts e
