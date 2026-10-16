@@ -518,8 +518,10 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       Select/Combobox e histórico de alertas, que sumiam na hora, ganham
       saída via `usePresence` (`src/components/presence.ts`, interno),
       que lê a duração do próprio token. Accordion e Drawer deixam de
-      fechar com overshoot. Fora: hover reativo, valores de gráfico,
-      trilho do Carousel, Splash/Loader (ver auditoria no ticket 05).
+      fechar com overshoot. D2: itens da `Gallery` recolhem antes da
+      leva nova assentar, hover reativo assenta/recolhe, trilho do
+      `Carousel` vai pro par espacial. Fora: valores de gráfico,
+      Splash/Loader (ver auditoria no ticket 05).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

@@ -233,11 +233,14 @@
      --ms-edge-lift              deslocamento vertical (padrão -4px)
      --ms-edge-scale             escala no hover (padrão 1.03)
    O ângulo (--ms-grad-angle) é atualizado por scripts/hover-edge.js. */
+/* Crescer é chegar (assentar); voltar ao lugar é sair (recolher), sem
+   overshoot passando do tamanho original. A transição de cada sentido
+   mora no estado de destino (D2 em docs/decisoes.md). */
 .ms-hover-edge,
 .ms-gallery__item {
   position: relative;
-  transition: transform 0.3s var(--ease-bounce),
-              box-shadow 0.3s ease,
+  transition: transform var(--motion-recolher-duration) var(--motion-recolher-ease),
+              box-shadow var(--motion-recolher-duration) var(--motion-recolher-ease),
               border-color var(--transition-slow);
 }
 
@@ -270,6 +273,9 @@
   transform: translateY(var(--ms-edge-lift, -4px)) scale(var(--ms-edge-scale, 1.03));
   box-shadow: var(--shadow-lg);
   border-color: transparent;
+  transition: transform var(--motion-assentar-duration) var(--motion-assentar-ease),
+              box-shadow var(--motion-assentar-duration) var(--motion-assentar-ease),
+              border-color var(--transition-slow);
 }
 
 .ms-hover-edge:hover::after,
@@ -1397,9 +1403,16 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   touch-action: pan-y;
 }
 
+/* Trilho: objeto grande que já está em cena e só se desloca — par
+   espacial, sem overshoot (D1/D2 em docs/decisoes.md). O bounce fica
+   nos bullets, que confirmam o clique (pulso). */
 .ms-carousel__track {
   display: flex;
-  transition: transform 0.5s var(--ease-bounce);
+  transition: transform var(--transition-spatial) var(--ease-spatial);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-carousel__track { transition: none; }
 }
 
 .ms-carousel__slide {
@@ -1572,6 +1585,17 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 @keyframes ms-gallery-in {
   from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: none; }
+}
+
+/* Troca de filtro, ordem ou página: a leva atual recolhe, e só então a
+   nova monta e assenta (Gallery em disclosure.tsx). */
+.ms-gallery__grid--leaving { pointer-events: none; }
+.ms-gallery__grid--leaving .ms-gallery__item {
+  animation: ms-gallery-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards;
+}
+
+@keyframes ms-gallery-out {
+  to { opacity: 0; transform: scale(0.96); }
 }
 
 .ms-gallery__photo {
@@ -3035,7 +3059,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-chart__dot {
   transform-box: fill-box;
   transform-origin: center;
-  transition: transform 0.25s var(--ease-bounce), filter var(--transition-slow);
+  transition: transform var(--motion-recolher-duration) var(--motion-recolher-ease), filter var(--transition-slow);
 }
 
 /* pointer-events: all — um fill transparente não conta como "pintado",
@@ -3050,6 +3074,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-chart__dot:hover {
   transform: scale(2.1);
   filter: drop-shadow(0 0 4px currentColor);
+  transition: transform var(--motion-assentar-duration) var(--motion-assentar-ease), filter var(--transition-slow);
 }
 
 /* Fatias da pizza crescem a partir do centro do gráfico (destaque
@@ -3057,12 +3082,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-pie__slice {
   transform-box: view-box;
   transform-origin: var(--ms-pie-origin, 50% 50%);
-  transition: transform 0.3s var(--ease-bounce), filter var(--transition-slow);
+  transition: transform var(--motion-recolher-duration) var(--motion-recolher-ease), filter var(--transition-slow);
 }
 
 .ms-pie__slice:hover {
   transform: scale(1.06);
   filter: var(--shadow-drop);
+  transition: transform var(--motion-assentar-duration) var(--motion-assentar-ease), filter var(--transition-slow);
 }
 
 /* ---------- Dados: legenda ---------- */

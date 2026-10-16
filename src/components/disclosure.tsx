@@ -3,6 +3,7 @@
 import React from "react";
 import { HoverEdge } from "./theme";
 import { Badge, Button } from "./primitives";
+import { recolherMs } from "./presence";
 import type { Tone } from "./primitives";
 import { StepIndicator } from "./StepIndicator";
 import { SortIcon } from "./table";
@@ -476,6 +477,23 @@ export function Gallery({
   // reduzir a lista o bastante pra invalidar a página atual.
   React.useEffect(() => setPage((p) => Math.min(p, totalPages - 1)), [totalPages]);
 
+  // Troca de vista (filtro, ordem ou página): a leva que estava na tela
+  // recolhe antes da nova montar. `shownView` atrasa a vista exibida pelo
+  // tempo do recolher; enquanto isso, a grade mostra os itens anteriores.
+  const view = `${filter}|${sortOrder}|${currentPage}`;
+  const [shownView, setShownView] = React.useState(view);
+  const leaving = shownView !== view;
+  const lastShown = React.useRef(visibleItems);
+  React.useEffect(() => {
+    if (!leaving) lastShown.current = visibleItems;
+  });
+  React.useEffect(() => {
+    if (!leaving) return;
+    const t = setTimeout(() => setShownView(view), recolherMs());
+    return () => clearTimeout(t);
+  }, [leaving, view]);
+  const gridItems = leaving ? lastShown.current : visibleItems;
+
   const colorsFor = (keys: string[]): [string, string] => {
     const cats = keys.map((k) => byKey[k]).filter(Boolean);
     // `neutral` não tem cor própria — usa a borda, como nos alertas
@@ -531,8 +549,8 @@ export function Gallery({
           </button>
         )}
       </div>
-      <div className="ms-gallery__grid">
-        {visibleItems.map((item, i) => {
+      <div className={["ms-gallery__grid", leaving && "ms-gallery__grid--leaving"].filter(Boolean).join(" ")}>
+        {gridItems.map((item, i) => {
           const isNew = isNewItem(item.addedAt, newDays);
           const card = (
             <HoverEdge
@@ -573,16 +591,12 @@ export function Gallery({
             </HoverEdge>
           );
 
-          // Inclui currentPage na key de propósito: sem isso, trocar de
-          // página reaproveita os mesmos nós do DOM por posição (0, 1,
-          // 2…) já que o slice visível muda mas os índices não — o
-          // pop-in em --ease-bounce (.ms-gallery__item, ms-gallery-in)
-          // só dispara quando o elemento é de fato montado, então nunca
-          // rodava ao paginar, só ao trocar de filtro (que já força
-          // remount ao mudar a lista inteira). Forçar a key a mudar
-          // também na paginação faz o mesmo bounce de entrada tocar em
-          // toda virada de página.
-          const key = `${currentPage}-${i}`;
+          // A vista exibida entra na key de propósito: sem isso, trocar
+          // de página ou filtro reaproveita os nós do DOM por posição (0,
+          // 1, 2…), e a entrada (ms-gallery-in, só no mount) não toca.
+          // Durante o recolher a key ainda é a da vista anterior, então
+          // são os mesmos nós que saem.
+          const key = `${shownView}-${i}`;
 
           if (!item.onClick) return <React.Fragment key={key}>{card}</React.Fragment>;
 

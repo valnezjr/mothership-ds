@@ -27,3 +27,35 @@ renomearia tokens que o `cena.ts` lê pelo nome, sem ganho prático.
 `src/`: só `.ms-dock*`, a legenda do `Grafo3D` e `src/3d/cena.ts`. O
 `Drawer` não usa o par (entra e sai com `0.35s var(--ease-bounce)`),
 então migra para assentar/recolher no ticket 05.
+
+## D2 — 2026-10-16 — Gallery, contorno reativo e trilho do Carousel nos gestos
+
+**Pergunta.** Depois da migração (ticket 05), três casos ainda ficavam
+fora dos tokens: os itens da `Gallery` sumiam na hora ao trocar de
+filtro, ordem ou página; o contorno reativo (`.ms-hover-edge`, item da
+`Gallery`, marcas dos gráficos) tinha `0.3s var(--ease-bounce)` próprio
+nos dois sentidos; o trilho do `Carousel` deslizava com
+`0.5s var(--ease-bounce)`. A spec diz que nenhuma transição solta sobra.
+
+**Escolha.**
+- `Gallery`: a leva que está na tela recolhe, e só depois a nova monta
+  e assenta. Uma leva por vez, sem as duas se sobreporem na grade.
+- Contorno reativo: crescer no hover assenta, voltar ao lugar recolhe.
+  Vale também para as bolinhas do gráfico de linhas e as fatias da pizza,
+  que são o mesmo vocabulário traduzido para SVG.
+- Trilho do `Carousel`: par espacial, sem overshoot. Os bullets seguem
+  em pulso, porque confirmam o clique.
+
+**Por quê.** O critério do D1 resolve os três. Item que sai da grade
+saiu de cena, então recolhe; a saída em sequência evita que as duas
+levas disputem o mesmo espaço da grade. O hover é chegada e partida de
+um estado, e o bounce na volta encolhia o elemento além do tamanho de
+repouso, que é exatamente o overshoot de saída que a regra proíbe. O
+trilho já está na tela e só se desloca: é um objeto grande, onde o
+overshoot lê como solavanco, o mesmo motivo do `Dock`.
+
+**Verificado.** Playwright no styleguide: troca de filtro na `Gallery`
+mantém os itens anteriores com `ms-gallery-out` (0.15s) e monta os novos
+com `ms-gallery-in`; hover com `0.3s` bounce ao entrar e `0.15s` ease-in
+ao sair; trilho em `0.45s` `--ease-spatial`. Sob redução de movimento,
+gestos em `0.01s` e trilho sem transição.

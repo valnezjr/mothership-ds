@@ -20,6 +20,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   Marquee e a onda do Loader usam a curva da deriva. As media queries de
   `prefers-reduced-motion` que só encurtavam essas durações saíram: o
   token já encolhe para 0.01s.
+- **Gallery, contorno reativo e Carousel** (D2 em `docs/decisoes.md`):
+  ao trocar de filtro, ordem ou página, os itens da `Gallery` recolhem
+  antes de os novos assentarem (antes sumiam na hora). O hover reativo
+  (`.ms-hover-edge`, item da `Gallery`, bolinhas do gráfico de linhas,
+  fatias da pizza) cresce assentando e volta recolhendo, sem o overshoot
+  que o encolhia além do tamanho original. O trilho do `Carousel` passa
+  ao par espacial (`--transition-spatial`/`--ease-spatial`, sem
+  overshoot) e para de animar sob `prefers-reduced-motion`.
 - **Popover, DropdownMenu, Select/Combobox e histórico de alertas
   ganham saída animada**: antes sumiam na hora; agora ficam montados
   pelo tempo do recolher (hook interno `usePresence`), sem interação

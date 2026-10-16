@@ -29,7 +29,7 @@ A = assentar (`0.3s --ease-bounce`), R = recolher (`0.15s`, ease-in sem overshoo
 | Select / Combobox (lista) | `0.15s bounce` → A | sumia na hora → R (`usePresence`) |
 | Tooltip | `0.15s` opacity → A | `0.15s` opacity → R |
 | Accordion (corpo) | `0.4s bounce` → A | `0.4s bounce` (overshoot) → R |
-| Gallery (item) | `0.35s bounce` → A | some na hora (filtro/página; sem mudança) |
+| Gallery (item) | `0.35s bounce` → A | sumia na hora → R, a leva toda antes da nova montar (D2) |
 | Dock mobile | usa o Drawer → A | usa o Drawer → R |
 | Dock expandir/recolher | par espacial (D1, não migra) | par espacial |
 
@@ -37,11 +37,11 @@ Cliques → P: seta do Accordion (`0.4s bounce`), hambúrguer ⇄ X (Navbar, Sid
 
 Deriva (curva `--motion-deriva-ease`): Marquee, onda do Loader.
 
+Resolvido no D2: contorno reativo (`.ms-hover-edge`, item da Gallery, bolinhas e fatias dos gráficos; antes `0.3s`/`0.25s bounce` nos dois sentidos) → A ao crescer, R ao voltar. Trilho do Carousel (`0.5s bounce`) → par espacial, sem animação sob redução de movimento.
+
 **Fora, de propósito** (não são entrada, saída nem clique):
-- Contorno reativo (`.ms-hover-edge`, item da Gallery) e marcas dos gráficos no hover (`0.25s`/`0.3s bounce`): resposta ao ponteiro.
 - Valores de gráfico (barras `0.6s`, anel `0.8s`) e nível do Loader (`0.7s`): dado mudando, não gesto.
-- Trilho do Carousel (`0.5s bounce`): objeto grande que já está em cena; pelo critério do D1 seria par espacial, mas isso tira o overshoot do deslize. Fica para decisão do Valnez.
 - Splash (coreografia própria), piscada do olho, flutuação do dirigível, Skeleton (`ease-in-out`, pulso de carregamento, não clique), barra de tempo do toast (contagem regressiva linear).
 - Cor/fundo em hover seguem em `--transition-fast/base/slow`.
 
-**Em aberto para o Valnez:** saída do item da Gallery (filtro/página) e da etapa do StepModal seguem instantâneas; contorno reativo e trilho do Carousel seguem com valores próprios. Se algum deles deve migrar, vira decisão (D2) e ajuste antes do `done`.
+**Em aberto para o Valnez:** a etapa que sai do StepModal segue instantânea (a nova entra por cima com A).

@@ -98,7 +98,7 @@ numa entrada — usar o par do gesto.
   é entrada nem saída.
 - **Exceção: transformação em cena.** Algo que já está na tela e muda
   de forma ou de ponto de vista (Dock expandindo, câmera do Grafo3D,
-  legenda filtrando) usa `--transition-spatial`/`--ease-spatial`, não
+  legenda filtrando, trilho do Carousel) usa `--transition-spatial`/`--ease-spatial`, não
   um gesto. Critério: entrou ou saiu de cena → gesto; já estava e se
   transformou → par spatial. O `Drawer` entra e sai, então é gesto.
   Decisão D1 em `docs/decisoes.md`.

@@ -64,7 +64,8 @@ pausa a animação na sua própria regra.
 
 Fica fora dos gestos o que já está na tela e muda de forma ou de ponto
 de vista: o `Dock` expandindo em painel, a câmera do `Grafo3D` indo até
-um nó, a legenda escurecendo ao filtrar. Nada entra nem sai, e são
+um nó, a legenda escurecendo ao filtrar, o trilho do `Carousel`
+deslizando até o próximo slide. Nada entra nem sai, e são
 objetos grandes. Um overshoot ali lê como solavanco, não como charme.
 Esses usam o par espacial, mais longo e sem overshoot:
 
@@ -199,6 +200,10 @@ mesmo vocabulário — "cresce e ganha profundidade" — é traduzido para
 escala e `drop-shadow`: as bolinhas do gráfico de linhas crescem 2,1× com
 halo na cor da série, e as fatias da pizza crescem a partir do centro do
 gráfico, destacando-se radialmente das vizinhas.
+
+Crescer no hover assenta (chega, passa um pouco do ponto e para); voltar
+ao tamanho original recolhe, sem overshoot. Um bounce na volta faria o
+elemento encolher além do tamanho de repouso por um instante.
 
 ## Redução de movimento
 
