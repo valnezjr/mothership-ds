@@ -1464,9 +1464,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   max-width: 720px;
 }
 
-/* Palavra em destaque no título — gradiente da escala accent */
+/* Palavra em destaque no título: gradiente da logo como texto, única
+   exceção decorativa ao "gradiente = ativo" (D4 em docs/decisoes.md). */
 .ms-hero__highlight {
-  background: linear-gradient(90deg, var(--color-accent-300), var(--color-accent-500));
+  background: var(--gradient-active-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent !important;

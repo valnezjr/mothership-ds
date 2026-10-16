@@ -542,6 +542,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `StatTile` e no título do `Hero` (teto cai de 56px para 48px).
       `ProgressRing` fica de fora: o número mora dentro do anel, 48px
       não cabe. Outfit 600 entra na URL do styleguide, exemplo e README.
+      `HeroHighlight` sai do ciano pastel para `--gradient-active-text`
+      (D4): no claro dava ~2:1, e destoava da marca nos dois temas.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

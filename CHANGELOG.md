@@ -68,7 +68,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   32px/500 para 48px/600, e o título do `Hero` passa a ir até 48px/600
   (era até 56px/500; o mínimo de 32px no mobile segue igual). Num tile
   estreito, o número do `StatTile` encolhe até 32px (container query).
-  O `ProgressRing` fica de fora: 48px não cabe dentro do anel. Quem
+  O `ProgressRing` fica de fora: 48px não cabe dentro do anel.
+
+### Corrigido
+
+- **`HeroHighlight`** passa do gradiente ciano (`accent-300` →
+  `accent-500`) para o gradiente da logo em texto
+  (`--gradient-active-text`). No claro o ciano dava 1.3–2.0:1 sobre o
+  creme; agora fica ≥4.5:1 nos três temas. Única exceção decorativa ao
+  gradiente de ativo (D4 em `docs/decisoes.md`). Quem
   carrega a Outfit precisa incluir o peso 600 na URL do Google Fonts
   (`wght@400;500;600`); sem ele, o navegador sintetiza o negrito.
 

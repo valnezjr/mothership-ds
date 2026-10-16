@@ -126,8 +126,9 @@ já que `<hr>` é sempre horizontal por especificação.
 | `subtitle` | `ReactNode` | |
 | `actions` | `ReactNode` | fileira de botões |
 
-`HeroHighlight` destaca uma palavra do título com o gradiente da escala
-accent.
+`HeroHighlight` destaca uma palavra do título com o gradiente da logo
+(`--gradient-active-text`, ≥4.5:1 nos três temas). É o único uso
+decorativo desse gradiente: um por página, só no título do herói.
 
 ### `Footer` · `Flash`
 

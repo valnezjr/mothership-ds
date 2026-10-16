@@ -105,3 +105,30 @@ sobre o vidro nos três temas. No escuro, o item em hover é branco a
 `--color-accent-text`), então a opção selecionada com hover volta para
 `--color-text` (`--gradient-active-text-hover`). Playwright nos três
 temas.
+
+## D4 — 2026-10-16 — HeroHighlight no gradiente da logo
+
+**Pergunta.** O destaque do título do `Hero` usava um gradiente
+próprio, `accent-300` → `accent-500`, ciano nos três temas. No claro
+dava 1.3–2.0:1 sobre o creme (abaixo até dos 3:1 de texto grande) e
+ignorava o accent laranja do tema. No escuro passava contraste, mas o
+ciano pastel destoava do resto da identidade, que lê ciano → rosa →
+laranja. Com o peso de exibição (ticket 07), a palavra ficou mais
+pesada e o problema mais visível.
+
+**Escolha.** `HeroHighlight` passa a usar `--gradient-active-text`, o
+mesmo gradiente da opção selecionada do Select/Combobox. É a única
+exceção decorativa à regra "gradiente = ativo" do ticket 06.
+Comparado com o accent sólido do tema (`--color-accent-text`, que
+consertava o claro mas deixava o escuro igual) e com destaque sem cor
+(itálico), descartados na validação.
+
+**Por quê.** O título do herói aparece uma vez por página e não
+convive com controles ativos na mesma linha, então não há como
+confundir o destaque com "selecionado". Reaproveitar o token de texto
+traz junto o contraste já validado e as paradas por tema, sem um token
+novo.
+
+**Verificado.** Contraste das paradas sobre o fundo da página: escuro
+(-400) 9.26/6.19/8.31, claro (-800) 5.54/7.75/6.20; o Darker é mais
+escuro que o escuro. Playwright no escuro e no claro.

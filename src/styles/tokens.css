@@ -195,7 +195,8 @@
      a 60%, então dá 7.52/4.64/6.37 nos dois. O claro redefine. */
   --gradient-active: linear-gradient(to left, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
   /* O mesmo sinal como TEXTO (opção selecionada do Select/Combobox e
-     item marcado do DropdownMenu), que pede 4.5:1. Paradas -400 sobre o
+     item marcado do DropdownMenu), que pede 4.5:1. Também pinta o
+     HeroHighlight, única exceção decorativa (D4). Paradas -400 sobre o
      vidro: 7.13/4.77/6.39 no escuro, 9.26/6.19/8.31 no Darker. */
   --gradient-active-text: linear-gradient(to left, var(--color-accent-400), var(--color-pink-400) 60%, var(--color-orange-400));
   /* O mesmo texto com o item em hover/ativo. No escuro o hover é branco a
