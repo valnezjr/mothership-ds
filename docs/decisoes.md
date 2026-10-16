@@ -168,7 +168,7 @@ logo mantém mascote e logo idênticos lado a lado em qualquer tema.
 e duas variações descartadas na comparação) e continuou estranho.
 
 **Escolha.** `dormindo` sai. Entram `confuso` (pupila encolhida, boca em
-zigue-zague, rosto inclinando, "?") e `pensando` (olhar no alto, bolhas
+til, rosto inclinando, "?") e `pensando` (olhar no alto, bolhas
 de pensamento). Quatro expressões, todas de olho aberto. Escolha do
 autor; o `pensando` foi pedido por ele além da troca.
 

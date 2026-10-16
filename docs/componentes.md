@@ -1190,7 +1190,7 @@ Renderizável no servidor, sem `"use client"`.
 - **`piscando`**: a piscada dupla da `Splash` e do `Loader`.
 - **`procurando`**: a pupila salta para um lado e para o outro no pulso
   (`--motion-pulso-ease`) e volta ao centro.
-- **`confuso`**: pupila encolhida e boca em zigue-zague; o rosto inclina
+- **`confuso`**: pupila encolhida e boca em til; o rosto inclina
   para um lado e para o outro no pulso, e um "?" assenta na primeira
   inclinação e recolhe antes de o rosto voltar. Para erro.
 - **`pensando`**: olhar no alto, derivando devagar, sorriso de canto, e três bolhas que
