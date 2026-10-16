@@ -6,6 +6,25 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Alterado
+
+- **Componentes nos gestos de movimento** (`src/styles/components.css`):
+  tudo que entra assenta (`--motion-assentar-*`, 0.3s com overshoot) e
+  tudo que sai recolhe (`--motion-recolher-*`, 0.15s, sem overshoot):
+  Modal/StepModal, toast, histórico de alertas, Drawer, menu da Navbar,
+  Popover, DropdownMenu, lista do Select/Combobox, Tooltip, Accordion e
+  Gallery. Antes, o Accordion e o Drawer fechavam com overshoot, e o
+  Modal/toast saíam com `ease`. Cliques (seta do Accordion, hambúrguer ⇄ X, polegar do
+  `Switch`/`ThemeSwitch`, Checkbox/Radio, seta do Select, indicador das
+  `Tabs`, bullets do Carousel e pontos do `StepIndicator`) usam o pulso;
+  Marquee e a onda do Loader usam a curva da deriva. As media queries de
+  `prefers-reduced-motion` que só encurtavam essas durações saíram: o
+  token já encolhe para 0.01s.
+- **Popover, DropdownMenu, Select/Combobox e histórico de alertas
+  ganham saída animada**: antes sumiam na hora; agora ficam montados
+  pelo tempo do recolher (hook interno `usePresence`), sem interação
+  nesse intervalo.
+
 ## [1.8.0] — 2026-10-16
 
 ### Alterado

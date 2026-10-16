@@ -2,6 +2,7 @@
 
 import React from "react";
 import { createPortal } from "react-dom";
+import { usePresence } from "./presence";
 
 /* ============================================================
    Popover — painel flutuante disparado por clique, com conteúdo
@@ -108,6 +109,7 @@ export function Popover({
 }: PopoverProps) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const open = openProp !== undefined ? openProp : internalOpen;
+  const { present, leaving } = usePresence(open);
   // Wrapper de medição, não um clone com `ref` — Button/ButtonLink/IconButton
   // não encaminham ref hoje, então medir o gatilho de verdade quebraria com
   // eles. O wrapper é só uma caixa inline-block, sem papel semântico.
@@ -133,10 +135,11 @@ export function Popover({
     );
   }, [placement, align]);
 
+  // A posição só zera depois do recolher: o painel sai de onde estava.
   React.useLayoutEffect(() => {
     if (open) reposition();
-    else setPos(null);
-  }, [open, reposition]);
+    else if (!present) setPos(null);
+  }, [open, present, reposition]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -193,12 +196,13 @@ export function Popover({
       <span ref={triggerWrapRef} style={{ display: "inline-block" }}>
         {clonedTrigger}
       </span>
-      {open &&
+      {present &&
         createPortal(
           <div
             ref={contentRef}
             id={baseId}
-            className={cx("ms-popover", "ms-portal-root", className)}
+            className={cx("ms-popover", "ms-portal-root", leaving && "ms-popover--leaving", className)}
+            aria-hidden={leaving || undefined}
             style={{
               top: pos?.top ?? -9999,
               left: pos?.left ?? -9999,

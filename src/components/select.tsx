@@ -3,6 +3,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { clampLeft } from "./popover";
+import { usePresence } from "./presence";
 
 /* ============================================================
    Select e Combobox — listbox própria (customizada), não o
@@ -68,6 +69,7 @@ function useListPosition(
   anchorRef: React.RefObject<HTMLElement | null>,
   listRef: React.RefObject<HTMLElement | null>,
   open: boolean,
+  present: boolean,
   optionCount: number
 ): ListPosition | null {
   const [pos, setPos] = React.useState<ListPosition | null>(null);
@@ -91,10 +93,11 @@ function useListPosition(
     setPos({ top, left: clampLeft(rect.left, rect.width), above });
   }, [anchorRef, listRef]);
 
+  // A posição só zera depois do recolher: a lista sai de onde estava.
   React.useLayoutEffect(() => {
     if (open) reposition();
-    else setPos(null);
-  }, [open, reposition, optionCount]);
+    else if (!present) setPos(null);
+  }, [open, present, reposition, optionCount]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -141,8 +144,9 @@ const OptionList = React.forwardRef<
     onSelect: (opt: SelectOption) => void;
     emptyLabel: string;
     pos: ListPosition | null;
+    leaving: boolean;
   }
->(function OptionList({ id, options, activeIndex, selectedValue, onHover, onSelect, emptyLabel, pos }, ref) {
+>(function OptionList({ id, options, activeIndex, selectedValue, onHover, onSelect, emptyLabel, pos, leaving }, ref) {
   // Mantém a opção destacada à vista — só depois de posicionada, já com a altura final.
   const placed = pos != null;
   React.useEffect(() => {
@@ -152,9 +156,10 @@ const OptionList = React.forwardRef<
   return createPortal(
     <ul
       ref={ref}
-      className={cx("ms-listbox", "ms-portal-root", pos?.above && "ms-listbox--above")}
+      className={cx("ms-listbox", "ms-portal-root", pos?.above && "ms-listbox--above", leaving && "ms-listbox--leaving")}
       role="listbox"
       id={id}
+      aria-hidden={leaving || undefined}
       style={{
         top: pos?.top ?? -9999,
         left: pos?.left ?? -9999,
@@ -222,7 +227,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
   const listId = `${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}-listbox`;
 
   useOutsideClick([wrapRef, listRef], () => setOpen(false), open);
-  const pos = useListPosition(wrapRef, listRef, open, options.length);
+  const { present, leaving } = usePresence(open);
+  const pos = useListPosition(wrapRef, listRef, open, present, options.length);
 
   const selected = options.find((o) => o.value === selectedValue);
 
@@ -294,7 +300,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
           {selected ? selected.label : placeholder}
         </span>
       </button>
-      {open && (
+      {present && (
         <OptionList
           id={listId}
           options={options}
@@ -304,6 +310,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
           onSelect={commit}
           emptyLabel="Nada por aqui."
           pos={pos}
+          leaving={leaving}
           ref={listRef}
         />
       )}
@@ -364,7 +371,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
   useOutsideClick([wrapRef, listRef], () => setOpen(false), open);
 
   const filtered = query === "" ? options : options.filter((o) => filter(o, query));
-  const pos = useListPosition(wrapRef, listRef, open, filtered.length);
+  const { present, leaving } = usePresence(open);
+  const pos = useListPosition(wrapRef, listRef, open, present, filtered.length);
 
   function commit(opt: SelectOption) {
     if (!isControlled) setSelectedValue(opt.value);
@@ -416,7 +424,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
         onBlur={() => setOpen(false)}
         {...rest}
       />
-      {open && (
+      {present && (
         <OptionList
           id={listId}
           options={filtered}
@@ -426,6 +434,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
           onSelect={commit}
           emptyLabel={emptyLabel}
           pos={pos}
+          leaving={leaving}
           ref={listRef}
         />
       )}

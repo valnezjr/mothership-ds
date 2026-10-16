@@ -102,6 +102,14 @@ numa entrada — usar o par do gesto.
   um gesto. Critério: entrou ou saiu de cena → gesto; já estava e se
   transformou → par spatial. O `Drawer` entra e sai, então é gesto.
   Decisão D1 em `docs/decisoes.md`.
+- Saída e entrada por transição (não animação): a transição de cada
+  sentido mora no estado de **destino** — recolher na regra base,
+  assentar no modificador `--open` (ver `.ms-drawer`, `.ms-navbar__menu`,
+  `.ms-accordion__body`, `.ms-tooltip`).
+- Componente que **desmonta** ao fechar precisa ficar montado durante
+  o recolher: `usePresence(open)` (`src/components/presence.ts`,
+  interno) devolve `present`/`leaving` e lê a duração real do token
+  (`recolherMs()`), então acompanha o `0.01s` da redução de movimento.
 
 ## Sombras e opacidades
 

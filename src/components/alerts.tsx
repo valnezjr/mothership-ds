@@ -2,6 +2,7 @@
 
 import React from "react";
 import { createPortal } from "react-dom";
+import { recolherMs, usePresence } from "./presence";
 
 /* ============================================================
    Alertas: estáticos, como notificação (toast de 20s com barra
@@ -136,7 +137,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     timers.current[-id] = setTimeout(() => {
       delete timers.current[-id];
       setToasts((list) => list.filter((t) => t.id !== id));
-    }, 320);
+    }, recolherMs());
   }, []);
 
   const notify = React.useCallback(
@@ -178,6 +179,8 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const historyPresence = usePresence(historyOpen);
+
   const value = React.useMemo<AlertsCtx>(
     () => ({
       notify,
@@ -195,7 +198,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     <Ctx.Provider value={value}>
       {children}
       <AlertsHost toasts={toasts} onDismiss={dismiss} />
-      {historyOpen && <AlertHistory />}
+      {historyPresence.present && <AlertHistory />}
     </Ctx.Provider>
   );
 }
@@ -245,10 +248,12 @@ function AlertsHost({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: nu
  * `AlertsProvider` quando aberto — não renderize manualmente.
  */
 export function AlertHistory() {
-  const { history, clearHistory, toggleHistory } = useAlerts();
+  const { history, clearHistory, toggleHistory, historyOpen } = useAlerts();
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    // Recolhendo: Esc ou clique fora não podem reabrir o painel.
+    if (!historyOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") toggleHistory(); };
     const onDown = (e: PointerEvent) => {
       const t = e.target as Element;
@@ -260,10 +265,16 @@ export function AlertHistory() {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onDown);
     };
-  }, [toggleHistory]);
+  }, [toggleHistory, historyOpen]);
 
   return (
-    <div className="ms-alert-history" ref={ref} role="dialog" aria-label="Notificações">
+    <div
+      className={["ms-alert-history", !historyOpen && "ms-alert-history--leaving"].filter(Boolean).join(" ")}
+      ref={ref}
+      role="dialog"
+      aria-label="Notificações"
+      aria-hidden={!historyOpen || undefined}
+    >
       <div className="ms-alert-history__head">
         <span className="ms-alert-history__title">Notificações</span>
         <button className="ms-alert-history__clear" type="button" onClick={clearHistory}>

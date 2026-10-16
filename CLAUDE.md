@@ -509,10 +509,17 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       (bounce, 0.2s) e deriva (linear, sem duração). Sob
       `prefers-reduced-motion`, as durações viram `0.01s` no próprio
       token. Regra "assentar ao entrar, recolher ao sair" em
-      `docs/movimento.md`; demo lado a lado na story de Efeitos. Os
-      componentes ainda não migraram (ticket 05). Exceção (D1): o que
+      `docs/movimento.md`; demo lado a lado na story de Efeitos. Exceção
+      (D1): o que
       já está em cena e só muda de forma (Dock expandindo, câmera do
       Grafo3D) segue no par `--transition-spatial`/`--ease-spatial`.
+- [x] Componentes migrados para os gestos (ticket 05): entra assentando,
+      sai recolhendo, clique pulsa. Popover, DropdownMenu,
+      Select/Combobox e histórico de alertas, que sumiam na hora, ganham
+      saída via `usePresence` (`src/components/presence.ts`, interno),
+      que lê a duração do próprio token. Accordion e Drawer deixam de
+      fechar com overshoot. Fora: hover reativo, valores de gráfico,
+      trilho do Carousel, Splash/Loader (ver auditoria no ticket 05).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

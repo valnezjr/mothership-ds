@@ -61,6 +61,21 @@ outro `backdrop-filter` **não se aplica**. Renderizado dentro da
 navbar, o menu perde o vidro; no `<body>`, funciona — o JS calcula a
 posição sob o header ao abrir.
 
+### Saída animada de portal
+
+Popover, DropdownMenu, a lista do Select/Combobox e o histórico de
+alertas desmontam ao fechar. Para o gesto recolher rodar antes disso,
+`usePresence(open)` (`src/components/presence.ts`, **não** exportado no
+`index.ts`) mantém o portal montado por `recolherMs()` — a duração lida
+de `--motion-recolher-duration` no `:root`, não um número fixo no JS.
+Enquanto `leaving`, o painel ganha a classe `--leaving` (animação de
+saída + `pointer-events: none`), `aria-hidden` e os listeners de clique
+fora/Esc já estão desligados (dependem de `open`). Reabrir no meio da
+saída só volta `leaving` a `false`: o mesmo nó segue montado. A posição
+calculada só zera depois de desmontar, para o painel sair de onde
+estava. Modal e toast já tinham o próprio timer de saída; passaram a
+usar o mesmo `recolherMs()`.
+
 ### `.ms-portal-root`
 
 Escapar do fluxo de layout não pode significar escapar do escopo de

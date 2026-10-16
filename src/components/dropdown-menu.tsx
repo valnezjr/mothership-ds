@@ -3,6 +3,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { computePosition, type Position, type RectLike } from "./popover";
+import { usePresence } from "./presence";
 
 /* ============================================================
    DropdownMenu — menu flutuante de ações, navegável por teclado
@@ -68,6 +69,7 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const open = openProp !== undefined ? openProp : internalOpen;
+  const { present, leaving } = usePresence(open);
   const triggerWrapRef = React.useRef<HTMLSpanElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
   const returnFocusRef = React.useRef<HTMLElement | null>(null);
@@ -113,13 +115,14 @@ export function DropdownMenu({
     );
   }, [placement, align]);
 
+  // A posição só zera depois do recolher: o menu sai de onde estava.
   React.useLayoutEffect(() => {
     if (open) reposition();
     else {
-      setPos(null);
       focusedOnOpenRef.current = false;
+      if (!present) setPos(null);
     }
-  }, [open, reposition]);
+  }, [open, present, reposition]);
 
   React.useEffect(() => {
     // Só foca o primeiro item depois que `pos` sai de `null` (menu já
@@ -210,13 +213,14 @@ export function DropdownMenu({
       <span ref={triggerWrapRef} style={{ display: "inline-block" }}>
         {clonedTrigger}
       </span>
-      {open &&
+      {present &&
         createPortal(
           <div
             ref={contentRef}
             id={baseId}
             role="menu"
-            className={cx("ms-dropdown-menu", "ms-portal-root", className)}
+            className={cx("ms-dropdown-menu", "ms-portal-root", leaving && "ms-dropdown-menu--leaving", className)}
+            aria-hidden={leaving || undefined}
             style={{
               top: pos?.top ?? -9999,
               left: pos?.left ?? -9999,

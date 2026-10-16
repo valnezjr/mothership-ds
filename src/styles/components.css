@@ -402,14 +402,14 @@
   border: none;
   border-radius: var(--radius-full);
   background: var(--color-thumb) var(--icon-switch) no-repeat center;
-  animation: ms-slide-out var(--transition-base);
+  animation: ms-slide-out var(--motion-pulso-duration) var(--motion-pulso-ease);
   transition: outline var(--transition-fast);
 }
 
 .ms-switch__thumb:hover { outline: var(--switch-hover-ring) solid var(--color-border); }
 
 .light .ms-switch__thumb {
-  animation: ms-slide-in var(--transition-base) forwards;
+  animation: ms-slide-in var(--motion-pulso-duration) var(--motion-pulso-ease) forwards;
 }
 
 .ms-switch__track {
@@ -540,7 +540,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 16px;
   flex-shrink: 0;
   background: var(--icon-select) no-repeat center / contain;
-  transition: transform var(--transition-base) var(--ease-bounce);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-select__trigger[aria-expanded="true"]::after { transform: rotate(180deg); }
@@ -564,7 +564,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   box-shadow: var(--shadow-md);
-  animation: ms-listbox-in 0.15s var(--ease-bounce);
+  animation: ms-listbox-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 .ms-listbox__option {
@@ -586,6 +586,15 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* Sem espaço embaixo do campo: abre para cima (decidido no componente). */
 .ms-listbox--above { animation-name: ms-listbox-in-above; }
 
+/* Saída dos painéis flutuantes (Select/Combobox, Popover, DropdownMenu):
+   ficam montados pelo tempo do recolher (usePresence, presence.ts). */
+.ms-listbox--leaving,
+.ms-popover--leaving,
+.ms-dropdown-menu--leaving {
+  animation: ms-listbox-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards;
+  pointer-events: none;
+}
+
 @keyframes ms-listbox-in {
   from { opacity: 0; transform: translateY(-6px) scale(0.98); }
   to   { opacity: 1; transform: none; }
@@ -596,9 +605,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   to   { opacity: 1; transform: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ms-listbox { animation-duration: 0.01s; }
-  .ms-select__trigger::after { transition: none; }
+@keyframes ms-listbox-out {
+  to { opacity: 0; transform: scale(0.98); }
 }
 
 /* ---------- Popover ----------
@@ -617,11 +625,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   box-shadow: var(--shadow-md);
-  animation: ms-listbox-in 0.15s var(--ease-bounce);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ms-popover { animation-duration: 0.01s; }
+  animation: ms-listbox-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 /* ---------- DropdownMenu ----------
@@ -642,7 +646,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   box-shadow: var(--shadow-md);
-  animation: ms-listbox-in 0.15s var(--ease-bounce);
+  animation: ms-listbox-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 .ms-dropdown-menu__item {
@@ -702,10 +706,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-top: var(--border-width) solid var(--color-border);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ms-dropdown-menu { animation-duration: 0.01s; }
-}
-
 .ms-checkbox-field,
 .ms-radio-field {
   display: inline-flex;
@@ -741,7 +741,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-thumb);
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
   transform: scale(0);
-  transition: transform var(--transition-fast) var(--ease-bounce);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-radio::after {
@@ -751,7 +751,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-radius: var(--radius-full);
   background: var(--color-accent);
   transform: scale(0);
-  transition: transform var(--transition-fast) var(--ease-bounce);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-checkbox:checked {
@@ -806,7 +806,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
      fica quase invisível no tema claro (branco sobre o tom "soft"
      quase branco do trilho ativo). */
   box-shadow: var(--shadow-xs);
-  transition: left var(--transition-base) var(--ease-bounce), outline var(--transition-fast);
+  transition: left var(--motion-pulso-duration) var(--motion-pulso-ease), outline var(--transition-fast);
 }
 
 /* Mesmo anel de hover do ThemeSwitch (`--switch-hover-ring`, token
@@ -1207,7 +1207,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-alert--toast {
   position: relative;
-  animation: ms-toast-in 0.35s var(--ease-bounce);
+  animation: ms-toast-in var(--motion-assentar-duration) var(--motion-assentar-ease);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1261,7 +1261,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-alert--success   .ms-alert__timer { background: var(--color-success); }
 .ms-alert--danger    .ms-alert__timer { background: var(--color-danger); }
 
-.ms-alert--leaving { animation: ms-toast-out 0.3s ease forwards; }
+.ms-alert--leaving { animation: ms-toast-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
 @keyframes ms-toast-in {
   from { opacity: 0; transform: translateX(24px) scale(0.94); }
@@ -1292,7 +1292,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  animation: ms-toast-in 0.25s ease;
+  animation: ms-toast-in var(--motion-assentar-duration) var(--motion-assentar-ease);
+}
+
+.ms-alert-history--leaving {
+  animation: ms-toast-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards;
+  pointer-events: none;
 }
 
 .ms-alert-history[hidden] { display: none; }
@@ -1339,11 +1344,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-alert strong { font-weight: var(--font-weight-medium); }
-
-@media (prefers-reduced-motion: reduce) {
-  .ms-alert--toast,
-  .ms-alert-history { animation-duration: 0.01s; }
-}
 
 /* ---------- Hero ---------- */
 .ms-hero {
@@ -1470,7 +1470,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-radius: var(--radius-pill);
   background: var(--carousel-overlay-dot);
   cursor: pointer;
-  transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
+  transition: width var(--motion-pulso-duration) var(--motion-pulso-ease), background var(--transition-slow);
 }
 
 .ms-carousel__bullet--active {
@@ -1549,7 +1549,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
-  animation: ms-gallery-in 0.35s var(--ease-bounce);
+  animation: ms-gallery-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 .ms-gallery__item.is-hidden { display: none; }
@@ -1701,20 +1701,24 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  transition: transform 0.4s var(--ease-bounce);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-accordion__item--open .ms-accordion__chevron { transform: rotate(180deg); }
 
-/* Expansão animada via grid-template-rows (0fr → 1fr) com easing
-   de bounce: leve overshoot na abertura e no fechamento. */
+/* Expansão via grid-template-rows (0fr → 1fr): assenta ao abrir (com
+   overshoot), recolhe ao fechar (sem). A transição de cada sentido
+   mora no estado de destino. */
 .ms-accordion__body {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s var(--ease-bounce);
+  transition: grid-template-rows var(--motion-recolher-duration) var(--motion-recolher-ease);
 }
 
-.ms-accordion__item--open .ms-accordion__body { grid-template-rows: 1fr; }
+.ms-accordion__item--open .ms-accordion__body {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--motion-assentar-duration) var(--motion-assentar-ease);
+}
 
 .ms-accordion__inner {
   overflow: hidden;
@@ -1766,7 +1770,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 2px;
   background: var(--color-accent);
   border-radius: var(--radius-pill);
-  transition: transform 0.3s var(--ease-bounce), width 0.3s var(--ease-bounce);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease), width var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-tabs__panel { padding-top: var(--space-4); }
@@ -1907,7 +1911,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 2px;
   border-radius: 2px;
   background: var(--color-text);
-  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease), opacity var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 /* Hamburguer ⇄ X: barras externas giram, a do meio some */
@@ -1937,8 +1941,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   visibility: hidden;
   transform: translateY(-8px);
   pointer-events: none;
-  transition: opacity var(--transition-slow), transform 0.35s var(--ease-bounce),
-              visibility 0s linear var(--transition-slow);
+  /* Fechando: recolhe, e só depois some do foco (visibility atrasada). */
+  transition: opacity var(--motion-recolher-duration) var(--motion-recolher-ease), transform var(--motion-recolher-duration) var(--motion-recolher-ease),
+              visibility 0s linear var(--motion-recolher-duration);
 }
 
 .ms-navbar__menu--open {
@@ -1946,7 +1951,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   visibility: visible;
   transform: none;
   pointer-events: auto;
-  transition-delay: 0s;
+  transition: opacity var(--motion-assentar-duration) var(--motion-assentar-ease), transform var(--motion-assentar-duration) var(--motion-assentar-ease), visibility 0s;
 }
 
 .ms-navbar__menu .ms-navbar__link {
@@ -1974,7 +1979,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* ---------- Drawer ----------
    Painel deslizante + véu, extraído da gaveta mobile do Sidebar
    (v1.2.2) — mesma z-index (150 véu, 151 painel, ver ARCHITECTURE.md
-   § escala de z-index) e as mesmas cores/transições de antes, agora
+   § escala de z-index) e as mesmas cores de antes, agora
    compartilhadas. "Leve" como o Popover: sem contrato de foco de
    Modal — só o véu (clique) ou Esc fecham. */
 .ms-drawer-backdrop {
@@ -1984,7 +1989,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: rgba(0, 0, 0, 0.55);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-slow), visibility 0s linear var(--transition-slow);
+  transition: opacity var(--motion-recolher-duration) var(--motion-recolher-ease), visibility 0s linear var(--motion-recolher-duration);
 }
 
 .light .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
@@ -1992,7 +1997,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-drawer-backdrop--open {
   opacity: 1;
   visibility: visible;
-  transition-delay: 0s;
+  transition: opacity var(--motion-assentar-duration) var(--motion-assentar-ease), visibility 0s;
 }
 
 .ms-drawer {
@@ -2020,9 +2025,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
      já tira elemento do tab order por spec (mesmo mecanismo do
      backdrop logo acima) — mesmo truque de delay (0s linear
      <duração>): esconde só DEPOIS do slide-out terminar, mas revela
-     na hora ao abrir (transition-delay: 0s em --open). */
+     na hora ao abrir (visibility 0s em --open). Abre assentando,
+     fecha recolhendo (D1 em docs/decisoes.md). */
   visibility: hidden;
-  transition: transform 0.35s var(--ease-bounce), visibility 0s linear 0.35s;
+  transition: transform var(--motion-recolher-duration) var(--motion-recolher-ease), visibility 0s linear var(--motion-recolher-duration);
 }
 
 .ms-drawer--right {
@@ -2036,12 +2042,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-drawer--open {
   transform: none;
   visibility: visible;
-  transition-delay: 0s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ms-drawer-backdrop,
-  .ms-drawer { transition: none; }
+  transition: transform var(--motion-assentar-duration) var(--motion-assentar-ease), visibility 0s;
 }
 
 /* ---------- Sidebar (sumário completo) ----------
@@ -2157,7 +2158,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 2px;
   border-radius: 2px;
   background: var(--color-text);
-  transition: transform 0.3s var(--ease-bounce), opacity var(--transition-base);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease), opacity var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 .ms-sidebar__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -2184,10 +2185,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-sidebar__toggle,
   .ms-sidebar__drawer-backdrop,
   .ms-sidebar__drawer-panel { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ms-sidebar__toggle span { transition: none; }
 }
 
 /* ---------- Dock ----------
@@ -2370,7 +2367,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 2px; /* traço do ícone, mesmo do hambúrguer da Navbar */
   border-radius: var(--radius-pill);
   background: var(--color-text);
-  transition: transform var(--transition-slow) var(--ease-bounce), opacity var(--transition-base);
+  transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease), opacity var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
 /* 6px = gap (--space-1) + traço (2px): leva a 1ª e a 3ª barra ao centro. */
@@ -2406,8 +2403,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-dock,
   .ms-dock__item,
   .ms-dock__label,
-  .ms-dock__toggle svg,
-  .ms-dock__menu-toggle span { transition: none; }
+  .ms-dock__toggle svg { transition: none; }
 }
 
 /* ---------- Splash screen (logo Mothership) ----------
@@ -2628,7 +2624,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Onda deslizando: um ciclo completo, em loop sem emenda */
 .ms-loader__wave {
-  animation: ms-liquid-wave 2.6s linear infinite;
+  animation: ms-liquid-wave 2.6s var(--motion-deriva-ease) infinite;
 }
 
 @keyframes ms-liquid-wave {
@@ -2678,7 +2674,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   grid-template-columns: minmax(0, 1fr);
   padding: var(--space-5);
   background: rgba(0, 0, 0, 0.55);
-  animation: ms-backdrop-in 0.25s ease;
+  animation: ms-backdrop-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 /* No tema claro o véu é CLARO: o modal (vidro sobre fundo claro, texto
@@ -2686,7 +2682,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    um véu escuro atravessaria o vidro e derrubaria o contraste do texto. */
 .light .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
-.ms-modal-backdrop--closing { animation: ms-backdrop-out 0.2s ease forwards; }
+.ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
 @keyframes ms-backdrop-in {
   from { opacity: 0; }
@@ -2712,7 +2708,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   box-shadow: var(--shadow-xl);
-  animation: ms-modal-in 0.4s var(--ease-bounce);
+  animation: ms-modal-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
 .ms-modal--sm { width: min(480px, 100%); }
@@ -2723,7 +2719,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    com pouca altura própria deixaria a maior parte da viewport vazia. */
 .ms-modal--full { width: 100%; height: 100%; }
 
-.ms-modal-backdrop--closing .ms-modal { animation: ms-modal-out 0.2s ease forwards; }
+.ms-modal-backdrop--closing .ms-modal { animation: ms-modal-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
 @keyframes ms-modal-in {
   from { opacity: 0; transform: translateY(18px) scale(0.94); }
@@ -2833,7 +2829,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   pointer-events: none;
 }
 
-.ms-modal__step[data-active="true"] { animation: ms-step-in 0.35s var(--ease-bounce); }
+.ms-modal__step[data-active="true"] { animation: ms-step-in var(--motion-assentar-duration) var(--motion-assentar-ease); }
 .ms-modal__steps[data-dir="back"] .ms-modal__step[data-active="true"] {
   animation-name: ms-step-in-back;
 }
@@ -2874,7 +2870,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   border-radius: var(--radius-pill);
   background: var(--color-border);
   cursor: pointer;
-  transition: width 0.3s var(--ease-bounce), background var(--transition-slow);
+  transition: width var(--motion-pulso-duration) var(--motion-pulso-ease), background var(--transition-slow);
 }
 
 .ms-step-indicator__dot--active {
@@ -2892,12 +2888,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* Mesmo motivo do `.ms-step-indicator__dots` acima. */
 .ms-modal__footer .ms-step-indicator__count {
   margin-right: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ms-modal,
-  .ms-modal__step,
-  .ms-modal-backdrop { animation-duration: 0.01s; }
 }
 
 /* ---------- Breadcrumbs ---------- */
@@ -3014,10 +3004,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   font-size: var(--text-xs);
   white-space: pre-line;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity var(--motion-recolher-duration) var(--motion-recolher-ease);
 }
 
-.ms-tooltip--show { opacity: 1; }
+.ms-tooltip--show {
+  opacity: 1;
+  transition: opacity var(--motion-assentar-duration) var(--motion-assentar-ease);
+}
 
 /* ---------- Dados: estrutura de gráfico ---------- */
 .ms-chart {
@@ -3563,7 +3556,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: ms-marquee-scroll var(--ms-marquee-duration, 40s) linear infinite;
+  animation: ms-marquee-scroll var(--ms-marquee-duration, 40s) var(--motion-deriva-ease) infinite;
 }
 
 .ms-marquee__track--reverse { animation-direction: reverse; }

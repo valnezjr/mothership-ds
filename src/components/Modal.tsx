@@ -4,9 +4,10 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { Button } from "./primitives";
 import { StepIndicator } from "./StepIndicator";
+import { recolherMs } from "./presence";
 
 /* ============================================================
-   Modal / popup — entrada com o bounce do sistema, saída suave.
+   Modal / popup — entra com o gesto assentar, sai com o recolher.
    Fecha no X, no clique fora e no Esc.
    ============================================================ */
 
@@ -67,7 +68,7 @@ function useModalShell(open: boolean, onClose: () => void, dismissable: boolean)
       setClosing(false);
       setVisible(false);
       onClose();
-    }, 200); // acompanha ms-modal-out
+    }, recolherMs()); // acompanha ms-modal-out
   }, [onClose]);
 
   React.useEffect(() => {
