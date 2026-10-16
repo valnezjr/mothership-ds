@@ -1053,18 +1053,19 @@ export const STORIES: Story[] = [
     id: "mascote",
     group: "Componentes",
     title: "Mascote",
-    subtitle: "O rosto da marca em três expressões, com o olho e o sorriso da logo. Para transições e estados vazios, nunca para algo que fica sempre na tela.",
+    subtitle: "O rosto da marca em quatro expressões, com o olho e o sorriso da logo. Para transições e estados vazios, nunca para algo que fica sempre na tela.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
-          <code>piscando</code> é a piscada dupla da splash; <code>dormindo</code> fecha o olho
-          e ronca de boca entreaberta, soltando um &quot;z&quot; a cada ronco; <code>procurando</code> salta a pupila
-          de um lado para o outro, no pulso. Sem <code>label</code>, o mascote é decorativo
-          (<code>aria-hidden</code>): o texto ao lado é quem diz o que está acontecendo. Sob{" "}
-          <code>prefers-reduced-motion</code>, as três ficam paradas.
+          <code>piscando</code> é a piscada dupla da splash; <code>procurando</code> salta a
+          pupila de um lado para o outro, no pulso; <code>confuso</code> inclina o rosto com um
+          &quot;?&quot; e a pupila encolhida (bom para erro); <code>pensando</code> olha para o alto
+          enquanto as bolhas assentam uma a uma (bom para espera). Sem <code>label</code>, o
+          mascote é decorativo (<code>aria-hidden</code>): o texto ao lado é quem diz o que está
+          acontecendo. Sob <code>prefers-reduced-motion</code>, as quatro ficam paradas.
         </p>
         <div style={{ display: "flex", gap: 48, alignItems: "flex-end", justifyContent: "center", flexWrap: "wrap" }}>
-          {(["piscando", "dormindo", "procurando"] as const).map((e) => (
+          {(["piscando", "procurando", "confuso", "pensando"] as const).map((e) => (
             <figure key={e} style={{ margin: 0, display: "grid", justifyItems: "center", gap: 8 }}>
               <Mascote expressao={e} size={120} />
               <figcaption className="ms-text-sm ms-text-muted"><code>{e}</code></figcaption>

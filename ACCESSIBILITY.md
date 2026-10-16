@@ -97,8 +97,8 @@ Tudo que anima respeita `prefers-reduced-motion: reduce`:
 - Fundo (`LivingBackground`): deriva e pulsação desligam.
 - `Splash`: piscada do olho e flutuação do dirigível desligam.
 - `Loader`: onda do preenchimento desliga.
-- `Mascote`: piscada, ronco, "z" e olhar da pupila desligam; os
-  "z" ficam visíveis e a boca entreaberta, parados.
+- `Mascote`: piscada, olhar da pupila, inclinação, "?" e bolhas
+  desligam; o "?" e as bolhas ficam visíveis, parados.
 - `Modal` / `Splash`: transições encurtadas.
 - Gestos (`--motion-assentar/recolher/pulso-duration`): viram `0.01s`
   no próprio `tokens.css` — componente que usa o token não precisa de

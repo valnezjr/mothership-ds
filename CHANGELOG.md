@@ -9,11 +9,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 ### Adicionado
 
 - **`Mascote`** (`src/components/Mascote.tsx`, sem `"use client"`): o
-  rosto da marca em três expressões (`expressao`: `piscando`,
-  `dormindo`, `procurando`), com `size` e `label` (sem ele, decorativo).
-  Olho, pupila e sorriso são as paths da logo; cada expressão tem
-  animação própria nos gestos (`dormindo` ronca de boca entreaberta e
-  solta um "z" a cada ronco), parada sob `prefers-reduced-motion`.
+  rosto da marca em quatro expressões (`expressao`: `piscando`,
+  `procurando`, `confuso`, `pensando`), com `size` e `label` (sem ele,
+  decorativo). Olho, pupila e sorriso são as paths da logo; cada
+  expressão tem animação própria nos gestos, parada sob
+  `prefers-reduced-motion`.
   As paths do rosto passam a morar em `face-paths.ts`, compartilhadas
   com o `Loader`. Decisão de cores em D5, `docs/decisoes.md`.
   54 componentes (era 53).

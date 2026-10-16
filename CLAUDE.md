@@ -545,10 +545,11 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `HeroHighlight` sai do ciano pastel para `--gradient-active-text`
       (D4): no claro dava ~2:1, e destoava da marca nos dois temas.
 - [x] `Mascote` (`src/components/Mascote.tsx`, sem `"use client"`,
-      ticket 08): rosto da logo em `piscando`/`dormindo`/`procurando`,
-      `size`, `label` opcional (sem ele, `aria-hidden`). Esboço aprovado
-      em `.scratch/identidade-v1.9/mascote/`. Sorriso no gradiente da
-      logo, esclera na `--ms-logo-ink` (D5). Paths do rosto extraídas
+      ticket 08): rosto da logo em `piscando`/`procurando`/`confuso`/
+      `pensando`, `size`, `label` opcional (sem ele, `aria-hidden`).
+      Esboço em `.scratch/identidade-v1.9/mascote/`. Sorriso no
+      gradiente da logo, esclera na `--ms-logo-ink` (D5). `dormindo`,
+      do spec, saiu: de olho fechado o rosto perde a massa do anel (D6). Paths do rosto extraídas
       para `face-paths.ts` (sem diretiva), usadas também pelo `Loader`:
       importar de um módulo `"use client"` quebraria o Mascote no
       servidor. 54 componentes (era 53).

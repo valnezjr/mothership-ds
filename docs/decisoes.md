@@ -149,9 +149,10 @@ creme, o olho some).
 As paradas usam `--color-accent-500`/`--color-pink-500`/
 `--color-orange-500`, que são as da logo e não mudam com o tema (o
 `--color-accent` vira laranja no claro). Nas animações, a piscada é a
-mesma `ms-blink` da `Splash` e do `Loader`; o ronco do `dormindo` e os "z" usam
-a curva da deriva, e cada salto da pupila é um pulso (0.2s). O pulso
-fora de clique e a deriva fora do fundo são leituras do vocabulário,
+mesma `ms-blink` da `Splash` e do `Loader`; o olhar do `pensando` usa a curva da
+deriva; os saltos da pupila e as inclinações do `confuso` são pulsos
+(0.2s); o "?" e as bolhas assentam ao aparecer e recolhem ao sair. O
+pulso fora de clique e a deriva fora do fundo são leituras do vocabulário,
 não usos da tabela do spec. A prop `label` (sem ela, `aria-hidden`)
 entrou além do ticket, para o caso raro de o mascote carregar sentido
 sozinho.
@@ -159,4 +160,20 @@ sozinho.
 **Por quê.** No mascote o gradiente é a arte da marca, não um sinal de
 estado, e ele não convive com controles. A esclera ligada à tinta da
 logo mantém mascote e logo idênticos lado a lado em qualquer tema.
+
+## D6 — 2026-10-16 — Mascote sem `dormindo`, com `confuso` e `pensando`
+
+**Pergunta.** O spec pedia `piscando`, `dormindo` e `procurando`. O
+`dormindo` passou por três olhos fechados (arco grosso, anel achatado,
+e duas variações descartadas na comparação) e continuou estranho.
+
+**Escolha.** `dormindo` sai. Entram `confuso` (pupila encolhida, boca em
+zigue-zague, rosto inclinando, "?") e `pensando` (olhar no alto, bolhas
+de pensamento). Quatro expressões, todas de olho aberto. Escolha do
+autor; o `pensando` foi pedido por ele além da troca.
+
+**Por quê.** O anel aberto é quase todo o mascote. Fechado, o rosto vira
+uma linha larga sobre um ponto de boca e perde a proporção. `confuso`
+cobre erro e `pensando` cobre espera, os dois casos de estado vazio e
+transição que o `EmptyState` (ticket 09) vai usar.
 

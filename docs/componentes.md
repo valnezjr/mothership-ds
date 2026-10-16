@@ -1177,27 +1177,28 @@ algumas centenas de nós.
 
 ### `Mascote`
 
-O rosto da marca (olho e sorriso da logo) em três expressões. Para
+O rosto da marca (olho e sorriso da logo) em quatro expressões. Para
 transições e estados vazios, nunca para algo que fica sempre na tela.
 Renderizável no servidor, sem `"use client"`.
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
-| `expressao` | `"piscando" \| "dormindo" \| "procurando"` | `"piscando"` | |
+| `expressao` | `"piscando" \| "procurando" \| "confuso" \| "pensando"` | `"piscando"` | |
 | `size` | `number` | `96` | largura em px; a altura segue a proporção |
 | `label` | `string` | — | nome acessível; sem ele, `aria-hidden` (decorativo) |
 
 - **`piscando`**: a piscada dupla da `Splash` e do `Loader`.
-- **`dormindo`**: olho fechado (o anel achatado, como no fim da
-  piscada) e boca entreaberta, roncando num ciclo
-  de 3s: inspira (o rosto sobe, a boca abre), ronca (a boca treme) e
-  expira. Cada ronco solta um "z", que sobe em deriva
-  (`--motion-deriva-ease`).
 - **`procurando`**: a pupila salta para um lado e para o outro no pulso
   (`--motion-pulso-ease`) e volta ao centro.
+- **`confuso`**: pupila encolhida e boca em zigue-zague; o rosto inclina
+  para um lado e para o outro no pulso, e um "?" assenta na primeira
+  inclinação e recolhe antes de o rosto voltar. Para erro.
+- **`pensando`**: olhar no alto, derivando devagar, e três bolhas que
+  assentam uma de cada vez e recolhem. Para espera.
 
-O mesmo `viewBox` nas três: trocar `expressao` não desloca o rosto. Sob
-`prefers-reduced-motion`, todas ficam paradas (os "z" visíveis).
+O mesmo `viewBox` nas quatro: trocar `expressao` não desloca o rosto.
+Sob `prefers-reduced-motion`, todas ficam paradas (o "?" e as bolhas
+visíveis).
 
 ### `LogoMark`
 

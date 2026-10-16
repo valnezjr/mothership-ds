@@ -21,7 +21,7 @@ Ordem: **identidade → qualidade → cobertura**, depois de lançar a v1.8 com 
    | pulso | `--ease-bounce` | 0.2s | confirmação de clique |
    | deriva | linear, contínuo | — | fundo vivo, giro de borda |
    Todos os componentes existentes migram: assentar ao entrar, recolher ao sair.
-4. **Mascote** (`Mascote`, prop `expressao`: `piscando`, `dormindo`, `procurando`), derivada do olho de `assets/logo.svg`. Aparece em transições e estados vazios, nunca em elemento que fica sempre visível. Esboço em SVG pelo agente, refinado pelo Valnez no Figma.
+4. **Mascote** (`Mascote`, prop `expressao`: `piscando`, `procurando`, `confuso`, `pensando`; `dormindo` saiu, D6), derivada do olho de `assets/logo.svg`. Aparece em transições e estados vazios, nunca em elemento que fica sempre visível. Esboço em SVG pelo agente, refinado pelo Valnez no Figma.
 5. **Peso de exibição:** `--font-weight-display: 600` e `--text-display: 48px`, só para números grandes e títulos de herói.
 6. **Tema claro como assinatura:** toda mudança é validada no claro com o mesmo cuidado do escuro; o escuro continua padrão.
 7. **Qualidade:** auditoria (`axe-core`, contraste) do que a identidade mexeu.

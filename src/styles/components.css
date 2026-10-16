@@ -2787,80 +2787,43 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-loader--indeterminate .ms-loader__level { animation: none; }
 }
 
-/* ---------- Mascote (rosto da marca em três expressões) ----------
-   Branco da esclera e ciano da pupila vêm das regras da logo, acima. */
+/* ---------- Mascote (rosto da marca em quatro expressões) ----------
+   Branco da esclera e ciano da pupila vêm das regras da logo, acima.
+   Saltos usam o pulso (0.2s = 5% de um ciclo de 4s); a curva vai no
+   keyframe onde o trecho começa, que é de onde ela vale. */
 .ms-mascote {
   display: block;
   height: auto;
   overflow: visible;
 }
 
+.ms-mascote__face,
 .ms-mascote__eye,
 .ms-mascote__pupil,
-.ms-mascote__breath,
-.ms-mascote__z {
+.ms-mascote__ask,
+.ms-mascote__bubble {
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.ms-mascote__z,
-.ms-mascote__mouth {
+.ms-mascote__mouth,
+.ms-mascote__mark {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.ms-mascote__z { stroke: var(--ms-logo-ink, #fefefe); }
 .ms-mascote__mouth { stroke-width: 90; }
+.ms-mascote--confuso .ms-mascote__mouth { stroke-width: 70; }
+.ms-mascote__mark {
+  stroke: var(--ms-logo-ink, #fefefe);
+  stroke-width: 52;
+}
 
 /* piscando: a mesma piscada dupla da splash e do loader */
 .ms-mascote--piscando .ms-mascote__eye { animation: ms-blink 4.6s infinite; }
 
-/* dormindo: ronca num ciclo de 3s. Inspira devagar (o rosto sobe e a
-   boca abre), ronca (a boca treme, 45–62%) e expira; cada ronco solta
-   um "z", que sobe em deriva. O "z" dura três ciclos e cada um sai um
-   ciclo depois do anterior, sempre no instante do ronco (45% = 1.35s). */
-.ms-mascote__breath,
-.ms-mascote__snore {
-  animation: ms-mascote-breath 3s var(--motion-deriva-ease) infinite;
-}
-
-.ms-mascote__snore {
-  transform-box: fill-box;
-  transform-origin: center top;
-  animation-name: ms-mascote-snore;
-}
-
-@keyframes ms-mascote-breath {
-  0%, 100% { transform: none; }
-  45%      { transform: translateY(-14px) scale(1.05); }
-  62%      { transform: translateY(-6px) scale(1.02); }
-}
-
-@keyframes ms-mascote-snore {
-  0%, 100% { transform: scale(0.85, 0.6); }
-  45%      { transform: scale(1.05, 1.25); }
-  49%      { transform: scale(1, 0.85); }
-  53%      { transform: scale(1.05, 1.2); }
-  57%      { transform: scale(1, 0.85); }
-  62%      { transform: scale(1, 1.1); }
-}
-
-.ms-mascote__z {
-  opacity: 0;
-  animation: ms-mascote-z 9s var(--motion-deriva-ease) infinite;
-  animation-delay: calc(1.35s + var(--i, 0) * 3s);
-}
-
-@keyframes ms-mascote-z {
-  0%   { opacity: 0; transform: translate(-60px, 120px) scale(0.6); }
-  8%, 55% { opacity: 1; }
-  75%, 100% { opacity: 0; transform: translate(40px, -80px); }
-}
-
-/* procurando: a pupila olha para um lado e para o outro e volta ao
-   centro. Cada salto é um pulso: 5% de 4s = 0.2s, e a curva vai no
-   keyframe onde o salto começa (é dali que ela vale) */
+/* procurando: a pupila olha para um lado e para o outro e volta ao centro */
 .ms-mascote--procurando .ms-mascote__pupil {
   animation: ms-mascote-look 4s infinite;
 }
@@ -2874,13 +2837,70 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   68% { transform: translate(125px, -35px); animation-timing-function: var(--motion-pulso-ease); }
 }
 
+/* confuso: o rosto inclina para um lado e para o outro; o "?" assenta
+   na primeira inclinação e recolhe antes de o rosto voltar */
+.ms-mascote--confuso .ms-mascote__face {
+  animation: ms-mascote-tilt 4s infinite;
+}
+
+@keyframes ms-mascote-tilt {
+  0%, 90%, 100% { transform: none; }
+  10% { transform: none; animation-timing-function: var(--motion-pulso-ease); }
+  15% { transform: rotate(-8deg); }
+  45% { transform: rotate(-8deg); animation-timing-function: var(--motion-pulso-ease); }
+  50% { transform: rotate(7deg); }
+  85% { transform: rotate(7deg); animation-timing-function: var(--motion-pulso-ease); }
+}
+
+.ms-mascote__ask { animation: ms-mascote-ask 4s infinite; }
+
+@keyframes ms-mascote-ask {
+  0%, 10% {
+    opacity: 0;
+    transform: scale(0.6);
+    animation-timing-function: var(--motion-assentar-ease);
+  }
+  17.5% { opacity: 1; transform: none; }
+  85% { opacity: 1; transform: none; animation-timing-function: var(--motion-recolher-ease); }
+  88.75%, 100% { opacity: 0; transform: scale(0.6); }
+}
+
+/* pensando: o olhar fica no alto, derivando devagar, e as bolhas
+   assentam uma de cada vez, da menor à maior, e recolhem */
+.ms-mascote--pensando .ms-mascote__pupil {
+  animation: ms-mascote-ponder 6s var(--motion-deriva-ease) infinite;
+}
+
+@keyframes ms-mascote-ponder {
+  0%, 100% { transform: none; }
+  50% { transform: translate(-40px, 15px); }
+}
+
+.ms-mascote__bubble {
+  opacity: 0;
+  animation: ms-mascote-bubble 3s infinite;
+  animation-delay: calc(var(--i, 0) * 0.4s);
+}
+
+@keyframes ms-mascote-bubble {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+    animation-timing-function: var(--motion-assentar-ease);
+  }
+  10% { opacity: 1; transform: none; }
+  70% { opacity: 1; transform: none; animation-timing-function: var(--motion-recolher-ease); }
+  75%, 100% { opacity: 0; transform: scale(0.4); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ms-mascote--piscando .ms-mascote__eye,
-  .ms-mascote__breath,
-  .ms-mascote__snore,
-  .ms-mascote__z,
-  .ms-mascote--procurando .ms-mascote__pupil { animation: none; }
-  .ms-mascote__z { opacity: 1; }
+  .ms-mascote--procurando .ms-mascote__pupil,
+  .ms-mascote--confuso .ms-mascote__face,
+  .ms-mascote__ask,
+  .ms-mascote--pensando .ms-mascote__pupil,
+  .ms-mascote__bubble { animation: none; }
+  .ms-mascote__bubble { opacity: 1; }
 }
 
 /* ---------- Modal / popup ---------- */
