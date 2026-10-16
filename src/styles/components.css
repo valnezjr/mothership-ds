@@ -2803,7 +2803,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transform-origin: center;
 }
 
-.ms-mascote__lid,
 .ms-mascote__z,
 .ms-mascote__mouth {
   fill: none;
@@ -2811,9 +2810,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   stroke-linejoin: round;
 }
 
-.ms-mascote__lid,
 .ms-mascote__z { stroke: var(--ms-logo-ink, #fefefe); }
-.ms-mascote__lid { stroke-width: 110; }
 .ms-mascote__mouth { stroke-width: 90; }
 
 /* piscando: a mesma piscada dupla da splash e do loader */

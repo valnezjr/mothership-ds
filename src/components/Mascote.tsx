@@ -4,14 +4,16 @@ import { EYE_D, PUPIL_D, SMILE_D } from "./face-paths";
 /* ============================================================
    Mascote — o rosto da marca (olho + sorriso de assets/logo.svg)
    em três expressões. Olho, pupila e sorriso são as paths da logo;
-   pálpebra, "z" e a boca de "procurando" vêm do esboço aprovado
-   (.scratch/identidade-v1.9/mascote). Animação 100% CSS.
+   "z" e as bocas de "dormindo" e "procurando" vêm do esboço aprovado
+   (.scratch/identidade-v1.9/mascote), ajustado depois a pedido do
+   autor. Animação 100% CSS.
    ============================================================ */
 
 /** Mesmo viewBox nas três expressões: trocar de uma para outra não
     desloca o rosto. A folga no alto e à direita é a dos "z". */
 const VIEWBOX = "1997 5600 1000 1350";
-const LID_D = "M2252 6260Q2497 6400 2742 6260";
+/** Olho fechado = o próprio anel achatado, o quadro fechado da piscada. */
+const EYE_CLOSED = "translate(0 6216) scale(1 0.14) translate(0 -6216)";
 const MOUTH_PROCURANDO_D = "M2400 6770Q2505 6762 2610 6730";
 /** Os três "z" do dormindo, do maior (mais baixo) ao menor. */
 const ZS = [
@@ -75,7 +77,7 @@ export function Mascote({
       {expressao === "dormindo" ? (
         <>
           <g className="ms-mascote__breath">
-            <path className="ms-mascote__lid" d={LID_D} />
+            <path className="ms-mascote__ink" d={EYE_D} transform={EYE_CLOSED} />
             {/* boca entreaberta do ronco, no lugar do sorriso */}
             <ellipse className="ms-mascote__snore" cx={2502} cy={6735} rx={80} ry={62} fill={smileFill} />
           </g>
