@@ -844,7 +844,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--gradient-field-ring);
 }
 
-.ms-radio:checked::after { background: var(--gradient-active); }
+.ms-radio:checked::after { background: var(--gradient-active-radial); }
 .ms-radio:checked::after { transform: scale(1); }
 
 .ms-checkbox:disabled,
