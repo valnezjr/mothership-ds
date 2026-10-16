@@ -3,6 +3,8 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { recolherMs, usePresence } from "./presence";
+import { EmptyState } from "./EmptyState";
+import { Mascote } from "./Mascote";
 
 /* ============================================================
    Alertas: estáticos, como notificação (toast de 20s com barra
@@ -281,7 +283,9 @@ export function AlertHistory() {
           Limpar
         </button>
       </div>
-      {!history.length && <p className="ms-text-sm ms-text-muted">Sem alertas por enquanto.</p>}
+      {!history.length && (
+        <EmptyState compact title="Sem alertas por enquanto." illustration={<Mascote size={56} />} />
+      )}
       {history.map((h) => (
         <div className="ms-alert-history__item" key={h.id}>
           <span className="ms-alert-history__dot" style={{ background: TONE_COLOR[h.tone] }} />

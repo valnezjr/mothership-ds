@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-escuro/Darker/claro, fundo animado, 54 componentes. Nasceu de engenharia
+escuro/Darker/claro, fundo animado, 55 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -553,6 +553,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       para `face-paths.ts` (sem diretiva), usadas também pelo `Loader`:
       importar de um módulo `"use client"` quebraria o Mascote no
       servidor. 54 componentes (era 53).
+- [x] `EmptyState` (`src/components/EmptyState.tsx`, sem `"use client"`,
+      ticket 09): ilustração (padrão `Mascote` `procurando`; o
+      `dormindo` do ticket saiu em D6; escolha em D7), título, descrição, `action`,
+      `compact`. Vira o vazio da `Table` e da `Gallery` (o `emptyState`
+      delas, quando texto, vira o título; a `Gallery` ganha a prop) e
+      do histórico de alertas (`compact`, `piscando`). Vazio da
+      `Gallery` recolhe na troca de vista, como os itens. A listbox de
+      `Select`/`Combobox` segue só texto: é uma linha da lista. 55
+      componentes (era 54).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
@@ -594,8 +603,8 @@ examples/next-app/        # landing page de exemplo, buildável — export está
 - **Tokens antes de valores.** Nenhum CSS novo escreve `15px` ou uma
   cor solta — sempre `var(--espaço-do-token)`. Detalhe: TOKENS.md.
 - **`"use client"` só quando precisa.** Componente sem estado/efeito/
-  handler fica sem a diretiva (hoje `primitives.tsx`, `LogoMark.tsx`
-  e `Mascote.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
+  handler fica sem a diretiva (hoje `primitives.tsx`, `LogoMark.tsx`,
+  `Mascote.tsx` e `EmptyState.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
 - **IDs de SVG sempre via `React.useId()`.** Nunca um contador de
   módulo — quebra a hidratação. Todo componente com SVG referenciado
   por `url(#...)` já segue isso (Loader, LogoMark, Mascote, Modal, charts,

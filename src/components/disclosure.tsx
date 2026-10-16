@@ -6,6 +6,7 @@ import { Badge, Button } from "./primitives";
 import { recolherMs } from "./presence";
 import type { Tone } from "./primitives";
 import { StepIndicator } from "./StepIndicator";
+import { EmptyState } from "./EmptyState";
 import { SortIcon } from "./table";
 
 /* ============================================================
@@ -408,6 +409,12 @@ export interface GalleryProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultSortOrder?: "asc" | "desc";
   /** Rótulos do botão de ordenação. Padrão: "Mais antigos" / "Mais novos". */
   sortLabels?: { asc?: React.ReactNode; desc?: React.ReactNode };
+  /**
+   * Exibido quando o filtro (ou `items`) não tem nada. Texto vira o
+   * título de um `EmptyState`; qualquer outro nó entra como veio.
+   * Padrão: "Nada por aqui ainda."
+   */
+  emptyState?: React.ReactNode;
 }
 
 /** `addedAt` ausente ou inválido vira época 0 — mais antigo que qualquer
@@ -447,6 +454,7 @@ export function Gallery({
   sortable,
   defaultSortOrder = "desc",
   sortLabels,
+  emptyState = "Nada por aqui ainda.",
   className,
   ...rest
 }: GalleryProps) {
@@ -549,64 +557,78 @@ export function Gallery({
           </button>
         )}
       </div>
-      <div className={["ms-gallery__grid", leaving && "ms-gallery__grid--leaving"].filter(Boolean).join(" ")}>
-        {gridItems.map((item, i) => {
-          const isNew = isNewItem(item.addedAt, newDays);
-          const card = (
-            <HoverEdge
-              className={["ms-gallery__item", isNew && "ms-gallery__item--new"].filter(Boolean).join(" ")}
-              colors={colorsFor(item.categories)}
-            >
-              <div
-                className="ms-gallery__photo"
-                style={{ ["--ms-photo" as string]: item.image }}
-              />
-              {isNew && (
-                <Badge tone={byKey[item.categories[0]]?.tone} className="ms-gallery__badge-new">
-                  {newLabel}
-                </Badge>
-              )}
-              <div className="ms-gallery__info">
-                <span className="ms-gallery__title">{item.title}</span>
-                <span className="ms-gallery__badges">
-                  {item.categories.map((k) => {
-                    const c = byKey[k];
-                    if (!c) return null;
-                    return (
-                      <span
-                        key={k}
-                        className={["ms-badge", c.tone && c.tone !== "neutral" && `ms-badge--${c.tone}`]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        {c.label}
-                      </span>
-                    );
-                  })}
-                </span>
-                {item.description != null && (
-                  <span className="ms-gallery__desc">{item.description}</span>
+      {gridItems.length === 0 ? (
+        // Vazio também entra na troca de vista: recolhe antes da leva nova.
+        typeof emptyState === "string" ? (
+          <EmptyState
+            title={emptyState}
+            className={["ms-gallery__empty", leaving && "ms-gallery__empty--leaving"].filter(Boolean).join(" ")}
+          />
+        ) : (
+          <div className={["ms-gallery__empty", leaving && "ms-gallery__empty--leaving"].filter(Boolean).join(" ")}>
+            {emptyState}
+          </div>
+        )
+      ) : (
+        <div className={["ms-gallery__grid", leaving && "ms-gallery__grid--leaving"].filter(Boolean).join(" ")}>
+          {gridItems.map((item, i) => {
+            const isNew = isNewItem(item.addedAt, newDays);
+            const card = (
+              <HoverEdge
+                className={["ms-gallery__item", isNew && "ms-gallery__item--new"].filter(Boolean).join(" ")}
+                colors={colorsFor(item.categories)}
+              >
+                <div
+                  className="ms-gallery__photo"
+                  style={{ ["--ms-photo" as string]: item.image }}
+                />
+                {isNew && (
+                  <Badge tone={byKey[item.categories[0]]?.tone} className="ms-gallery__badge-new">
+                    {newLabel}
+                  </Badge>
                 )}
-              </div>
-            </HoverEdge>
-          );
+                <div className="ms-gallery__info">
+                  <span className="ms-gallery__title">{item.title}</span>
+                  <span className="ms-gallery__badges">
+                    {item.categories.map((k) => {
+                      const c = byKey[k];
+                      if (!c) return null;
+                      return (
+                        <span
+                          key={k}
+                          className={["ms-badge", c.tone && c.tone !== "neutral" && `ms-badge--${c.tone}`]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {c.label}
+                        </span>
+                      );
+                    })}
+                  </span>
+                  {item.description != null && (
+                    <span className="ms-gallery__desc">{item.description}</span>
+                  )}
+                </div>
+              </HoverEdge>
+            );
 
-          // A vista exibida entra na key de propósito: sem isso, trocar
-          // de página ou filtro reaproveita os nós do DOM por posição (0,
-          // 1, 2…), e a entrada (ms-gallery-in, só no mount) não toca.
-          // Durante o recolher a key ainda é a da vista anterior, então
-          // são os mesmos nós que saem.
-          const key = `${shownView}-${i}`;
+            // A vista exibida entra na key de propósito: sem isso, trocar
+            // de página ou filtro reaproveita os nós do DOM por posição (0,
+            // 1, 2…), e a entrada (ms-gallery-in, só no mount) não toca.
+            // Durante o recolher a key ainda é a da vista anterior, então
+            // são os mesmos nós que saem.
+            const key = `${shownView}-${i}`;
 
-          if (!item.onClick) return <React.Fragment key={key}>{card}</React.Fragment>;
+            if (!item.onClick) return <React.Fragment key={key}>{card}</React.Fragment>;
 
-          return (
-            <button key={key} type="button" className="ms-gallery__item-trigger" onClick={item.onClick}>
-              {card}
-            </button>
-          );
-        })}
-      </div>
+            return (
+              <button key={key} type="button" className="ms-gallery__item-trigger" onClick={item.onClick}>
+                {card}
+              </button>
+            );
+          })}
+        </div>
+      )}
       {itemsPerPage != null && totalPages > 1 && (
         <div className="ms-gallery__pager">
           <StepIndicator current={currentPage} total={totalPages} showCount label="Página" />

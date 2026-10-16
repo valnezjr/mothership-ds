@@ -602,6 +602,7 @@ pra foto) pelas cores do tema. Sempre navegável por arraste horizontal
 | `sortable` | `boolean` | liga o botão de ordenação por `addedAt` |
 | `defaultSortOrder` | `"asc" \| "desc"` | ordem inicial quando `sortable` (padrão `"desc"`, mais novos primeiro) |
 | `sortLabels` | `{ asc?, desc? }` | rótulos do botão de ordenação (padrão "Mais antigos"/"Mais novos") |
+| `emptyState` | `ReactNode` | exibido quando o filtro não tem nada; texto vira o título de um `EmptyState` (padrão "Nada por aqui ainda.") |
 
 Filtra por categoria; cada item ganha o contorno reativo com as cores das
 suas categorias — dois tons quando há duas categorias, a escala 300→600
@@ -1035,7 +1036,7 @@ consistente:
 | `onEdit` | `(row) => void` | ícone de editar na última coluna; omita para não mostrar |
 | `onDelete` | `(row) => void` | ícone de excluir na última coluna; omita para não mostrar |
 | `actions` | `(row) => ReactNode` | ações extras, na mesma última coluna |
-| `emptyState` | `ReactNode` | exibido quando `rows` está vazio |
+| `emptyState` | `ReactNode` | exibido quando `rows` está vazio; texto vira o título de um `EmptyState` (padrão: "Nada por aqui ainda.") |
 
 Colunas com `sortable` (e `sortValue`, o valor comparável) ganham um
 botão no cabeçalho que alterna `asc → desc → ordem original`. O `<th>`
@@ -1087,6 +1088,36 @@ via `style` conforme o conteúdo real que ele substitui.
 Respeita `prefers-reduced-motion: reduce` (pulso desliga, fica parado
 no tom mais forte — ainda reconhecível como placeholder, não como
 conteúdo carregado).
+
+### `EmptyState`
+
+Para quando não há nada a mostrar: ilustração, título, descrição e uma
+ação opcional. Renderizável no servidor, sem `"use client"`. Assenta ao
+entrar (`--motion-assentar-*`).
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `title` | `ReactNode` | — | obrigatório |
+| `description` | `ReactNode` | — | |
+| `action` | `ReactNode` | — | ex.: um `Button`, abaixo do texto |
+| `illustration` | `ReactNode` | `<Mascote expressao="procurando" />` | `null` tira a ilustração |
+| `compact` | `boolean` | `false` | menor, para painéis estreitos |
+
+O mascote padrão é decorativo (`aria-hidden`): quem diz o que está
+acontecendo é o título. Para erro, troque por `<Mascote
+expressao="confuso" />`; para espera, `pensando`.
+
+```tsx
+<EmptyState
+  title="Nenhum projeto ainda"
+  description="Os projetos que você criar aparecem aqui."
+  action={<Button inline size="sm" variant="solid">Criar projeto</Button>}
+/>
+```
+
+`Table` e `Gallery` usam o `EmptyState` no vazio: o `emptyState` delas,
+quando é texto, vira o título; qualquer outro nó entra como veio. O
+histórico de alertas vazio usa a versão `compact`.
 
 ### `Grafo3D`
 

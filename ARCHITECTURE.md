@@ -23,12 +23,13 @@ revisitar essa decisão primeiro.
 ## Fronteira servidor/cliente
 
 Regra: leva `"use client"` todo arquivo que usa estado, efeito, ref
-com comportamento ou handler. Hoje três arquivos de componente ficam
+com comportamento ou handler. Hoje quatro arquivos de componente ficam
 **sem** a diretiva, por serem puramente apresentacionais:
 
 - `src/components/primitives.tsx`
 - `src/components/LogoMark.tsx`
 - `src/components/Mascote.tsx`
+- `src/components/EmptyState.tsx`
 
 `src/components/face-paths.ts` (paths do rosto da logo) também fica
 sem: é importado pelo `Mascote`, e um módulo `"use client"` entregaria

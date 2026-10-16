@@ -1695,6 +1695,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   to { opacity: 0; transform: scale(0.96); }
 }
 
+/* Composto com .ms-empty-state: sozinho, perde para a entrada dele,
+   que vem depois no arquivo com a mesma especificidade. */
+.ms-gallery__empty--leaving,
+.ms-empty-state.ms-gallery__empty--leaving {
+  pointer-events: none;
+  animation: ms-gallery-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards;
+}
+
 .ms-gallery__photo {
   aspect-ratio: 4 / 3;
   background: var(--ms-photo, linear-gradient(135deg, var(--bg-glow-2), var(--bg-glow-3)));
@@ -2921,6 +2929,49 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-mascote__babble,
   .ms-mascote__bubble { animation: none; }
   .ms-mascote__bubble { opacity: 1; }
+}
+
+/* ---------- EmptyState (nada a mostrar) ----------
+   Assenta ao entrar, como qualquer conteúdo que chega à tela. O mascote
+   traz a própria animação; aqui só o bloco todo assenta. */
+.ms-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  animation: ms-empty-state-in var(--motion-assentar-duration) var(--motion-assentar-ease);
+}
+
+.ms-empty-state__art { margin-bottom: var(--space-2); }
+
+.ms-empty-state__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.ms-empty-state__description {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.ms-empty-state__action { margin-top: var(--space-3); }
+
+.ms-empty-state--compact {
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-2);
+}
+.ms-empty-state--compact .ms-empty-state__art { margin-bottom: var(--space-1); }
+.ms-empty-state--compact .ms-empty-state__title { font-size: var(--text-md); }
+.ms-empty-state--compact .ms-empty-state__action { margin-top: var(--space-2); }
+
+@keyframes ms-empty-state-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* ---------- Modal / popup ---------- */

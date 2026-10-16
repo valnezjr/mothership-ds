@@ -177,3 +177,15 @@ uma linha larga sobre um ponto de boca e perde a proporção. `confuso`
 cobre erro e `pensando` cobre espera, os dois casos de estado vazio e
 transição que o `EmptyState` (ticket 09) vai usar.
 
+## D7 — 2026-10-16 — `EmptyState` com o `procurando` por padrão
+
+**Pergunta.** O ticket 09 pedia o `Mascote` `dormindo` como ilustração
+padrão do `EmptyState`, e o `dormindo` saiu em D6.
+
+**Escolha.** `procurando`. O vazio mais comum do DS é "procurei e não
+achei" (filtro da `Gallery`, tabela sem linhas). Onde o vazio é só
+calmaria, a ilustração é trocada: o histórico de alertas usa `piscando`;
+erro pede `confuso`, espera pede `pensando`.
+
+**Por quê.** Das quatro, `procurando` é a que diz "nada aqui" sem
+sugerir erro nem espera.

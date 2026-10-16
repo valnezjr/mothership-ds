@@ -55,7 +55,7 @@ Pontos fixos, confirmados no código existente (não convenção teórica):
   `ButtonHTMLAttributes`, `InputHTMLAttributes` etc. quando fizer
   sentido), sempre aceita `className` e sempre repassa `{...rest}`.
 - **`"use client"` é a exceção documentada, não a regra**: hoje
-  `primitives.tsx`, `LogoMark.tsx` e `Mascote.tsx` ficam sem ela. Ao criar um
+  `primitives.tsx`, `LogoMark.tsx`, `Mascote.tsx` e `EmptyState.tsx` ficam sem ela. Ao criar um
   componente novo puramente visual (sem estado/efeito/handler), ele
   também pode ficar sem — mas confirme que de fato não usa nada disso.
 - **IDs de SVG**: se o componente referencia algo via `url(#...)`

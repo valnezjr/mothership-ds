@@ -29,3 +29,5 @@ export type { SplashProps } from "./components/Splash";
 export { LogoMark } from "./components/LogoMark";
 export { Mascote } from "./components/Mascote";
 export type { MascoteProps, MascoteExpressao } from "./components/Mascote";
+export { EmptyState } from "./components/EmptyState";
+export type { EmptyStateProps } from "./components/EmptyState";

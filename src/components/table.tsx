@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Badge, type Tone } from "./primitives";
+import { EmptyState } from "./EmptyState";
 
 /* ============================================================
    Tabela — preparada para o esquema CRUD (v1.2): primeira coluna
@@ -80,7 +81,10 @@ export interface TableProps<T> extends Omit<React.HTMLAttributes<HTMLDivElement>
   statusHeader?: React.ReactNode;
   editLabel?: string;
   deleteLabel?: string;
-  /** Conteúdo exibido quando `rows` está vazio. */
+  /**
+   * Exibido quando `rows` está vazio. Texto vira o título de um
+   * `EmptyState` (com o mascote); qualquer outro nó entra como veio.
+   */
   emptyState?: React.ReactNode;
 }
 
@@ -207,7 +211,12 @@ export function Table<T>({
           })}
         </tbody>
       </table>
-      {rows.length === 0 && <div className="ms-table__empty">{emptyState}</div>}
+      {rows.length === 0 &&
+        (typeof emptyState === "string" ? (
+          <EmptyState title={emptyState} />
+        ) : (
+          <div className="ms-table__empty">{emptyState}</div>
+        ))}
     </div>
   );
 }

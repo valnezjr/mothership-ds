@@ -19,7 +19,7 @@ import {
   // sobreposições
   Modal, StepModal, StepIndicator, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
   // marca
-  Splash, Loader, Mascote,
+  Splash, Loader, Mascote, EmptyState,
 } from "../src/index";
 import { Grafo3D } from "../src/3d/index";
 import type { Grafo3DNo, Grafo3DAresta, Grafo3DGrupo } from "../src/3d/index";
@@ -120,6 +120,7 @@ function GalleryDemo() {
         { key: "ui", label: "UI Design", tone: "accent" },
         { key: "web", label: "Web", tone: "success" },
         { key: "branding", label: "Branding", tone: "highlight" },
+        { key: "motion", label: "Motion", tone: "pink" },
       ]}
       items={[
         { image: "linear-gradient(135deg,#6b4796,#00a7da)", title: "Painel Orbital", description: "Dashboard de telemetria com glassmorphism.", categories: ["ui", "web"], onClick: () => open("Painel Orbital") },
@@ -1811,7 +1812,7 @@ export const STORIES: Story[] = [
     id: "galeria",
     group: "Componentes",
     title: "Galeria",
-    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura; onClick por item vira o card num botão (ex.: abrir o case completo num Modal).",
+    subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura; onClick por item vira o card num botão (ex.: abrir o case completo num Modal). Filtro sem nenhum item (Motion, aqui) mostra um EmptyState.",
     render: () => <GalleryDemo />,
   },
   {
@@ -2038,6 +2039,34 @@ export const STORIES: Story[] = [
         </Stack>
         <Skeleton style={{ height: 120 }} />
       </Stack>
+    ),
+  },
+  {
+    id: "empty-state",
+    group: "Dados",
+    title: "Estado vazio",
+    subtitle: "Para quando não há nada a mostrar: ilustração, título, descrição e uma ação opcional. A ilustração padrão é o Mascote procurando; qualquer ReactNode entra no lugar. Já é o vazio padrão da Table, da Gallery e do histórico de alertas.",
+    render: () => (
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 }}>
+        <Card>
+          <EmptyState
+            title="Nenhum projeto ainda"
+            description="Os projetos que você criar aparecem aqui."
+            action={<Button inline size="sm" variant="solid">Criar projeto</Button>}
+          />
+        </Card>
+        <Card>
+          <EmptyState
+            illustration={<Mascote expressao="confuso" />}
+            title="Não deu para carregar"
+            description="Confira a conexão e tente de novo."
+            action={<Button inline size="sm" variant="ghost">Tentar de novo</Button>}
+          />
+        </Card>
+        <Card>
+          <EmptyState compact title="Sem alertas por enquanto." description="compact, para painéis estreitos." />
+        </Card>
+      </div>
     ),
   },
 ];
