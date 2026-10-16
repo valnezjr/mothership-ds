@@ -37,6 +37,8 @@ export interface Story {
   id: string;
   group: Group;
   title: string;
+  /** Nomes que a busca do styleguide também encontra (o export, quando o título é em pt-br). */
+  keywords?: string[];
   subtitle: string;
   render: () => React.ReactNode;
 }
@@ -1018,6 +1020,7 @@ export const STORIES: Story[] = [
     id: "efeitos",
     group: "Fundações",
     title: "Efeitos",
+    keywords: ["HoverEdge", "glass", "vidro"],
     subtitle: "O vidro (glassmorphism), os quatro gestos de movimento (assentar, recolher, pulso, deriva) e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1103,6 +1106,7 @@ export const STORIES: Story[] = [
     id: "splash",
     group: "Componentes",
     title: "Splash screen",
+    keywords: ["LogoMark"],
     subtitle: "Animação de abertura do app: o olho pisca enquanto carrega, o nome se centraliza a partir do O e o dirigível pousa por último. Existe em versão overlay (tela cheia) e inline (embutida no conteúdo). A marca em si é o LogoMark — SVG exportado do logo.svg, sem uso isolado fora daqui: as partes nascem fora de posição de propósito, prontas pra essa revelação.",
     render: () => <SplashDemo />,
   },
@@ -1153,6 +1157,7 @@ export const STORIES: Story[] = [
     id: "hero",
     group: "Componentes",
     title: "Hero",
+    keywords: ["HeroHighlight"],
     subtitle: "Bloco de abertura de página: eyebrow opcional, título (com destaque de uma palavra via HeroHighlight), subtítulo e uma fileira de ações.",
     render: () => (
       <Hero style={{ paddingTop: 24 }}>
@@ -1174,6 +1179,7 @@ export const STORIES: Story[] = [
     id: "navbar",
     group: "Componentes",
     title: "Navbar",
+    keywords: ["NotificationBell"],
     subtitle: "Barra de navegação flutuante em pill de vidro. spy marca o link da seção visível conforme a rolagem; abaixo de 720px os links migram pra um menu de hambúrguer.",
     render: () => (
       <>
@@ -1269,6 +1275,7 @@ export const STORIES: Story[] = [
     id: "paginacao",
     group: "Componentes",
     title: "Paginação",
+    keywords: ["Pagination"],
     subtitle: "100% controlado — quem usa guarda o número da página, o componente só renderiza e dispara onChange. Números distantes viram \"…\"; sempre mostra primeira e última página.",
     render: () => <PaginationDemo />,
   },
@@ -1276,6 +1283,7 @@ export const STORIES: Story[] = [
     id: "botoes",
     group: "Componentes",
     title: "Botões",
+    keywords: ["Button", "ButtonLink", "botão"],
     subtitle: "Três variantes (vidro, sólido e ghost) em três tamanhos, com estado disabled. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
@@ -1295,6 +1303,7 @@ export const STORIES: Story[] = [
     id: "lista-links",
     group: "Componentes",
     title: "Lista de links",
+    keywords: ["LinkList"],
     subtitle: "Lista vertical de links em pill, no padrão linktree da página original que deu origem a essa biblioteca — útil pra páginas pessoais ou de contato.",
     render: () => (
       <LinkList style={{ maxWidth: 420, margin: "0 auto" }}>
@@ -1308,6 +1317,7 @@ export const STORIES: Story[] = [
     id: "icones",
     group: "Componentes",
     title: "Botões de ícone",
+    keywords: ["IconButton", "IconRow", "botão"],
     subtitle: "Botões circulares só de ícone, pra redes sociais ou ações compactas, em três tamanhos. Sempre exigem aria-label — não há texto visível que dê nome ao controle.",
     render: () => (
       <>
@@ -1328,6 +1338,7 @@ export const STORIES: Story[] = [
     id: "switch",
     group: "Componentes",
     title: "Seletor de tema",
+    keywords: ["ThemeMenu", "ThemeSwitch"],
     subtitle: "Três temas: escuro (o padrão, vidro claro sobre o fundo escuro), Darker (vidro escuro, para a noite) e claro. O ThemeMenu escolhe entre os três num DropdownMenu — é o que está na navbar deste styleguide. O ThemeSwitch, com o polegar deslizando entre sol e lua, segue disponível para quem só quer claro/escuro.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
@@ -1345,6 +1356,7 @@ export const STORIES: Story[] = [
     id: "avatar",
     group: "Componentes",
     title: "Avatar & Perfil",
+    keywords: ["Avatar", "Profile"],
     subtitle: "Avatar circular em três tamanhos (foto ou iniciais) e o bloco Profile, que junta avatar + nome + cargo numa única unidade reutilizável.",
     render: () => (
       <>
@@ -1363,6 +1375,7 @@ export const STORIES: Story[] = [
     id: "campos",
     group: "Componentes",
     title: "Campos de formulário",
+    keywords: ["Field", "Input", "Select", "Textarea"],
     subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. Select tem listbox própria (não o <select> nativo) — vidro, teclado (setas/Enter/Esc) e destaque acompanham o resto do sistema.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1469,6 +1482,7 @@ export const STORIES: Story[] = [
     id: "cards",
     group: "Componentes",
     title: "Cards",
+    keywords: ["Card", "CardText"],
     subtitle: "Superfície de vidro genérica, com ou sem o contorno reativo (HoverEdge) que acompanha o mouse — a base visual por trás de StatTile, PricingCard e outros.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1532,6 +1546,7 @@ export const STORIES: Story[] = [
     id: "precificacao",
     group: "Componentes",
     title: "Card de precificação",
+    keywords: ["PricingCard"],
     subtitle: "Card de plano com preço, período e lista de recursos (com ou sem check). highlighted/badge destacam o plano recomendado com borda e glow.",
     render: () => (
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch", paddingTop: 20 }}>
@@ -1584,6 +1599,7 @@ export const STORIES: Story[] = [
     id: "depoimentos",
     group: "Componentes",
     title: "Card de depoimentos",
+    keywords: ["TestimonialCard"],
     subtitle: "Depoimento com avaliação em estrelas opcional e identidade (avatar + nome + cargo) fixada no rodapé. Contorno reativo no hover e no active, pra funcionar também em telas de toque sem hover de verdade.",
     render: () => <TestimonialsDemo />,
   },
@@ -1591,6 +1607,7 @@ export const STORIES: Story[] = [
     id: "bento",
     group: "Componentes",
     title: "Bento grid",
+    keywords: ["BentoGrid", "BentoTile"],
     subtitle: "Grid de 4 colunas com tiles de tamanho variável (colSpan/rowSpan), no estilo dashboard de app. grid-auto-flow: dense preenche os buracos deixados pelos tamanhos irregulares.",
     render: () => (
       <BentoGrid>
@@ -1686,6 +1703,7 @@ export const STORIES: Story[] = [
     id: "badges",
     group: "Componentes",
     title: "Badges",
+    keywords: ["Badge"],
     subtitle: "Etiqueta pequena pra marcar estado ou categoria — tom neutro ou uma das 8 cores de marca, sempre acompanhada de texto, nunca só a cor.",
     render: () => (
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
@@ -1705,6 +1723,7 @@ export const STORIES: Story[] = [
     id: "alertas",
     group: "Componentes",
     title: "Alertas",
+    keywords: ["Alert", "AlertsProvider", "notify", "toast"],
     subtitle: "Mensagens de feedback: estáticas (embutidas na página) ou como toast disparado por notify(), que soma 20s na tela com barra de tempo e histórico.",
     render: () => <AlertsDemo />,
   },
@@ -1712,6 +1731,7 @@ export const STORIES: Story[] = [
     id: "modal",
     group: "Componentes",
     title: "Modal & etapas",
+    keywords: ["StepModal"],
     subtitle: "Popup sobre véu escurecido (ou claro, no tema claro), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
     render: () => <ModalDemo />,
   },
@@ -1762,6 +1782,7 @@ export const STORIES: Story[] = [
     id: "tooltip",
     group: "Componentes",
     title: "Tooltip",
+    keywords: ["TooltipProvider", "data-tip"],
     subtitle: "Texto curto que aparece no hover e no foco por teclado — só texto, não interativo (para conteúdo livre, use o Popover). Envolva o gatilho em <Tooltip content> ou ponha data-tip direto no elemento: os dois passam pelo mesmo TooltipProvider, com a mesma posição e o mesmo aria-describedby. O gatilho precisa ser focável para chegar por Tab.",
     render: () => (
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
@@ -1788,6 +1809,7 @@ export const STORIES: Story[] = [
     id: "dropdown-menu",
     group: "Componentes",
     title: "DropdownMenu",
+    keywords: ["DropdownMenuItem", "ContextMenu"],
     subtitle: "Menu de ações flutuante, navegável por teclado (setas, Home/End, Esc). Absorve o que seria um ContextMenu à parte via triggerOn=\"context\": mesmo menu, só muda o gesto que abre (clique vs. clique direito).",
     render: () => <DropdownMenuDemo />,
   },
@@ -1842,6 +1864,7 @@ export const STORIES: Story[] = [
     id: "carrossel",
     group: "Componentes",
     title: "Carrossel",
+    keywords: ["Carousel"],
     subtitle: "Paginação por fotos (com legenda) ou conteúdo livre via items — ex. um grupo de TestimonialCard. Navegável por setas, bullets e arraste horizontal (toque ou mouse).",
     render: () => (
       <div>
@@ -1861,6 +1884,7 @@ export const STORIES: Story[] = [
     id: "galeria",
     group: "Componentes",
     title: "Galeria",
+    keywords: ["Gallery"],
     subtitle: "Grade de itens com filtro por categoria, badges e hover em degradê. Pensada pra portfólio — cada item pode ter várias categorias e aparecer em mais de um filtro. itemsPerPage pagina a grade (StepIndicator) em vez de crescer em altura; onClick por item vira o card num botão (ex.: abrir o case completo num Modal). Filtro sem nenhum item (Motion, aqui) mostra um EmptyState.",
     render: () => <GalleryDemo />,
   },
@@ -1933,6 +1957,7 @@ export const STORIES: Story[] = [
     id: "rodape",
     group: "Componentes",
     title: "Rodapé",
+    keywords: ["Footer", "Flash"],
     subtitle: "Rodapé de página com o crédito de marca (ícone de raio + link em accent). Aceita children livre pra colunas de links, redes sociais etc.",
     render: () => (
       <Footer>
@@ -1948,6 +1973,7 @@ export const STORIES: Story[] = [
     id: "grafico-linhas",
     group: "Dados",
     title: "Gráfico de linhas",
+    keywords: ["LineChart"],
     subtitle: "Série temporal com eixos, grade recessiva e tooltip no hover. Aceita múltiplas séries (series), cada uma com sua própria cor de dado.",
     render: () => (
       <div>
@@ -1967,6 +1993,7 @@ export const STORIES: Story[] = [
     id: "barras",
     group: "Dados",
     title: "Barras de progresso",
+    keywords: ["Meter"],
     subtitle: "Barras horizontais com cor por entidade e valor rotulado — pra comparar algumas categorias lado a lado, sem precisar de um gráfico completo.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1981,6 +2008,7 @@ export const STORIES: Story[] = [
     id: "pizza",
     group: "Dados",
     title: "Gráfico de pizza",
+    keywords: ["PieChart"],
     subtitle: "Fatias com respiro de 2px, rótulo com percentual direto na fatia e uma legenda embaixo, sempre junto, pra nomear as cores mesmo se o rótulo interno for pequeno demais.",
     render: () => (
       <div style={{ maxWidth: 440, margin: "0 auto" }}>
@@ -1999,6 +2027,7 @@ export const STORIES: Story[] = [
     id: "anel",
     group: "Dados",
     title: "Anel de progresso",
+    keywords: ["ProgressRing"],
     subtitle: "Indicador circular de progresso com um número-herói no centro (ou hideValue, útil dentro de um stat tile). size controla o diâmetro em px — o traço e a fonte escalam junto.",
     render: () => (
       <div style={{ display: "flex", gap: 32, alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
@@ -2012,6 +2041,7 @@ export const STORIES: Story[] = [
     id: "widgets",
     group: "Dados",
     title: "Widgets de dashboard",
+    keywords: ["StatTile", "StatGrid"],
     subtitle: "StatTile: número, delta (trend up/down/flat) e sparkline opcional, com o mesmo contorno reativo do Card. StatGrid organiza vários lado a lado num grid responsivo.",
     render: () => (
       <>
@@ -2041,6 +2071,7 @@ export const STORIES: Story[] = [
     id: "sparkline",
     group: "Dados",
     title: "Sparkline & Legenda",
+    keywords: ["Sparkline", "Legend"],
     subtitle: "Sparkline: miniatura de série temporal sem eixos, pra caber dentro de um card. Legend identifica as cores de várias séries/categorias num gráfico maior.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -2062,6 +2093,7 @@ export const STORIES: Story[] = [
     id: "grafo-3d",
     group: "Dados",
     title: "Grafo 3D",
+    keywords: ["Grafo3D"],
     subtitle: "Grafo navegável em three.js puro, importado de mothership-ds/3d (three é peer opcional). Layout por forças determinístico, cores por grupo nos slots de dados e de marca, deriva e parallax como o fundo animado, nós que respiram como uma malha, viagem suave até o nó e vizinhos acesos no hover. A legenda filtra: cada grupo vira um anel no centro e o resto abre espaço. Com movimento reduzido, fica parado e as transições são instantâneas.",
     render: () => <Grafo3DDemo />,
   },
@@ -2069,6 +2101,7 @@ export const STORIES: Story[] = [
     id: "tabela",
     group: "Dados",
     title: "Tabela",
+    keywords: ["Table"],
     subtitle: "Tabela pronta pro fluxo de CRUD: primeira coluna sempre uma badge de status, última sempre os ícones de ação (editar/excluir). Colunas sortable alternam asc → desc → ordem original no cabeçalho.",
     render: () => <TableDemo />,
   },
@@ -2094,6 +2127,7 @@ export const STORIES: Story[] = [
     id: "empty-state",
     group: "Dados",
     title: "Estado vazio",
+    keywords: ["EmptyState"],
     subtitle: "Para quando não há nada a mostrar: ilustração, título, descrição e uma ação opcional. A ilustração padrão é o Mascote procurando; qualquer ReactNode entra no lugar. Já é o vazio padrão da Table, da Gallery e do histórico de alertas.",
     render: () => (
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 }}>

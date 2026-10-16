@@ -6,6 +6,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- **Busca no styleguide** (`styleguide/App.tsx`): campo no cabeçalho,
+  feito com o próprio `Combobox`, que acha a story pelo título, pelo nome
+  do componente (`Button`, `Table`, `PricingCard`…, campo novo
+  `keywords` nas stories) ou pelo texto de apoio, sem diferenciar acento
+  nem caixa. `/` ou Ctrl+K focam o campo. Só o styleguide; nenhuma API
+  nova na biblioteca.
+
 ## [1.9.0] — 2026-10-16
 
 ### Adicionado

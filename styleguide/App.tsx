@@ -12,8 +12,9 @@ import {
   NotificationBell,
   ThemeMenu,
   Footer,
+  Combobox,
 } from "../src/index";
-import { STORIES, GROUPS, GROUP_IDS } from "./stories";
+import { STORIES, GROUPS, GROUP_IDS, type Story } from "./stories";
 import { version } from "../package.json";
 
 const GROUP_DESCRIPTIONS: Record<(typeof GROUPS)[number], string> = {
@@ -41,6 +42,76 @@ function resolveStoryId(hash: string, ids: string[]): string {
   if (ids.includes(id)) return id;
   if (GROUP_FIRST_STORY[id]) return GROUP_FIRST_STORY[id];
   return ids[0];
+}
+
+// Sem acento e sem caixa: "botoes" acha "Botões".
+function normalize(text: string): string {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+// Título e nome do componente pesam mais que o texto de apoio, para
+// "card" trazer os cards antes das stories que só citam a palavra.
+function score(story: Story, q: string): number {
+  const title = normalize(story.title);
+  const keywords = (story.keywords ?? []).map(normalize);
+  if (title.startsWith(q) || keywords.some((k) => k.startsWith(q))) return 3;
+  if (title.includes(q) || keywords.some((k) => k.includes(q))) return 2;
+  if (normalize(`${story.group} ${story.subtitle}`).includes(q)) return 1;
+  return 0;
+}
+
+function rankStories(query: string): Story[] {
+  const q = normalize(query.trim());
+  if (!q) return STORIES;
+  return STORIES.map((story) => ({ story, s: score(story, q) }))
+    .filter((r) => r.s > 0)
+    .sort((a, b) => b.s - a.s)
+    .map((r) => r.story);
+}
+
+/**
+ * Busca de stories no cabeçalho. É o `Combobox` da lib, com as opções já
+ * filtradas e ordenadas aqui (o filtro dele só sabe "contém", sem peso).
+ * `/` ou Ctrl+K focam o campo de qualquer lugar.
+ */
+function StorySearch() {
+  const [query, setQuery] = React.useState("");
+  // Remonta o Combobox depois de escolher, para o campo voltar vazio
+  // em vez de ficar com o título da story escolhida.
+  const [round, setRound] = React.useState(0);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const typing = (e.target as HTMLElement).closest("input, textarea, select, [contenteditable]");
+      if ((e.key === "/" && !typing) || (e.key === "k" && (e.ctrlKey || e.metaKey))) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const options = rankStories(query).map((s) => ({ value: s.id, label: s.title }));
+
+  return (
+    <Combobox
+      key={round}
+      ref={inputRef}
+      options={options}
+      filter={() => true}
+      emptyLabel="Nenhum componente encontrado."
+      placeholder="Buscar componente  ( / )"
+      aria-label="Buscar componente"
+      onInput={(e) => setQuery(e.currentTarget.value)}
+      onChange={(id) => {
+        window.location.hash = id;
+        setQuery("");
+        setRound((r) => r + 1);
+      }}
+    />
+  );
 }
 
 /**
@@ -91,14 +162,22 @@ export function App() {
             className="ms-app-shell"
             style={{ maxWidth: 1180, margin: "0 auto", padding: "112px 24px 0" }}
           >
-            <header id="topo" style={{ marginBottom: 24, flexShrink: 0 }}>
-              <h1 className="ms-h1">Mothership DS</h1>
-              <p className="ms-text-sm ms-text-muted">
-                Biblioteca React do design system — cada bloco abaixo renderiza o componente
-                real, importado de <code>mothership-ds</code>. Outfit, glassmorphism e temas
-                claro/escuro; alterne no switch da navbar. Clique no sumário à esquerda pra
-                trocar de componente.
-              </p>
+            <header
+              id="topo"
+              style={{ marginBottom: 24, flexShrink: 0, display: "flex", flexWrap: "wrap", gap: 16, alignItems: "flex-end" }}
+            >
+              <div style={{ flex: "1 1 420px" }}>
+                <h1 className="ms-h1">Mothership DS</h1>
+                <p className="ms-text-sm ms-text-muted">
+                  Biblioteca React do design system — cada bloco abaixo renderiza o componente
+                  real, importado de <code>mothership-ds</code>. Outfit, glassmorphism e temas
+                  escuro, Darker e claro; alterne no menu da navbar. Busque ao lado ou clique no
+                  sumário à esquerda pra trocar de componente.
+                </p>
+              </div>
+              <div role="search" style={{ flex: "1 1 260px", maxWidth: 320 }}>
+                <StorySearch />
+              </div>
             </header>
 
             <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 40 }}>

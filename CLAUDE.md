@@ -594,6 +594,15 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
 
 ### Não lançado
 
+- [x] Busca no styleguide (`styleguide/App.tsx`): `Combobox` no
+      cabeçalho, com opções já filtradas e ordenadas por peso (título e
+      `keywords` antes do texto de apoio; o `filter` do Combobox só
+      responde sim/não). Busca sem acento nem caixa. `keywords` (opcional
+      em `Story`) leva o nome do export quando o título é em pt-br —
+      story nova com título diferente do componente precisa dele. `/` ou
+      Ctrl+K focam. O Combobox remonta (`key`) depois da escolha para o
+      campo voltar vazio.
+
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
 só recomendação; componentes que precisam de ícone aceitam `ReactNode`
