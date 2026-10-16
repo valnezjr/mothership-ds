@@ -117,6 +117,9 @@
    aqui dentro, no ritmo do sistema. Mesma especificidade do reset
    (classe + tag) e declarado depois dele, então vence sem !important. */
 .ms-prose {
+  /* Cor fixa, não herdada: dentro de um bloco de texto secundário
+     (prévia, legenda) o corpo da leitura viraria muted inteiro. */
+  color: var(--color-text);
   line-height: var(--line-height-prose);
   overflow-wrap: break-word;
 }
