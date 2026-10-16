@@ -1193,7 +1193,8 @@ Renderizável no servidor, sem `"use client"`.
 - **`confuso`**: pupila encolhida e boca em til; o rosto inclina
   para um lado e para o outro no pulso, e um "?" assenta na primeira
   inclinação e recolhe antes de o rosto voltar. Para erro.
-- **`pensando`**: olhar no alto, derivando devagar, sorriso de canto, e três bolhas que
+- **`pensando`**: olhar no alto, derivando devagar, boca entreaberta
+  balbuciando (abre e fecha no pulso), e três bolhas que
   assentam uma de cada vez e recolhem. Para espera.
 
 O mesmo `viewBox` nas quatro: trocar `expressao` não desloca o rosto.

@@ -2798,6 +2798,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-mascote__face,
+.ms-mascote__babble,
 .ms-mascote__eye,
 .ms-mascote__pupil,
 .ms-mascote__ask,
@@ -2877,6 +2878,23 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   50% { transform: translate(-40px, 15px); }
 }
 
+/* boca entreaberta balbuciando: abre e fecha em saltos irregulares,
+   cada um um pulso (8% de 2.4s ≈ 0.2s), com uma pausa no meio */
+.ms-mascote__babble {
+  transform-origin: center top;
+  animation: ms-mascote-babble 2.4s var(--motion-pulso-ease) infinite;
+}
+
+@keyframes ms-mascote-babble {
+  0%, 34%, 50%, 82%, 100% { transform: scale(1, 0.7); }
+  8%  { transform: scale(1, 1.15); }
+  16% { transform: scale(1, 0.75); }
+  25% { transform: scale(0.95, 1.1); }
+  58% { transform: scale(1, 1.2); }
+  66% { transform: scale(1, 0.8); }
+  74% { transform: scale(1, 1.05); }
+}
+
 .ms-mascote__bubble {
   opacity: 0;
   animation: ms-mascote-bubble 3s infinite;
@@ -2900,6 +2918,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-mascote--confuso .ms-mascote__face,
   .ms-mascote__ask,
   .ms-mascote--pensando .ms-mascote__pupil,
+  .ms-mascote__babble,
   .ms-mascote__bubble { animation: none; }
   .ms-mascote__bubble { opacity: 1; }
 }

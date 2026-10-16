@@ -1060,7 +1060,7 @@ export const STORIES: Story[] = [
           <code>piscando</code> é a piscada dupla da splash; <code>procurando</code> salta a
           pupila de um lado para o outro, no pulso; <code>confuso</code> inclina o rosto com um
           &quot;?&quot; e a pupila encolhida (bom para erro); <code>pensando</code> olha para o alto
-          enquanto as bolhas assentam uma a uma (bom para espera). Sem <code>label</code>, o
+          e balbucia de boca entreaberta enquanto as bolhas assentam uma a uma (bom para espera). Sem <code>label</code>, o
           mascote é decorativo (<code>aria-hidden</code>): o texto ao lado é quem diz o que está
           acontecendo. Sob <code>prefers-reduced-motion</code>, as quatro ficam paradas.
         </p>

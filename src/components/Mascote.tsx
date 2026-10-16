@@ -12,13 +12,12 @@ import { EYE_D, PUPIL_D, SMILE_D } from "./face-paths";
 /** Mesmo viewBox nas quatro expressões: trocar de uma para outra não
     desloca o rosto. A folga no alto e à direita é a do "?" e das bolhas. */
 const VIEWBOX = "1997 5600 1000 1350";
-/** Bocas desenhadas: mesma largura (2292–2702, ~520 com as pontas,
-    perto dos 580 do sorriso da logo) e o mesmo centro vertical dele (6750). */
+/** Bocas de traço: mesma largura (2292–2702, ~520 com as pontas,
+    perto dos 580 do sorriso da logo) e o mesmo centro vertical dele
+    (6750). O pensando usa a boca entreaberta, um oval, à parte. */
 const MOUTH_D = {
   procurando: "M2292 6775Q2497 6765 2702 6725",
   confuso: "M2292 6750q102.5 -110 205 0t205 0", // til
-  // sorriso de canto: sobe na ponta, do lado para onde o olhar vai
-  pensando: "M2292 6750Q2450 6800 2622 6750q50 -18 80 -75",
 } as const;
 /** Pupila menor no confuso, deslocada para cima e à direita no pensando. */
 const IRIS_TRANSFORM: Partial<Record<MascoteExpressao, string>> = {
@@ -94,6 +93,9 @@ export function Mascote({
         </g>
         {expressao === "piscando" ? (
           <path d={SMILE_D} fill={smileFill} />
+        ) : expressao === "pensando" ? (
+          // fechado (scaleY 0.7) o oval tem 112 de altura, o peso do rosto
+          <ellipse className="ms-mascote__babble" cx={2497} cy={6750} rx={130} ry={80} fill={smileFill} />
         ) : (
           <path className="ms-mascote__mouth" d={MOUTH_D[expressao]} stroke={smileFill} />
         )}
