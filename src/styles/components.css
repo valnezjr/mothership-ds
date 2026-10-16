@@ -2819,24 +2819,46 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* piscando: a mesma piscada dupla da splash e do loader */
 .ms-mascote--piscando .ms-mascote__eye { animation: ms-blink 4.6s infinite; }
 
-/* dormindo: respira devagar e os "z" sobem em deriva, um de cada vez */
-.ms-mascote__breath { animation: ms-mascote-breath 4.8s var(--motion-deriva-ease) infinite; }
+/* dormindo: ronca num ciclo de 3s. Inspira devagar (o rosto sobe e a
+   boca abre), ronca (a boca treme, 45–62%) e expira; cada ronco solta
+   um "z", que sobe em deriva. O "z" dura três ciclos e cada um sai um
+   ciclo depois do anterior, sempre no instante do ronco (45% = 1.35s). */
+.ms-mascote__breath,
+.ms-mascote__snore {
+  animation: ms-mascote-breath 3s var(--motion-deriva-ease) infinite;
+}
+
+.ms-mascote__snore {
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation-name: ms-mascote-snore;
+}
 
 @keyframes ms-mascote-breath {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.04); }
+  0%, 100% { transform: none; }
+  45%      { transform: translateY(-14px) scale(1.05); }
+  62%      { transform: translateY(-6px) scale(1.02); }
+}
+
+@keyframes ms-mascote-snore {
+  0%, 100% { transform: scale(0.85, 0.6); }
+  45%      { transform: scale(1.05, 1.25); }
+  49%      { transform: scale(1, 0.85); }
+  53%      { transform: scale(1.05, 1.2); }
+  57%      { transform: scale(1, 0.85); }
+  62%      { transform: scale(1, 1.1); }
 }
 
 .ms-mascote__z {
   opacity: 0;
-  animation: ms-mascote-z 4.8s var(--motion-deriva-ease) infinite;
-  animation-delay: calc(var(--i, 0) * 1.6s);
+  animation: ms-mascote-z 9s var(--motion-deriva-ease) infinite;
+  animation-delay: calc(1.35s + var(--i, 0) * 3s);
 }
 
 @keyframes ms-mascote-z {
   0%   { opacity: 0; transform: translate(-60px, 120px) scale(0.6); }
-  20%, 70% { opacity: 1; }
-  100% { opacity: 0; transform: translate(40px, -80px); }
+  8%, 55% { opacity: 1; }
+  75%, 100% { opacity: 0; transform: translate(40px, -80px); }
 }
 
 /* procurando: a pupila olha para um lado e para o outro e volta ao
@@ -2858,6 +2880,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   .ms-mascote--piscando .ms-mascote__eye,
   .ms-mascote__breath,
+  .ms-mascote__snore,
   .ms-mascote__z,
   .ms-mascote--procurando .ms-mascote__pupil { animation: none; }
   .ms-mascote__z { opacity: 1; }

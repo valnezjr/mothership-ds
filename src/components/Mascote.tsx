@@ -11,7 +11,6 @@ import { EYE_D, PUPIL_D, SMILE_D } from "./face-paths";
 /** Mesmo viewBox nas três expressões: trocar de uma para outra não
     desloca o rosto. A folga no alto e à direita é a dos "z". */
 const VIEWBOX = "1997 5600 1000 1350";
-const SMILE_SLEEP = "translate(2502 6750) scale(0.7) translate(-2502 -6750)";
 const LID_D = "M2252 6260Q2497 6400 2742 6260";
 const MOUTH_PROCURANDO_D = "M2400 6770Q2505 6762 2610 6730";
 /** Os três "z" do dormindo, do maior (mais baixo) ao menor. */
@@ -77,7 +76,8 @@ export function Mascote({
         <>
           <g className="ms-mascote__breath">
             <path className="ms-mascote__lid" d={LID_D} />
-            <path d={SMILE_D} fill={smileFill} transform={SMILE_SLEEP} />
+            {/* boca entreaberta do ronco, no lugar do sorriso */}
+            <ellipse className="ms-mascote__snore" cx={2502} cy={6735} rx={80} ry={62} fill={smileFill} />
           </g>
           {ZS.map((z, i) => (
             <path

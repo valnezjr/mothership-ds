@@ -1057,8 +1057,8 @@ export const STORIES: Story[] = [
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
-          <code>piscando</code> é a piscada dupla da splash; <code>dormindo</code> fecha o olho,
-          respira devagar e solta os &quot;z&quot; em deriva; <code>procurando</code> salta a pupila
+          <code>piscando</code> é a piscada dupla da splash; <code>dormindo</code> fecha o olho
+          e ronca de boca entreaberta, soltando um &quot;z&quot; a cada ronco; <code>procurando</code> salta a pupila
           de um lado para o outro, no pulso. Sem <code>label</code>, o mascote é decorativo
           (<code>aria-hidden</code>): o texto ao lado é quem diz o que está acontecendo. Sob{" "}
           <code>prefers-reduced-motion</code>, as três ficam paradas.

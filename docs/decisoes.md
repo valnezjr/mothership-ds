@@ -149,7 +149,7 @@ creme, o olho some).
 As paradas usam `--color-accent-500`/`--color-pink-500`/
 `--color-orange-500`, que são as da logo e não mudam com o tema (o
 `--color-accent` vira laranja no claro). Nas animações, a piscada é a
-mesma `ms-blink` da `Splash` e do `Loader`; a respiração e os "z" usam
+mesma `ms-blink` da `Splash` e do `Loader`; o ronco do `dormindo` e os "z" usam
 a curva da deriva, e cada salto da pupila é um pulso (0.2s). O pulso
 fora de clique e a deriva fora do fundo são leituras do vocabulário,
 não usos da tabela do spec. A prop `label` (sem ela, `aria-hidden`)

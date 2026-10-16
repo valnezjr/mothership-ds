@@ -1188,8 +1188,10 @@ Renderizável no servidor, sem `"use client"`.
 | `label` | `string` | — | nome acessível; sem ele, `aria-hidden` (decorativo) |
 
 - **`piscando`**: a piscada dupla da `Splash` e do `Loader`.
-- **`dormindo`**: olho fechado, respiração lenta e três "z" subindo em
-  deriva (`--motion-deriva-ease`).
+- **`dormindo`**: olho fechado e boca entreaberta, roncando num ciclo
+  de 3s: inspira (o rosto sobe, a boca abre), ronca (a boca treme) e
+  expira. Cada ronco solta um "z", que sobe em deriva
+  (`--motion-deriva-ease`).
 - **`procurando`**: a pupila salta para um lado e para o outro no pulso
   (`--motion-pulso-ease`) e volta ao centro.
 
