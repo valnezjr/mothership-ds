@@ -2813,11 +2813,12 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   stroke-linejoin: round;
 }
 
-.ms-mascote__mouth { stroke-width: 90; }
-.ms-mascote--confuso .ms-mascote__mouth { stroke-width: 70; }
+/* Dois pesos: o rosto usa o do anel e do sorriso da logo (≈110 no
+   viewBox); os adornos fora dele ("?", bolhas), a metade */
+.ms-mascote__mouth { stroke-width: 110; }
 .ms-mascote__mark {
   stroke: var(--ms-logo-ink, #fefefe);
-  stroke-width: 52;
+  stroke-width: 55;
 }
 
 /* piscando: a mesma piscada dupla da splash e do loader */

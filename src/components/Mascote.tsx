@@ -12,20 +12,23 @@ import { EYE_D, PUPIL_D, SMILE_D } from "./face-paths";
 /** Mesmo viewBox nas quatro expressões: trocar de uma para outra não
     desloca o rosto. A folga no alto e à direita é a do "?" e das bolhas. */
 const VIEWBOX = "1997 5600 1000 1350";
+/** Bocas desenhadas: mesma largura (2292–2702, ~520 com as pontas,
+    perto dos 580 do sorriso da logo) e o mesmo centro vertical dele (6750). */
 const MOUTH_D = {
-  procurando: "M2400 6770Q2505 6762 2610 6730",
-  confuso: "M2385 6760l58 -40l58 40l58 -40l58 40",
+  procurando: "M2292 6775Q2497 6765 2702 6725",
+  confuso: "M2292 6750q68.3 -90 136.7 0t136.7 0t136.6 0",
   // sorriso de canto: sobe na ponta, do lado para onde o olhar vai
-  pensando: "M2390 6740Q2470 6780 2560 6740q40 -18 50 -60",
+  pensando: "M2292 6750Q2450 6800 2622 6750q50 -18 80 -75",
 } as const;
 /** Pupila menor no confuso, deslocada para cima e à direita no pensando. */
 const IRIS_TRANSFORM: Partial<Record<MascoteExpressao, string>> = {
   confuso: "translate(2498 6216) scale(0.6) translate(-2498 -6216)",
   pensando: "translate(65 -90)",
 };
-/** Bolhas de pensamento, da menor (perto do rosto) à maior. */
+/** Bolhas de pensamento, da menor (perto do rosto) à maior; a menor
+    tem o diâmetro do traço dos adornos (55). */
 const BUBBLES = [
-  { cx: 2775, cy: 5985, r: 28 },
+  { cx: 2775, cy: 5985, r: 27.5 },
   { cx: 2850, cy: 5880, r: 40 },
   { cx: 2925, cy: 5755, r: 55 },
 ];
@@ -99,7 +102,7 @@ export function Mascote({
       {expressao === "confuso" && (
         <g className="ms-mascote__ask">
           <path className="ms-mascote__mark" d="M2790 5770a80 80 0 1 1 120 70q-40 25 -40 75" />
-          <circle className="ms-mascote__ink" cx={2870} cy={5990} r={26} />
+          <circle className="ms-mascote__ink" cx={2870} cy={5995} r={27.5} />
         </g>
       )}
       {expressao === "pensando" &&
