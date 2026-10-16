@@ -271,7 +271,7 @@ export const DropdownMenuItem = React.forwardRef<HTMLButtonElement, DropdownMenu
       }}
       {...rest}
     >
-      {children}
+      <span className="ms-dropdown-menu__text">{children}</span>
       {radio && (
         <svg
           className="ms-dropdown-menu__check"

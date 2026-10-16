@@ -17,4 +17,4 @@ Status: review
 - Medido (WCAG, fundo / vidro): escuro -500 ciano 7.52/5.79, rosa 4.64/3.57, laranja 6.37/4.90; Darker 7.52/4.64/6.37 nos dois; claro accent-700 3.83/4.08, pink-600 4.26/4.54, orange-600 3.16/3.36 (o accent-600 dá 2.70, por isso o -700). Abaixo de 3:1 só no centro dos glows do fundo, limite que o `--color-accent` sólido já tinha.
 - `Navbar` não tinha `aria-*` no link atual: ganhou `aria-current="location"` (campo novo em `LinkRenderProps`).
 - Sidebar: o anel fica só em quem tem `aria-current`. A seção-mãe de um subtópico ativo segue no fundo "soft".
-- Conferido no Playwright nos três temas (capturas dos seis lugares, `aria-*` lido no DOM). Falta a validação visual do Valnez.
+- Conferido no Playwright nos três temas (capturas dos seis lugares, `aria-*` lido no DOM). Primeira rodada de validação: Valnez aprovou o StepIndicator e pediu o gradiente em Checkbox/Radio, campos focados e opção selecionada (D3, `docs/decisoes.md`). Aplicado; aguardando nova validação.

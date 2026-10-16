@@ -46,6 +46,8 @@ estrela individual fica `aria-hidden`.
   contraste), então o sistema define o próprio. Um controle novo deve
   herdar esse anel sem CSS adicional; se não herdar, ele está fora do
   padrão dos outros controles (investigar antes de estilizar à parte).
+  Exceção única: campos de texto (`.ms-input`) focados trocam o anel
+  pela borda em `--gradient-active` (D3 em `docs/decisoes.md`).
 - **`IconButton`**: `href` e `aria-label` são obrigatórios. Um `<a>`
   sem `href` não é focável; um botão só de ícone não tem nome
   acessível sem `aria-label`.

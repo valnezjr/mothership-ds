@@ -14,6 +14,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   ≥3:1 sobre fundo e vidro. Aplicado no indicador das `Tabs`, no ponto
   ativo do `StepIndicator`, no `Switch` ligado (antes o tom "soft" do
   accent) e, como anel, no item atual de `Navbar`/`Sidebar`/`Dock`.
+- **Gradiente de ativo também em Checkbox/Radio marcados, na borda dos
+  campos de texto focados** (Input, Textarea, Combobox, gatilho do Select,
+  que também conta com a lista aberta; única exceção ao anel de foco
+  sólido) **e no rótulo da opção selecionada** do Select/Combobox e do
+  item marcado do DropdownMenu, com `--gradient-active-text` (≥4.5:1).
+  O rótulo da opção agora fica num `<span class="ms-listbox__label">` e o
+  conteúdo do item do DropdownMenu num `<span class="ms-dropdown-menu__text">`.
+  Decisão em D3, `docs/decisoes.md`.
 - **`Card` ganha `selected`**: anel no gradiente de ativo e
   `aria-current="true"`.
 - **`Navbar`: link atual com `aria-current="location"`**. Antes só a

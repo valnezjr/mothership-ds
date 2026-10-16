@@ -543,9 +543,22 @@
 
 .ms-input:hover:not(:disabled) { background: var(--color-surface-hover); }
 
-.ms-input:focus-visible {
-  outline: var(--focus-width) solid var(--color-accent-text);
-  outline-offset: 1px;
+/* Campo focado: a borda vira o gradiente de ativo (exceção ao anel de
+   foco sólido, decidida no ticket 06). Outline não aceita gradiente e
+   <input> não tem ::before, então é borda transparente com o fundo em
+   camadas (--gradient-field-ring). A borda engrossa até --focus-width e
+   o padding encolhe o mesmo tanto, para o texto não pular. O gatilho
+   do Select conta como ativo também com a lista aberta. Prefixo
+   .ms-page/.ms-portal-root para vencer o hover e a regra global de foco. */
+.ms-page .ms-input:focus-visible,
+.ms-portal-root .ms-input:focus-visible,
+.ms-page .ms-select__trigger[aria-expanded="true"],
+.ms-portal-root .ms-select__trigger[aria-expanded="true"] {
+  outline: none;
+  border: var(--focus-width) solid transparent;
+  padding: calc(var(--space-3) + var(--border-width) - var(--focus-width))
+           calc(var(--space-4) + var(--border-width) - var(--focus-width));
+  background: var(--gradient-field-ring);
 }
 
 /* Só cancela o anel nativo do navegador — a regra global de foco
@@ -617,6 +630,23 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-listbox__option--active { background: var(--color-surface-hover); }
 .ms-listbox__option--selected { font-weight: var(--font-weight-medium); color: var(--color-accent-text) !important; }
+
+/* Rótulo da opção selecionada (e do item marcado do DropdownMenu) em
+   texto no gradiente de ativo. Num <span> próprio porque background-clip:
+   text no item brigaria com o fundo de hover dele. text-fill-color, não
+   color: o color segue valendo para ícones em currentColor. */
+.ms-listbox__option--selected .ms-listbox__label,
+.ms-dropdown-menu__item[aria-checked="true"] .ms-dropdown-menu__text {
+  background: var(--gradient-active-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ms-listbox__option--selected.ms-listbox__option--active .ms-listbox__label,
+.ms-dropdown-menu__item[aria-checked="true"]:is(:hover, :focus-visible) .ms-dropdown-menu__text {
+  background-image: var(--gradient-active-text-hover);
+}
 .ms-listbox__option--disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
 
 .ms-listbox__empty {
@@ -711,7 +741,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-dropdown-menu__item:disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
 .ms-dropdown-menu__item--danger { color: var(--color-danger); }
 
-.ms-dropdown-menu__item > svg:not(.ms-dropdown-menu__check) {
+.ms-dropdown-menu__text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ms-dropdown-menu__text > svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
@@ -796,12 +832,17 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-checkbox:checked {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--gradient-active) border-box;
+  border-color: transparent;
 }
 .ms-checkbox:checked::after { transform: scale(1); }
 
-.ms-radio:checked { border-color: var(--color-accent); }
+.ms-radio:checked {
+  border-color: transparent;
+  background: var(--gradient-field-ring);
+}
+
+.ms-radio:checked::after { background: var(--gradient-active); }
 .ms-radio:checked::after { transform: scale(1); }
 
 .ms-checkbox:disabled,

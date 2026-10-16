@@ -213,7 +213,9 @@ Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 60%, laranja à esquerda, mesma direção do SVG). **Uso exclusivo** como
 sinal de ativo/selecionado: indicador das `Tabs`, item atual de
 `Navbar`/`Sidebar`/`Dock` (anel), ponto ativo do `StepIndicator`,
-`Card selected` (anel) e `Switch` ligado. Nada além disso, nem
+`Card selected` (anel), `Switch` ligado, Checkbox/Radio marcados e a
+borda dos campos de texto focados (única exceção ao foco sólido, D3).
+Nada além disso, nem
 decoração: se aparecer em outro lugar, deixa de dizer "ativo". Estático.
 O anel de foco continua sólido (`--color-accent-text`), e o estado vai
 sempre também em `aria-*`. Paradas `-500` no escuro/Darker; no claro
@@ -221,6 +223,15 @@ sempre também em `aria-*`. Paradas `-500` no escuro/Darker; no claro
 o creme). Todas ≥3:1 sobre o fundo e o vidro dos três temas; os valores
 medidos estão no comentário do token. Abaixo de 3:1 só no centro dos
 glows do fundo (limite que o `--color-accent` sólido já tinha).
+
+**`--gradient-active-text`**: o mesmo sinal como texto (rótulo da opção
+selecionada do Select/Combobox e do item marcado do DropdownMenu), com
+paradas que passam de 4.5:1: `-400` no escuro/Darker, `-800` no claro.
+**`--gradient-active-text-hover`** é a versão com o item em hover: no
+escuro vira `--color-text`, porque o hover branco a 50% não deixa
+nenhuma cor de texto passar. **`--gradient-field-ring`** é o fundo em
+camadas para borda em gradiente onde não há `::before` (Input, Radio):
+use com `border-color: transparent`.
 
 ## Texto/ícone sobre superfície sólida
 

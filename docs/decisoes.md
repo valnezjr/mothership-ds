@@ -59,3 +59,35 @@ mantém os itens anteriores com `ms-gallery-out` (0.15s) e monta os novos
 com `ms-gallery-in`; hover com `0.3s` bounce ao entrar e `0.15s` ease-in
 ao sair; trilho em `0.45s` `--ease-spatial`. Sob redução de movimento,
 gestos em `0.01s` e trilho sem transição.
+
+## D3 — 2026-10-16 — Gradiente de ativo também em Checkbox/Radio, campos focados e opção selecionada
+
+**Pergunta.** O ticket 06 limitou o `--gradient-active` a seis lugares
+e manteve o anel de foco sólido. Ao validar, o Valnez notou que
+Checkbox e Radio marcados não seguiam o `Switch`, e pediu o gradiente
+nas caixas de texto ativas e em "highlights de texto".
+
+**Escolha.**
+- Checkbox e Radio marcados entram no gradiente, como o `Switch`.
+- Campos de texto focados (Input, Textarea, Combobox, gatilho do
+  Select, que também conta com a lista aberta) trocam o anel sólido por
+  uma borda no gradiente. É a única exceção ao foco sólido: botões,
+  links e os outros controles seguem com `--color-accent-text`.
+- Dos highlights de texto, só o rótulo da opção selecionada (Select/
+  Combobox) e o do item marcado do `DropdownMenu`, com um token próprio,
+  `--gradient-active-text`.
+
+**Por quê.** Marcado é "selecionado", o mesmo sinal do `Switch`.
+O campo focado é o lugar onde o usuário está escrevendo, ou seja, o
+ativo da tela. Nos outros controles o foco é só passagem do teclado e
+não pode ser confundido com "ativo". Texto pede 4.5:1, e as paradas do
+anel não chegam lá (rosa -500 dá 3.57 sobre o vidro escuro), por isso
+o token separado (-400 no escuro e no Darker, -800 no claro).
+
+**Verificado.** Contraste do anel do campo ≥3:1 (mínimo para indicador
+de foco), com as mesmas paradas do `--gradient-active`. Texto ≥4.5:1
+sobre o vidro nos três temas. No escuro, o item em hover é branco a
+50% e nenhuma cor de texto passa ali (já valia para o
+`--color-accent-text`), então a opção selecionada com hover volta para
+`--color-text` (`--gradient-active-text-hover`). Playwright nos três
+temas.

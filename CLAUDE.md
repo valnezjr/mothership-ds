@@ -530,6 +530,11 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `accent-700`/`pink-600`/`orange-600` (o `accent-600` não chega a
       3:1 no creme). No Sidebar, anel só em quem tem `aria-current`.
       `Navbar` passa a marcar o link atual com `aria-current`.
+      Depois da validação (D3): Checkbox/Radio marcados, borda dos
+      campos focados (única exceção ao foco sólido, via fundo em camadas
+      `--gradient-field-ring`, já que `<input>` não tem `::before`) e
+      rótulo da opção selecionada em `--gradient-active-text`
+      (≥4.5:1; no hover do escuro volta a `--color-text`).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

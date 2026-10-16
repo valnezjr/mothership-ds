@@ -184,11 +184,28 @@
      foco continua sólido (--color-accent-text). A cor nunca carrega o
      estado sozinha; quem usa já tem aria-current/aria-selected/checked.
      Mesma direção do assets/logo.svg: ciano à direita, rosa em 60%,
-     laranja à esquerda. Paradas -500 no escuro e no Darker. Contraste
+     laranja à esquerda. Também no Checkbox/Radio marcados e, como
+     exceção ao anel de foco sólido, na borda dos campos de texto
+     focados (Input, Textarea, Select, Combobox). Paradas -500 no escuro e no Darker. Contraste
      sobre o fundo e o vidro (mínimo 3:1): ciano 7.52/5.79, rosa
      4.64/3.57, laranja 6.37/4.90. No Darker o vidro é o próprio fundo
      a 60%, então dá 7.52/4.64/6.37 nos dois. O claro redefine. */
   --gradient-active: linear-gradient(to left, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
+  /* O mesmo sinal como TEXTO (opção selecionada do Select/Combobox e
+     item marcado do DropdownMenu), que pede 4.5:1. Paradas -400 sobre o
+     vidro: 7.13/4.77/6.39 no escuro, 9.26/6.19/8.31 no Darker. */
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-400), var(--color-pink-400) 60%, var(--color-orange-400));
+  /* O mesmo texto com o item em hover/ativo. No escuro o hover é branco a
+     50% e nenhuma parada passa ali (o -400 cai para 1.0–1.5:1), então
+     vira a cor do texto. Darker e claro repetem o gradiente. */
+  --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+  /* Borda em gradiente num elemento sem ::before (Input, Radio): use com
+     border transparente. O vidro fica no padding-box; o fundo da página
+     embaixo dele impede o gradiente de vazar pelo vidro translúcido. */
+  --gradient-field-ring:
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(var(--bg-base), var(--bg-base)) padding-box,
+    var(--gradient-active) border-box;
 
   --color-accent-soft: rgba(0, 175, 239, 0.2);
   /* Accent como TEXTO e anel de foco (link ativo, opção selecionada,
@@ -359,6 +376,7 @@
    onde virou o tema da noite. Aplicado pela classe `darker` no <html>
    (o ThemeProvider/ThemeSwitch continuam alternando só escuro/claro). */
 .darker {
+  --gradient-active-text-hover: var(--gradient-active-text);
   --color-surface: color-mix(in srgb, var(--bg-base) 60%, transparent);
   /* Hover sutil: o branco a 50% do escuro padrão acende demais sobre o
      vidro escuro. */
@@ -427,6 +445,10 @@
      -700 3.83/4.08 (o -600 fica em 2.70), rosa -600 4.26/4.54,
      laranja -600 3.16/3.36. */
   --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
+  /* Texto: -800 nas três, 5.90/8.25/6.60 sobre o vidro (4.20/5.87/4.70
+     com o hover escurecendo). */
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));
+  --gradient-active-text-hover: var(--gradient-active-text);
 
   --bg-base: #ebe4d8;
   --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 65%, transparent);  /* ciano claro — canto superior direito */

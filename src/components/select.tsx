@@ -191,7 +191,7 @@ const OptionList = React.forwardRef<
             if (!opt.disabled) onSelect(opt);
           }}
         >
-          {opt.label}
+          <span className="ms-listbox__label">{opt.label}</span>
         </li>
       ))}
     </ul>,

@@ -83,11 +83,20 @@ Todas funcionam como `tone` em `<Badge>`, `<Alert>` e `notify()`.
 `--gradient-active` é o gradiente da logo, e serve para uma coisa só:
 dizer **"isto está ativo ou selecionado"**. Aparece no indicador das
 `Tabs`, no item atual da `Navbar`, do `Sidebar` e do `Dock` (como anel),
-no ponto ativo do `StepIndicator`, no `Card` com `selected` (anel) e no
-`Switch` ligado. Fora desses lugares ele não entra, nem como enfeite: o
+no ponto ativo do `StepIndicator`, no `Card` com `selected` (anel), no
+`Switch` ligado, no Checkbox e no Radio marcados e na borda dos campos
+de texto focados. Fora desses lugares ele não entra, nem como enfeite: o
 gradiente só funciona como sinal enquanto for raro.
 
-É estático, e o anel de foco continua sólido (`--color-accent-text`).
+É estático. O anel de foco dos outros controles continua sólido
+(`--color-accent-text`): nos campos de texto o foco é o lugar onde se
+está escrevendo, então conta como ativo; num botão é só passagem do
+teclado.
+
+Como texto (rótulo da opção selecionada do `Select`/`Combobox` e do
+item marcado do `DropdownMenu`) entra o `--gradient-active-text`, com
+paradas mais claras no escuro (`-400`) e mais escuras no claro (`-800`),
+porque texto pede 4.5:1.
 A cor nunca carrega o estado sozinha: cada um desses componentes também
 marca o estado em `aria-current`, `aria-selected` ou `checked`.
 
