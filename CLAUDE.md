@@ -530,7 +530,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `accent-700`/`pink-600`/`orange-600` (o `accent-600` não chega a
       3:1 no creme). No Sidebar, anel só em quem tem `aria-current`.
       `Navbar` passa a marcar o link atual com `aria-current`.
-      Depois da validação (D3): Checkbox/Radio marcados, borda dos
+      Depois da validação (D3): contorno de Checkbox/Radio marcados
+      (preenchimento em `--color-text`), borda dos
       campos focados (única exceção ao foco sólido, via fundo em camadas
       `--gradient-field-ring`, já que `<input>` não tem `::before`) e
       rótulo da opção selecionada em `--gradient-active-text`

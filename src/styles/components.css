@@ -811,8 +811,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-checkbox { border-radius: 6px; }
 .ms-radio { border-radius: var(--radius-full); }
 
-/* Marca na cor do fundo do tema, recortada sobre o gradiente de ativo:
-   ≥3:1 nos três temas (o branco ficava em 2.51 sobre o ciano). */
 .ms-checkbox::after {
   content: "";
   width: 11px;
@@ -833,9 +831,14 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: transform var(--motion-pulso-duration) var(--motion-pulso-ease);
 }
 
+/* Marcado: o gradiente de ativo fica só no contorno; o preenchimento
+   é a cor do texto (branco no escuro, quase preto no claro) e a marca,
+   a cor do fundo do tema. */
 .ms-checkbox:checked {
-  background: var(--gradient-active) border-box;
   border-color: transparent;
+  background:
+    linear-gradient(var(--color-text), var(--color-text)) padding-box,
+    var(--gradient-active) border-box;
 }
 .ms-checkbox:checked::after { transform: scale(1); }
 
@@ -844,7 +847,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   background: var(--gradient-field-ring);
 }
 
-.ms-radio:checked::after { background: var(--gradient-active-radial); }
+.ms-radio:checked::after { background: var(--color-text); }
 .ms-radio:checked::after { transform: scale(1); }
 
 .ms-checkbox:disabled,

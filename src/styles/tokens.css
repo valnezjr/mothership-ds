@@ -191,8 +191,6 @@
      4.64/3.57, laranja 6.37/4.90. No Darker o vidro é o próprio fundo
      a 60%, então dá 7.52/4.64/6.37 nos dois. O claro redefine. */
   --gradient-active: linear-gradient(to left, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
-  /* Mesmas paradas em círculo, ciano no centro: miolo do Radio marcado. */
-  --gradient-active-radial: radial-gradient(circle, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
   /* O mesmo sinal como TEXTO (opção selecionada do Select/Combobox e
      item marcado do DropdownMenu), que pede 4.5:1. Paradas -400 sobre o
      vidro: 7.13/4.77/6.39 no escuro, 9.26/6.19/8.31 no Darker. */
@@ -447,7 +445,6 @@
      -700 3.83/4.08 (o -600 fica em 2.70), rosa -600 4.26/4.54,
      laranja -600 3.16/3.36. */
   --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
-  --gradient-active-radial: radial-gradient(circle, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
   /* Texto: -800 nas três, 5.90/8.25/6.60 sobre o vidro (4.20/5.87/4.70
      com o hover escurecendo). */
   --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));

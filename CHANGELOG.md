@@ -14,7 +14,9 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   ≥3:1 sobre fundo e vidro. Aplicado no indicador das `Tabs`, no ponto
   ativo do `StepIndicator`, no `Switch` ligado (antes o tom "soft" do
   accent) e, como anel, no item atual de `Navbar`/`Sidebar`/`Dock`.
-- **Gradiente de ativo também em Checkbox/Radio marcados, na borda dos
+- **Gradiente de ativo também no contorno de Checkbox/Radio marcados**
+  (preenchimento em `--color-text`, marca do Checkbox na cor do fundo),
+  **na borda dos
   campos de texto focados** (Input, Textarea, Combobox, gatilho do Select,
   que também conta com a lista aberta; única exceção ao anel de foco
   sólido) **e no rótulo da opção selecionada** do Select/Combobox e do
