@@ -13,6 +13,8 @@
   --font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  /* Só números grandes (StatTile) e título de herói, junto com --text-display. */
+  --font-weight-display: 600;
 
   --text-xs: 12px;
   --text-sm: 14px;   /* rodapé */
@@ -20,6 +22,7 @@
   --text-lg: 20px;
   --text-xl: 24px;
   --text-2xl: 32px;
+  --text-display: 48px;
 
   --line-height-tight: 24px; /* handle do perfil */
   --line-height-base: 1.5;

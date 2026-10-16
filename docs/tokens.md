@@ -130,7 +130,7 @@ Verde e vermelho ficam **reservados para status** — nunca viram "série 5".
 ## Tipografia
 
 Família única: [Outfit](https://fonts.google.com/specimen/Outfit), pesos
-400 e 500. Escolhida por ser limpa, muito legível e versátil o
+400, 500 e 600. Escolhida por ser limpa, muito legível e versátil o
 bastante pra título e corpo de texto; por não ser tão batida quanto as
 fontes mainstream, carrega uma pegada mais orgânica.
 
@@ -142,6 +142,7 @@ fontes mainstream, carrega uma pegada mais orgânica.
 | `--text-lg` | 20px | título de card |
 | `--text-xl` | 24px | título de seção |
 | `--text-2xl` | 32px | título de página |
+| `--text-display` | 48px | número grande de dashboard, título de herói |
 
 Para código e dados alinhados há `--font-mono`, com a
 [Maple Mono](https://github.com/subframe7536/maple-font): "a" de um
@@ -150,10 +151,18 @@ carrega essa fonte; instale `@fontsource/maple-mono` e importe onde
 for usar. Sem ela, o token cai na mono do sistema.
 
 Mais `--font-family`, `--font-weight-regular` (400),
-`--font-weight-medium` (500), `--line-height-base` e
-`--line-height-tight`.
+`--font-weight-medium` (500), `--font-weight-display` (600),
+`--line-height-base` e `--line-height-tight`.
 
-Há utilitários prontos: `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
+O peso de exibição anda sempre junto com `--text-display` e só em dois
+lugares: o número do `StatTile` e o título do `Hero`. Em qualquer outro
+título, 500 continua o teto. `.ms-display` aplica os dois de uma vez,
+com a mesma restrição: número grande ou título de herói montado à mão.
+O `ProgressRing` fica de fora de propósito, porque o número mora dentro
+do anel e 48px não cabe. No `StatTile`, o número encolhe até 32px
+quando o tile é estreito demais para ele.
+
+Há utilitários prontos: `.ms-display`, `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
 `.ms-text-xs`, `.ms-text-muted`.
 
 ## Espaçamento

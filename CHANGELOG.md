@@ -62,6 +62,15 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   ganham saída animada**: antes sumiam na hora; agora ficam montados
   pelo tempo do recolher (hook interno `usePresence`), sem interação
   nesse intervalo.
+- **Peso de exibição** (`src/styles/tokens.css`): `--font-weight-display`
+  (600) e `--text-display` (48px), mais o utilitário `.ms-display`. Só
+  para números grandes e título de herói: o valor do `StatTile` sobe de
+  32px/500 para 48px/600, e o título do `Hero` passa a ir até 48px/600
+  (era até 56px/500; o mínimo de 32px no mobile segue igual). Num tile
+  estreito, o número do `StatTile` encolhe até 32px (container query).
+  O `ProgressRing` fica de fora: 48px não cabe dentro do anel. Quem
+  carrega a Outfit precisa incluir o peso 600 na URL do Google Fonts
+  (`wght@400;500;600`); sem ele, o navegador sintetiza o negrito.
 
 ## [1.8.0] — 2026-10-16
 

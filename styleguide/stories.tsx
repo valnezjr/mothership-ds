@@ -942,9 +942,10 @@ export const STORIES: Story[] = [
     id: "tipografia",
     group: "Fundações",
     title: "Tipografia",
-    subtitle: "Uma família só (Outfit, 400 e 500) e uma escala fixa de tamanhos — de 12px pras badges até 32px pros títulos — pra nenhuma tela inventar um font-size avulso. Escolhida por ser limpa, muito legível e versátil, com uma pegada mais orgânica e um charme que foge do óbvio de fontes mais batidas.",
+    subtitle: "Uma família só (Outfit, 400 e 500, mais 600 reservado pra exibição) e uma escala fixa de tamanhos — de 12px pras badges até 48px pros números grandes e o título do herói — pra nenhuma tela inventar um font-size avulso. Escolhida por ser limpa, muito legível e versátil, com uma pegada mais orgânica e um charme que foge do óbvio de fontes mais batidas.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div><span className="ms-display">Exibição — 48px</span> <code className="ms-text-xs ms-text-muted">--text-display · 600</code></div>
         <div><span className="ms-h1">Título 2xl — 32px</span> <code className="ms-text-xs ms-text-muted">--text-2xl · 500</code></div>
         <div><span className="ms-h2">Título xl — 24px</span> <code className="ms-text-xs ms-text-muted">--text-xl · 500</code></div>
         <div><span className="ms-h3">Título lg — 20px</span> <code className="ms-text-xs ms-text-muted">--text-lg · 500</code></div>

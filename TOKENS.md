@@ -16,6 +16,7 @@ sempre `var(--token)`.
 --font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 --font-weight-regular: 400;
 --font-weight-medium: 500;
+--font-weight-display: 600;  /* só com --text-display */
 
 --text-xs: 12px;    /* badges, anotações */
 --text-sm: 14px;    /* rodapé, legendas */
@@ -23,12 +24,13 @@ sempre `var(--token)`.
 --text-lg: 20px;    /* título de card */
 --text-xl: 24px;    /* título de seção */
 --text-2xl: 32px;   /* título de página */
+--text-display: 48px; /* número de StatTile, título do Hero */
 
 --line-height-base: 1.5;
 --line-height-tight: 24px;
 ```
 
-Utilitários prontos: `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
+Utilitários prontos: `.ms-display`, `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
 `.ms-text-xs`, `.ms-text-muted`.
 
 `--font-mono` não é carregada pela lib (nenhum componente usa ainda):

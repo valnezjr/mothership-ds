@@ -214,6 +214,12 @@
 .ms-h1 { font-size: var(--text-2xl); font-weight: var(--font-weight-medium); }
 .ms-h2 { font-size: var(--text-xl);  font-weight: var(--font-weight-medium); }
 .ms-h3 { font-size: var(--text-lg);  font-weight: var(--font-weight-medium); }
+.ms-display,
+.ms-stat__value {
+  font-size: var(--text-display);
+  font-weight: var(--font-weight-display);
+  line-height: 1.1;
+}
 .ms-text-sm { font-size: var(--text-sm); }
 .ms-text-xs { font-size: var(--text-xs); }
 .ms-text-muted { color: var(--color-text-muted) !important; }
@@ -1452,8 +1458,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-hero__title {
-  font-size: clamp(32px, 6vw, 56px);
-  font-weight: var(--font-weight-medium);
+  font-size: clamp(var(--text-2xl), 6vw, var(--text-display));
+  font-weight: var(--font-weight-display);
   line-height: 1.15;
   max-width: 720px;
 }
@@ -3485,6 +3491,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-stat {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -3501,11 +3508,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   color: var(--color-text-muted) !important;
 }
 
-.ms-stat__value {
-  font-size: var(--text-2xl);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.1;
-}
+/* Na coluna mínima do StatGrid (180px), "R$ 12.480" a 48px estoura o
+   tile; o número encolhe com a largura do próprio tile até --text-2xl.
+   Peso e tamanho máximo vêm do par de exibição, junto de .ms-display. */
+.ms-stat__value { font-size: clamp(var(--text-2xl), 30cqi, var(--text-display)); }
 
 .ms-stat__delta {
   display: inline-flex;

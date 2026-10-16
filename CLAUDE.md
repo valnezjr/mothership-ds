@@ -537,6 +537,11 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       rótulo da opção selecionada em `--gradient-active-text`
       (≥4.5:1; no hover do escuro volta a `--color-text`). Item atual de
       Sidebar/Dock perde o azul: vidro branco + anel, como a Navbar.
+- [x] Peso de exibição (ticket 07): `--font-weight-display` (600) e
+      `--text-display` (48px), utilitário `.ms-display`. Só no valor do
+      `StatTile` e no título do `Hero` (teto cai de 56px para 48px).
+      `ProgressRing` fica de fora: o número mora dentro do anel, 48px
+      não cabe. Outfit 600 entra na URL do styleguide, exemplo e README.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
