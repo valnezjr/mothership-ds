@@ -8,3 +8,7 @@ Status: ready-for-agent
 - [ ] `axe-core` sem violações novas nos três temas
 - [ ] Release 1.9.0 preparada
 - [ ] Tag e push aprovados pelo Valnez
+
+## Comments
+
+- 2026-10-16: a v1.8.0 foi taggeada na `identidade-v1.9`, sem mesclar no `master` (decisão do Valnez: mesclar só no fim da v1.9). Ao lançar a v1.9, mesclar `identidade-v1.9` no `master` — só assim o styleguide do GitHub Pages sai da 1.7.0.
