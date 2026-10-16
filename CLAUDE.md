@@ -535,7 +535,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       campos focados (única exceção ao foco sólido, via fundo em camadas
       `--gradient-field-ring`, já que `<input>` não tem `::before`) e
       rótulo da opção selecionada em `--gradient-active-text`
-      (≥4.5:1; no hover do escuro volta a `--color-text`).
+      (≥4.5:1; no hover do escuro volta a `--color-text`). Item atual de
+      Sidebar/Dock perde o azul: vidro branco + anel, como a Navbar.
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

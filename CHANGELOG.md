@@ -25,6 +25,9 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
   O rótulo da opção agora fica num `<span class="ms-listbox__label">` e o
   conteúdo do item do DropdownMenu num `<span class="ms-dropdown-menu__text">`.
   Decisão em D3, `docs/decisoes.md`.
+- **Item atual de `Sidebar` e `Dock` sem o azul**: o texto ciano sobre o
+  fundo `--color-accent-soft` vira vidro branco (`--color-surface`) com
+  texto normal e o anel no gradiente, igual ao link ativo da `Navbar`.
 - **`Card` ganha `selected`**: anel no gradiente de ativo e
   `aria-current="true"`.
 - **`Navbar`: link atual com `aria-current="location"`**. Antes só a

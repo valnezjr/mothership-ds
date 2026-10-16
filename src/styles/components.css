@@ -2206,7 +2206,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-sidebar__section:hover { background: var(--color-surface-hover); }
 
-.ms-sidebar__section--active { color: var(--color-accent-text); background: var(--color-accent-soft); }
+/* Seção da página atual (ou mãe do subtópico atual): vidro branco, sem
+   anel; o anel fica só em quem tem aria-current. */
+.ms-sidebar__section--active { color: var(--color-text); background: var(--color-surface); }
 
 .ms-sidebar__list {
   display: flex;
@@ -2234,7 +2236,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-sidebar__link:hover { background: var(--color-surface-hover); color: var(--color-text); }
 
-.ms-sidebar__link--active { color: var(--color-accent-text); background: var(--color-accent-soft); }
+.ms-sidebar__link--active { color: var(--color-text); background: var(--color-surface); }
 
 /* Botão flutuante que abre a gaveta — mesma anatomia (3 barras) do
    hambúrguer da Navbar, escondido por padrão (só aparece abaixo de
@@ -2397,9 +2399,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-dock--expanded .ms-dock__item,
 .ms-dock__drawer-content .ms-dock__item { border-radius: var(--radius-md); }
 
-/* Mesmo destaque do Sidebar; aria-current="page" carrega o estado. */
+/* Mesmo destaque do Sidebar e da Navbar (vidro branco + anel no
+   gradiente de ativo); aria-current="page" carrega o estado. */
 .ms-dock__item--active,
-.ms-dock__item--active:hover { color: var(--color-accent-text); background: var(--color-accent-soft); }
+.ms-dock__item--active:hover { color: var(--color-text); background: var(--color-surface); }
 
 .ms-dock__icon {
   display: inline-flex;
