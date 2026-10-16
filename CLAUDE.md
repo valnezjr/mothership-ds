@@ -552,3 +552,13 @@ examples/next-app/        # landing page de exemplo, buildável — export está
 Commits, docs e comentários em pt-br, no mesmo tom direto do resto do
 projeto (ver `docs/*.md` como referência de estilo). Comentário só
 quando explica um *porquê* não óbvio — o código já diz o *o quê*.
+
+## Agent skills
+
+### Issue tracker
+
+Local markdown: tickets, specs e mapas do wayfinder ficam em `.scratch/<esforço>/`. Ver `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Layout Mothership: decisões em `docs/decisoes.md` (criado na primeira decisão), glossário em `docs/glossario.md`. Ver `docs/agents/domain.md`.
