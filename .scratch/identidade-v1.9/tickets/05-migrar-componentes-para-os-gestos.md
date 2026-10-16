@@ -1,14 +1,14 @@
 # 05: Migrar os componentes para os gestos
 
 Blocked by: 04
-Status: review
+Status: done
 
 **What to build:** todo componente com entrada/saída (Modal, StepModal, toast, histórico de alertas, Drawer, Popover, DropdownMenu, Select/Combobox, Tooltip, menu da Navbar, Dock, Accordion, Gallery) usa os tokens de gesto: entra com assentar, sai com recolher. Microinterações de clique usam pulso. Nenhuma transição solta sobra fora dos tokens.
 
 - [x] Auditoria listada no ticket (componente → gesto antes/depois)
 - [x] Nenhuma saída com overshoot
 - [x] `prefers-reduced-motion` respeitado em todos
-- [ ] Conferido no styleguide nos três temas (pendente: validação visual do Valnez; Playwright conferiu durações/curvas de entrada e saída e redução de movimento, sem erro de console)
+- [x] Conferido no styleguide nos três temas (validado pelo Valnez em 2026-10-16; Playwright conferiu durações/curvas e redução de movimento)
 
 **Decidido (D1, `docs/decisoes.md`):** o par `--transition-spatial`/`--ease-spatial` fica como exceção para transformação em cena. Expandir/recolher do Dock, câmera e legenda do Grafo3D **não** migram. O `Drawer` (hoje `0.35s var(--ease-bounce)` na entrada e na saída) migra: assentar ao abrir, recolher ao fechar.
 
@@ -44,4 +44,4 @@ Resolvido no D2: contorno reativo (`.ms-hover-edge`, item da Gallery, bolinhas e
 - Splash (coreografia própria), piscada do olho, flutuação do dirigível, Skeleton (`ease-in-out`, pulso de carregamento, não clique), barra de tempo do toast (contagem regressiva linear).
 - Cor/fundo em hover seguem em `--transition-fast/base/slow`.
 
-**Em aberto para o Valnez:** a etapa que sai do StepModal segue instantânea (a nova entra por cima com A).
+**Aprovado como está:** a etapa que sai do StepModal segue instantânea (a nova entra por cima com A).
