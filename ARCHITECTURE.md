@@ -23,11 +23,16 @@ revisitar essa decisão primeiro.
 ## Fronteira servidor/cliente
 
 Regra: leva `"use client"` todo arquivo que usa estado, efeito, ref
-com comportamento ou handler. Hoje só dois arquivos ficam **sem**
-a diretiva, por serem puramente apresentacionais:
+com comportamento ou handler. Hoje três arquivos de componente ficam
+**sem** a diretiva, por serem puramente apresentacionais:
 
 - `src/components/primitives.tsx`
 - `src/components/LogoMark.tsx`
+- `src/components/Mascote.tsx`
+
+`src/components/face-paths.ts` (paths do rosto da logo) também fica
+sem: é importado pelo `Mascote`, e um módulo `"use client"` entregaria
+ao servidor referências de cliente, não as strings.
 
 Todo o resto (`Loader`, `Modal`, `Splash`, `alerts`, `charts`,
 `disclosure`, `navbar`, `theme`) tem `"use client"` na primeira linha.
@@ -38,7 +43,7 @@ Todo o resto (`Loader`, `Modal`, `Splash`, `alerts`, `charts`,
 do servidor e persiste entre requisições; o servidor emite um ID e o
 cliente calcula outro. Quebra qualquer coisa referenciada por
 `mask="url(#…)"` ou `fill="url(#…)"`. Solução fixa: `React.useId()`,
-sempre — já em uso em `Loader`, `LogoMark`, `Modal`, `charts`,
+sempre — já em uso em `Loader`, `LogoMark`, `Mascote`, `Modal`, `charts`,
 `disclosure`, `navbar`.
 
 **Leitura de `localStorage`.** `ThemeProvider` com `persist` só lê a

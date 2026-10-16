@@ -27,3 +27,5 @@ export type { LoaderProps } from "./components/Loader";
 export { Splash } from "./components/Splash";
 export type { SplashProps } from "./components/Splash";
 export { LogoMark } from "./components/LogoMark";
+export { Mascote } from "./components/Mascote";
+export type { MascoteProps, MascoteExpressao } from "./components/Mascote";

@@ -19,7 +19,7 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-escuro/Darker/claro, fundo animado, 53 componentes. Nasceu de engenharia
+escuro/Darker/claro, fundo animado, 54 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -544,6 +544,14 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       não cabe. Outfit 600 entra na URL do styleguide, exemplo e README.
       `HeroHighlight` sai do ciano pastel para `--gradient-active-text`
       (D4): no claro dava ~2:1, e destoava da marca nos dois temas.
+- [x] `Mascote` (`src/components/Mascote.tsx`, sem `"use client"`,
+      ticket 08): rosto da logo em `piscando`/`dormindo`/`procurando`,
+      `size`, `label` opcional (sem ele, `aria-hidden`). Esboço aprovado
+      em `.scratch/identidade-v1.9/mascote/`. Sorriso no gradiente da
+      logo, esclera na `--ms-logo-ink` (D5). Paths do rosto extraídas
+      para `face-paths.ts` (sem diretiva), usadas também pelo `Loader`:
+      importar de um módulo `"use client"` quebraria o Mascote no
+      servidor. 54 componentes (era 53).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,
@@ -585,11 +593,11 @@ examples/next-app/        # landing page de exemplo, buildável — export está
 - **Tokens antes de valores.** Nenhum CSS novo escreve `15px` ou uma
   cor solta — sempre `var(--espaço-do-token)`. Detalhe: TOKENS.md.
 - **`"use client"` só quando precisa.** Componente sem estado/efeito/
-  handler fica sem a diretiva (hoje só `primitives.tsx` e
-  `LogoMark.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
+  handler fica sem a diretiva (hoje `primitives.tsx`, `LogoMark.tsx`
+  e `Mascote.tsx`). Detalhe: ARCHITECTURE.md § Fronteira servidor/cliente.
 - **IDs de SVG sempre via `React.useId()`.** Nunca um contador de
   módulo — quebra a hidratação. Todo componente com SVG referenciado
-  por `url(#...)` já segue isso (Loader, LogoMark, Modal, charts,
+  por `url(#...)` já segue isso (Loader, LogoMark, Mascote, Modal, charts,
   disclosure, navbar).
 - **`position: fixed` sempre em portal no `<body>`.** Modal, menu da
   navbar, toasts/histórico, tooltip. Um ancestral com

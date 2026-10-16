@@ -132,3 +132,31 @@ novo.
 **Verificado.** Contraste das paradas sobre o fundo da página: escuro
 (-400) 9.26/6.19/8.31, claro (-800) 5.54/7.75/6.20; o Darker é mais
 escuro que o escuro. Playwright no escuro e no claro.
+
+## D5 — 2026-10-16 — Mascote: sorriso no gradiente, esclera como na logo
+
+**Pergunta.** O `Mascote` (ticket 08) sai do rosto da logo. Duas cores
+pediam regra: o sorriso, que na logo é gradiente, esbarrava em
+"gradiente = ativo" (ticket 06); e o anel do olho poderia seguir
+`--color-text` em vez da tinta própria da logo.
+
+**Escolha.** O sorriso mantém o gradiente da logo, estático, nas
+coordenadas do arquivo original. O anel é a esclera: branco no escuro e
+no Darker, `#191933` no claro, a mesma `--ms-logo-ink` do `LogoMark`.
+Branco também no claro foi descartado na validação (≈1.1:1 sobre o
+creme, o olho some).
+
+As paradas usam `--color-accent-500`/`--color-pink-500`/
+`--color-orange-500`, que são as da logo e não mudam com o tema (o
+`--color-accent` vira laranja no claro). Nas animações, a piscada é a
+mesma `ms-blink` da `Splash` e do `Loader`; a respiração e os "z" usam
+a curva da deriva, e cada salto da pupila é um pulso (0.2s). O pulso
+fora de clique e a deriva fora do fundo são leituras do vocabulário,
+não usos da tabela do spec. A prop `label` (sem ela, `aria-hidden`)
+entrou além do ticket, para o caso raro de o mascote carregar sentido
+sozinho.
+
+**Por quê.** No mascote o gradiente é a arte da marca, não um sinal de
+estado, e ele não convive com controles. A esclera ligada à tinta da
+logo mantém mascote e logo idênticos lado a lado em qualquer tema.
+

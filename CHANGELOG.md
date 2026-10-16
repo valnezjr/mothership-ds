@@ -8,6 +8,14 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`Mascote`** (`src/components/Mascote.tsx`, sem `"use client"`): o
+  rosto da marca em três expressões (`expressao`: `piscando`,
+  `dormindo`, `procurando`), com `size` e `label` (sem ele, decorativo).
+  Olho, pupila e sorriso são as paths da logo; cada expressão tem
+  animação própria nos gestos, parada sob `prefers-reduced-motion`.
+  As paths do rosto passam a morar em `face-paths.ts`, compartilhadas
+  com o `Loader`. Decisão de cores em D5, `docs/decisoes.md`.
+  54 componentes (era 53).
 - **`--gradient-active`** (`src/styles/tokens.css`): o gradiente da logo
   como sinal de ativo/selecionado, e só isso. Paradas `-500` no
   escuro/Darker; `accent-700`/`pink-600`/`orange-600` no claro, todas

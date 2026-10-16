@@ -19,7 +19,7 @@ import {
   // sobreposições
   Modal, StepModal, StepIndicator, Popover, Drawer, DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuDivider,
   // marca
-  Splash, Loader,
+  Splash, Loader, Mascote,
 } from "../src/index";
 import { Grafo3D } from "../src/3d/index";
 import type { Grafo3DNo, Grafo3DAresta, Grafo3DGrupo } from "../src/3d/index";
@@ -1048,6 +1048,35 @@ export const STORIES: Story[] = [
     title: "Loader",
     subtitle: "Indicador de progresso de marca: o rosto do logo enche de líquido conforme o valor sobe. Use no lugar de uma barra genérica quando o carregamento merece destaque.",
     render: () => <LoaderDemo />,
+  },
+  {
+    id: "mascote",
+    group: "Componentes",
+    title: "Mascote",
+    subtitle: "O rosto da marca em três expressões, com o olho e o sorriso da logo. Para transições e estados vazios, nunca para algo que fica sempre na tela.",
+    render: () => (
+      <>
+        <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
+          <code>piscando</code> é a piscada dupla da splash; <code>dormindo</code> fecha o olho,
+          respira devagar e solta os &quot;z&quot; em deriva; <code>procurando</code> salta a pupila
+          de um lado para o outro, no pulso. Sem <code>label</code>, o mascote é decorativo
+          (<code>aria-hidden</code>): o texto ao lado é quem diz o que está acontecendo. Sob{" "}
+          <code>prefers-reduced-motion</code>, as três ficam paradas.
+        </p>
+        <div style={{ display: "flex", gap: 48, alignItems: "flex-end", justifyContent: "center", flexWrap: "wrap" }}>
+          {(["piscando", "dormindo", "procurando"] as const).map((e) => (
+            <figure key={e} style={{ margin: 0, display: "grid", justifyItems: "center", gap: 8 }}>
+              <Mascote expressao={e} size={120} />
+              <figcaption className="ms-text-sm ms-text-muted"><code>{e}</code></figcaption>
+            </figure>
+          ))}
+          <figure style={{ margin: 0, display: "grid", justifyItems: "center", gap: 8 }}>
+            <Mascote size={48} label="Mothership" />
+            <figcaption className="ms-text-sm ms-text-muted"><code>size={"{48}"}</code></figcaption>
+          </figure>
+        </div>
+      </>
+    ),
   },
   {
     id: "splash",

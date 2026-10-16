@@ -2596,10 +2596,13 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* Branco da logo vira tinta escura no tema claro */
 /* Cores da logo — antes viviam num <style> dentro do SVG, que não é
    escopado e vazava as classes .fil* para o documento inteiro. */
-.ms-logo .fil1 { fill: var(--ms-logo-ink, #fefefe); }
-.ms-logo .fil13 { fill: #00aeed; }
+.ms-logo .fil1,
+.ms-mascote__ink { fill: var(--ms-logo-ink, #fefefe); }
+.ms-logo .fil13,
+.ms-mascote__iris { fill: #00aeed; }
 .light .ms-splash,
-.light .ms-logo { --ms-logo-ink: #191933; }
+.light .ms-logo,
+.light .ms-mascote { --ms-logo-ink: #191933; }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -2782,6 +2785,82 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-loader__eye,
   .ms-loader__wave,
   .ms-loader--indeterminate .ms-loader__level { animation: none; }
+}
+
+/* ---------- Mascote (rosto da marca em três expressões) ----------
+   Branco da esclera e ciano da pupila vêm das regras da logo, acima. */
+.ms-mascote {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+.ms-mascote__eye,
+.ms-mascote__pupil,
+.ms-mascote__breath,
+.ms-mascote__z {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ms-mascote__lid,
+.ms-mascote__z,
+.ms-mascote__mouth {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ms-mascote__lid,
+.ms-mascote__z { stroke: var(--ms-logo-ink, #fefefe); }
+.ms-mascote__lid { stroke-width: 110; }
+.ms-mascote__mouth { stroke-width: 90; }
+
+/* piscando: a mesma piscada dupla da splash e do loader */
+.ms-mascote--piscando .ms-mascote__eye { animation: ms-blink 4.6s infinite; }
+
+/* dormindo: respira devagar e os "z" sobem em deriva, um de cada vez */
+.ms-mascote__breath { animation: ms-mascote-breath 4.8s var(--motion-deriva-ease) infinite; }
+
+@keyframes ms-mascote-breath {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+
+.ms-mascote__z {
+  opacity: 0;
+  animation: ms-mascote-z 4.8s var(--motion-deriva-ease) infinite;
+  animation-delay: calc(var(--i, 0) * 1.6s);
+}
+
+@keyframes ms-mascote-z {
+  0%   { opacity: 0; transform: translate(-60px, 120px) scale(0.6); }
+  20%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(40px, -80px); }
+}
+
+/* procurando: a pupila olha para um lado e para o outro e volta ao
+   centro. Cada salto é um pulso: 5% de 4s = 0.2s, e a curva vai no
+   keyframe onde o salto começa (é dali que ela vale) */
+.ms-mascote--procurando .ms-mascote__pupil {
+  animation: ms-mascote-look 4s infinite;
+}
+
+@keyframes ms-mascote-look {
+  0%, 73%, 100% { transform: none; }
+  12% { transform: none; animation-timing-function: var(--motion-pulso-ease); }
+  17% { transform: translate(-125px, -35px); }
+  40% { transform: translate(-125px, -35px); animation-timing-function: var(--motion-pulso-ease); }
+  45% { transform: translate(125px, -35px); }
+  68% { transform: translate(125px, -35px); animation-timing-function: var(--motion-pulso-ease); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-mascote--piscando .ms-mascote__eye,
+  .ms-mascote__breath,
+  .ms-mascote__z,
+  .ms-mascote--procurando .ms-mascote__pupil { animation: none; }
+  .ms-mascote__z { opacity: 1; }
 }
 
 /* ---------- Modal / popup ---------- */

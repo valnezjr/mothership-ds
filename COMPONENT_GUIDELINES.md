@@ -54,14 +54,15 @@ Pontos fixos, confirmados no código existente (não convenção teórica):
 - **Props**: estende `React.HTMLAttributes<TElement>` (ou
   `ButtonHTMLAttributes`, `InputHTMLAttributes` etc. quando fizer
   sentido), sempre aceita `className` e sempre repassa `{...rest}`.
-- **`"use client"` é a exceção documentada, não a regra**: hoje só
-  `primitives.tsx` e `LogoMark.tsx` ficam sem ela. Ao criar um
+- **`"use client"` é a exceção documentada, não a regra**: hoje
+  `primitives.tsx`, `LogoMark.tsx` e `Mascote.tsx` ficam sem ela. Ao criar um
   componente novo puramente visual (sem estado/efeito/handler), ele
   também pode ficar sem — mas confirme que de fato não usa nada disso.
 - **IDs de SVG**: se o componente referencia algo via `url(#...)`
   (máscara, gradiente, filtro), gere o ID com `React.useId()` e
   sanitize com `.replace(/[^a-zA-Z0-9_-]/g, "")` — é o padrão em
-  `Loader`, `LogoMark`, `Modal`, `charts`, `disclosure`, `navbar`.
+  `Loader`, `LogoMark`, `Mascote`, `Modal`, `charts`, `disclosure`,
+  `navbar`.
   Nunca um contador de módulo (`let uid = 0`): quebra a hidratação.
 - **`position: fixed`**: se o componente flutua sobre o resto da
   página (menu, painel, tooltip), renderize em portal no `<body>` —
@@ -90,4 +91,6 @@ Se o que falta é uma variação de um componente existente (`tone`,
 ## Arquivos gerados — não editar à mão
 
 `src/components/LogoMark.tsx` é gerado a partir de `assets/logo.svg`.
+`src/components/face-paths.ts` (olho, pupila e sorriso, usados por
+`Loader` e `Mascote`) é copiado do mesmo arquivo.
 Mudanças na logo entram pelo SVG de origem, não pelo TSX.

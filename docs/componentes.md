@@ -1175,6 +1175,27 @@ algumas centenas de nós.
 | `label` | `ReactNode` | — | |
 | `showValue` | `boolean` | `false` | exibe a porcentagem |
 
+### `Mascote`
+
+O rosto da marca (olho e sorriso da logo) em três expressões. Para
+transições e estados vazios, nunca para algo que fica sempre na tela.
+Renderizável no servidor, sem `"use client"`.
+
+| Prop | Tipo | Padrão | |
+|---|---|---|---|
+| `expressao` | `"piscando" \| "dormindo" \| "procurando"` | `"piscando"` | |
+| `size` | `number` | `96` | largura em px; a altura segue a proporção |
+| `label` | `string` | — | nome acessível; sem ele, `aria-hidden` (decorativo) |
+
+- **`piscando`**: a piscada dupla da `Splash` e do `Loader`.
+- **`dormindo`**: olho fechado, respiração lenta e três "z" subindo em
+  deriva (`--motion-deriva-ease`).
+- **`procurando`**: a pupila salta para um lado e para o outro no pulso
+  (`--motion-pulso-ease`) e volta ao centro.
+
+O mesmo `viewBox` nas três: trocar `expressao` não desloca o rosto. Sob
+`prefers-reduced-motion`, todas ficam paradas (os "z" visíveis).
+
 ### `LogoMark`
 
 A logo em SVG, com as partes agrupadas para animação e o gradiente da
