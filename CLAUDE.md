@@ -680,6 +680,10 @@ quando explica um *porquê* não óbvio — o código já diz o *o quê*.
 
 Local markdown: tickets, specs e mapas do wayfinder ficam em `.scratch/<esforço>/`. Ver `docs/agents/issue-tracker.md`.
 
+### Triage labels
+
+Rótulos padrão da `triage` (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), gravados na linha `Status:` dos tickets. Ver `docs/agents/triage-labels.md`.
+
 ### Domain docs
 
 Layout Mothership: decisões em `docs/decisoes.md` (criado na primeira decisão), glossário em `docs/glossario.md`. Ver `docs/agents/domain.md`.
