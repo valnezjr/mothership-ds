@@ -204,8 +204,12 @@ um blur ou um easing próprio), coesão visual e performance.
 --transition-base  0.2s   /* deslizes curtos */
 --transition-slow  0.3s   /* fundos e cores */
 
---ease-bounce  cubic-bezier(0.34, 1.56, 0.64, 1)
+--ease-bounce   cubic-bezier(0.34, 1.56, 0.64, 1)
+--ease-default  ease   /* curva das --transition-*: cores e fundos */
 ```
+
+As `--transition-*` mudam cor e fundo na curva `ease` do CSS, que tem
+nome próprio, `--ease-default`, para quem precisar escrevê-la.
 
 O `--ease-bounce` é a assinatura de movimento do sistema: um overshoot
 leve que aparece no accordion, no modal, nos bullets do carrossel e no

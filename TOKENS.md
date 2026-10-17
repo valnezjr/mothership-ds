@@ -68,7 +68,13 @@ Escala de oito passos:
 --transition-slow: 0.3s;   /* fundos e cores */
 
 --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+--ease-default: ease;      /* curva das --transition-* (cor, fundo) */
 ```
+
+`--ease-default` é o `ease` do CSS, que as `--transition-*` já usavam sem
+escrever. Existe para ser lido por quem traduz os tokens (o Shell); no
+CSS, escrever `var(--transition-slow) var(--ease-default)` onde a curva
+importa (`.ms-hover-edge`).
 
 `--ease-bounce` é a assinatura de movimento do sistema (overshoot
 leve). Detalhe em [`docs/movimento.md`](docs/movimento.md).

@@ -315,7 +315,7 @@
   position: relative;
   transition: transform var(--motion-recolher-duration) var(--motion-recolher-ease),
               box-shadow var(--motion-recolher-duration) var(--motion-recolher-ease),
-              border-color var(--transition-slow);
+              border-color var(--transition-slow) var(--ease-default);
 }
 
 .ms-hover-edge::after,
@@ -349,7 +349,7 @@
   border-color: transparent;
   transition: transform var(--motion-assentar-duration) var(--motion-assentar-ease),
               box-shadow var(--motion-assentar-duration) var(--motion-assentar-ease),
-              border-color var(--transition-slow);
+              border-color var(--transition-slow) var(--ease-default);
 }
 
 .ms-hover-edge:hover::after,

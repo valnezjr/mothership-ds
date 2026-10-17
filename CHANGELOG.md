@@ -8,6 +8,11 @@ e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **`--ease-default: ease`** (`src/styles/tokens.css`): nomeia a curva
+  que as `--transition-*` já usavam implícita, para o Mothership Shell
+  ler o token em vez de fixar o `ease` no gerador. O `.ms-hover-edge`
+  passa a escrevê-la explícita na cor da borda. Nada muda no visual.
+
 - **Busca no styleguide** (`styleguide/App.tsx`): campo no cabeçalho,
   feito com o próprio `Combobox`, que acha a story pelo título, pelo nome
   do componente (`Button`, `Table`, `PricingCard`…, campo novo
