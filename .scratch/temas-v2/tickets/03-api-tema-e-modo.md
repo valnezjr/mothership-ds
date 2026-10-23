@@ -1,7 +1,7 @@
 # 03: API de tema e modo
 
 Blocked by: 02
-Status: review
+Status: done
 
 **What to build:** `ThemeProvider`/`useTheme` com os dois eixos do spec (`theme`, `mode`, `resolvedMode`, `setTheme`, `setMode`, `toggleMode`), `mode="system"` ouvindo `prefers-color-scheme`, `persist` com migração da chave antiga, `ThemeSwitch` alternando o modo e `ThemeMenu` com os oito pares em quatro grupos. `Theme` = `"glass" | "cream" | "paperpen" | "flat"`. Tipos exportados por `src/index.ts`.
 
@@ -20,4 +20,10 @@ Status: review
 - `toggleMode` parte do modo resolvido e sai do `system`.
 - Lógica pura em `src/components/theme-state.ts`, testada em `theme-state.test.ts`. Provider/Switch/Menu conferidos com Playwright numa página descartável (StrictMode, persist, legado, `system` com `emulateMedia`): 20/20.
 - Paperpen e Flat já estão no menu, mas sem bloco de tokens renderizam como Glass até os tickets 08/10.
-- Falta: validação visual do Valnez e `revisao-spec` (sessão encerrada por limite de uso).
+- Validação visual do Valnez: ok (2026-10-23).
+- `revisao-spec` (2026-10-23): padrões sem infração no código; spec sem requisito faltando. Pendências:
+  - `mode="system"` pisca: `prefersDark` começa `false` e fica velho ao voltar com `setMode("system")`, então o primeiro frame sai em `base` com o SO escuro. Ler `matchMedia` na hora (ex.: `useSyncExternalStore`).
+  - `ThemeMenu` sem opção "Sistema": depois de escolher um par, não dá para voltar ao `system` pela interface (spec não pede).
+  - `persist` trocado de `false` para `true` em execução grava os padrões antes de ler (caso de borda).
+  - Smells para o ticket 05: regra do ícone em dois lugares (`modeIcon` e `tokens.css`), tema+modo sem tipo próprio, `["base", "dark"]` literal no menu, nome `lerSalvo`.
+  - `TOKENS.md` (175–182) e `CLAUDE.md` desatualizados; entram no ticket 05.
