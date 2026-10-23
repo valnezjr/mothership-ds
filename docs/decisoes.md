@@ -227,7 +227,7 @@ mão. O itálico do Maple Mono já é cursivo e já está no DS. Com modo
 escuro, o `toggleMode` vale em qualquer tema e os dois eixos continuam
 simétricos.
 
-## D10 — 2026-10-23 — Cream escuro: vidro de latte sobre doce de leite
+## D10 — 2026-10-23 — Cream escuro: caramelo sobre doce de leite
 
 **Pergunta.** O Cream ganha modo escuro (D8). Qual escuro mantém o
 creme?
@@ -244,6 +244,15 @@ quase preto perdia o "cremoso e sólido" do Cream base. O que segura essa
 sensação é a superfície quase opaca do latte; o fundo e os glows do doce
 de leite dão o calor. Contrastes medidos no ticket 01 (texto/vidro 9.24,
 borda/fundo 3.86).
+
+**Revisão (ticket 04).** Com o bloco aplicado no styleguide, o vidro de
+latte ficou translúcido e pouco saturado demais: sem o aspecto creme do
+modo claro. O painel virou caramelo, mais opaco e saturado
+(`rgba(96, 66, 40, 0.92)`), com texto `#fbecd6`; fundo e glows do doce de
+leite ficaram. Escolhido ao vivo entre caramelo, doce de leite e toffee,
+cada um também com glows mais fortes; o caramelo foi o único que passava
+sem subir os tons de accent e gradiente. Escolha do autor. Contrastes no
+comentário de cada token (texto/vidro 8.23, borda/vidro 3.02).
 
 ## D11 — 2026-10-23 — Paperpen: papel quadriculado e e-ink
 
