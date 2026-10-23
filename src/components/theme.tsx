@@ -39,8 +39,9 @@ export interface ThemeProviderProps {
 const STORAGE_KEY = "ms-theme";
 
 /**
- * Controla o tema aplicando/removendo as classes `light` e `darker` no
- * <html> — o mesmo mecanismo do CSS do design system.
+ * Controla o tema escrevendo `data-ms-theme` e `data-ms-mode` no <html>,
+ * os dois eixos que o CSS do design system lê: `dark` é Glass base,
+ * `darker` Glass escuro e `light` Cream base.
  */
 export function ThemeProvider({
   children,
@@ -58,8 +59,8 @@ export function ThemeProvider({
 
   React.useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("light", theme === "light");
-    root.classList.toggle("darker", theme === "darker");
+    root.dataset.msTheme = theme === "light" ? "cream" : "glass";
+    root.dataset.msMode = theme === "darker" ? "dark" : "base";
     if (persist) window.localStorage.setItem(STORAGE_KEY, theme);
   }, [theme, persist]);
 

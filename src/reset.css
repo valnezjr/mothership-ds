@@ -10,4 +10,4 @@
 }
 
 html { background: #111114; }
-html.light { background: #ffffff; }
+html[data-ms-theme="cream"] { background: #ffffff; }

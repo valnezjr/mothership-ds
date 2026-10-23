@@ -14,6 +14,8 @@ sempre `var(--token)`.
 ```css
 --font-family: "Outfit", sans-serif;
 --font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+--font-family-display: var(--font-family); /* títulos e display */
+--font-mono-style: normal;                 /* font-style do mono */
 --font-weight-regular: 400;
 --font-weight-medium: 500;
 --font-weight-display: 600;  /* só com --text-display */
@@ -34,9 +36,15 @@ sempre `var(--token)`.
 Utilitários prontos: `.ms-display`, `.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`,
 `.ms-text-xs`, `.ms-text-muted`.
 
-`--font-mono` não é carregada pela lib (nenhum componente usa ainda):
-quem precisa importa a Maple Mono (`@fontsource/maple-mono`); sem ela,
-cai na mono do sistema.
+`--font-mono` não é carregada pela lib (hoje só o `code` do `Prose`
+usa): quem precisa importa a Maple Mono (`@fontsource/maple-mono`); sem
+ela, cai na mono do sistema.
+
+Título e display (o que tem cara de título ou de número grande) nunca
+herdam a fonte do corpo: declaram `font-family: var(--font-family-display)`.
+Mono sempre com `font-style: var(--font-mono-style)` junto.
+Nos temas de hoje os dois repetem o valor do corpo; existem para um
+tema (o Paperpen) trocar só essa parte.
 
 ## Espaçamento
 
@@ -164,9 +172,11 @@ rolagem.
 
 ## Cores semânticas — mudam com o tema
 
-Tema escuro é `:root` (padrão); tema claro é `.light` no `<html>`
-(aplicado pelo `ThemeProvider`). Há ainda a variante **`.darker`**: o
-escuro com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
+Dois eixos no `<html>`, escritos pelo `ThemeProvider`: `data-ms-theme`
+(`glass` | `cream`) e `data-ms-mode` (`base` | `dark`). Sem atributo
+nenhum vale Glass base, o `:root`. Cream base é `[data-ms-theme="cream"]`;
+o Cream escuro tem bloco reservado e herda dele. Glass escuro (o antigo
+Darker) é o Glass base com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
 branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
 do escuro. Aplicada pelo `ThemeProvider` com `setTheme("darker")`; o `ThemeMenu`
 escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
@@ -304,6 +314,7 @@ script, separadamente em cada tema:
 --bg-glow-1-pos … --bg-glow-4-pos      /* posição — animada em runtime */
 --bg-glow-1-size … --bg-glow-4-size    /* tamanho — animado em runtime */
 --bg-page                              /* composição pronta, definida uma vez */
+--bg-texture                           /* 1ª camada do --bg-page, por cima dos glows; none nos temas de hoje */
 ```
 
 Os tokens de posição/tamanho são exatamente o que o `LivingBackground`

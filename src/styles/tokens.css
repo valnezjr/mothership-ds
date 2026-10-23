@@ -1,7 +1,8 @@
 /* ============================================================
    MOTHERSHIP DS — Design Tokens
    Extraído de "Agrupador de links e contatos" (valnezjr)
-   Tema escuro é o padrão (:root); tema claro via .light no <html>
+   Dois eixos no <html>: data-ms-theme (glass | cream) e data-ms-mode
+   (base | dark). Sem atributo nenhum vale Glass base, o :root.
    ============================================================ */
 
 :root {
@@ -11,6 +12,12 @@
      formas arredondadas como a Outfit, com ligaduras. Não vem carregada:
      quem usa importa a fonte (ex.: @fontsource/maple-mono). */
   --font-mono: "Maple Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* Fonte de títulos e display (h1–h3, Hero, StatTile, título de Card,
+     Modal…). Aqui é a do corpo; existe para um tema trocar só os títulos. */
+  --font-family-display: var(--font-family);
+  /* Estilo do mono. O itálico do Maple Mono é cursivo, e um tema pode
+     querer esse traço no código. */
+  --font-mono-style: normal;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   /* Só números grandes (StatTile) e título de herói, junto com --text-display. */
@@ -368,9 +375,14 @@
   --bg-glow-3-size: 38% 46%;
   --bg-glow-4-size: 46% 46%;
 
+  /* Textura por cima dos glows (papel, grão): primeira camada do
+     --bg-page, então aceita gradiente ou url(); none é nenhuma. */
+  --bg-texture: none;
+
   /* A composição é definida uma única vez: os temas trocam apenas
      os tokens de cor/posição acima. */
   --bg-page:
+    var(--bg-texture),
     radial-gradient(ellipse var(--bg-glow-1-size) at var(--bg-glow-1-pos), var(--bg-glow-1), transparent 78%),
     radial-gradient(ellipse var(--bg-glow-2-size) at var(--bg-glow-2-pos), var(--bg-glow-2), transparent 82%),
     radial-gradient(ellipse var(--bg-glow-3-size) at var(--bg-glow-3-pos), var(--bg-glow-3), transparent 80%),
@@ -383,14 +395,13 @@
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
-/* ---------- Cores — TEMA DARKER ----------
-   Variante do escuro: mesma base, glows, texto e bordas do :root, mas o
-   vidro é escuro (o fundo da página a 60%) em vez de claro. Lê como uma
-   camada de fumaça sobre os glows, não como um véu branco: mais baixo
-   contraste de luz, para uso noturno. Nasceu no rice do desktop do autor,
-   onde virou o tema da noite. Aplicado pela classe `darker` no <html>
-   (o ThemeProvider/ThemeSwitch continuam alternando só escuro/claro). */
-.darker {
+/* ---------- Glass escuro (o antigo Darker) ----------
+   Mesma base, glows, texto e bordas do Glass base, mas o vidro é escuro
+   (o fundo da página a 60%) em vez de claro. Lê como uma camada de
+   fumaça sobre os glows, não como um véu branco: mais baixo contraste de
+   luz, para uso noturno. Nasceu no rice do desktop do autor, onde virou
+   o tema da noite. Sem data-ms-theme, o tema é Glass. */
+[data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme])) {
   --gradient-active-text-hover: var(--gradient-active-text);
   --color-surface: color-mix(in srgb, var(--bg-base) 60%, transparent);
   /* Hover sutil: o branco a 50% do escuro padrão acende demais sobre o
@@ -402,7 +413,8 @@
    então quem usa os tokens já respeita a preferência sem media query
    própria. A deriva não tem duração para encolher — quem a usa pausa a
    animação na sua própria regra. Um tema que redefinir essas durações
-   precisa repetir este bloco, senão anula o 0.01s. */
+   precisa repetir este bloco, senão anula o 0.01s. Nenhum tema
+   redefine hoje, então o :root vale para todos. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-assentar-duration: 0.01s;
@@ -411,8 +423,10 @@
   }
 }
 
-/* ---------- Cores — TEMA CLARO ---------- */
-.light {
+/* ---------- Cream base (o antigo claro) ----------
+   Seletor de um atributo só: vale também para o Cream escuro, que
+   herda daqui o que não redefinir. */
+[data-ms-theme="cream"] {
   transition: var(--transition-slow);
 
   /* Cores de dados do tema claro — mesmos matizes, passos próprios,
@@ -480,4 +494,10 @@
 
   /* Chevron do Select no tema claro — mesmo traço, cor escura */
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2326201a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Cream escuro ----------
+   Reservado: até ganhar os próprios tokens (doce de leite, D10), herda
+   tudo do Cream base acima. */
+[data-ms-theme="cream"][data-ms-mode="dark"] {
 }

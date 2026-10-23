@@ -127,6 +127,7 @@
 .ms-prose h2,
 .ms-prose h3,
 .ms-prose h4 {
+  font-family: var(--font-family-display);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-base);
 }
@@ -152,6 +153,7 @@
 .ms-prose a { color: var(--color-accent-text); }
 .ms-prose code {
   font-family: var(--font-mono);
+  font-style: var(--font-mono-style);
   font-size: var(--text-sm);
 }
 .ms-prose pre {
@@ -279,11 +281,15 @@
 }
 
 /* ---------- Tipografia utilitária ---------- */
+.ms-h1,
+.ms-h2,
+.ms-h3 { font-family: var(--font-family-display); }
 .ms-h1 { font-size: var(--text-2xl); font-weight: var(--font-weight-medium); }
 .ms-h2 { font-size: var(--text-xl);  font-weight: var(--font-weight-medium); }
 .ms-h3 { font-size: var(--text-lg);  font-weight: var(--font-weight-medium); }
 .ms-display,
 .ms-stat__value {
+  font-family: var(--font-family-display);
   font-size: var(--text-display);
   font-weight: var(--font-weight-display);
   line-height: 1.1;
@@ -523,7 +529,7 @@
 
 .ms-switch__thumb:hover { outline: var(--switch-hover-ring) solid var(--color-border); }
 
-.light .ms-switch__thumb {
+[data-ms-theme="cream"] .ms-switch__thumb {
   animation: ms-slide-in var(--motion-pulso-duration) var(--motion-pulso-ease) forwards;
 }
 
@@ -929,7 +935,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Interruptor de formulário — pill + polegar num único elemento
    (pseudo-elemento ::after), diferente do ThemeSwitch (que anima a
-   troca de ícone sol/lua preso à classe .light do tema, não a um
+   troca de ícone sol/lua preso ao data-ms-theme do <html>, não a um
    estado de `checked` local). Deliberadamente não compartilha classe
    com `.ms-switch`: são dois mecanismos diferentes por baixo, mesmo
    parecendo o mesmo controle visual. */
@@ -1009,6 +1015,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-card--selected { border-color: transparent; }
 
 .ms-card__title {
+  font-family: var(--font-family-display);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
   margin-bottom: var(--space-2);
@@ -1078,6 +1085,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-pricing__title {
+  font-family: var(--font-family-display);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
 }
@@ -1096,6 +1104,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-pricing__price-value {
+  font-family: var(--font-family-display);
   font-size: var(--text-2xl);
   font-weight: var(--font-weight-medium);
 }
@@ -1272,6 +1281,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-bento__tile-icon svg { width: 20px; height: 20px; }
 
 .ms-bento__tile-title {
+  font-family: var(--font-family-display);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
   margin-bottom: var(--space-2);
@@ -1526,6 +1536,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-hero__title {
+  font-family: var(--font-family-display);
   font-size: clamp(var(--text-2xl), 6vw, var(--text-display));
   font-weight: var(--font-weight-display);
   line-height: 1.15;
@@ -2186,7 +2197,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: opacity var(--motion-recolher-duration) var(--motion-recolher-ease), visibility 0s linear var(--motion-recolher-duration);
 }
 
-.light .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
+[data-ms-theme="cream"] .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-drawer-backdrop--open {
   opacity: 1;
@@ -2676,9 +2687,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-mascote__ink { fill: var(--ms-logo-ink, #fefefe); }
 .ms-logo .fil13,
 .ms-mascote__iris { fill: #00aeed; }
-.light .ms-splash,
-.light .ms-logo,
-.light .ms-mascote { --ms-logo-ink: #191933; }
+[data-ms-theme="cream"] .ms-splash,
+[data-ms-theme="cream"] .ms-logo,
+[data-ms-theme="cream"] .ms-mascote { --ms-logo-ink: #191933; }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -3016,6 +3027,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-empty-state__title {
   margin: 0;
+  font-family: var(--font-family-display);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
@@ -3059,7 +3071,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* No tema claro o véu é CLARO: o modal (vidro sobre fundo claro, texto
    escuro) precisa de um entorno mais claro que ele para se destacar —
    um véu escuro atravessaria o vidro e derrubaria o contraste do texto. */
-.light .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
+[data-ms-theme="cream"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
@@ -3118,6 +3130,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-modal__title {
   flex: 1;
+  font-family: var(--font-family-display);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
 }
