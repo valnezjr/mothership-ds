@@ -44,6 +44,14 @@ const THEME_KEY = "ms-theme";
 const MODE_KEY = "ms-mode";
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 
+function subscribeDark(onChange: () => void) {
+  const mq = window.matchMedia(DARK_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+const getDark = () => window.matchMedia(DARK_QUERY).matches;
+const getDarkServer = () => false;
+
 /**
  * Controla o tema escrevendo `data-ms-theme` e `data-ms-mode` (o modo
  * resolvido) no <html>, os dois eixos que o CSS do design system lê.
@@ -56,7 +64,10 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
   const [mode, setMode] = React.useState<ThemeMode>(defaultMode);
-  const [prefersDark, setPrefersDark] = React.useState(false);
+  // Lido na hora, não num efeito: com um estado próprio, o render em que
+  // o modo vira "system" ainda resolveria com o valor velho e o primeiro
+  // frame sairia em "base" com o SO escuro.
+  const prefersDark = React.useSyncExternalStore(subscribeDark, getDark, getDarkServer);
   // Só grava depois de ler: senão o padrão sobrescreve a escolha salva
   // antes de ela ser lida (o StrictMode roda o efeito de leitura duas vezes).
   const [loaded, setLoaded] = React.useState(!persist);
@@ -73,15 +84,6 @@ export function ThemeProvider({
     if (saved.mode) setMode(saved.mode);
     setLoaded(true);
   }, [persist]);
-
-  React.useEffect(() => {
-    if (mode !== "system") return;
-    const mq = window.matchMedia(DARK_QUERY);
-    setPrefersDark(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setPrefersDark(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [mode]);
 
   React.useEffect(() => {
     const root = document.documentElement;

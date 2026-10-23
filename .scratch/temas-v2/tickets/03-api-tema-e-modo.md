@@ -22,7 +22,7 @@ Status: done
 - Paperpen e Flat já estão no menu, mas sem bloco de tokens renderizam como Glass até os tickets 08/10.
 - Validação visual do Valnez: ok (2026-10-23).
 - `revisao-spec` (2026-10-23): padrões sem infração no código; spec sem requisito faltando. Pendências:
-  - `mode="system"` pisca: `prefersDark` começa `false` e fica velho ao voltar com `setMode("system")`, então o primeiro frame sai em `base` com o SO escuro. Ler `matchMedia` na hora (ex.: `useSyncExternalStore`).
+  - ~~`mode="system"` pisca~~ corrigido: `prefersDark` agora vem de `useSyncExternalStore` (lido na hora, `false` no servidor). Com `defaultMode="system"` e SO escuro, `data-ms-mode` vai direto a `dark` (antes `base`, `base`, `dark`). Com `persist` salvo em `system` o padrão ainda aparece antes da leitura, como qualquer escolha salva (leitura só depois da hidratação).
   - `ThemeMenu` sem opção "Sistema": depois de escolher um par, não dá para voltar ao `system` pela interface (spec não pede).
   - `persist` trocado de `false` para `true` em execução grava os padrões antes de ler (caso de borda).
   - Smells para o ticket 05: regra do ícone em dois lugares (`modeIcon` e `tokens.css`), tema+modo sem tipo próprio, `["base", "dark"]` literal no menu, nome `lerSalvo`.
