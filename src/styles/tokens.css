@@ -495,10 +495,59 @@
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2326201a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
-/* ---------- Cream escuro ----------
-   Reservado: até ganhar os próprios tokens (doce de leite, D10), herda
-   tudo do Cream base acima. */
+/* ---------- Cream escuro (D10) ----------
+   Vidro leitoso quase opaco (latte) sobre base doce de leite. Herda do
+   Cream base o accent laranja lavado, o --color-accent-soft e a
+   transição; o resto é escuro e desfaz o que o Cream base clareou.
+   Contrastes medidos sobre o fundo e sobre o vidro já composto nele. */
 [data-ms-theme="cream"][data-ms-mode="dark"] {
+  /* Os passos do Glass ficam abaixo de 3:1 no vidro (violeta 2.27):
+     um passo mais claro nos quatro. Sobre fundo/vidro: 7.90/5.38,
+     7.84/5.34, 5.23/3.57, 5.28/3.60. ΔE mínimo entre pares 47 na visão
+     normal, 21.9/12.6/38.7 em protan/deutan/tritan. */
+  --chart-1: var(--color-accent-400);
+  --chart-2: var(--color-highlight-600);
+  --chart-3: var(--color-violet-400);
+  --chart-4: var(--color-pink-400);
+  --chart-grid: rgba(246, 234, 219, 0.14);
+
+  --color-text: #f6eadb;                      /* 13.55 sobre o fundo, 9.24 sobre o vidro */
+  --color-text-muted: rgba(246, 234, 219, 0.74); /* 5.90 sobre o vidro */
+  --color-border: rgba(246, 234, 219, 0.45);  /* 3.86 sobre o fundo, 3.22 sobre o vidro */
+  --color-border-strong: var(--color-text);
+  /* Quase opaco: é o que segura o "cremoso e sólido" do Cream base num
+     fundo escuro. O hover clareia (o vidro já é escuro). */
+  --color-surface: rgba(78, 66, 56, 0.78);
+  --color-surface-hover: rgba(246, 234, 219, 0.14);
+  --color-surface-selected: rgba(92, 79, 68, 0.92);
+  --shadow-selected: none;
+  --color-thumb: #f6eadb;
+
+  /* Texto e foco: 8.88 sobre o fundo, 6.05 sobre o vidro. Sobre o
+     --color-accent-soft dá 4.23, que só pinta ícone ali (Bento). */
+  --color-accent-text: #f0b48a;
+  --color-on-accent: #1e1712; /* 7.25 sobre o --color-accent */
+  /* O danger de marca fica em 3.41 sobre o vidro, e é texto no item
+     perigoso do DropdownMenu e na variação negativa do StatTile. O -300
+     dá 8.71/5.94; o --color-on-danger segue valendo como preenchimento. */
+  --color-danger: var(--color-danger-300);
+
+  /* Paradas -400 (o rosa -500 fica em 2.70 sobre o vidro), mínimo 3:1:
+     ciano 7.90/5.38, rosa 5.28/3.60, laranja 7.08/4.83. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-400), var(--color-pink-400) 60%, var(--color-orange-400));
+  /* Texto: -300, 6.77/5.18/6.38 sobre o vidro. No hover o rosa cai
+     para 3.53, então vira a cor do texto (6.30), como no Glass base;
+     gradiente de uma cor só porque o background-clip: text pede imagem. */
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-300), var(--color-pink-300) 60%, var(--color-orange-300));
+  --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+
+  --bg-base: #2a1f17;
+  --bg-glow-1: color-mix(in srgb, var(--color-orange-300) 38%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-300) 32%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 22%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 40%, transparent);
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f6eadb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 /* ---------- Ícone do ThemeSwitch ----------

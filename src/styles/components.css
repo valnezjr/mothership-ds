@@ -2197,6 +2197,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transition: opacity var(--motion-recolher-duration) var(--motion-recolher-ease), visibility 0s linear var(--motion-recolher-duration);
 }
 
+/* Véu do Cream: o próprio fundo, como o do Modal (ver lá). */
 [data-ms-theme="cream"] .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-drawer-backdrop--open {
@@ -2690,6 +2691,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 [data-ms-theme="cream"] .ms-splash,
 [data-ms-theme="cream"] .ms-logo,
 [data-ms-theme="cream"] .ms-mascote { --ms-logo-ink: #191933; }
+/* No Cream escuro volta ao branco padrão. */
+[data-ms-theme="cream"][data-ms-mode="dark"] :is(.ms-splash, .ms-logo, .ms-mascote) { --ms-logo-ink: #fefefe; }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -3068,9 +3071,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   animation: ms-backdrop-in var(--motion-assentar-duration) var(--motion-assentar-ease);
 }
 
-/* No tema claro o véu é CLARO: o modal (vidro sobre fundo claro, texto
-   escuro) precisa de um entorno mais claro que ele para se destacar —
-   um véu escuro atravessaria o vidro e derrubaria o contraste do texto. */
+/* No Cream o véu é o próprio fundo: CLARO no base, onde o modal (vidro
+   sobre fundo claro, texto escuro) precisa de um entorno mais claro que
+   ele para se destacar — um véu escuro atravessaria o vidro e derrubaria
+   o contraste do texto. No escuro vira doce de leite, sem regra própria. */
 [data-ms-theme="cream"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
