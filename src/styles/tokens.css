@@ -1,8 +1,9 @@
 /* ============================================================
    MOTHERSHIP DS — Design Tokens
    Extraído de "Agrupador de links e contatos" (valnezjr)
-   Dois eixos no <html>: data-ms-theme (glass | cream) e data-ms-mode
-   (base | dark). Sem atributo nenhum vale Glass base, o :root.
+   Dois eixos no <html>: data-ms-theme (glass | cream | paperpen |
+   flat) e data-ms-mode (base | dark). Sem atributo nenhum vale Glass
+   base, o :root.
    ============================================================ */
 
 :root {
@@ -388,8 +389,9 @@
     radial-gradient(ellipse var(--bg-glow-3-size) at var(--bg-glow-3-pos), var(--bg-glow-3), transparent 80%),
     radial-gradient(ellipse var(--bg-glow-4-size) at var(--bg-glow-4-pos), var(--bg-glow-4), transparent 80%);
 
-  /* Ícone do switch (lua) — SVG embutido */
-  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a1a2e'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z'/%3E%3Ccircle cx='17' cy='5' r='1'/%3E%3Ccircle cx='20.5' cy='9' r='0.8'/%3E%3C/svg%3E");
+  /* Ícone do switch (lua vazada) — SVG embutido. Os outros estados
+     ficam em "Ícone do ThemeSwitch", depois dos temas. */
+  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z'/%3E%3C/svg%3E");
 
   /* Chevron do Select — cor fixa no SVG (data URI não herda var()), uma versão por tema */
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -489,9 +491,6 @@
   --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 60%, transparent);  /* ciano — borda esquerda */
   --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 60%, transparent);  /* laranja claro — canto inferior esquerdo */
 
-  /* Ícone do switch (sol) — SVG embutido */
-  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23ffd000' stroke='none'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4'/%3E%3C/svg%3E");
-
   /* Chevron do Select no tema claro — mesmo traço, cor escura */
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2326201a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -500,4 +499,18 @@
    Reservado: até ganhar os próprios tokens (doce de leite, D10), herda
    tudo do Cream base acima. */
 [data-ms-theme="cream"][data-ms-mode="dark"] {
+}
+
+/* ---------- Ícone do ThemeSwitch ----------
+   Segue o modo, não só o tema: lua vazada no Glass base (o :root, que já
+   é escuro), sol no base dos outros temas, lua cheia em qualquer escuro.
+   Os dois seletores pesam (0,2,0), acima do bloco de um tema só, então
+   valem para os temas que ainda vão ganhar bloco; o do escuro vence o do
+   sol por vir depois. */
+[data-ms-theme]:not([data-ms-theme="glass"]) {
+  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23ffd000' stroke='none'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4'/%3E%3C/svg%3E");
+}
+
+:root[data-ms-mode="dark"] {
+  --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a1a2e'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z'/%3E%3Ccircle cx='17' cy='5' r='1'/%3E%3Ccircle cx='20.5' cy='9' r='0.8'/%3E%3C/svg%3E");
 }

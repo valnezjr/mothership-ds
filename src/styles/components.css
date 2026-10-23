@@ -529,7 +529,7 @@
 
 .ms-switch__thumb:hover { outline: var(--switch-hover-ring) solid var(--color-border); }
 
-[data-ms-theme="cream"] .ms-switch__thumb {
+[data-ms-mode="dark"] .ms-switch__thumb {
   animation: ms-slide-in var(--motion-pulso-duration) var(--motion-pulso-ease) forwards;
 }
 
@@ -935,7 +935,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Interruptor de formulário — pill + polegar num único elemento
    (pseudo-elemento ::after), diferente do ThemeSwitch (que anima a
-   troca de ícone sol/lua preso ao data-ms-theme do <html>, não a um
+   troca de ícone sol/lua preso ao data-ms-mode do <html>, não a um
    estado de `checked` local). Deliberadamente não compartilha classe
    com `.ms-switch`: são dois mecanismos diferentes por baixo, mesmo
    parecendo o mesmo controle visual. */

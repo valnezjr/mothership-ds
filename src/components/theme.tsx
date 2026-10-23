@@ -1,23 +1,25 @@
 "use client";
 
 import React from "react";
-import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-menu";
+import { THEMES, lerSalvo, resolverModo, type Theme, type ThemeMode, type ResolvedMode } from "./theme-state";
 
 /* ============================================================
    Tema, fundo vivo e o utilitário de contorno reativo.
    ============================================================ */
 
-/** `dark` é o padrão (vidro claro sobre o escuro); `darker`, a variante
- *  noturna com vidro escuro; `light`, o claro. */
-export type Theme = "dark" | "darker" | "light";
-
-const THEMES: readonly Theme[] = ["dark", "darker", "light"];
+export type { Theme, ThemeMode, ResolvedMode } from "./theme-state";
 
 interface ThemeCtx {
   theme: Theme;
+  /** O modo escolhido, que pode ser `"system"`. */
+  mode: ThemeMode;
+  /** O modo que vale na tela: `"system"` já resolvido pelo SO. */
+  resolvedMode: ResolvedMode;
   setTheme: (t: Theme) => void;
-  /** Alterna entre claro e escuro (do Darker, vai para o claro). */
-  toggle: () => void;
+  setMode: (m: ThemeMode) => void;
+  /** Alterna base ↔ escuro dentro do tema atual (sai do `"system"`). */
+  toggleMode: () => void;
 }
 
 const Ctx = React.createContext<ThemeCtx | null>(null);
@@ -30,63 +32,95 @@ export function useTheme(): ThemeCtx {
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
-  /** Tema inicial. O escuro é o padrão do sistema. */
+  /** Tema inicial (padrão: `"glass"`). */
   defaultTheme?: Theme;
-  /** Guarda a escolha em localStorage (aplicada após a hidratação). */
+  /** Modo inicial (padrão: `"base"`). `"system"` acompanha o `prefers-color-scheme`. */
+  defaultMode?: ThemeMode;
+  /** Guarda tema e modo em localStorage (aplicados após a hidratação). */
   persist?: boolean;
 }
 
-const STORAGE_KEY = "ms-theme";
+const THEME_KEY = "ms-theme";
+const MODE_KEY = "ms-mode";
+const DARK_QUERY = "(prefers-color-scheme: dark)";
 
 /**
- * Controla o tema escrevendo `data-ms-theme` e `data-ms-mode` no <html>,
- * os dois eixos que o CSS do design system lê: `dark` é Glass base,
- * `darker` Glass escuro e `light` Cream base.
+ * Controla o tema escrevendo `data-ms-theme` e `data-ms-mode` (o modo
+ * resolvido) no <html>, os dois eixos que o CSS do design system lê.
  */
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
+  defaultTheme = "glass",
+  defaultMode = "base",
   persist = false,
 }: ThemeProviderProps) {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
+  const [mode, setMode] = React.useState<ThemeMode>(defaultMode);
+  const [prefersDark, setPrefersDark] = React.useState(false);
+  // Só grava depois de ler: senão o padrão sobrescreve a escolha salva
+  // antes de ela ser lida (o StrictMode roda o efeito de leitura duas vezes).
+  const [loaded, setLoaded] = React.useState(!persist);
+  const resolvedMode = resolverModo(mode, prefersDark);
 
   // Lido só depois da hidratação para não divergir do HTML do servidor.
   React.useEffect(() => {
     if (!persist) return;
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved && (THEMES as readonly string[]).includes(saved)) setTheme(saved as Theme);
+    const saved = lerSalvo(
+      window.localStorage.getItem(THEME_KEY),
+      window.localStorage.getItem(MODE_KEY)
+    );
+    if (saved.theme) setTheme(saved.theme);
+    if (saved.mode) setMode(saved.mode);
+    setLoaded(true);
   }, [persist]);
 
   React.useEffect(() => {
+    if (mode !== "system") return;
+    const mq = window.matchMedia(DARK_QUERY);
+    setPrefersDark(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setPrefersDark(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [mode]);
+
+  React.useEffect(() => {
     const root = document.documentElement;
-    root.dataset.msTheme = theme === "light" ? "cream" : "glass";
-    root.dataset.msMode = theme === "darker" ? "dark" : "base";
-    if (persist) window.localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme, persist]);
+    root.dataset.msTheme = theme;
+    root.dataset.msMode = resolvedMode;
+  }, [theme, resolvedMode]);
+
+  React.useEffect(() => {
+    if (!persist || !loaded) return;
+    window.localStorage.setItem(THEME_KEY, theme);
+    window.localStorage.setItem(MODE_KEY, mode);
+  }, [theme, mode, persist, loaded]);
 
   const value = React.useMemo<ThemeCtx>(
     () => ({
       theme,
+      mode,
+      resolvedMode,
       setTheme,
-      toggle: () => setTheme((t) => (t === "light" ? "dark" : "light")),
+      setMode,
+      toggleMode: () => setMode(resolvedMode === "dark" ? "base" : "dark"),
     }),
-    [theme]
+    [theme, mode, resolvedMode]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 /**
- * Interruptor claro/escuro com o deslize animado do sistema. Só tem dois
- * estados: para escolher também o Darker, use `ThemeMenu`.
+ * Interruptor base/escuro com o deslize animado do sistema: alterna o
+ * modo dentro do tema atual. Para trocar de tema, use `ThemeMenu`.
  */
 export function ThemeSwitch({ className }: { className?: string }) {
-  const { theme, toggle } = useTheme();
+  const { resolvedMode, toggleMode } = useTheme();
   return (
     // onClick no wrapper (não só no botão) pra clicar no trilho também
-    // alternar o tema — o clique do botão sobe até aqui por bubbling,
+    // alternar o modo — o clique do botão sobe até aqui por bubbling,
     // então fica num só lugar (nunca dispara duas vezes).
-    <div className={["ms-switch", className].filter(Boolean).join(" ")} onClick={toggle}>
+    <div className={["ms-switch", className].filter(Boolean).join(" ")} onClick={toggleMode}>
       {/* o próprio botão é o controle acessível: role=switch +
           aria-checked anunciam o estado; o wrapper só amplia a área de
           clique, não substitui o botão como alvo de foco/teclado */}
@@ -94,9 +128,9 @@ export function ThemeSwitch({ className }: { className?: string }) {
         className="ms-switch__thumb"
         type="button"
         role="switch"
-        aria-checked={theme === "light"}
-        aria-label="Alternar tema"
-        title="Alternar tema"
+        aria-checked={resolvedMode === "dark"}
+        aria-label="Modo escuro"
+        title="Modo escuro"
       />
       <span className="ms-switch__track" />
     </div>
@@ -126,11 +160,21 @@ const SunIcon = () => (
   </svg>
 );
 
-const THEME_OPTIONS: { value: Theme; label: string; icon: React.ReactNode }[] = [
-  { value: "dark", label: "Escuro", icon: <MoonIcon /> },
-  { value: "darker", label: "Darker", icon: <MoonIcon filled /> },
-  { value: "light", label: "Claro", icon: <SunIcon /> },
-];
+/** Mesmo par do polegar do `ThemeSwitch` (`--icon-switch`): o Glass base
+ *  já é escuro, então ganha a lua vazada no lugar do sol. */
+function modeIcon(theme: Theme, mode: ResolvedMode) {
+  if (mode === "dark") return <MoonIcon filled />;
+  return theme === "glass" ? <MoonIcon /> : <SunIcon />;
+}
+
+const THEME_LABELS: Record<Theme, string> = {
+  glass: "Mothership Glass",
+  cream: "Mothership Cream",
+  paperpen: "Mothership Paperpen",
+  flat: "Mothership Flat",
+};
+
+const MODE_LABELS: Record<ResolvedMode, string> = { base: "Base", dark: "Escuro" };
 
 export interface ThemeMenuProps {
   className?: string;
@@ -139,14 +183,15 @@ export interface ThemeMenuProps {
 }
 
 /**
- * Seletor dos três temas (escuro, Darker, claro) num menu flutuante: um
+ * Seletor dos oito pares tema × modo num menu flutuante: um
  * `DropdownMenu` aberto por um botão redondo (o mesmo do sino da Navbar)
- * com o ícone do tema ativo. Cada tema é um item marcável
- * (`menuitemradio`), com o ativo marcado pelo check.
+ * com o ícone do par ativo. Um grupo por tema, com Base e Escuro como
+ * itens marcáveis (`menuitemradio`). O par ativo é o do modo resolvido,
+ * então com `mode="system"` o check segue o SO.
  */
 export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
-  const { theme, setTheme } = useTheme();
-  const current = THEME_OPTIONS.find((o) => o.value === theme) ?? THEME_OPTIONS[0];
+  const { theme, resolvedMode, setTheme, setMode } = useTheme();
+  const baseId = React.useId();
   return (
     <DropdownMenu
       align={align}
@@ -154,18 +199,30 @@ export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
         <button
           type="button"
           className={["ms-theme-menu__trigger", className].filter(Boolean).join(" ")}
-          aria-label={`Tema: ${current.label}`}
+          aria-label={`Tema: ${THEME_LABELS[theme]}, ${MODE_LABELS[resolvedMode]}`}
           title="Escolher tema"
         >
-          {current.icon}
+          {modeIcon(theme, resolvedMode)}
         </button>
       }
     >
-      {THEME_OPTIONS.map((o) => (
-        <DropdownMenuItem key={o.value} checked={theme === o.value} onClick={() => setTheme(o.value)}>
-          {o.icon}
-          {o.label}
-        </DropdownMenuItem>
+      {THEMES.map((t) => (
+        <div key={t} role="group" aria-labelledby={`${baseId}-${t}`}>
+          <DropdownMenuLabel id={`${baseId}-${t}`}>{THEME_LABELS[t]}</DropdownMenuLabel>
+          {(["base", "dark"] as const).map((m) => (
+            <DropdownMenuItem
+              key={m}
+              checked={theme === t && resolvedMode === m}
+              onClick={() => {
+                setTheme(t);
+                setMode(m);
+              }}
+            >
+              {modeIcon(t, m)}
+              {MODE_LABELS[m]}
+            </DropdownMenuItem>
+          ))}
+        </div>
       ))}
     </DropdownMenu>
   );
