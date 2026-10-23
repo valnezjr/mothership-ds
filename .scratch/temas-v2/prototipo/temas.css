@@ -1,0 +1,586 @@
+/* PROTÓTIPO DESCARTÁVEL — variantes de tema por cima dos tokens reais.
+   Tudo aqui é chaveado por atributos data-p-* no <html>, que o main.tsx
+   aplica. Glass base/escuro e Cream base usam as classes de hoje
+   (nenhuma / .darker / .light); as variantes novas partem do :root. */
+
+/* ================= CREAM ESCURO ================= */
+
+/* Comum às três: accent laranja lavado do Cream, sobre escuro. */
+html[data-p-tema^="cream-"] {
+  --color-accent: #e19460;
+  --color-accent-soft: rgba(225, 148, 96, 0.22);
+  --color-accent-text: #f0b48a;
+  --color-on-accent: #1e1712;
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23efe6d8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* A — Café / espresso: marrom quase preto, vidro creme translúcido. */
+html[data-p-tema="cream-cafe"] {
+  --bg-base: #1e1712;
+  --bg-glow-1: color-mix(in srgb, var(--color-orange-700) 45%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-800) 40%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-800) 35%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-600) 35%, transparent);
+  --color-text: #efe6d8;
+  --color-text-muted: rgba(239, 230, 216, 0.7);
+  --color-border: rgba(239, 230, 216, 0.5);
+  --color-border-strong: #efe6d8;
+  --color-surface: rgba(239, 230, 216, 0.08);
+  --color-surface-hover: rgba(239, 230, 216, 0.22);
+  --color-thumb: #efe6d8;
+}
+
+/* B — Espelho do Darker: vidro de fumaça sobre base quente, glows do Cream mais vivos. */
+html[data-p-tema="cream-fumaca"] {
+  --bg-base: #2a211a;
+  --bg-glow-1: color-mix(in srgb, var(--color-orange-400) 55%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-400) 45%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-400) 40%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-300) 50%, transparent);
+  --color-text: #f5efe6;
+  --color-text-muted: rgba(245, 239, 230, 0.72);
+  --color-border: rgba(245, 239, 230, 0.5);
+  --color-border-strong: #f5efe6;
+  --color-surface: color-mix(in srgb, var(--bg-base) 62%, transparent);
+  --color-surface-hover: rgba(245, 239, 230, 0.15);
+  --color-thumb: #f5efe6;
+}
+
+/* C — Vinho: marrom-vinho, glows puxados pro rosa da logo. */
+html[data-p-tema="cream-vinho"] {
+  --bg-base: #221418;
+  --bg-glow-1: color-mix(in srgb, var(--color-pink-700) 50%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-orange-700) 40%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-pink-900) 55%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-accent-800) 28%, transparent);
+  --color-text: #f6e9e4;
+  --color-text-muted: rgba(246, 233, 228, 0.7);
+  --color-border: rgba(246, 233, 228, 0.5);
+  --color-border-strong: #f6e9e4;
+  --color-surface: rgba(255, 236, 230, 0.08);
+  --color-surface-hover: rgba(255, 236, 230, 0.22);
+  --color-thumb: #f6e9e4;
+}
+
+/* ================= PAPERPEN ================= */
+
+html[data-p-tema^="paper"] {
+  --blur-glass: 0px;
+  --blur-soft: 0px;
+  --border-width: 1.5px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-selected: none;
+  --shadow-glow-accent: none;
+  --shadow-drop: drop-shadow(0 0 0 transparent);
+}
+
+/* Papel claro, caneta esferográfica azul. */
+html[data-p-tema="paper-base"] {
+  --p-paper: #f7f3ea;
+  --p-pen: #1c3f94;
+  --p-line: rgba(28, 63, 148, 0.13);
+  --p-margin: rgba(198, 40, 40, 0.35);
+  --p-grain-op: 0.5;
+
+  --bg-base: var(--p-paper);
+  --color-text: var(--p-pen);
+  --color-text-muted: rgba(28, 63, 148, 0.8);
+  --color-border: rgba(28, 63, 148, 0.75);
+  --color-border-strong: var(--p-pen);
+  --color-surface: rgba(251, 249, 243, 0.88);
+  --color-surface-hover: rgba(28, 63, 148, 0.08);
+  --color-surface-selected: rgba(251, 249, 243, 0.95);
+  --color-thumb: var(--p-paper);
+
+  --color-accent: var(--p-pen);
+  --color-accent-soft: rgba(28, 63, 148, 0.12);
+  --color-accent-text: var(--p-pen);
+  --color-on-accent: var(--p-paper);
+  --color-on-solid: var(--p-paper);
+  --color-danger: #c62828;
+  --color-danger-soft: rgba(198, 40, 40, 0.12);
+  --color-on-danger: var(--p-paper);
+  --color-success: #2e7d32;
+  --color-success-soft: rgba(46, 125, 50, 0.12);
+  --color-highlight: #f2d400;
+  --color-highlight-soft: rgba(255, 230, 0, 0.45);
+
+  --chart-1: #1c3f94;
+  --chart-2: #c62828;
+  --chart-3: #2e7d32;
+  --chart-4: #8e44ad;
+  --chart-grid: rgba(28, 63, 148, 0.15);
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231c3f94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Papel escuro (caderno preto), caneta gel clara. */
+html[data-p-tema="paper-escuro"] {
+  --p-paper: #1d1f24;
+  --p-pen: #e3eaff;
+  --p-line: rgba(227, 234, 255, 0.08);
+  --p-margin: rgba(255, 138, 128, 0.3);
+  --p-grain-op: 0.35;
+
+  --bg-base: var(--p-paper);
+  --color-text: var(--p-pen);
+  --color-text-muted: rgba(227, 234, 255, 0.7);
+  --color-border: rgba(227, 234, 255, 0.6);
+  --color-border-strong: var(--p-pen);
+  --color-surface: rgba(33, 35, 41, 0.9);
+  --color-surface-hover: rgba(227, 234, 255, 0.1);
+  --color-surface-selected: rgba(40, 43, 50, 0.95);
+  --color-thumb: var(--p-pen);
+
+  --color-accent: #8fb0ff;
+  --color-accent-soft: rgba(143, 176, 255, 0.18);
+  --color-accent-text: #a9c2ff;
+  --color-on-accent: var(--p-paper);
+  --color-on-solid: var(--p-paper);
+  --color-danger: #ff8a80;
+  --color-danger-soft: rgba(255, 138, 128, 0.16);
+  --color-on-danger: var(--p-paper);
+  --color-success: #81c784;
+  --color-success-soft: rgba(129, 199, 132, 0.16);
+  --color-highlight: #fff176;
+  --color-highlight-soft: rgba(255, 241, 118, 0.25);
+
+  --chart-1: #8fb0ff;
+  --chart-2: #ff8a80;
+  --chart-3: #81c784;
+  --chart-4: #ce93d8;
+  --chart-grid: rgba(227, 234, 255, 0.14);
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e3eaff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---- Papel: liso / pautado / quadriculado / aquarela (glows suaves) ---- */
+html[data-p-tema^="paper"] {
+  --p-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --bg-page: var(--p-grain);
+}
+html[data-p-tema^="paper"][data-p-papel="pautado"] {
+  --bg-page:
+    var(--p-grain),
+    linear-gradient(90deg, transparent 63px, var(--p-margin) 63px, var(--p-margin) 65px, transparent 65px),
+    repeating-linear-gradient(transparent 0 31px, var(--p-line) 31px 32px);
+}
+html[data-p-tema^="paper"][data-p-papel="quadriculado"] {
+  --bg-page:
+    var(--p-grain),
+    repeating-linear-gradient(transparent 0 23px, var(--p-line) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--p-line) 23px 24px);
+}
+html[data-p-tema^="paper"][data-p-papel="aquarela"] {
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 30%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 25%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 30%, transparent);
+  --bg-page:
+    var(--p-grain),
+    radial-gradient(ellipse var(--bg-glow-1-size) at var(--bg-glow-1-pos), var(--bg-glow-1), transparent 78%),
+    radial-gradient(ellipse var(--bg-glow-2-size) at var(--bg-glow-2-pos), var(--bg-glow-2), transparent 82%),
+    radial-gradient(ellipse var(--bg-glow-3-size) at var(--bg-glow-3-pos), var(--bg-glow-3), transparent 80%),
+    radial-gradient(ellipse var(--bg-glow-4-size) at var(--bg-glow-4-pos), var(--bg-glow-4), transparent 80%);
+}
+html[data-p-tema="paper-escuro"][data-p-papel="aquarela"] {
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-800) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-900) 35%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-900) 35%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-900) 35%, transparent);
+}
+html[data-p-tema^="paper"] .ms-page { background-repeat: repeat; background-attachment: fixed; }
+
+/* ---- Fontes: corpo manuscrito + títulos cursivos ---- */
+html[data-p-tema^="paper"][data-p-fonte="a"] { --font-family: "Patrick Hand", cursive; --p-display: "Caveat", cursive; }
+html[data-p-tema^="paper"][data-p-fonte="b"] { --font-family: "Kalam", cursive; --p-display: "Caveat", cursive; }
+html[data-p-tema^="paper"][data-p-fonte="c"] { --font-family: "Patrick Hand", cursive; --p-display: "Shadows Into Light", cursive; }
+html[data-p-tema^="paper"][data-p-fonte="d"] { --font-family: "Caveat", cursive; --p-display: "Caveat", cursive; }
+html[data-p-tema^="paper"][data-p-fonte="e"] { --font-family: "Gloria Hallelujah", cursive; --p-display: "Gloria Hallelujah", cursive; }
+
+html[data-p-tema^="paper"] :is(h1, h2, h3, .ms-hero__title, .ms-card__title, .ms-stat__value, .ms-display) {
+  font-family: var(--p-display);
+  font-weight: 600;
+}
+html[data-p-tema^="paper"] .ms-hero__title { font-size: calc(var(--text-display) * 1.25); line-height: 1.05; }
+/* Caveat é estreita e baixa: compensa um pouco o tamanho nos títulos. */
+html[data-p-tema^="paper"] .ms-card__title { font-size: calc(var(--text-lg) * 1.3); }
+html[data-p-tema^="paper"][data-p-fonte="d"] .ms-page { font-size: calc(var(--text-md) * 1.25); }
+html[data-p-tema^="paper"] :is(code, pre, kbd, samp) { font-family: var(--font-mono); font-style: italic; }
+
+/* ---- Sinal de ativo ---- */
+html[data-p-tema^="paper"][data-p-ativo="marca-texto"] {
+  --gradient-active: linear-gradient(rgba(255, 221, 0, 0.85), rgba(255, 221, 0, 0.85));
+  --gradient-active-text: linear-gradient(var(--color-text), var(--color-text));
+  --gradient-active-text-hover: var(--gradient-active-text);
+}
+html[data-p-tema="paper-escuro"][data-p-ativo="marca-texto"] {
+  --gradient-active: linear-gradient(rgba(255, 241, 118, 0.9), rgba(255, 241, 118, 0.9));
+}
+html[data-p-tema^="paper"][data-p-ativo="caneta"] {
+  --gradient-active: linear-gradient(var(--color-danger), var(--color-danger));
+  --gradient-active-text: linear-gradient(var(--color-danger), var(--color-danger));
+  --gradient-active-text-hover: var(--gradient-active-text);
+}
+html[data-p-tema="paper-base"][data-p-ativo="logo"] {
+  --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));
+  --gradient-active-text-hover: var(--gradient-active-text);
+}
+
+/* ---- Botão solid: preenchido ou só contorno grosso ---- */
+html[data-p-tema^="paper"][data-p-botao="contorno"] .ms-button--solid {
+  background: transparent;
+  color: var(--color-text);
+  border-width: 3px;
+  border-color: var(--color-text);
+}
+
+/* ---- Contorno: reto ou rabiscado (raio irregular, traço de mão) ---- */
+html[data-p-tema^="paper"][data-p-contorno="rabiscado"] {
+  --radius-md: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+/* ---- Painel de contraste (do protótipo, não do tema) ---- */
+.p-contraste { font: 12px/1.5 ui-monospace, monospace; }
+.p-contraste td { padding: 2px 8px; }
+.p-ok { color: #1b8a3a; } .p-nok { color: #c62828; font-weight: 700; }
+
+/* ---- Barra flutuante (fora do design avaliado) ---- */
+.p-bar {
+  position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+  z-index: 9999; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; align-items: center;
+  max-width: calc(100vw - 32px); padding: 10px 14px; border-radius: 16px;
+  background: #111; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.45);
+  font: 13px/1.2 system-ui, sans-serif; font-style: normal;
+}
+.p-bar button {
+  font: inherit; color: inherit; background: #2a2a2a; border: 1px solid #444;
+  border-radius: 8px; padding: 4px 9px; cursor: pointer;
+}
+.p-bar button[aria-pressed="true"] { background: #fff; color: #111; border-color: #fff; }
+.p-bar .p-label { min-width: 210px; text-align: center; font-weight: 600; }
+.p-bar .p-grupo { display: flex; gap: 4px; align-items: center; }
+.p-bar .p-grupo > span { opacity: .6; margin-right: 2px; }
+
+/* ================= RODADA 2 (2026-10-23) ================= */
+
+/* ---- Cream escuro, mais cremoso e sólido: vidro quase opaco, glows
+   pastéis lavados como os do Cream base, em vez do marrom translúcido. ---- */
+
+/* D — Latte: superfície leitosa quase opaca sobre marrom médio. */
+html[data-p-tema="cream-latte"] {
+  --bg-base: #2e2620;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-300) 30%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-300) 30%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-400) 25%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-300) 35%, transparent);
+  --color-text: #f3ebdd;
+  --color-text-muted: rgba(243, 235, 221, 0.72);
+  --color-border: rgba(243, 235, 221, 0.45);
+  --color-border-strong: #f3ebdd;
+  --color-surface: rgba(78, 66, 56, 0.78);
+  --color-surface-hover: rgba(243, 235, 221, 0.14);
+  --color-surface-selected: rgba(92, 79, 68, 0.92);
+  --color-thumb: #f3ebdd;
+}
+
+/* E — Doce de leite: superfície caramelo, mais calor e mais cor. */
+html[data-p-tema="cream-doce"] {
+  --bg-base: #2a1f17;
+  --bg-glow-1: color-mix(in srgb, var(--color-orange-300) 38%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-300) 32%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 22%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 40%, transparent);
+  --color-text: #f6eadb;
+  --color-text-muted: rgba(246, 234, 219, 0.74);
+  --color-border: rgba(246, 234, 219, 0.45);
+  --color-border-strong: #f6eadb;
+  --color-surface: rgba(104, 78, 56, 0.66);
+  --color-surface-hover: rgba(246, 234, 219, 0.14);
+  --color-surface-selected: rgba(120, 92, 68, 0.85);
+  --color-thumb: #f6eadb;
+}
+
+/* F — Creme noturno: o espelho literal do Cream base (fundo e vidro com
+   a mesma relação de luz, invertida), glows pastéis bem lavados. */
+html[data-p-tema="cream-noturno"] {
+  --bg-base: #24201b;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 22%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 22%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 20%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 26%, transparent);
+  --color-text: #ebe4d8;
+  --color-text-muted: rgba(235, 228, 216, 0.72);
+  --color-border: rgba(235, 228, 216, 0.5);
+  --color-border-strong: #ebe4d8;
+  --color-surface: rgba(54, 48, 41, 0.88);
+  --color-surface-hover: rgba(235, 228, 216, 0.12);
+  --color-surface-selected: rgba(66, 59, 51, 0.95);
+  --color-thumb: #ebe4d8;
+}
+
+/* ---- Paperpen: corpo sempre Patrick Hand; só o título troca ---- */
+html[data-p-tema^="paper"] { --font-family: "Patrick Hand", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="dancing"]    { --p-display: "Dancing Script", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="cedarville"] { --p-display: "Cedarville Cursive", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="nothing"]    { --p-display: "Nothing You Could Do", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="homemade"]   { --p-display: "Homemade Apple", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="nanum"]      { --p-display: "Nanum Pen Script", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="kalam"]      { --p-display: "Kalam", cursive; }
+html[data-p-tema^="paper"][data-p-titulo="gochi"]      { --p-display: "Gochi Hand", cursive; }
+/* Cursivas de traço fino/largo pedem tamanho próprio para pesar igual. */
+html[data-p-tema^="paper"]:is([data-p-titulo="cedarville"], [data-p-titulo="homemade"], [data-p-titulo="nothing"]) .ms-hero__title { font-size: var(--text-display); line-height: 1.3; }
+html[data-p-tema^="paper"][data-p-titulo="nanum"] .ms-hero__title { font-size: calc(var(--text-display) * 1.5); }
+html[data-p-tema^="paper"][data-p-titulo="nanum"] .ms-card__title { font-size: calc(var(--text-lg) * 1.6); }
+html[data-p-tema^="paper"]:is([data-p-titulo="homemade"], [data-p-titulo="cedarville"]) .ms-card__title { font-size: var(--text-lg); }
+html[data-p-tema^="paper"]:is([data-p-titulo="homemade"], [data-p-titulo="cedarville"]) .ms-stat__value { font-size: var(--text-2xl); }
+
+/* ---- Preenchimento sólido rabiscado: base de caneta um pouco aguada +
+   traços por cima. Os SVGs (--p-rab-*) são gerados no main.tsx com as
+   cores do tema. ---- */
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) {
+  --p-base-accent: color-mix(in srgb, var(--color-accent) 82%, var(--bg-base));
+  --p-base-text: color-mix(in srgb, var(--color-text) 82%, var(--bg-base));
+}
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) :is(.ms-button--solid, .ms-pagination__page--active, .ms-alert__icon) {
+  background: var(--p-rab-accent) center / 100% 100% no-repeat, var(--p-base-accent);
+}
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) .ms-alert--success .ms-alert__icon { background: var(--p-rab-success) center / 100% 100% no-repeat, color-mix(in srgb, var(--color-success) 82%, var(--bg-base)); }
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) .ms-alert--danger .ms-alert__icon { background: var(--p-rab-danger) center / 100% 100% no-repeat, color-mix(in srgb, var(--color-danger) 82%, var(--bg-base)); }
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) .ms-alert--highlight .ms-alert__icon { background: var(--p-rab-highlight) center / 100% 100% no-repeat, color-mix(in srgb, var(--color-highlight) 82%, var(--bg-base)); }
+html[data-p-tema^="paper"]:not([data-p-preench="solido"]) .ms-checkbox:checked {
+  background:
+    var(--p-rab-text) center / 100% 100% no-repeat padding-box,
+    linear-gradient(var(--p-base-text), var(--p-base-text)) padding-box,
+    var(--gradient-active) border-box;
+}
+/* Hachura é CSS puro (a cor vem do token, sem SVG). */
+html[data-p-tema^="paper"][data-p-preench="hachura"] {
+  --p-rab-accent: repeating-linear-gradient(-55deg, var(--color-accent) 0 2px, transparent 2px 5px);
+  --p-rab-success: repeating-linear-gradient(-55deg, var(--color-success) 0 2px, transparent 2px 5px);
+  --p-rab-danger: repeating-linear-gradient(-55deg, var(--color-danger) 0 2px, transparent 2px 5px);
+  --p-rab-highlight: repeating-linear-gradient(-55deg, var(--color-highlight) 0 2px, transparent 2px 5px);
+  --p-rab-text: repeating-linear-gradient(-55deg, var(--color-text) 0 2px, transparent 2px 5px);
+}
+
+/* ---- Contorno: dois meios-termos entre o reto e o rabiscado ---- */
+html[data-p-tema^="paper"][data-p-contorno="sutil"] { --radius-md: 14px 8px 16px 7px / 8px 15px 7px 14px; }
+html[data-p-tema^="paper"][data-p-contorno="medio"] { --radius-md: 48px 10px 40px 10px / 10px 40px 10px 48px; }
+
+/* ---- Papel escolhido: quadriculado sobre os glows aquarela ---- */
+html[data-p-tema^="paper"][data-p-papel="quad-aquarela"] {
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 30%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 25%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 30%, transparent);
+  --bg-page:
+    var(--p-grain),
+    repeating-linear-gradient(transparent 0 23px, var(--p-line) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--p-line) 23px 24px),
+    radial-gradient(ellipse var(--bg-glow-1-size) at var(--bg-glow-1-pos), var(--bg-glow-1), transparent 78%),
+    radial-gradient(ellipse var(--bg-glow-2-size) at var(--bg-glow-2-pos), var(--bg-glow-2), transparent 82%),
+    radial-gradient(ellipse var(--bg-glow-3-size) at var(--bg-glow-3-pos), var(--bg-glow-3), transparent 80%),
+    radial-gradient(ellipse var(--bg-glow-4-size) at var(--bg-glow-4-pos), var(--bg-glow-4), transparent 80%);
+}
+html[data-p-tema="paper-escuro"][data-p-papel="quad-aquarela"] {
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-800) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-900) 35%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-900) 35%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-900) 35%, transparent);
+}
+/* O fundo vivo anima os glows: sem "fixed" no quadriculado, a grade
+   rolaria junto e os glows não; os dois ficam presos à viewport. */
+html[data-p-tema^="paper"] .ms-page { background-repeat: repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat; }
+
+/* ================= RODADA 3 (2026-10-23) ================= */
+
+/* ---- Cream escuro G: vidro do Latte + o resto do Doce de leite ---- */
+html[data-p-tema="cream-final"] {
+  --bg-base: #2a1f17;
+  --bg-glow-1: color-mix(in srgb, var(--color-orange-300) 38%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-300) 32%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 22%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 40%, transparent);
+  --color-text: #f6eadb;
+  --color-text-muted: rgba(246, 234, 219, 0.74);
+  --color-border: rgba(246, 234, 219, 0.45);
+  --color-border-strong: #f6eadb;
+  --color-surface: rgba(78, 66, 56, 0.78);
+  --color-surface-hover: rgba(246, 234, 219, 0.14);
+  --color-surface-selected: rgba(92, 79, 68, 0.92);
+  --color-thumb: #f6eadb;
+}
+
+/* ---- Corte do destaque: background-clip: text só pinta dentro da
+   caixa inline, e cursivas de traço longo vazam dela. Folga interna
+   com margem negativa: a caixa cresce, o layout não. Vale levar para
+   o .ms-hero__highlight de verdade (ticket 08). ---- */
+html[data-p-tema^="paper"] .ms-hero__highlight {
+  padding: 0.15em 0.35em 0.3em;
+  margin: -0.15em -0.35em -0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ---- Paperpen escuro como e-ink: papel cinza quente fosco, tinta
+   preta, sem cor nenhuma. Não inverte: escurece o papel e tira o
+   brilho. Três níveis de luz frontal. ---- */
+html[data-p-tema^="paper-eink"] {
+  --p-pen: #1f1c18;
+  --p-line: rgba(31, 28, 24, 0.1);
+  --p-margin: transparent;
+
+  --bg-base: var(--p-paper);
+  --color-text: var(--p-pen);
+  --color-text-muted: rgba(31, 28, 24, 0.78);
+  --color-border: rgba(31, 28, 24, 0.7);
+  --color-border-strong: var(--p-pen);
+  --color-surface: color-mix(in srgb, var(--p-paper) 88%, white);
+  --color-surface-hover: rgba(31, 28, 24, 0.08);
+  --color-surface-selected: color-mix(in srgb, var(--p-paper) 80%, white);
+  --color-thumb: var(--p-paper);
+
+  /* Monocromático: estado por ícone, texto e aria (nunca só por cor),
+     tons de tinta só para separar. */
+  --color-accent: var(--p-pen);
+  --color-accent-soft: rgba(31, 28, 24, 0.08);
+  --color-accent-text: var(--p-pen);
+  --color-on-accent: var(--p-paper);
+  --color-on-solid: var(--p-paper);
+  --color-danger: var(--p-pen);
+  --color-danger-soft: rgba(31, 28, 24, 0.12);
+  --color-on-danger: var(--p-paper);
+  --color-success: #4a453d;
+  --color-success-soft: rgba(31, 28, 24, 0.06);
+  --color-highlight: #8a8274;
+  --color-highlight-soft: rgba(31, 28, 24, 0.16);
+  --color-on-highlight: var(--p-paper);
+  --color-violet: #4a453d;
+  --color-pink: #4a453d;
+  --color-orange: #4a453d;
+  --color-gray: #6b6458;
+
+  --chart-1: #1f1c18;
+  --chart-2: #6b6458;
+  --chart-3: #3d3830;
+  --chart-4: #8a8274;
+  --chart-grid: rgba(31, 28, 24, 0.14);
+
+  --gradient-active: linear-gradient(var(--p-pen), var(--p-pen));
+  --gradient-active-text: linear-gradient(var(--p-pen), var(--p-pen));
+  --gradient-active-text-hover: var(--gradient-active-text);
+
+  --bg-glow-1: transparent;
+  --bg-glow-2: transparent;
+  --bg-glow-3: transparent;
+  --bg-glow-4: transparent;
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231f1c18' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+html[data-p-tema="paper-eink-1"] { --p-paper: #d9d3c6; }  /* luz frontal média */
+html[data-p-tema="paper-eink-2"] { --p-paper: #c2bbac; }  /* luz baixa */
+html[data-p-tema="paper-eink-3"] { --p-paper: #c9b998; }  /* luz âmbar (filtro noturno) */
+/* Destaque do herói sem gradiente: tinta sublinhada, já que não há cor. */
+html[data-p-tema^="paper-eink"] .ms-hero__highlight { text-decoration: underline 3px; text-underline-offset: 0.12em; text-decoration-color: var(--p-pen); }
+/* E-ink sem cor: precisa vencer a especificidade do papel aquarela. */
+html[data-p-tema^="paper-eink"][data-p-papel] {
+  --bg-glow-1: transparent;
+  --bg-glow-2: transparent;
+  --bg-glow-3: transparent;
+  --bg-glow-4: transparent;
+}
+/* Homemade Apple tem hastes longas: respiro entre as linhas do herói e o subtítulo. */
+html[data-p-tema^="paper"][data-p-titulo="homemade"] .ms-hero__title { line-height: 1.45; padding-bottom: 0.25em; }
+
+/* ================= RODADA 4 (2026-10-23) ================= */
+/* E-ink: a única cor que sobra é o ativo, na caneta vermelha. Mais
+   escura que a do papel claro: sobre o cinza o #c62828 não chega a
+   4.5:1 como texto. */
+html[data-p-tema^="paper-eink"][data-p-ativo="caneta"] {
+  --gradient-active: linear-gradient(#a8221b, #a8221b);
+  --gradient-active-text: linear-gradient(#861a14, #861a14);
+  --gradient-active-text-hover: var(--gradient-active-text);
+}
+html[data-p-tema^="paper-eink"][data-p-ativo="caneta"] .ms-hero__highlight { text-decoration: none; }
+
+/* ================= FLAT (2026-10-23) =================
+   Neutro e plano: sem vidro, sem sombra, superfície opaca. Cor só no
+   sinal de ativo (gradiente da logo) e nos estados. Glows bem sutis. */
+html[data-p-tema^="flat"] {
+  --blur-glass: 0px;
+  --blur-soft: 0px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-selected: none;
+  --shadow-glow-accent: none;
+  --shadow-drop: drop-shadow(0 0 0 transparent);
+}
+
+html[data-p-tema="flat-base"] {
+  --bg-base: #f4f4f5;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 22%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 16%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 14%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 18%, transparent);
+  --color-text: #18181b;
+  --color-text-muted: rgba(24, 24, 27, 0.68);
+  --color-border: rgba(24, 24, 27, 0.48);      /* controles: 3:1 */
+  --color-border-strong: #18181b;
+  --p-card-border: rgba(24, 24, 27, 0.12);      /* divisória de superfície, não de controle */
+  --p-tom: #ffffff;
+  --color-surface-hover: rgba(24, 24, 27, 0.06);
+  --color-surface-selected: #ffffff;
+  --color-thumb: #ffffff;
+  --color-accent: #18181b;
+  --color-accent-soft: rgba(24, 24, 27, 0.08);
+  --color-accent-text: #18181b;
+  --color-on-accent: #fafafa;
+  --chart-1: #008eb9;
+  --chart-2: #9c8100;
+  --chart-3: #6f52b8;
+  --chart-4: #c2537f;
+  --chart-grid: rgba(24, 24, 27, 0.12);
+  --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));
+  --gradient-active-text-hover: var(--gradient-active-text);
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2318181b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+html[data-p-tema="flat-escuro"] {
+  --bg-base: #18181b;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-800) 18%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-900) 18%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-900) 16%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-900) 18%, transparent);
+  --color-text: #f4f4f5;
+  --color-text-muted: rgba(244, 244, 245, 0.7);
+  --color-border: rgba(244, 244, 245, 0.42);
+  --color-border-strong: #f4f4f5;
+  --p-card-border: rgba(244, 244, 245, 0.1);
+  --p-tom: #232327;
+  --color-surface-hover: rgba(244, 244, 245, 0.08);
+  --color-surface-selected: #2a2a2f;
+  --color-thumb: #f4f4f5;
+  --color-accent: #f4f4f5;
+  --color-accent-soft: rgba(244, 244, 245, 0.1);
+  --color-accent-text: #f4f4f5;
+  --color-on-accent: #18181b;
+}
+
+/* Separação das superfícies: borda, tom ou os dois. A borda de card é
+   uma divisória fraca; campos e controles mantêm a de 3:1. */
+html[data-p-tema^="flat"][data-p-separa="borda"] { --color-surface: var(--bg-base); }
+html[data-p-tema^="flat"][data-p-separa="tom"],
+html[data-p-tema^="flat"][data-p-separa="ambos"] { --color-surface: var(--p-tom); }
+html[data-p-tema^="flat"]:is([data-p-separa="borda"], [data-p-separa="ambos"]) :is(.ms-card, .ms-stat, .ms-table-wrap) { border-color: var(--p-card-border); }
+html[data-p-tema^="flat"][data-p-separa="tom"] :is(.ms-card, .ms-stat, .ms-table-wrap) { border-color: transparent; }
+/* Campo sobre card do mesmo tom some: no "tom", o campo volta ao fundo. */
+html[data-p-tema^="flat"][data-p-separa="tom"] .ms-card .ms-input { background: var(--bg-base); }
