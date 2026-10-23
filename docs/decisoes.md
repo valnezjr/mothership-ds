@@ -189,3 +189,96 @@ erro pede `confuso`, espera pede `pensando`.
 
 **Por quê.** Das quatro, `procurando` é a que diz "nada aqui" sem
 sugerir erro nem espera.
+
+## D8 — 2026-10-23 — Temas em dois eixos: Mothership Glass e Mothership Cream
+
+**Pergunta.** A lista `"dark" | "darker" | "light"` mistura identidade e
+claridade. Para dar um modo escuro ao claro, o Darker vira o quê, e
+como o consumidor escolhe?
+
+**Escolha.** Dois eixos: `theme` (`"glass"` | `"cream"`) e `mode`
+(`"base"` | `"dark"`, com `"system"` opcional). Glass base é o antigo
+escuro, Glass escuro o antigo Darker, Cream base o antigo claro, Cream
+escuro é novo e sai de protótipo. No `<html>`, `data-ms-theme` e
+`data-ms-mode` no lugar de `.light`/`.darker`. O `ThemeSwitch` alterna
+o modo dentro do tema; trocar de tema é no `ThemeMenu`. Escolha do
+autor, sobre recomendação do agente.
+
+**Por quê.** Com dois eixos, cada tema ganha o seu par noturno sem
+inventar nomes, e o interruptor tem um sentido só. Atributos
+prefixados não colidem com classes `.light`/`.darker` de quem instala.
+Quebra API, por isso v2.0.0.
+
+## D9 — 2026-10-23 — Mothership Paperpen, terceiro tema, na v2.0
+
+**Pergunta.** Entra um tema de papel e caneta azul, com muito contorno e
+fonte cursiva, além de Glass e Cream. Cursiva em todo texto, com modo
+escuro, e em que versão?
+
+**Escolha.** Entra na v2.0, com base e escuro (papel escuro, caneta gel
+clara). Cursiva em títulos e display; manuscrita de letra de forma no
+corpo, campos e tabelas; terminal em Maple Mono itálico. Visual sai de
+protótipo. Escolha do autor; a v2.0 junto foi preferência dele sobre a
+v2.1 recomendada.
+
+**Por quê.** Cursiva em 14px, em tabela e campo, perde legibilidade
+(pior para dislexia); a manuscrita de forma mantém a cara de escrito à
+mão. O itálico do Maple Mono já é cursivo e já está no DS. Com modo
+escuro, o `toggleMode` vale em qualquer tema e os dois eixos continuam
+simétricos.
+
+## D10 — 2026-10-23 — Cream escuro: vidro de latte sobre doce de leite
+
+**Pergunta.** O Cream ganha modo escuro (D8). Qual escuro mantém o
+creme?
+
+**Escolha.** Base marrom doce de leite (`#2a1f17`), glows pastéis
+quentes, texto creme (`#f6eadb`), vidro leitoso quase opaco
+(`rgba(78, 66, 56, 0.78)`), accent laranja lavado do Cream base.
+Escolhido em protótipo (`.scratch/temas-v2/`, ticket 01) depois de seis
+variantes: café, fumaça, vinho, latte, doce de leite e creme noturno.
+Escolha do autor.
+
+**Por quê.** O café era o mais próximo, mas o vidro translúcido sobre
+quase preto perdia o "cremoso e sólido" do Cream base. O que segura essa
+sensação é a superfície quase opaca do latte; o fundo e os glows do doce
+de leite dão o calor. Contrastes medidos no ticket 01 (texto/vidro 9.24,
+borda/fundo 3.86).
+
+## D11 — 2026-10-23 — Paperpen: papel quadriculado e e-ink
+
+**Pergunta.** Como fica o Paperpen (D9) em fontes, papel, preenchimento,
+contorno e ativo, e o que é o modo escuro dele?
+
+**Escolha.** Base: papel quadriculado sobre glows em aquarela, caneta
+esferográfica azul, sem vidro. Homemade Apple nos títulos, Patrick Hand
+no corpo. Preenchimento sólido em hachura de caneta, contorno meio-termo
+(cantos levemente irregulares), ativo em caneta vermelha. Escuro: e-ink
+quente monocromático, papel cinza âmbar fosco e tinta preta, com a caneta
+vermelha do ativo como única cor. Escolhido em protótipo (ticket 07),
+em quatro rodadas. Escolha do autor.
+
+**Por quê.** A Patrick Hand foi a única manuscrita confortável em 14px;
+Caveat e Shadows Into Light não acompanharam. O e-ink troca a ideia de
+"inverter o papel" por "baixar a luz": menos brilho à noite sem perder a
+tinta escura sobre papel. Manter só o ativo em vermelho deixa o sinal de
+"selecionado" com a mesma identidade nos dois modos. Sem cor, estado
+continua por ícone, texto e `aria`.
+
+## D12 — 2026-10-23 — Mothership Flat, quarto tema, na v2.0
+
+**Pergunta.** Falta um tema neutro e plano, sem vidro, com claro e
+escuro. Quanto da marca entra nele?
+
+**Escolha.** Mothership Flat: cinzas neutros, superfície opaca, sem
+vidro nem sombra, glows bem sutis. A cor da marca só aparece no sinal
+de ativo (gradiente da logo) e nos estados; o accent é tinta neutra.
+Entra na v2.0, como o Paperpen. Superfícies separadas do fundo só por tom (card um passo acima do
+fundo), sem borda; campos e controles mantêm a borda de 3:1. Escolhido
+no protótipo (ticket 09) entre borda, tom e os dois. Escolha do autor.
+
+**Por quê.** É o tema para quem precisa da lib sem a estética de
+vidro: produto, painel, documentação. Manter só o ativo colorido é a
+mesma regra do e-ink (D11): o sinal de "selecionado" carrega a
+identidade em qualquer tema. Os glows sutis mantêm o vínculo com os
+outros três sem pesar.
