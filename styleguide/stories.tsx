@@ -22,6 +22,7 @@ import {
   // marca
   Splash, Loader, Mascote, EmptyState,
 } from "../src/index";
+import { THEMES, RESOLVED_MODES, THEME_LABELS, MODE_LABELS } from "../src/components/theme-state";
 import { Grafo3D } from "../src/3d/index";
 import type { Grafo3DNo, Grafo3DAresta, Grafo3DGrupo } from "../src/3d/index";
 
@@ -825,25 +826,19 @@ function ThemeFrame({ theme, mode, title, children }: { theme: Theme; mode: Reso
   );
 }
 
-const THEME_GRID: { theme: Theme; name: string }[] = [
-  { theme: "glass", name: "Mothership Glass" },
-  { theme: "cream", name: "Mothership Cream" },
-  { theme: "paperpen", name: "Mothership Paperpen" },
-  { theme: "flat", name: "Mothership Flat" },
-];
 
 function ThemeGrid() {
   return (
     // Linha = tema, coluna = modo; abaixo de ~576px vira uma coluna só.
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, max(280px, calc(50% - 8px))), 1fr))", gap: 16 }}>
-      {THEME_GRID.flatMap(({ theme, name }) =>
-        (["base", "dark"] as const).map((mode) => (
+      {THEMES.flatMap((theme) =>
+        RESOLVED_MODES.map((mode) => (
           <figure key={`${theme}-${mode}`} style={{ margin: 0 }}>
-            <ThemeFrame theme={theme} mode={mode} title={`${name}, ${mode === "base" ? "Base" : "Escuro"}`}>
+            <ThemeFrame theme={theme} mode={mode} title={`${THEME_LABELS[theme]}, ${MODE_LABELS[mode]}`}>
               <div style={{ padding: "var(--space-4)", display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-                <p className="ms-h3">{name}</p>
+                <p className="ms-h3">{THEME_LABELS[theme]}</p>
                 <p className="ms-text-sm ms-text-muted">
-                  {mode === "base" ? "Base" : "Escuro"} — texto de apoio.
+                  {MODE_LABELS[mode]} — texto de apoio.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--space-2)" }}>
                   <Button type="button" variant="solid" inline>Solid</Button>

@@ -602,7 +602,8 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       `setMode`, `toggleMode` (o `toggle` saiu). Lógica pura em
       `src/components/theme-state.ts` (sem React, testada com
       `node --test`): leitura do `persist` (converte a chave `ms-theme`
-      da v1) e resolução do `"system"`. No `<html>`, `data-ms-theme` e
+      da v1), resolução do `"system"`, rótulos dos temas e a regra do
+      ícone por par (`iconeDoModo`, repetida à mão no `--icon-switch`). No `<html>`, `data-ms-theme` e
       `data-ms-mode` (o resolvido) no lugar de `.light`/`.darker`.
       `"system"` lido com `useSyncExternalStore`, para não sair um frame
       em base com o SO escuro.

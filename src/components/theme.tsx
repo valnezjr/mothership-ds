@@ -2,7 +2,18 @@
 
 import React from "react";
 import { DropdownMenu, DropdownMenuDivider, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-menu";
-import { THEMES, lerSalvo, resolverModo, type Theme, type ThemeMode, type ResolvedMode } from "./theme-state";
+import {
+  THEMES,
+  RESOLVED_MODES,
+  THEME_LABELS,
+  MODE_LABELS,
+  iconeDoModo,
+  lerEscolhaSalva,
+  resolverModo,
+  type Theme,
+  type ThemeMode,
+  type ResolvedMode,
+} from "./theme-state";
 
 /* ============================================================
    Tema, fundo vivo e o utilitário de contorno reativo.
@@ -76,7 +87,7 @@ export function ThemeProvider({
   // Lido só depois da hidratação para não divergir do HTML do servidor.
   React.useEffect(() => {
     if (!persist) return;
-    const saved = lerSalvo(
+    const saved = lerEscolhaSalva(
       window.localStorage.getItem(THEME_KEY),
       window.localStorage.getItem(MODE_KEY)
     );
@@ -169,21 +180,11 @@ const SystemIcon = () => (
   </svg>
 );
 
-/** Mesmo par do polegar do `ThemeSwitch` (`--icon-switch`): o Glass base
- *  já é escuro, então ganha a lua vazada no lugar do sol. */
-function modeIcon(theme: Theme, mode: ResolvedMode) {
-  if (mode === "dark") return <MoonIcon filled />;
-  return theme === "glass" ? <MoonIcon /> : <SunIcon />;
+function ModeIcon({ theme, mode }: { theme: Theme; mode: ResolvedMode }) {
+  const icone = iconeDoModo(theme, mode);
+  if (icone === "sol") return <SunIcon />;
+  return <MoonIcon filled={icone === "lua-cheia"} />;
 }
-
-const THEME_LABELS: Record<Theme, string> = {
-  glass: "Mothership Glass",
-  cream: "Mothership Cream",
-  paperpen: "Mothership Paperpen",
-  flat: "Mothership Flat",
-};
-
-const MODE_LABELS: Record<ResolvedMode, string> = { base: "Base", dark: "Escuro" };
 
 export interface ThemeMenuProps {
   className?: string;
@@ -201,7 +202,7 @@ export interface ThemeMenuProps {
 export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
   const { theme, mode, resolvedMode, setTheme, setMode } = useTheme();
   const baseId = React.useId();
-  const system = mode === "system";
+  const followsSystem = mode === "system";
   return (
     <DropdownMenu
       align={align}
@@ -209,17 +210,17 @@ export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
         <button
           type="button"
           className={["ms-theme-menu__trigger", className].filter(Boolean).join(" ")}
-          aria-label={`Tema: ${THEME_LABELS[theme]}, ${MODE_LABELS[resolvedMode]}${system ? ", seguindo o sistema" : ""}`}
+          aria-label={`Tema: ${THEME_LABELS[theme]}, ${MODE_LABELS[resolvedMode]}${followsSystem ? ", seguindo o sistema" : ""}`}
           title="Escolher tema"
         >
-          {modeIcon(theme, resolvedMode)}
+          <ModeIcon theme={theme} mode={resolvedMode} />
         </button>
       }
     >
       {/* Sem esta opção, escolher um par saía do "system" sem volta pelo menu.
           O par marcado continua sendo o que está na tela. */}
       <div role="group" aria-label="Modo">
-        <DropdownMenuItem checked={system} onClick={() => setMode("system")}>
+        <DropdownMenuItem checked={followsSystem} onClick={() => setMode("system")}>
           <SystemIcon />
           Seguir o sistema
         </DropdownMenuItem>
@@ -228,7 +229,7 @@ export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
       {THEMES.map((t) => (
         <div key={t} role="group" aria-labelledby={`${baseId}-${t}`}>
           <DropdownMenuLabel id={`${baseId}-${t}`}>{THEME_LABELS[t]}</DropdownMenuLabel>
-          {(["base", "dark"] as const).map((m) => (
+          {RESOLVED_MODES.map((m) => (
             <DropdownMenuItem
               key={m}
               checked={theme === t && resolvedMode === m}
@@ -237,7 +238,7 @@ export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
                 setMode(m);
               }}
             >
-              {modeIcon(t, m)}
+              <ModeIcon theme={t} mode={m} />
               {MODE_LABELS[m]}
             </DropdownMenuItem>
           ))}

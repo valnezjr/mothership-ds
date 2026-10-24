@@ -20,3 +20,5 @@ Status: done
 - Pedido do Valnez na validação (2026-10-24): textos das stories revistos para os quatro temas. Tipografia, raios e efeitos das Fundações passam a ler os valores do par atual na tela (tamanho/peso/família, `--radius-*`, `--blur-*`, `--shadow-md`); Cores ganha Campo e Ativo e explica o accent por tema; textos de Alert, Loader, Navbar, Botões, Card, Campos, Hero, StatTile, Prose, PricingCard, Bento e Skeleton sem assumir vidro, ciano ou dois temas.
 
 - Validação visual do Valnez: ok (2026-10-24).
+- Smells resolvidos antes do 06 (pedido do Valnez, 2026-10-24): regra do ícone vira `iconeDoModo` em `theme-state.ts` (testada; o `--icon-switch` do CSS aponta para ela, porque o polegar desenha por data URI e não tem como ler TS), `ThemeChoice` tipa o par tema+modo do `persist`, `RESOLVED_MODES`/`THEME_LABELS`/`MODE_LABELS` saem de `theme.tsx` para `theme-state.ts` e a story consome os mesmos, `lerSalvo` → `lerEscolhaSalva`, `system` → `followsSystem` no `ThemeMenu`. Nenhuma mudança de API pública nem de comportamento.
+

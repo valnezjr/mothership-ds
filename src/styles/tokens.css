@@ -852,8 +852,9 @@
 }
 
 /* ---------- Ícone do ThemeSwitch ----------
-   Segue o modo, não só o tema: lua vazada no Glass base (o :root, que já
-   é escuro), sol no base dos outros temas, lua cheia em qualquer escuro.
+   A regra é a de iconeDoModo (theme-state.ts), que o ThemeMenu usa: lua
+   vazada no Glass base (o :root, que já é escuro), sol no base dos
+   outros temas, lua cheia em qualquer escuro. Mudou lá, muda aqui.
    Os dois seletores pesam (0,2,0), acima do bloco de um tema só, então
    valem para os temas que ainda vão ganhar bloco; o do escuro vence o do
    sol por vir depois. */
