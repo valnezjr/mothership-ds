@@ -18,7 +18,7 @@ import { STORIES, GROUPS, GROUP_IDS, type Story } from "./stories";
 import { version } from "../package.json";
 
 const GROUP_DESCRIPTIONS: Record<(typeof GROUPS)[number], string> = {
-  Fundações: "Os tokens que sustentam o resto: cor, tipografia, espaçamento e os efeitos de vidro que dão identidade visual ao sistema. Todo componente abaixo é construído só com essas variáveis — nunca um valor solto.",
+  Fundações: "Os tokens que sustentam o resto: cor, temas, tipografia, espaçamento e os efeitos de vidro que dão identidade visual ao sistema. Todo componente abaixo é construído só com essas variáveis — nunca um valor solto.",
   Componentes: "Os blocos de interface prontos pra montar uma página, do botão ao card de depoimento. Cada um documentado com sua API (props) logo abaixo do exemplo ao vivo.",
   Dados: "Visualização de dados: gráficos, medidores e a tabela já preparada para fluxos de CRUD (status, ordenação, ações de editar/excluir).",
 };
@@ -170,8 +170,8 @@ export function App() {
                 <h1 className="ms-h1">Mothership DS</h1>
                 <p className="ms-text-sm ms-text-muted">
                   Biblioteca React do design system — cada bloco abaixo renderiza o componente
-                  real, importado de <code>mothership-ds</code>. Outfit, glassmorphism e temas
-                  escuro, Darker e claro; alterne no menu da navbar. Busque ao lado ou clique no
+                  real, importado de <code>mothership-ds</code>. Quatro temas (Mothership Glass,
+                  Cream, Paperpen e Flat), cada um em base e escuro; alterne no menu da navbar. Busque ao lado ou clique no
                   sumário à esquerda pra trocar de componente.
                 </p>
               </div>

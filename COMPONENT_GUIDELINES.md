@@ -70,7 +70,7 @@ Pontos fixos, confirmados no código existente (não convenção teórica):
 
 ## Checklist antes de abrir o PR
 
-- [ ] Conferido nos **dois temas** (switch na navbar do styleguide).
+- [ ] Conferido nos **oito pares de tema** (`ThemeMenu` na navbar do styleguide).
 - [ ] Conferido em **tela estreita** (breakpoint do sistema: 720px).
 - [ ] Animações respeitam `prefers-reduced-motion` (ver ACCESSIBILITY.md).
 - [ ] Estado marcado com `aria-*`, nunca só por cor.

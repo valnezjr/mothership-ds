@@ -19,7 +19,8 @@ regras e armadilhas, não a explicação didática.
 ## O que é
 
 Design system em React 18+ / TypeScript: glassmorphism, temas
-escuro/Darker/claro, fundo animado, 57 componentes. Nasceu de engenharia
+em dois eixos (Mothership Glass/Cream/Paperpen/Flat × base/escuro),
+fundo animado, 57 componentes. Nasceu de engenharia
 reversa de uma landing page pessoal em HTML/CSS puro — os tokens vêm
 daquele CSS original (ver ARCHITECTURE.md § Origem).
 
@@ -592,8 +593,37 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       badge da `Dock`. Texto em gradiente (`background-clip: text`)
       o axe não mede; os contrastes vêm de D3/D4.
 
-### Não lançado
+### v2.0.0 — não lançada (spec em `.scratch/temas-v2/`)
 
+- [x] Temas em dois eixos (D8): `theme` (`"glass" | "cream" |
+      "paperpen" | "flat"`) × `mode` (`"base" | "dark" | "system"`).
+      `ThemeProvider` com `defaultTheme`/`defaultMode`/`persist`;
+      `useTheme()` com `theme`, `mode`, `resolvedMode`, `setTheme`,
+      `setMode`, `toggleMode` (o `toggle` saiu). Lógica pura em
+      `src/components/theme-state.ts` (sem React, testada com
+      `node --test`): leitura do `persist` (converte a chave `ms-theme`
+      da v1) e resolução do `"system"`. No `<html>`, `data-ms-theme` e
+      `data-ms-mode` (o resolvido) no lugar de `.light`/`.darker`.
+      `"system"` lido com `useSyncExternalStore`, para não sair um frame
+      em base com o SO escuro.
+- [x] `ThemeSwitch` alterna o modo dentro do tema. `ThemeMenu` com os
+      oito pares (um grupo rotulado por tema) e "Seguir o sistema" no
+      topo; ícone do gatilho e do polegar por par (regra em
+      docs/componentes.md § ThemeMenu).
+- [x] Mothership Cream escuro (D10, papel âmbar meio-tom com os glows),
+      Mothership Paperpen (D9/D11, papel e caneta, Patrick Hand/Homemade
+      Apple, que quem usa carrega) e Mothership Flat (D12, neutro, sem
+      vidro). Tokens novos sem efeito nos outros temas:
+      `--font-family-display`, `--font-mono-style`, `--bg-texture`,
+      `--fill-solid`, `--paper-line`, `--color-border-surface`,
+      `--color-field`.
+- [x] Styleguide: story "Temas" (grade 4×2, linha = tema, coluna =
+      modo; um `<iframe>` por par — os
+      tokens do Glass base moram no `:root`, então um par não se aplica
+      a um trecho da página). Docs: `docs/tokens.md` § Temas e § Fontes
+      do Paperpen, `docs/componentes.md` § ThemeProvider/ThemeMenu,
+      README § Temas, guia `docs/migracao-v2.md`, CHANGELOG § 2.0.0.
+      `src/reset.css` ganha o Flat e o Cream base no `--bg-base` real.
 - [x] Busca no styleguide (`styleguide/App.tsx`): `Combobox` no
       cabeçalho, com opções já filtradas e ordenadas por peso (título e
       `keywords` antes do texto de apoio; o `filter` do Combobox só
@@ -617,9 +647,11 @@ npm run styleguide:dev   # bancada de trabalho: renderiza src/ ao vivo, localhos
 npm run styleguide       # gera styleguide/dist/ (publicado no GitHub Pages a cada push em master)
 ```
 
-Não existe `npm run build` nem suíte de testes automatizada. O pacote
-é distribuído como fonte (sem etapa de build — ver ARCHITECTURE.md) e
-a validação é visual, no styleguide, nos dois temas e abaixo de 720px.
+Não existe `npm run build`. `npm test` roda só a lógica pura
+(`node --test`: layout do `Grafo3D`, estado de tema). O pacote é
+distribuído como fonte (sem etapa de build — ver ARCHITECTURE.md) e a
+validação é visual, no styleguide, nos oito pares de tema (`ThemeMenu`)
+e abaixo de 720px.
 
 ## Mapa do repositório
 
@@ -656,6 +688,13 @@ examples/next-app/        # landing page de exemplo, buildável — export está
   reescrever o CSS de quem a instala.
 - **Estado nunca só por cor.** Sempre `aria-*` junto. Detalhe:
   ACCESSIBILITY.md.
+- **Tema por atributo, nunca por classe.** CSS de tema mira
+  `[data-ms-theme="x"]`/`[data-ms-mode="dark"]`; o Glass base é o
+  `:root` (sem atributo). Token novo ganha valor nos oito pares, com o
+  contraste medido no comentário; tema novo também entra em
+  `src/reset.css`. Nomes nas docs e na interface: "Mothership
+  Glass/Cream/Paperpen/Flat", "Base"/"Escuro" — nunca "claro"/"Darker".
+  Detalhe: TOKENS.md § Cores semânticas.
 
 ## Convenção de código observada no repo
 

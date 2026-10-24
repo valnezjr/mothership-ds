@@ -18,7 +18,7 @@ Montados uma vez, na raiz. Só o `ThemeProvider` é obrigatório; os outros
 habilitam recursos específicos.
 
 ```tsx
-<ThemeProvider defaultTheme="dark" persist>
+<ThemeProvider defaultTheme="glass" defaultMode="system" persist>
   <AlertsProvider>
     <TooltipProvider>
       <LivingBackground />
@@ -32,17 +32,35 @@ habilitam recursos específicos.
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
-| `defaultTheme` | `"dark" \| "darker" \| "light"` | `"dark"` | tema inicial |
-| `persist` | `boolean` | `false` | guarda a escolha no `localStorage` |
+| `defaultTheme` | `"glass" \| "cream" \| "paperpen" \| "flat"` | `"glass"` | tema inicial |
+| `defaultMode` | `"base" \| "dark" \| "system"` | `"base"` | modo inicial; `"system"` segue o `prefers-color-scheme` |
+| `persist` | `boolean` | `false` | guarda tema e modo no `localStorage` |
 
-Aplica a classe `light` (claro) ou `darker` (Darker) no `<html>`; o
-escuro padrão não tem classe. Com `persist`, a leitura acontece
-**depois** da hidratação, para não divergir do HTML do servidor — o custo
-é um flash na primeira pintura para quem escolheu o tema claro.
+O tema tem dois eixos: a identidade (Mothership Glass, Cream, Paperpen
+ou Flat) e o modo (base ou escuro) — ver [Temas](tokens.md#temas). O
+Provider escreve `data-ms-theme` e `data-ms-mode` no `<html>`; em
+`data-ms-mode` vai sempre o modo resolvido (`"base"` ou `"dark"`),
+nunca `"system"`. Com `mode="system"`, ele acompanha o SO e ouve as
+mudanças dele.
 
-`useTheme()` devolve `{ theme, setTheme, toggle }`. `toggle` alterna
-entre claro e escuro (do Darker, vai para o claro); para os três temas,
-use `setTheme`.
+Com `persist`, a leitura acontece **depois** da hidratação, para não
+divergir do HTML do servidor — o custo é um flash na primeira pintura
+para quem escolheu um par diferente do padrão. As chaves são `ms-theme`
+e `ms-mode`; uma escolha salva pela v1 (`"dark"`, `"darker"` ou
+`"light"` em `ms-theme`) é lida e convertida para o par equivalente.
+
+`useTheme()` devolve:
+
+| Campo | Tipo | |
+|---|---|---|
+| `theme` | `Theme` | tema atual |
+| `mode` | `"base" \| "dark" \| "system"` | modo escolhido |
+| `resolvedMode` | `"base" \| "dark"` | modo na tela, com `"system"` resolvido |
+| `setTheme` | `(t: Theme) => void` | troca o tema, mantendo o modo |
+| `setMode` | `(m: ThemeMode) => void` | troca o modo, mantendo o tema |
+| `toggleMode` | `() => void` | alterna base ↔ escuro a partir do modo na tela (sai do `"system"`) |
+
+Os tipos `Theme`, `ThemeMode` e `ResolvedMode` são exportados.
 
 ### `AlertsProvider`
 
@@ -145,7 +163,7 @@ O reset da `.ms-page` tira margens e marcadores de lista do resto da
 página; o `Prose` devolve os dois, só aqui dentro. A primeira e a
 última peça não levam margem para fora, então o bloco encaixa num
 `Card` ou `Accordion` sem sobra. Links usam `--color-accent-text`
-(AA nos três temas); código usa `--font-mono`, que a lib não carrega
+(AA em todos os pares de tema); código usa `--font-mono`, que a lib não carrega
 (ver [tokens](tokens.md)). Para ajustar algo de uma tela só, escreva
 por cima de `.ms-prose` (ex.: `.minha-tela .ms-prose h1 { display: none }`).
 
@@ -159,7 +177,7 @@ por cima de `.ms-prose` (ex.: `.minha-tela .ms-prose h1 { display: none }`).
 | `actions` | `ReactNode` | fileira de botões |
 
 `HeroHighlight` destaca uma palavra do título com o gradiente da logo
-(`--gradient-active-text`, ≥4.5:1 nos três temas). É o único uso
+(`--gradient-active-text`, ≥4.5:1 em todos os pares de tema). É o único uso
 decorativo desse gradiente: um por página, só no título do herói.
 
 ### `Footer` · `Flash`
@@ -520,10 +538,10 @@ formulário HTML.
 
 Interruptor de campo de formulário — `<input type="checkbox"
 role="switch">`, participa de `<form>` normalmente (`name`, `value`,
-reset, `FormData`). Para o interruptor de tema claro/escuro da navbar,
+reset, `FormData`). Para o interruptor de modo base/escuro da navbar,
 use `ThemeSwitch`; os dois têm mecanismos de animação diferentes por
-baixo (`Switch` reage a `:checked`, `ThemeSwitch` à classe `.light` do
-`<html>`) e não compartilham classe CSS, mesmo parecendo o mesmo
+baixo (`Switch` reage a `:checked`, `ThemeSwitch` aos atributos de tema
+do `<html>`) e não compartilham classe CSS, mesmo parecendo o mesmo
 controle visual.
 
 | Prop | Tipo | |
@@ -577,11 +595,16 @@ um controle (`role="radio"`, `aria-pressed`…), passe o `aria-*` dele e
 
 ### `ThemeMenu`
 
-Seletor dos três temas — escuro, Darker e claro — num `DropdownMenu`.
-O gatilho é o mesmo botão redondo do `NotificationBell`, com o ícone do
-tema ativo (lua, lua cheia, sol) e `aria-label` com o nome dele; cada
-tema é um `DropdownMenuItem` marcável (`menuitemradio`), com o check no
-ativo.
+Seletor dos oito pares tema × modo num `DropdownMenu`. O gatilho é o
+mesmo botão redondo do `NotificationBell`, com o ícone do modo na tela
+(lua vazada no Glass base, sol no base dos outros temas, lua cheia em
+qualquer escuro) e `aria-label` com o par ativo — "Tema: Mothership
+Cream, Escuro", com ", seguindo o sistema" quando `mode="system"`.
+
+No topo, **Seguir o sistema** põe o modo em `"system"`. Abaixo, um
+grupo por tema, com Base e Escuro como itens marcáveis
+(`menuitemradio`). O check fica no par que está na tela, então com
+`"system"` ele acompanha o SO.
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
@@ -589,9 +612,10 @@ ativo.
 
 ### `ThemeSwitch`
 
-Interruptor claro/escuro. Renderiza um `<button role="switch">` com
-`aria-checked` — o estado é anunciado, não só visual. Só tem dois
-estados; para oferecer também o Darker, use `ThemeMenu`.
+Interruptor base/escuro: alterna o modo dentro do tema atual
+(`toggleMode`), sem trocar de tema. Renderiza um `<button
+role="switch">` com `aria-checked` ligado no modo escuro — o estado é
+anunciado, não só visual. Para trocar de tema, use `ThemeMenu`.
 
 ---
 
@@ -1124,7 +1148,7 @@ telas estreitas sem quebrar o layout.
 
 Placeholder de carregamento. O pulso anima entre `--color-surface` e
 `--color-surface-hover` — os dois tokens de superfície que já existem,
-nenhuma cor nova — então funciona nos dois temas sem esforço extra.
+nenhuma cor nova — então funciona em todos os temas sem esforço extra.
 `aria-hidden="true"` por padrão: é decorativo, quem precisa anunciar
 "carregando" pra leitor de tela é o container ao redor (`aria-busy`,
 texto oculto), não o placeholder em si.

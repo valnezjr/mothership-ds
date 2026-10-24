@@ -18,8 +18,8 @@ leitores de tela e falha para daltonismo.
 | `StepModal` / `Breadcrumbs` | etapa/item atual | `aria-current` |
 | `Navbar` / `Sidebar` / `Dock` | item atual (anel em `--gradient-active`) | `aria-current`: `location` em Navbar/Sidebar (âncoras da página), `page` no Dock (destinos de app) |
 | `Card selected` | card escolhido num conjunto | `aria-current="true"`; se o card for controle, quem usa troca pelo `aria-*` do controle |
-| `ThemeSwitch` | ligado/desligado | `aria-checked` (é `role="switch"`, não checkbox nativo) |
-| `ThemeMenu` / `DropdownMenuItem checked` | tema/opção ativa | `aria-checked` em `role="menuitemradio"`; o gatilho diz o tema ativo no `aria-label` |
+| `ThemeSwitch` | modo escuro ligado/desligado | `aria-checked` (é `role="switch"`, não checkbox nativo) |
+| `ThemeMenu` / `DropdownMenuItem checked` | par tema × modo ativo, "Seguir o sistema" | `aria-checked` em `role="menuitemradio"`, um grupo rotulado por tema; o gatilho diz o par ativo no `aria-label` ("…, seguindo o sistema" com `mode="system"`) |
 | `Table` (coluna `sortable`) | ordenação asc/desc/nenhuma | `aria-sort` no `<th>` — nativo de tabela, não `aria-label` |
 
 Ao adicionar um componente com estado visual novo, pergunte: "que
@@ -165,4 +165,4 @@ entram como cor de série.
 - [ ] Se anima: comportamento sob `prefers-reduced-motion: reduce` definido.
 - [ ] Se introduz cor de dado nova: validada (ΔE CVD ≥ 8, ΔE ≥ 15, contraste ≥ 3:1).
 - [ ] Se renderiza texto/ícone sobre fundo de cor de marca sólida: contraste ≥ 4.5:1 medido (não assumido) — usar `--color-on-solid` só depois de confirmar, senão a exceção certa (ver TOKENS.md).
-- [ ] Testado em tela estreita (abaixo de 720px) e nos dois temas.
+- [ ] Testado em tela estreita (abaixo de 720px) e nos oito pares de tema (`ThemeMenu` na navbar do styleguide).

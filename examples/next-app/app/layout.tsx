@@ -22,6 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        {/* Fontes do Paperpen: só este CSS vem sempre; o arquivo de fonte só
+            baixa quando o tema está aplicado (nenhum texto usa as famílias antes). */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Homemade+Apple&display=swap"
+          rel="stylesheet"
+        />
         {/* Navbar usa spy + links âncora (#projetos, #sobre, #contato);
             sem isso o clique pula direto, sem rolagem. */}
         <style>{`@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }`}</style>

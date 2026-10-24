@@ -2,7 +2,7 @@
 
 Tudo no sistema sai daqui. Nenhum componente escreve um valor solto —
 cor, medida ou tempo — e é essa disciplina que faz um componente novo
-nascer coerente e funcionar nos dois temas sem trabalho extra.
+nascer coerente e funcionar nos oito pares de tema sem trabalho extra.
 
 Os tokens vivem em [`src/styles/tokens.css`](../src/styles/tokens.css)
 como variáveis CSS, então você pode consumi-los no seu próprio código:
@@ -27,18 +27,99 @@ como variáveis CSS, então você pode consumi-los no seu próprio código:
 | `--color-border-strong` | borda em destaque (hover) |
 | `--color-surface` | a superfície de vidro |
 | `--color-surface-hover` | superfície de vidro em hover |
+| `--color-border-surface` | contorno de superfície em fluxo (card, tabela, navbar); `transparent` no Flat |
+| `--color-field` | fundo dos campos; a superfície em todo tema, o fundo da página no Flat |
 
-O tema escuro é o padrão. O claro é ativado pela classe `light` no
-`<html>` — é o que o `ThemeProvider` faz.
+### Temas
 
-Há também o **Darker**, uma variante do escuro para uso noturno: a mesma
-base, os mesmos glows, texto e bordas, mas o vidro é escuro (o fundo da
-página a 60%) em vez de claro, e o hover é mais sutil. O `ThemeProvider`
-aplica a classe `darker` no `<html>` com `setTheme("darker")`, e o
-`ThemeMenu` escolhe entre os três temas. O `ThemeSwitch` continua
-alternando só entre escuro e claro.
+O tema tem dois eixos independentes: a **identidade** (`theme`) e a
+**claridade** (`mode`). Quatro temas, cada um com modo base e escuro,
+somam oito pares:
 
-### Marca — fixas em todos os temas (exceto o accent no claro)
+| `theme` | Base | Escuro |
+|---|---|---|
+| `"glass"` — **Mothership Glass** | vidro claro sobre fundo escuro, glows da marca (o padrão) | vidro escuro, o fundo da página a 60%, hover mais sutil — para a noite |
+| `"cream"` — **Mothership Cream** | off-white quente, accent laranja lavado | papel âmbar meio-tom com tinta escura: baixa a luz em vez de inverter |
+| `"paperpen"` — **Mothership Paperpen** | papel quadriculado, caneta esferográfica azul, sem vidro, fontes manuscritas | papel azul-tinta, caneta azul clara |
+| `"flat"` — **Mothership Flat** | cinzas neutros, superfície opaca, sem vidro nem sombra | o mesmo, em zinco escuro |
+
+O `ThemeProvider` escreve os dois eixos no `<html>`, como
+`data-ms-theme` e `data-ms-mode` (o modo já resolvido, `"base"` ou
+`"dark"`). Sem atributo nenhum, vale o Glass base — o `:root`. O CSS de
+cada par fica num seletor de atributo:
+
+```css
+:root                                                /* Glass base */
+[data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme]))
+[data-ms-theme="cream"]                              /* Cream base */
+[data-ms-theme="cream"][data-ms-mode="dark"]         /* Cream escuro */
+/* … e o mesmo para paperpen e flat */
+```
+
+O escuro de cada tema herda do base dele o que não redefine. O
+`ThemeSwitch` alterna só o modo dentro do tema atual; o `ThemeMenu`
+escolhe entre os oito pares (ver
+[componentes](componentes.md#themeprovider)).
+
+Paperpen e Flat não têm vidro (`--blur-glass: 0`) nem sombra. O
+Paperpen é o único que troca as fontes e o papel, e por isso pede quatro tokens
+que nos outros temas não mudam nada:
+
+| Token | Fora do Paperpen | No Paperpen |
+|---|---|---|
+| `--font-family-display` | `var(--font-family)` | Homemade Apple (títulos e display) |
+| `--font-mono-style` | `normal` | `italic` (o itálico do Maple Mono é cursivo) |
+| `--bg-texture` | `none` | granulação + quadriculado (`--paper-line`) |
+| `--fill-solid` | `none` | hachura de caneta por cima de todo preenchimento sólido |
+
+#### Fontes do Paperpen
+
+Como a Outfit, as fontes não vêm com a lib: quem usa o Paperpen
+importa [Patrick Hand](https://fonts.google.com/specimen/Patrick+Hand)
+(corpo, campos e tabelas) e
+[Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple)
+(títulos). Pode deixar o CSS do Google Fonts no `<head>` sempre:
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Homemade+Apple&display=swap"
+  rel="stylesheet"
+/>
+```
+
+Esse CSS só declara as famílias (`@font-face`). O navegador baixa o
+arquivo de fonte quando algum texto usa a família, e nenhum usa antes de
+o tema ser aplicado. Quem não oferece o Paperpen não precisa da linha.
+
+Para não fazer nem a requisição do CSS antes da hora, injete o `<link>`
+quando o tema entrar:
+
+```tsx
+"use client";
+import { useEffect } from "react";
+import { useTheme } from "mothership-ds";
+
+const PAPERPEN_FONTS =
+  "https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Homemade+Apple&display=swap";
+
+export function PaperpenFonts() {
+  const { theme } = useTheme();
+  useEffect(() => {
+    if (theme !== "paperpen" || document.querySelector(`link[href="${PAPERPEN_FONTS}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = PAPERPEN_FONTS;
+    document.head.appendChild(link);
+  }, [theme]);
+  return null;
+}
+```
+
+Monte `<PaperpenFonts />` dentro do `ThemeProvider`. O texto aparece
+nas fontes de reserva até o arquivo chegar, só na primeira vez: o corpo
+em `"Comic Sans MS", cursive`, os títulos na `cursive` do sistema.
+
+### Marca — fixas em todos os temas (exceto o accent)
 
 São oito, cada uma disponível em três formas. Todas foram extraídas
 direto da marca Mothership ou harmonizadas pra completar a paleta sem
@@ -46,7 +127,7 @@ destoar dela — nenhuma é um tom escolhido de forma solta.
 
 | Token | Origem |
 |---|---|
-| `--color-accent` | ciano — ação primária. Parada 0% do gradiente de `assets/logo.svg`. No tema claro vira um laranja lavado (`#e19460`, o laranja da logo com menos saturação), que combina com o fundo creme |
+| `--color-accent` | ciano — ação primária. Parada 0% do gradiente de `assets/logo.svg`. No Cream vira um laranja lavado (`#e19460`, o laranja da logo com menos saturação), que combina com o fundo creme; no Paperpen é a caneta; no Flat, tinta neutra (quase preto no base, quase branco no escuro) |
 | `--color-highlight` | amarelo do ícone de raio da página original — atenção |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |
@@ -57,8 +138,9 @@ destoar dela — nenhuma é um tom escolhido de forma solta.
 
 Para o accent como **texto ou anel de foco** há o `--color-accent-text`:
 o `--color-accent` é de preenchimento e borda, e como texto não chega a
-AA em todo tema. No escuro e no Darker ele é o `--color-accent-400`; no
-claro, `#984a16` — o laranja do claro escurecido até AA.
+AA em todo tema. No Glass ele é o `--color-accent-400`; no Cream,
+`#984a16` (`#6e330e` no escuro) — o laranja do Cream escurecido até AA;
+no Paperpen e no Flat, o próprio accent, que já é tinta.
 
 `accent`, `pink` e `orange` são as três paradas exatas do gradiente da
 logo (realinhado na v1.2 — antes, `accent` e `pink` eram aproximações).
@@ -95,19 +177,23 @@ teclado.
 
 Como texto (rótulo da opção selecionada do `Select`/`Combobox` e do
 item marcado do `DropdownMenu`) entra o `--gradient-active-text`, com
-paradas mais claras no escuro (`-400`) e mais escuras no claro (`-800`),
-porque texto pede 4.5:1.
+paradas mais claras sobre fundo escuro (`-400`) e mais escuras sobre
+fundo claro (`-800`), porque texto pede 4.5:1.
 A cor nunca carrega o estado sozinha: cada um desses componentes também
 marca o estado em `aria-current`, `aria-selected` ou `checked`.
 
 | Tema | Paradas (direita → esquerda) |
 |---|---|
-| Escuro e Darker | `accent-500` → `pink-500` → `orange-500` |
-| Claro | `accent-700` → `pink-600` → `orange-600` |
+| Glass (base e escuro), Flat escuro | `accent-500` → `pink-500` → `orange-500` |
+| Cream base, Flat base | `accent-700` → `pink-600` → `orange-600` |
+| Cream escuro | `accent-800` → `pink-700` → `orange-800` |
+| Paperpen (base e escuro) | sem gradiente: caneta vermelha (`--color-danger`) chapada |
 
-Todas as paradas ficam em 3:1 ou mais sobre o fundo e o vidro dos três
-temas. No claro, o ciano desce até o `-700` porque o `-600` fica em 2.70:1
-sobre o creme.
+Todas as paradas ficam em 3:1 ou mais sobre o fundo e a superfície do
+próprio par. No Cream base, o ciano desce até o `-700` porque o `-600`
+fica em 2.70:1 sobre o creme; o Cream escuro, meio-tom, desce mais um
+passo. No Paperpen o ativo é a caneta vermelha, a única cor que muda de
+papel — o mesmo sinal nos dois modos.
 
 ### Dados
 
@@ -129,7 +215,8 @@ Verde e vermelho ficam **reservados para status** — nunca viram "série 5".
 
 ## Tipografia
 
-Família única: [Outfit](https://fonts.google.com/specimen/Outfit), pesos
+Família de todos os temas, exceto o Paperpen (ver [Temas](#fontes-do-paperpen)):
+[Outfit](https://fonts.google.com/specimen/Outfit), pesos
 400, 500 e 600. Escolhida por ser limpa, muito legível e versátil o
 bastante pra título e corpo de texto; por não ser tão batida quanto as
 fontes mainstream, carrega uma pegada mais orgânica.
@@ -150,7 +237,8 @@ andar e formas arredondadas como a Outfit, e com ligaduras. A lib não
 carrega essa fonte; instale `@fontsource/maple-mono` e importe onde
 for usar. Sem ela, o token cai na mono do sistema.
 
-Mais `--font-family`, `--font-weight-regular` (400),
+Mais `--font-family`, `--font-family-display` (títulos; a mesma do
+corpo fora do Paperpen), `--font-mono-style`, `--font-weight-regular` (400),
 `--font-weight-medium` (500), `--font-weight-display` (600),
 `--line-height-base`, `--line-height-tight` e `--line-height-prose`
 (1.6, mais aberto para texto corrido longo — usado pelo `Prose`).
@@ -262,8 +350,9 @@ do `Grafo3D`) fica fora dos gestos e usa `--transition-spatial`/
 ```
 
 As sombras formam uma escala de elevação: quanto mais alto o elemento
-flutua sobre a página, maior o token. São pretas nos dois temas, porque
-sombra escurece o que está embaixo.
+flutua sobre a página, maior o token. São pretas em todo tema com
+sombra, porque sombra escurece o que está embaixo; Paperpen e Flat as
+desligam.
 
 ## Larguras de traço
 
@@ -282,6 +371,7 @@ posição e tamanho próprios:
 --bg-glow-1 … --bg-glow-4              /* cor */
 --bg-glow-1-pos … --bg-glow-4-pos      /* posição */
 --bg-glow-1-size … --bg-glow-4-size    /* tamanho */
+--bg-texture                           /* camada por cima dos glows; none fora do Paperpen */
 --bg-page                              /* a composição pronta */
 ```
 
@@ -318,3 +408,20 @@ os tokens depois de importar o CSS:
 ```
 
 Nenhum componente precisa ser tocado.
+
+Com temas, o peso do seletor conta. Um token redefinido no `:root`
+vence os pares base (o seletor deles pesa o mesmo e vem antes do seu
+CSS), mas não os escuros, cujo seletor tem dois atributos. Para fixar o
+valor nos oito pares, some `:root[data-ms-mode]`; para mudar um par só,
+use o seletor dele:
+
+```css
+:root,
+:root[data-ms-mode] {
+  --color-accent: #7c3aed;              /* em todos os pares */
+}
+
+[data-ms-theme="cream"][data-ms-mode="dark"] {
+  --color-accent: #c26a2e;              /* só no Cream escuro */
+}
+```

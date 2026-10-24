@@ -23,7 +23,7 @@ Status: done
 - Validação visual do Valnez: ok (2026-10-23).
 - `revisao-spec` (2026-10-23): padrões sem infração no código; spec sem requisito faltando. Pendências:
   - ~~`mode="system"` pisca~~ corrigido: `prefersDark` agora vem de `useSyncExternalStore` (lido na hora, `false` no servidor). Com `defaultMode="system"` e SO escuro, `data-ms-mode` vai direto a `dark` (antes `base`, `base`, `dark`). Com `persist` salvo em `system` o padrão ainda aparece antes da leitura, como qualquer escolha salva (leitura só depois da hidratação).
-  - `ThemeMenu` sem opção "Sistema": depois de escolher um par, não dá para voltar ao `system` pela interface (spec não pede).
+  - ~~`ThemeMenu` sem opção "Sistema"~~ incluída (decisão do Valnez): "Seguir o sistema" no topo, grupo próprio (`aria-label="Modo"`) e divisor antes dos pares. Marcada com `mode="system"`; o par marcado continua sendo o que está na tela. Gatilho ganha ", seguindo o sistema" no rótulo. Docs ficam para o ticket 05.
   - `persist` trocado de `false` para `true` em execução grava os padrões antes de ler (caso de borda).
   - Smells para o ticket 05: regra do ícone em dois lugares (`modeIcon` e `tokens.css`), tema+modo sem tipo próprio, `["base", "dark"]` literal no menu, nome `lerSalvo`.
   - `TOKENS.md` (175–182) e `CLAUDE.md` desatualizados; entram no ticket 05.

@@ -47,7 +47,7 @@ navegação, o índice e as âncoras se atualizam sozinhos.
 
 ## Antes de abrir o PR
 
-- Conferir nos **dois temas** (o switch está na navbar do styleguide).
+- Conferir nos **oito pares de tema** (o menu de tema está na navbar do styleguide).
 - Conferir em **tela estreita** (o breakpoint do sistema é 720px).
 - Respeitar **`prefers-reduced-motion`** se houver animação.
 - Marcar estado com **`aria-*`** (`aria-expanded`, `aria-current`), nunca

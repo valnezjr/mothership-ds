@@ -4,21 +4,97 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [2.0.0] — não lançada
+
+Temas em dois eixos: `theme` diz a identidade, `mode` diz se ela está
+em base ou escura. Quatro temas — Mothership Glass, Cream, Paperpen e
+Flat —, oito pares. Quebra a API de tema; componentes, tokens e
+classes `ms-*` seguem iguais. Guia completo em
+[`docs/migracao-v2.md`](docs/migracao-v2.md). Decisões em
+`docs/decisoes.md`, D8 a D12.
+
+### Quebras
+
+- **`Theme` passa a ser `"glass" | "cream" | "paperpen" | "flat"`**
+  (era `"dark" | "darker" | "light"`). O antigo escuro é o Glass base,
+  o Darker é o Glass escuro e o claro é o Cream base. `defaultTheme`
+  continua tendo o antigo escuro como padrão (`"glass"`).
+- **`useTheme().toggle` sai; entra `toggleMode`**, que alterna base ↔
+  escuro dentro do tema atual (o `toggle` trocava claro ↔ escuro, ou
+  seja, de tema). `useTheme()` ganha `mode`, `resolvedMode` e `setMode`.
+- **Classes `.light` e `.darker` no `<html>` saem**: o `ThemeProvider`
+  escreve `data-ms-theme` e `data-ms-mode` (o modo resolvido). Sem
+  atributo, vale o Glass base. Prefixados, os atributos não colidem com
+  classes de quem instala a lib. CSS que mirava as classes precisa
+  trocar de seletor (tabela no guia de migração).
+- **`ThemeSwitch` alterna o modo, não o tema**: no Cream vai de base
+  para escuro, não para o Glass. Rótulo "Modo escuro" (era "Alternar
+  tema"), `aria-checked` = escuro.
 
 ### Adicionado
 
+- **`defaultMode`** no `ThemeProvider` (`"base"` padrão) e
+  **`mode="system"`**, que acompanha o `prefers-color-scheme` e as
+  mudanças do SO. Lido com `useSyncExternalStore`, então o primeiro
+  render já sai no modo certo no cliente (`"base"` no servidor).
+- **`persist` grava tema e modo** (`ms-theme` e `ms-mode`) e converte a
+  escolha salva pela v1 (`dark`/`darker`/`light`) para o par
+  equivalente: ninguém perde a preferência na atualização.
+- **`ThemeMenu` com os oito pares**, um grupo rotulado por tema, e
+  **Seguir o sistema** no topo. O gatilho mostra o ícone do modo na
+  tela (lua vazada no Glass base, sol no base dos outros, lua cheia em
+  qualquer escuro) e diz o par no `aria-label`, com ", seguindo o
+  sistema" quando for o caso. O mesmo ícone vale no polegar do
+  `ThemeSwitch`.
+- **Mothership Cream escuro** (D10): papel âmbar meio-tom (`#c9b998`)
+  com tinta escura (`#1f1c18`), vidro claro, glows e gradiente da logo.
+  Baixa a luz em vez de inverter, por isso accent como texto, ativo,
+  danger, success e gráficos descem de um a três passos (texto/vidro
+  11.30:1, borda/papel 3.48:1).
+- **Mothership Paperpen** (D9, D11): papel quadriculado sobre glows em
+  aquarela, caneta esferográfica azul, sem vidro nem sombra, contorno
+  mais grosso com cantos levemente irregulares, preenchimento sólido em
+  hachura de caneta e ativo em caneta vermelha. Homemade Apple nos
+  títulos, Patrick Hand no corpo (a 112,5%, por ser ~22% mais estreita
+  que a Outfit), terminal em Maple Mono itálico. Escuro em papel azul
+  tinta (`#1a2b5a`), texto off-white frio e caneta azul clara. As
+  fontes não vêm com a lib: receita em
+  [`docs/tokens.md`](docs/tokens.md#fontes-do-paperpen).
+- **Mothership Flat** (D12): zinco neutro, superfície opaca, sem vidro
+  nem sombra, glows sutis. Accent em tinta neutra (botão solid preto no
+  base, branco no escuro); a cor da marca só no gradiente de ativo e
+  nos estados. Superfícies separadas do fundo só por tom.
+- **Tokens para os temas novos**, com o valor de hoje nos outros (sem
+  mudança visual): `--font-family-display` (títulos e display),
+  `--font-mono-style`, `--bg-texture` (primeira camada do `--bg-page`),
+  `--fill-solid` (camada por cima de preenchimento sólido),
+  `--paper-line`, `--color-border-surface` (contorno de superfície em
+  fluxo) e `--color-field` (fundo dos campos).
 - **`--ease-default: ease`** (`src/styles/tokens.css`): nomeia a curva
   que as `--transition-*` já usavam implícita, para o Mothership Shell
   ler o token em vez de fixar o `ease` no gerador. O `.ms-hover-edge`
   passa a escrevê-la explícita na cor da borda. Nada muda no visual.
 
+### Styleguide e exemplo
+
+- **Story "Temas"** em Fundações: os oito pares lado a lado numa grade
+  4×2, cada um num `<iframe>` com os atributos no próprio `<html>`.
+- `ThemeMenu` da navbar com os oito pares; textos das stories sem os
+  nomes da v1. Fontes do Paperpen no `<head>` do styleguide e do
+  exemplo.
 - **Busca no styleguide** (`styleguide/App.tsx`): campo no cabeçalho,
   feito com o próprio `Combobox`, que acha a story pelo título, pelo nome
   do componente (`Button`, `Table`, `PricingCard`…, campo novo
   `keywords` nas stories) ou pelo texto de apoio, sem diferenciar acento
   nem caixa. `/` ou Ctrl+K focam o campo. Só o styleguide; nenhuma API
   nova na biblioteca.
+
+### Corrigido
+
+- **`reset.css` sem o fundo do Flat** e com o Cream base em branco puro
+  (`#ffffff`, de antes do off-white da v1.8): o `<html>` pintava o
+  fundo errado no overscroll. Agora espelha o `--bg-base` dos oito
+  pares.
 
 ## [1.9.0] — 2026-10-16
 

@@ -54,7 +54,7 @@ sempre — já em uso em `Loader`, `LogoMark`, `Mascote`, `Modal`, `charts`,
 **Leitura de `localStorage`.** `ThemeProvider` com `persist` só lê a
 preferência **depois** da hidratação. Ler durante o render faria o
 HTML do servidor divergir do primeiro render do cliente (custo aceito:
-um flash na primeira pintura para quem escolheu o tema claro).
+um flash na primeira pintura para quem escolheu um par diferente do padrão).
 
 ## Portais e `position: fixed`
 

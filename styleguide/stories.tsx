@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
+import { createPortal } from "react-dom";
 import {
   // primitivas
   Button, ButtonLink, IconButton, IconRow, LinkList, Card, CardText, Badge,
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
   Footer, Flash, Stack, Divider, Prose, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
   // tema e utilitários
-  ThemeSwitch, ThemeMenu, HoverEdge,
+  ThemeSwitch, ThemeMenu, HoverEdge, type Theme, type ResolvedMode,
   // interativos
   Navbar, Dock, Accordion, Tabs, Carousel, Gallery, Marquee,
   // marketing
@@ -430,7 +431,7 @@ function ModalDemo() {
             content: (
               <>
                 <p style={{ marginBottom: 16 }}>
-                  Escuro, Darker ou claro — dá para trocar quando quiser pelo menu de tema da navbar.
+                  Quatro temas, cada um com modo base e escuro — dá para trocar quando quiser pelo menu de tema da navbar.
                 </p>
                 <ThemeMenu align="start" />
               </>
@@ -724,6 +725,78 @@ function StepIndicatorDemo() {
   );
 }
 
+/* Os tokens de tema valem pelo <html> (o Glass base é o :root), então um
+   par não se aplica a um trecho da página: cada célula da grade é um
+   iframe com os atributos no próprio <html> e o CSS da página copiado.
+   O conteúdo é React normal, via portal; a altura do iframe segue a dele. */
+function ThemeFrame({ theme, mode, title, children }: { theme: Theme; mode: ResolvedMode; title: string; children: React.ReactNode }) {
+  const [body, setBody] = React.useState<HTMLElement | null>(null);
+  const [height, setHeight] = React.useState(196);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setHeight(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [body]);
+  const srcDoc = React.useMemo(() => {
+    const head = Array.from(document.head.querySelectorAll('link[rel="stylesheet"], style'))
+      .map((el) => el.outerHTML)
+      .join("");
+    return `<!doctype html><html lang="pt-br" data-ms-theme="${theme}" data-ms-mode="${mode}"><head>${head}<style>body{margin:0}</style></head><body class="ms-page"></body></html>`;
+  }, [theme, mode]);
+  return (
+    <>
+      <iframe
+        srcDoc={srcDoc}
+        title={title}
+        onLoad={(e) => setBody(e.currentTarget.contentDocument?.body ?? null)}
+        style={{ width: "100%", height, border: 0, borderRadius: "var(--radius-md)", display: "block" }}
+      />
+      {body && createPortal(<div ref={contentRef}>{children}</div>, body)}
+    </>
+  );
+}
+
+const THEME_GRID: { theme: Theme; name: string }[] = [
+  { theme: "glass", name: "Mothership Glass" },
+  { theme: "cream", name: "Mothership Cream" },
+  { theme: "paperpen", name: "Mothership Paperpen" },
+  { theme: "flat", name: "Mothership Flat" },
+];
+
+function ThemeGrid() {
+  return (
+    // Linha = tema, coluna = modo; abaixo de ~576px vira uma coluna só.
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, max(280px, calc(50% - 8px))), 1fr))", gap: 16 }}>
+      {THEME_GRID.flatMap(({ theme, name }) =>
+        (["base", "dark"] as const).map((mode) => (
+          <figure key={`${theme}-${mode}`} style={{ margin: 0 }}>
+            <ThemeFrame theme={theme} mode={mode} title={`${name}, ${mode === "base" ? "Base" : "Escuro"}`}>
+              <div style={{ padding: "var(--space-4)", display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+                <p className="ms-h3">{name}</p>
+                <p className="ms-text-sm ms-text-muted">
+                  {mode === "base" ? "Base" : "Escuro"} — texto de apoio.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--space-2)" }}>
+                  <Button type="button" variant="solid" inline>Solid</Button>
+                  <Button type="button" inline>Padrão</Button>
+                  <Badge tone="accent">Accent</Badge>
+                  <Switch defaultChecked aria-label="Ativo" />
+                </div>
+              </div>
+            </ThemeFrame>
+            <figcaption className="ms-text-xs ms-text-muted" style={{ marginTop: 6 }}>
+              <code>theme="{theme}" mode="{mode}"</code>
+            </figcaption>
+          </figure>
+        ))
+      )}
+    </div>
+  );
+}
+
 function useIsMobile(breakpoint = 720) {
   const [isMobile, setIsMobile] = React.useState(
     () => typeof window !== "undefined" && window.innerWidth <= breakpoint
@@ -1013,6 +1086,25 @@ export const STORIES: Story[] = [
             </div>
           ))}
         </div>
+      </>
+    ),
+  },
+  {
+    id: "temas",
+    group: "Fundações",
+    title: "Temas",
+    keywords: ["ThemeProvider", "useTheme", "Glass", "Cream", "Paperpen", "Flat", "modo escuro"],
+    subtitle: "Dois eixos independentes: o tema (Mothership Glass, Cream, Paperpen e Flat) e o modo (base ou escuro). Os oito pares saem dos mesmos tokens — nenhum componente sabe em qual tema está. O ThemeProvider escreve data-ms-theme e data-ms-mode no <html>; sem atributo nenhum, vale o Glass base.",
+    render: () => (
+      <>
+        <ThemeGrid />
+        <p className="ms-text-sm ms-text-muted" style={{ marginTop: 16 }}>
+          <strong>Glass</strong> é o vidro sobre o fundo vivo, a identidade original.{" "}
+          <strong>Cream</strong> troca o fundo escuro por creme quente, e o escuro dele baixa a
+          luz sem inverter. <strong>Paperpen</strong> é papel quadriculado e caneta azul, sem
+          vidro, com fontes manuscritas. <strong>Flat</strong> é neutro e plano: cor da marca só
+          no sinal de ativo e nos estados. Troque o par da página inteira no menu da navbar.
+        </p>
       </>
     ),
   },
@@ -1339,7 +1431,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Seletor de tema",
     keywords: ["ThemeMenu", "ThemeSwitch"],
-    subtitle: "Três temas: escuro (o padrão, vidro claro sobre o fundo escuro), Darker (vidro escuro, para a noite) e claro. O ThemeMenu escolhe entre os três num DropdownMenu — é o que está na navbar deste styleguide. O ThemeSwitch, com o polegar deslizando entre sol e lua, segue disponível para quem só quer claro/escuro.",
+    subtitle: "O ThemeMenu escolhe entre os oito pares tema × modo, ou segue o modo do sistema, num DropdownMenu — é o que está na navbar deste styleguide. O ThemeSwitch, com o polegar deslizando entre sol e lua, alterna só o modo (base ↔ escuro) dentro do tema atual.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
@@ -1347,7 +1439,7 @@ export const STORIES: Story[] = [
           <ThemeSwitch />
         </div>
         <p className="ms-text-xs ms-text-muted" style={{ textAlign: "center", maxWidth: 360 }}>
-          Usam <code>useTheme()</code>: aplicam as classes <code>light</code> ou <code>darker</code> no <code>&lt;html&gt;</code>.
+          Usam <code>useTheme()</code>: o <code>ThemeProvider</code> escreve <code>data-ms-theme</code> e <code>data-ms-mode</code> no <code>&lt;html&gt;</code>.
         </p>
       </div>
     ),
@@ -1732,7 +1824,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Modal & etapas",
     keywords: ["StepModal"],
-    subtitle: "Popup sobre véu escurecido (ou claro, no tema claro), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
+    subtitle: "Popup sobre véu escurecido (ou claro, nos temas de base clara), com foco preso dentro do diálogo. StepModal pagina o conteúdo em etapas, com botões de anterior/próximo.",
     render: () => <ModalDemo />,
   },
   {

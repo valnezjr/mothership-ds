@@ -4,8 +4,8 @@
 
 # Mothership DS
 
-**Design system em React + TypeScript** — glassmorphism, temas claro e escuro,
-fundo animado e uma identidade de movimento própria.
+**Design system em React + TypeScript** — glassmorphism, quatro temas com modo
+base e escuro, fundo animado e uma identidade de movimento própria.
 
 [![CI](https://github.com/valnezjr/mothership-ds/actions/workflows/ci.yml/badge.svg)](https://github.com/valnezjr/mothership-ds/actions/workflows/ci.yml)
 [![Styleguide](https://img.shields.io/badge/styleguide-online-00afef)](https://valnezjr.github.io/mothership-ds/)
@@ -39,8 +39,8 @@ three.js, que é dependência opcional — só quem importa dali instala.
 |---|---|
 | <img src="assets/gallery.jpg" alt="Galeria com filtros"> | <img src="assets/data.jpg" alt="Widgets de dashboard"> |
 | Galeria com filtros e contorno reativo | Widgets de dashboard e gráficos |
-| <img src="assets/loader.jpg" alt="Loader"> | <img src="assets/light.jpg" alt="Tema claro"> |
-| Loader enchendo de líquido | Tema claro |
+| <img src="assets/loader.jpg" alt="Loader"> | <img src="assets/light.jpg" alt="Tema Mothership Cream"> |
+| Loader enchendo de líquido | Mothership Cream |
 
 <div align="center">
 <img src="assets/splash.gif" alt="Splash screen animada" width="440">
@@ -137,6 +137,28 @@ export default function Home() {
   );
 }
 ```
+
+## Temas
+
+Quatro temas, cada um com modo **base** e **escuro**:
+
+| Tema | |
+|---|---|
+| **Mothership Glass** (`"glass"`, padrão) | vidro sobre o fundo vivo, a identidade original |
+| **Mothership Cream** (`"cream"`) | off-white quente; o escuro baixa a luz sem inverter |
+| **Mothership Paperpen** (`"paperpen"`) | papel quadriculado e caneta azul, sem vidro, fontes manuscritas |
+| **Mothership Flat** (`"flat"`) | neutro e plano, sem vidro; cor da marca só no ativo |
+
+```tsx
+<ThemeProvider defaultTheme="cream" defaultMode="system" persist>
+```
+
+`useTheme()` troca os dois eixos (`setTheme`, `setMode`, `toggleMode`);
+o `ThemeMenu` oferece os oito pares prontos. O Paperpen usa Patrick Hand
+e Homemade Apple, que você carrega à parte — receita em
+[`docs/tokens.md`](docs/tokens.md#fontes-do-paperpen).
+
+Vindo da v1? Veja o [guia de migração](docs/migracao-v2.md).
 
 ## Componentes
 
@@ -246,7 +268,8 @@ específico por conta própria.
 
 | Guia | Assunto |
 |---|---|
-| [Tokens](docs/tokens.md) | Cores, escalas, tipografia, espaçamento e efeitos |
+| [Tokens](docs/tokens.md) | Cores, temas, escalas, tipografia, espaçamento e efeitos |
+| [Migração v1 → v2](docs/migracao-v2.md) | Os temas em dois eixos: valores antigos, `toggleMode`, atributos no `<html>` |
 | [Componentes](docs/componentes.md) | Referência de props, com exemplos |
 | [Movimento](docs/movimento.md) | Fundo vivo, splash, loader e o easing do sistema |
 | [Arquitetura](docs/arquitetura.md) | Decisões técnicas e por que cada uma foi tomada |
@@ -277,7 +300,7 @@ pesa demais. Receita completa em
 
 **Tokens antes de valores.** Nenhum componente escreve `15px` ou
 `#00afef`; tudo vem de variáveis CSS. É o que faz um componente novo
-nascer coerente e funcionar nos dois temas sem trabalho extra.
+nascer coerente e funcionar nos oito pares de tema sem trabalho extra.
 
 **Poucos efeitos, respiro orgânico.** As cores de marca foram extraídas
 ou harmonizadas a partir da identidade Mothership; a escala de

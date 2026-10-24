@@ -11,7 +11,9 @@
 
 /* Espelha o --bg-base de cada tema (o reset vive fora dos tokens). */
 html { background: #111114; }
-html[data-ms-theme="cream"] { background: #ffffff; }
+html[data-ms-theme="cream"] { background: #ebe4d8; }
 html[data-ms-theme="cream"][data-ms-mode="dark"] { background: #c9b998; }
 html[data-ms-theme="paperpen"] { background: #f7f3ea; }
 html[data-ms-theme="paperpen"][data-ms-mode="dark"] { background: #1a2b5a; }
+html[data-ms-theme="flat"] { background: #f4f4f5; }
+html[data-ms-theme="flat"][data-ms-mode="dark"] { background: #18181b; }

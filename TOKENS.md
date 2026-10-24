@@ -184,10 +184,23 @@ quem usa carrega; corpo a 112,5%) e o escuro (papel azul) herda dele. Flat base 
 `[data-ms-theme="flat"]` (zinco neutro, superfície opaca, sem vidro nem
 sombra, accent em tinta preta/branca, superfície separada do fundo só por
 tom) e o escuro herda dele. Glass escuro (o antigo
-Darker) é o Glass base com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
-branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
-do escuro. Aplicada pelo `ThemeProvider` com `setTheme("darker")`; o `ThemeMenu`
-escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
+Darker) é `[data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme]))`:
+o Glass base com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
+branco a 15%) em vez de vidro claro; texto, bordas, marca e fundo são os
+do base. O `ThemeMenu` escolhe entre os oito pares (e "Seguir o
+sistema"); o `ThemeSwitch` alterna só o modo (`toggleMode`).
+
+Os blocos de tema pesam (0,1,0) no base e (0,2,0) no escuro: o escuro
+herda do base dele o que não redefine. Regra de tema nova em
+`components.css` mira o atributo (`[data-ms-theme="paperpen"] .x`),
+nunca classe no `<html>`. Um par não se aplica a um trecho da página
+(os tokens do Glass base moram no `:root`): a grade da story Temas usa
+um iframe por par. `src/reset.css` repete o `--bg-base` de cada par à
+mão — tema novo ou `--bg-base` mudado, atualizar lá também.
+
+Nomes: "Mothership Glass/Cream/Paperpen/Flat", modos "Base" e "Escuro".
+Nunca "claro"/"Darker" como nome de tema em docs, stories ou texto de
+interface (CHANGELOG antigo e `docs/decisoes.md` são registro, ficam).
 
 | Token | Papel |
 |---|---|
@@ -201,7 +214,7 @@ escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
 | `--color-surface-hover` | superfície de vidro em hover |
 | `--color-thumb` | thumb do switch |
 
-## Cores de marca — fixas em todos os temas (exceto o accent no claro)
+## Cores de marca — fixas em todos os temas (exceto o accent)
 
 Oito cores, cada uma em três formas:
 
@@ -214,7 +227,7 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 
 | Token base | Uso semântico |
 |---|---|
-| `--color-accent` | ciano — ação primária. Parada 0% de `assets/logo.svg`. **No claro vira laranja lavado** (`#e19460`, o orange da logo menos saturado): o ciano some sobre o creme. As escalas `--color-accent-*` seguem ciano |
+| `--color-accent` | ciano — ação primária. Parada 0% de `assets/logo.svg`. **No Cream vira laranja lavado** (`#e19460`, o orange da logo menos saturado): o ciano some sobre o creme. No Paperpen é a caneta (`--color-text`; `#9fb8ff` no escuro), no Flat tinta neutra (`#18181b`/`#f4f4f5`). As escalas `--color-accent-*` seguem ciano |
 | `--color-highlight` | amarelo — atenção (ícone flash da página original, não da logo) |
 | `--color-success` | verde — sucesso, alta, lucro |
 | `--color-danger` | vermelho — erro, queda, prejuízo |
@@ -226,9 +239,10 @@ var(--color-violet-soft)  /* alfa 0.2 — fundo de badges/alertas */
 **`--color-accent-text`** — o accent como **texto e anel de foco**
 (link/item ativo, opção selecionada, `:focus-visible`). `--color-accent`
 fica para preenchimento e borda: como texto ele não garante AA em todo
-tema. Escuro e Darker: `--color-accent-400` (5.12:1 sobre o
-`--color-accent-soft`). Claro: `#984a16`, o laranja do claro escurecido
-até AA (≥4.58:1 sobre fundo, vidro e soft). Nunca use `--color-accent`
+tema. Glass: `--color-accent-400` (5.12:1 sobre o
+`--color-accent-soft`). Cream: `#984a16`, o laranja do Cream escurecido
+até AA (≥4.58:1 sobre fundo, vidro e soft); `#6e330e` no escuro.
+Paperpen e Flat: o próprio accent, que já é tinta. Nunca use `--color-accent`
 como `color:` ou `outline-color`.
 
 `accent`/`pink`/`orange` são as três paradas exatas do gradiente da
@@ -247,20 +261,25 @@ borda dos campos de texto focados (única exceção ao foco sólido, D3).
 Nada além disso, nem
 decoração: se aparecer em outro lugar, deixa de dizer "ativo". Estático.
 O anel de foco continua sólido (`--color-accent-text`), e o estado vai
-sempre também em `aria-*`. Paradas `-500` no escuro/Darker; no claro
-`accent-700`/`pink-600`/`orange-600` (o `accent-600` fica em 2.70:1 sobre
-o creme). Todas ≥3:1 sobre o fundo e o vidro dos três temas; os valores
+sempre também em `aria-*`. Paradas `-500` no Glass e no Flat escuro;
+`accent-700`/`pink-600`/`orange-600` no Cream base e no Flat base (o
+`accent-600` fica em 2.70:1 sobre o creme); `accent-800`/`pink-700`/
+`orange-800` no Cream escuro; no Paperpen, caneta vermelha chapada
+(`--color-danger`), sem gradiente. Todas ≥3:1 sobre o fundo e a
+superfície do próprio par; os valores
 medidos estão no comentário do token. Abaixo de 3:1 só no centro dos
 glows do fundo (limite que o `--color-accent` sólido já tinha).
 
 **`--color-surface-selected`** / **`--shadow-selected`**: fundo e sombra
-do item atual de Navbar/Sidebar/Dock. No escuro/Darker, o próprio vidro
-e sem sombra; no claro, marfim quase opaco (`rgba(255,253,248,.9)`) com
+do item atual de Navbar/Sidebar/Dock. No Glass, o próprio vidro
+e sem sombra; no Cream base, marfim quase opaco (`rgba(255,253,248,.9)`) com
 `--shadow-xs`, porque vidro marfim sobre o painel marfim não aparecia.
 
 **`--gradient-active-text`**: o mesmo sinal como texto (rótulo da opção
 selecionada do Select/Combobox e do item marcado do DropdownMenu), com
-paradas que passam de 4.5:1: `-400` no escuro/Darker, `-800` no claro.
+paradas que passam de 4.5:1: `-400` sobre fundo escuro (Glass, Flat
+escuro), `-800` sobre fundo claro (Cream base, Flat base), `-900` no
+Cream escuro; no Paperpen, a caneta vermelha.
 **`--gradient-active-text-hover`** é a versão com o item em hover: no
 escuro vira `--color-text`, porque o hover branco a 50% não deixa
 nenhuma cor de texto passar. **`--gradient-field-ring`** é o fundo em
@@ -269,7 +288,10 @@ use com `border-color: transparent`.
 
 ## Texto/ícone sobre superfície sólida
 
-Fixas nos dois temas — usadas quando texto/ícone precisa ficar sobre
+Valores do `:root` abaixo, fixos no Glass e no Cream base. Os temas
+cujo accent/danger muda de claridade redefinem o par: Cream escuro
+(`on-accent` `#1e1712`, `on-danger` branco), Paperpen (o papel,
+`--bg-base`) e Flat (`on-accent` o inverso da tinta). Usadas quando texto/ícone precisa ficar sobre
 um fundo de cor de marca saturado o bastante pra exigir contraste
 garantido, em vez de `var(--color-text)` normal (que assume a
 superfície neutra de vidro):

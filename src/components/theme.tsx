@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-menu";
+import { DropdownMenu, DropdownMenuDivider, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-menu";
 import { THEMES, lerSalvo, resolverModo, type Theme, type ThemeMode, type ResolvedMode } from "./theme-state";
 
 /* ============================================================
@@ -162,6 +162,13 @@ const SunIcon = () => (
   </svg>
 );
 
+const SystemIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2" y="3" width="20" height="14" rx="2" />
+    <path d="M8 21h8M12 17v4" />
+  </svg>
+);
+
 /** Mesmo par do polegar do `ThemeSwitch` (`--icon-switch`): o Glass base
  *  já é escuro, então ganha a lua vazada no lugar do sol. */
 function modeIcon(theme: Theme, mode: ResolvedMode) {
@@ -192,8 +199,9 @@ export interface ThemeMenuProps {
  * então com `mode="system"` o check segue o SO.
  */
 export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
-  const { theme, resolvedMode, setTheme, setMode } = useTheme();
+  const { theme, mode, resolvedMode, setTheme, setMode } = useTheme();
   const baseId = React.useId();
+  const system = mode === "system";
   return (
     <DropdownMenu
       align={align}
@@ -201,13 +209,22 @@ export function ThemeMenu({ className, align = "end" }: ThemeMenuProps) {
         <button
           type="button"
           className={["ms-theme-menu__trigger", className].filter(Boolean).join(" ")}
-          aria-label={`Tema: ${THEME_LABELS[theme]}, ${MODE_LABELS[resolvedMode]}`}
+          aria-label={`Tema: ${THEME_LABELS[theme]}, ${MODE_LABELS[resolvedMode]}${system ? ", seguindo o sistema" : ""}`}
           title="Escolher tema"
         >
           {modeIcon(theme, resolvedMode)}
         </button>
       }
     >
+      {/* Sem esta opção, escolher um par saía do "system" sem volta pelo menu.
+          O par marcado continua sendo o que está na tela. */}
+      <div role="group" aria-label="Modo">
+        <DropdownMenuItem checked={system} onClick={() => setMode("system")}>
+          <SystemIcon />
+          Seguir o sistema
+        </DropdownMenuItem>
+      </div>
+      <DropdownMenuDivider />
       {THEMES.map((t) => (
         <div key={t} role="group" aria-labelledby={`${baseId}-${t}`}>
           <DropdownMenuLabel id={`${baseId}-${t}`}>{THEME_LABELS[t]}</DropdownMenuLabel>
