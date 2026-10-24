@@ -43,7 +43,7 @@ export function useTheme(): ThemeCtx {
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
-  /** Tema inicial (padrão: `"glass"`). */
+  /** Tema inicial (padrão: `"flat"`). */
   defaultTheme?: Theme;
   /** Modo inicial (padrão: `"base"`). `"system"` acompanha o `prefers-color-scheme`. */
   defaultMode?: ThemeMode;
@@ -69,7 +69,7 @@ const getDarkServer = () => false;
  */
 export function ThemeProvider({
   children,
-  defaultTheme = "glass",
+  defaultTheme = "flat",
   defaultMode = "base",
   persist = false,
 }: ThemeProviderProps) {

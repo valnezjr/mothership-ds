@@ -31,7 +31,7 @@ for (const asset of ["favicon.svg", "favicon-16.png", "favicon-32.png", "favicon
 
 function html(jsFile, cssFile) {
   return `<!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-ms-theme="flat" data-ms-mode="base">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

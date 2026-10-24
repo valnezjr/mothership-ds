@@ -17,8 +17,13 @@ classes `ms-*` seguem iguais. Guia completo em
 
 - **`Theme` passa a ser `"glass" | "cream" | "paperpen" | "flat"`**
   (era `"dark" | "darker" | "light"`). O antigo escuro é o Glass base,
-  o Darker é o Glass escuro e o claro é o Cream base. `defaultTheme`
-  continua tendo o antigo escuro como padrão (`"glass"`).
+  o Darker é o Glass escuro e o claro é o Cream base.
+- **Tema padrão passa a ser o Mothership Flat** (`defaultTheme="flat"`,
+  era o antigo escuro). Quem não passa `defaultTheme` abre no Flat base;
+  `defaultTheme="glass"` mantém o visual da v1. Sem `ThemeProvider`, só
+  com o CSS, nada muda: sem atributo no `<html>`, vale o Glass base.
+  Com SSR, ponha `data-ms-theme="flat" data-ms-mode="base"` no `<html>`
+  do servidor para não abrir no Glass até hidratar (D13).
 - **`useTheme().toggle` sai; entra `toggleMode`**, que alterna base ↔
   escuro dentro do tema atual (o `toggle` trocava claro ↔ escuro, ou
   seja, de tema). `useTheme()` ganha `mode`, `resolvedMode` e `setMode`.
@@ -95,6 +100,12 @@ classes `ms-*` seguem iguais. Guia completo em
   (`#ffffff`, de antes do off-white da v1.8): o `<html>` pintava o
   fundo errado no overscroll. Agora espelha o `--bg-base` dos oito
   pares.
+- **Olho da `Splash` fora do centro no Firefox** (`.ms-splash__word`):
+  o nome nasce ampliado em `scale(2.4)` com origem no centro da própria
+  caixa (`transform-box: fill-box`), e o Firefox soma à caixa do grupo
+  o transform das letras ainda escondidas — a origem mudava e o rosto
+  nascia ~50px à direita. A origem agora é fixa, em coordenadas do
+  `viewBox`, no centro que o Chromium já usava: nada muda nele.
 - **`<main>` do styleguide alcançável pelo teclado** (`tabIndex={0}`):
   o painel que rola por dentro do `.ms-app-shell` não rolava pelo
   teclado nas stories sem nada focável (`scrollable-region-focusable`

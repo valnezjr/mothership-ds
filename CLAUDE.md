@@ -633,6 +633,16 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       story nova com título diferente do componente precisa dele. `/` ou
       Ctrl+K focam. O Combobox remonta (`key`) depois da escolha para o
       campo voltar vazio.
+- [x] Tema padrão do `ThemeProvider` vira o Flat base (D13,
+      `defaultTheme="flat"`; era o Glass). O `:root` segue Glass base, então
+      o `<html>` do styleguide (`build.mjs`) e do exemplo (`layout.tsx`)
+      sai do servidor já com `data-ms-theme="flat" data-ms-mode="base"`,
+      para não abrir no Glass até hidratar.
+- [x] `Splash`: olho nascia ~50px fora do centro no Firefox.
+      `.ms-splash__word` tinha `transform-box: fill-box`, e o Firefox soma
+      à caixa do grupo o transform das letras ainda escondidas; a origem
+      do `scale(2.4)` virou fixa no `viewBox` (o centro que o Chromium
+      já usava). Medido nos dois motores, 1280px e 390px.
 - [x] Auditoria `axe-core` (ticket 06): 58 stories nos oito pares, a
       1280px e 390px, contra o build da v1.9.0 (pares com equivalente
       contra o mesmo par; os novos contra a união dos três temas da

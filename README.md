@@ -144,10 +144,10 @@ Quatro temas, cada um com modo **base** e **escuro**:
 
 | Tema | |
 |---|---|
-| **Mothership Glass** (`"glass"`, padrão) | vidro sobre o fundo vivo, a identidade original |
+| **Mothership Glass** (`"glass"`) | vidro sobre o fundo vivo, a identidade original |
 | **Mothership Cream** (`"cream"`) | off-white quente; o escuro baixa a luz sem inverter |
 | **Mothership Paperpen** (`"paperpen"`) | papel quadriculado e caneta azul, sem vidro, fontes manuscritas |
-| **Mothership Flat** (`"flat"`) | neutro e plano, sem vidro; cor da marca só no ativo |
+| **Mothership Flat** (`"flat"`, padrão) | neutro e plano, sem vidro; cor da marca só no ativo |
 
 ```tsx
 <ThemeProvider defaultTheme="cream" defaultMode="system" persist>

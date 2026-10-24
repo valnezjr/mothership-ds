@@ -2759,6 +2759,15 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    na tela ("o nome se centraliza a partir do O"), segura enquanto o
    dirigível se aproxima e, por fim, assenta na composição completa. --- */
 .ms-splash__word { transform: translate(4459px, -2180px) scale(2.4); }
+/* Origem fixa, em coordenadas do viewBox (centro do nome assentado):
+   no fill-box, o Firefox soma o transform das letras (ainda deslocadas
+   e encolhidas) à caixa do grupo, a origem do scale(2.4) muda e o olho
+   nasce ~50px fora do centro. O Chromium ignora esse transform; o valor
+   abaixo é o centro que ele já usava. */
+.ms-splash__word {
+  transform-box: view-box;
+  transform-origin: 4340.5px 6379.5px;
+}
 
 @keyframes ms-word-settle {
   0% {

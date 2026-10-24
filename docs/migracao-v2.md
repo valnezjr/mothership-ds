@@ -33,8 +33,18 @@ No `ThemeProvider`:
 + <ThemeProvider defaultTheme="glass" defaultMode="dark">
 ```
 
-Sem `defaultTheme`, nada muda: o padrão continua sendo o antigo escuro
-(Glass base). `defaultMode="system"` é novo e segue o
+Sem `defaultTheme`, o padrão **muda**: passa a ser o Mothership Flat
+(base), não mais o antigo escuro. Para manter o visual da v1:
+
+```diff
+- <ThemeProvider>
++ <ThemeProvider defaultTheme="glass">
+```
+
+Sem `ThemeProvider` nenhum, só com o CSS, nada muda: sem atributo no
+`<html>`, vale o Glass base. Por isso, com SSR, ponha o par padrão
+direto no `<html>` (`data-ms-theme="flat" data-ms-mode="base"`) para a
+página não abrir no Glass e trocar para o Flat ao hidratar. `defaultMode="system"` é novo e segue o
 `prefers-color-scheme` do SO.
 
 ## 2. `useTheme()`

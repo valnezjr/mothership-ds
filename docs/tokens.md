@@ -38,14 +38,17 @@ somam oito pares:
 
 | `theme` | Base | Escuro |
 |---|---|---|
-| `"glass"` — **Mothership Glass** | vidro claro sobre fundo escuro, glows da marca (o padrão) | vidro escuro, o fundo da página a 60%, hover mais sutil — para a noite |
+| `"glass"` — **Mothership Glass** | vidro claro sobre fundo escuro, glows da marca | vidro escuro, o fundo da página a 60%, hover mais sutil — para a noite |
 | `"cream"` — **Mothership Cream** | off-white quente, accent laranja lavado | papel âmbar meio-tom com tinta escura: baixa a luz em vez de inverter |
 | `"paperpen"` — **Mothership Paperpen** | papel quadriculado, caneta esferográfica azul, sem vidro, fontes manuscritas | papel azul-tinta, caneta azul clara |
-| `"flat"` — **Mothership Flat** | cinzas neutros, superfície opaca, sem vidro nem sombra | o mesmo, em zinco escuro |
+| `"flat"` — **Mothership Flat** | cinzas neutros, superfície opaca, sem vidro nem sombra (o padrão do `ThemeProvider`) | o mesmo, em zinco escuro |
 
 O `ThemeProvider` escreve os dois eixos no `<html>`, como
 `data-ms-theme` e `data-ms-mode` (o modo já resolvido, `"base"` ou
-`"dark"`). Sem atributo nenhum, vale o Glass base — o `:root`. O CSS de
+`"dark"`). Sem atributo nenhum, vale o Glass base — o `:root`. O padrão do
+`ThemeProvider`, porém, é o Flat: com SSR, escreva
+`data-ms-theme="flat" data-ms-mode="base"` no `<html>` do servidor para
+o primeiro frame já sair no par certo. O CSS de
 cada par fica num seletor de atributo:
 
 ```css

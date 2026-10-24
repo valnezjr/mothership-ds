@@ -32,7 +32,7 @@ habilitam recursos específicos.
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
-| `defaultTheme` | `"glass" \| "cream" \| "paperpen" \| "flat"` | `"glass"` | tema inicial |
+| `defaultTheme` | `"glass" \| "cream" \| "paperpen" \| "flat"` | `"flat"` | tema inicial |
 | `defaultMode` | `"base" \| "dark" \| "system"` | `"base"` | modo inicial; `"system"` segue o `prefers-color-scheme` |
 | `persist` | `boolean` | `false` | guarda tema e modo no `localStorage` |
 

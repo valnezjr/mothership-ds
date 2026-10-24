@@ -313,3 +313,21 @@ vidro: produto, painel, documentação. Manter só o ativo colorido é a
 mesma regra do e-ink (D11): o sinal de "selecionado" carrega a
 identidade em qualquer tema. Os glows sutis mantêm o vínculo com os
 outros três sem pesar.
+
+## D13 — 2026-10-24 — Flat como tema padrão da v2.0
+
+**Pergunta.** Com quatro temas, qual o `ThemeProvider` abre quando quem
+usa não escolhe?
+
+**Escolha.** Mothership Flat, modo base (`defaultTheme="flat"`). O
+`:root` continua sendo o Glass base: sem `ThemeProvider`, só com o CSS,
+nada muda. Por isso o `<html>` do styleguide e do exemplo já sai do
+servidor com `data-ms-theme="flat" data-ms-mode="base"`, e a doc pede o
+mesmo a quem usa SSR. Escolha do autor, na entrada da v2.0.
+
+**Por quê.** O Flat é o tema mais neutro (D12): serve a produto, painel
+e documentação sem impor a estética de vidro, e é o que menos destoa
+num projeto que ainda não decidiu a própria cara. O Glass segue a um
+`defaultTheme="glass"` de distância. Mover o `:root` para o Flat
+reescreveria a base dos tokens inteira para uma mudança que o atributo
+no `<html>` já resolve.
