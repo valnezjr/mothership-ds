@@ -233,7 +233,7 @@
      border transparente. O vidro fica no padding-box; o fundo da página
      embaixo dele impede o gradiente de vazar pelo vidro translúcido. */
   --gradient-field-ring:
-    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(var(--color-field), var(--color-field)) padding-box,
     linear-gradient(var(--bg-base), var(--bg-base)) padding-box,
     var(--gradient-active) border-box;
 
@@ -354,7 +354,17 @@
   --color-text-muted: rgba(255, 255, 255, 0.7);
   --color-border: rgba(255, 255, 255, 0.5);
   --color-border-strong: #ffffff;
+  /* Contorno de superfície (Card, StatTile, tabela, Accordion, Navbar,
+     Sidebar, Dock…). É o --color-border em todo tema; o Flat separa
+     superfície do fundo só por tom e põe transparent. Controles,
+     campos e sobreposições (Modal, Popover, listas) seguem no
+     --color-border. */
+  --color-border-surface: var(--color-border);
   --color-surface: rgba(255, 255, 255, 0.1);
+  /* Fundo dos campos (Input, Textarea, gatilho do Select, Checkbox, Radio). É a
+     superfície; o Flat usa o fundo da página, porque campo da cor do
+     card some dentro dele. */
+  --color-field: var(--color-surface);
   --color-surface-hover: rgba(255, 255, 255, 0.5);
   --color-thumb: #ffffff;
 
@@ -734,6 +744,111 @@
   --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
 
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e8edf5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Flat base (D12) ----------
+   Neutro e plano: cinzas zinco, superfície opaca, sem vidro nem
+   sombra, glows bem sutis. A marca só no sinal de ativo e nos estados;
+   o accent é tinta (preto no base, branco no escuro). Superfície
+   separada do fundo só por tom, um passo acima, sem contorno; campos e
+   controles mantêm a borda de 3:1. Seletor de um atributo só: o escuro
+   herda daqui o desfoque, as sombras e a separação. */
+[data-ms-theme="flat"] {
+  --blur-glass: 0px;
+  --blur-soft: 0px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-selected: none;
+  --shadow-glow-accent: none;
+  --shadow-drop: drop-shadow(0 0 0 transparent);
+
+  --color-border-surface: transparent;
+  --color-field: var(--bg-base);
+
+  --bg-base: #f4f4f5;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 22%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 16%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 14%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 18%, transparent);
+
+  --color-text: #18181b;                         /* 16.12 sobre o fundo, 17.72 sobre a superfície */
+  --color-text-muted: rgba(24, 24, 27, 0.68);    /* 6.09 sobre a superfície, 5.85 sobre o fundo */
+  --color-border: rgba(24, 24, 27, 0.48);        /* 3.12 sobre o fundo, 3.18 sobre a superfície */
+  --color-border-strong: var(--color-text);
+  --color-surface: #ffffff;                      /* 1.10 contra o fundo: a separação é o tom */
+  --color-surface-hover: rgba(24, 24, 27, 0.06); /* texto 15.71 */
+  /* O item atual é a própria superfície: quem marca é o anel. */
+  --color-surface-selected: #ffffff;
+  --color-thumb: #ffffff;
+
+  /* Accent é a tinta: preenchimento, texto e foco. */
+  --color-accent: #18181b;
+  --color-accent-soft: rgba(24, 24, 27, 0.08);
+  --color-accent-text: var(--color-accent);
+  --color-on-accent: #fafafa;                    /* 16.97 sobre o accent */
+  /* danger e success ficam os de marca, como no Cream base: danger 3.21
+     sobre a superfície, success 1.91 (só como texto falham AA). */
+
+  /* Os do Cream base. Sobre fundo e superfície: 3.43/3.77, 3.44/3.78,
+     5.34/5.87, 3.95/4.34. */
+  --chart-1: #008eb9;
+  --chart-2: #9c8100;
+  --chart-3: #6f52b8;
+  --chart-4: #c2537f;
+  --chart-grid: rgba(24, 24, 27, 0.12);
+
+  /* Paradas do Cream base. Anel sobre fundo e superfície: ciano -700
+     4.40/4.84, rosa -600 4.90/5.39, laranja -600 3.63/3.99. Texto -800:
+     7.00/9.79/7.83 sobre a superfície, 6.20/8.68/6.94 no hover. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-700), var(--color-pink-600) 60%, var(--color-orange-600));
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-800), var(--color-pink-800) 60%, var(--color-orange-800));
+  --gradient-active-text-hover: var(--gradient-active-text);
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2318181b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Flat escuro (D12) ----------
+   Mesmo desenho em zinco escuro. Ativo, estados e gráficos voltam aos
+   do Glass. Contrastes sobre o fundo e a superfície. */
+[data-ms-theme="flat"][data-ms-mode="dark"] {
+  --bg-base: #18181b;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-800) 18%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-900) 18%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-900) 16%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-900) 18%, transparent);
+
+  --color-text: #f4f4f5;                            /* 16.12 sobre o fundo, 14.25 sobre a superfície */
+  --color-text-muted: rgba(244, 244, 245, 0.7);     /* 7.67 sobre a superfície */
+  --color-border: rgba(244, 244, 245, 0.42);        /* 3.82 sobre o fundo, 3.70 sobre a superfície */
+  --color-surface: #232327;                         /* 1.13 contra o fundo */
+  --color-surface-hover: rgba(244, 244, 245, 0.08); /* texto 11.33 */
+  --color-surface-selected: #2a2a2f;
+  --color-thumb: #f4f4f5;
+
+  --color-accent: #f4f4f5;
+  --color-accent-soft: rgba(244, 244, 245, 0.1);
+  --color-on-accent: #18181b;                       /* 16.12 sobre o accent */
+  /* danger 4.87 e success 8.21 sobre a superfície. */
+
+  /* Os do Glass. Sobre fundo e superfície: 5.23/4.62, 5.91/5.22,
+     3.68/3.25, 5.50/4.86. */
+  --chart-1: #0096c8;
+  --chart-2: #b29200;
+  --chart-3: #6f61d6;
+  --chart-4: #d4708f;
+  --chart-grid: rgba(244, 244, 245, 0.14);
+
+  /* Paradas do Glass. Anel -500 sobre a superfície 6.25/3.85/5.29 (3.51
+     no rosa sobre o selecionado). Texto -400: 7.69/5.15/6.90; no hover o
+     rosa cai a 4.09, então vira a cor do texto (11.33), como no Glass. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-500), var(--color-pink-500) 60%, var(--color-orange-500));
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-400), var(--color-pink-400) 60%, var(--color-orange-400));
+  --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f4f4f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 /* ---------- Ícone do ThemeSwitch ----------

@@ -349,9 +349,9 @@
   pointer-events: none;
 }
 
-/* Paperpen: sem cor passada, o anel fica todo na caneta, sem o ciano
-   -300 de fallback. */
-[data-ms-theme="paperpen"] :is(.ms-hover-edge, .ms-gallery__item)::after {
+/* Paperpen e Flat: sem cor passada, o anel fica todo na tinta, sem o
+   ciano -300 de fallback. */
+:is([data-ms-theme="paperpen"], [data-ms-theme="flat"]) :is(.ms-hover-edge, .ms-gallery__item)::after {
   background: linear-gradient(
     var(--ms-grad-angle, 135deg),
     var(--ms-edge-a, var(--color-accent)),
@@ -594,9 +594,9 @@
 .ms-avatar--md.ms-avatar--placeholder { font-size: 25px; }
 .ms-avatar--sm.ms-avatar--placeholder { font-size: 15px; }
 
-/* O gradiente roxo fixo destoaria do papel: no Paperpen o avatar sem
-   foto é preenchimento de caneta, como o Button solid. */
-[data-ms-theme="paperpen"] .ms-avatar--placeholder {
+/* O gradiente roxo fixo destoaria do papel e do neutro: no Paperpen e
+   no Flat o avatar sem foto é preenchimento de tinta, como o Button solid. */
+:is([data-ms-theme="paperpen"], [data-ms-theme="flat"]) .ms-avatar--placeholder {
   background: var(--fill-solid), var(--color-accent);
   color: var(--color-on-accent) !important;
 }
@@ -630,7 +630,7 @@
   padding: var(--space-3) var(--space-4);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-field);
   -webkit-backdrop-filter: blur(var(--blur-glass));
   backdrop-filter: blur(var(--blur-glass));
   color: var(--color-text);
@@ -903,7 +903,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   height: 20px;
   flex-shrink: 0;
   border: var(--border-width) solid var(--color-border);
-  background: var(--color-surface);
+  background: var(--color-field);
   cursor: pointer;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
@@ -1026,7 +1026,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* ---------- Card ---------- */
 .ms-card {
   padding: var(--space-5);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1076,7 +1076,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-direction: column;
   height: 100%;
   padding: var(--space-6) var(--space-5);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1188,7 +1188,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-direction: column;
   height: 100%;
   padding: var(--space-6) var(--space-5);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1280,7 +1280,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   display: flex;
   flex-direction: column;
   padding: var(--space-5);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1393,6 +1393,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 [data-ms-theme="cream"][data-ms-mode="dark"] :is(.ms-alert--success, .ms-alert--danger) .ms-alert__icon svg { color: var(--color-on-solid); }
 /* O pink-600 fica em 2.03 com o ícone no papel azul; o -400 dá 3.43. */
 [data-ms-theme="paperpen"][data-ms-mode="dark"] .ms-alert--pink .ms-alert__icon { background: var(--fill-solid), var(--color-pink); }
+/* No Flat base o --color-on-accent é quase branco (o accent é tinta
+   preta), e sobre success/danger/orange/gray fica em 1.83–3.20. Volta ao
+   ícone escuro de sempre (#1a1a2e, 8.95/5.31/5.77/5.10). */
+[data-ms-theme="flat"]:not([data-ms-mode="dark"]) :is(.ms-alert--success, .ms-alert--danger, .ms-alert--orange, .ms-alert--gray) .ms-alert__icon svg { color: var(--color-on-highlight); }
 
 /* ---------- Alertas como notificação (toast) ----------
    Uso via JS: MsAlerts.notify({ title, message, variant, duration })
@@ -1612,7 +1616,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-carousel {
   position: relative;
   overflow: hidden;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1776,7 +1780,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -1875,8 +1879,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 .ms-gallery__item--new::after { opacity: 1; }
 
-/* Brilho colorido fora da escala de sombras: o Paperpen não tem sombra. */
-[data-ms-theme="paperpen"] .ms-gallery__item--new { box-shadow: none; }
+/* Brilho colorido fora da escala de sombras: Paperpen e Flat não têm sombra. */
+:is([data-ms-theme="paperpen"], [data-ms-theme="flat"]) .ms-gallery__item--new { box-shadow: none; }
 
 /* Badge "novo": é o próprio <Badge tone={...}> da categoria do item
    (fundo suave + borda colorida — o mesmo par acessível já usado pelas
@@ -1923,7 +1927,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-accordion__item {
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -2044,7 +2048,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   max-width: 1100px;
   overflow-x: auto;
   scrollbar-width: none;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -2317,7 +2321,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   max-height: calc(100vh - 96px - var(--space-6));
   overflow-y: auto;
   padding: var(--space-4);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -2465,7 +2469,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-shrink: 0;
   padding: var(--space-3);
   overflow: hidden;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -2737,8 +2741,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 [data-ms-theme="cream"] .ms-splash,
 [data-ms-theme="cream"] .ms-logo,
 [data-ms-theme="cream"] .ms-mascote { --ms-logo-ink: #191933; }
-/* No Paperpen o branco vira a tinta: caneta azul no base, preta no e-ink. */
-[data-ms-theme="paperpen"] :is(.ms-splash, .ms-logo, .ms-mascote) { --ms-logo-ink: var(--color-text); }
+/* No Paperpen e no Flat o branco vira a tinta: caneta azul ou papel
+   claro no Paperpen, zinco preto ou quase branco no Flat. */
+:is([data-ms-theme="paperpen"], [data-ms-theme="flat"]) :is(.ms-splash, .ms-logo, .ms-mascote) { --ms-logo-ink: var(--color-text); }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -3123,6 +3128,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    o contraste do texto. No escuro vira o papel âmbar, sem regra própria. */
 [data-ms-theme="cream"] .ms-modal-backdrop,
 [data-ms-theme="paperpen"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
+/* No Flat o modal é opaco e não precisa de entorno claro: véu de tinta,
+   mais leve no base, onde o preto a 55% pesava sobre a página clara. */
+[data-ms-theme="flat"]:not([data-ms-mode="dark"]) :is(.ms-modal-backdrop, .ms-drawer-backdrop) { background: color-mix(in srgb, var(--color-text) 40%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
@@ -3369,7 +3377,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-breadcrumbs--glass {
   display: inline-flex;
   padding: var(--space-1) var(--space-2);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -3757,7 +3765,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   filter: brightness(1.15) saturate(1.1);
   box-shadow: 0 0 16px color-mix(in srgb, var(--ms-fill, var(--chart-1)) 55%, transparent);
 }
-[data-ms-theme="paperpen"] .ms-meter__track:hover .ms-meter__fill { box-shadow: none; }
+:is([data-ms-theme="paperpen"], [data-ms-theme="flat"]) .ms-meter__track:hover .ms-meter__fill { box-shadow: none; }
 
 /* ---------- Dados: anel de progresso ---------- */
 .ms-ring {
@@ -3823,7 +3831,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   flex-direction: column;
   gap: 6px;
   padding: var(--space-4);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -3900,7 +3908,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    telas estreitas sem quebrar o layout. */
 .ms-table-wrap {
   overflow-x: auto;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--color-border-surface);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   -webkit-backdrop-filter: blur(var(--blur-glass));

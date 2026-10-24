@@ -180,7 +180,10 @@ Dois eixos no `<html>`, escritos pelo `ThemeProvider`: `data-ms-theme`
 nenhum vale Glass base, o `:root`. Cream base é `[data-ms-theme="cream"]`;
 o Cream escuro herda dele. Paperpen base é `[data-ms-theme="paperpen"]`
 (papel, caneta azul, sem vidro; fontes Patrick Hand/Homemade Apple, que
-quem usa carrega; corpo a 112,5%) e o escuro (papel azul) herda dele. Glass escuro (o antigo
+quem usa carrega; corpo a 112,5%) e o escuro (papel azul) herda dele. Flat base é
+`[data-ms-theme="flat"]` (zinco neutro, superfície opaca, sem vidro nem
+sombra, accent em tinta preta/branca, superfície separada do fundo só por
+tom) e o escuro herda dele. Glass escuro (o antigo
 Darker) é o Glass base com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
 branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
 do escuro. Aplicada pelo `ThemeProvider` com `setTheme("darker")`; o `ThemeMenu`
@@ -190,9 +193,11 @@ escolhe entre os três temas, e o `ThemeSwitch` alterna só escuro/claro.
 |---|---|
 | `--color-text` | texto principal |
 | `--color-text-muted` | texto secundário, legendas |
-| `--color-border` | bordas e divisores |
+| `--color-border` | bordas e divisores; controles, campos e sobreposições (Modal, Popover, listas) — mínimo 3:1 |
 | `--color-border-strong` | borda em destaque (hover) |
+| `--color-border-surface` | contorno de superfície em fluxo (Card, StatTile, tabela, Accordion, Navbar, Sidebar, Dock…). `--color-border` em todo tema, `transparent` no Flat |
 | `--color-surface` | a superfície de vidro |
+| `--color-field` | fundo dos campos (Input, Textarea, gatilho do Select, Checkbox, Radio). `--color-surface` em todo tema, `--bg-base` no Flat (campo da cor do card sumiria nele) |
 | `--color-surface-hover` | superfície de vidro em hover |
 | `--color-thumb` | thumb do switch |
 
