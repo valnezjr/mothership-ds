@@ -43,6 +43,8 @@ function html(jsFile, cssFile) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Fontes do Paperpen: só o CSS vem sempre; o arquivo de fonte só baixa quando o tema está aplicado. -->
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Homemade+Apple&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./${cssFile}">
 <style>body{margin:0}@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}</style>
 </head>

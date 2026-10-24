@@ -70,6 +70,13 @@
   /* Mesma ideia como filter (fatia de pizza em hover). */
   --shadow-drop: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
 
+  /* Camada por cima de todo preenchimento sólido (Button solid, página
+     ativa, ícone do Alert, Checkbox marcado, badge do PricingCard,
+     avatar sem foto): `background: var(--fill-solid), <cor>`. Não
+     depende da cor embaixo, então um token serve a todas. none aqui;
+     o Paperpen põe a hachura de caneta. */
+  --fill-solid: none;
+
   /* ---------- Larguras de traço ---------- */
   --border-width: 1px;   /* borda padrão de superfícies, campos e divisores */
   --focus-width: 2px;    /* anel de foco (outline accent) */
@@ -551,6 +558,182 @@
   --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 40%, transparent);
 
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231f1c18' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Paperpen base (D11) ----------
+   Papel quadriculado sobre glows em aquarela, caneta esferográfica
+   azul, sem vidro: desfoque e sombras zerados, contorno mais grosso.
+   Seletor de um atributo só: o escuro herda daqui o que não redefinir
+   (fontes, contorno, desfoque, sombras, hachura). Contrastes medidos
+   sobre o papel e sobre a superfície já composta nele (a superfície é
+   papel a 88%, então quase não muda: os glows são pastéis lavados).
+
+   As fontes não vêm carregadas, como a Outfit: quem usa o tema importa
+   Patrick Hand e Homemade Apple (Google Fonts). Uma página que não
+   aplica o tema não usa as famílias, e o navegador não baixa o arquivo
+   de fonte que nenhum texto usa. */
+[data-ms-theme="paperpen"] {
+  /* Patrick Hand foi a única manuscrita confortável em 14px, em tabela
+     e campo. Títulos e display em cursiva. Terminal em Maple Mono
+     itálico, que já é cursivo. */
+  --font-family: "Patrick Hand", "Comic Sans MS", cursive;
+  --font-family-display: "Homemade Apple", "Patrick Hand", cursive;
+  --font-mono-style: italic;
+  /* A Patrick Hand tem o "x" da Outfit (0.47 × 0.48 do tamanho), mas é
+     ~22% mais estreita e lê menor: corpo, campos e tabelas a 112,5%. Do
+     --text-lg para cima são títulos em Homemade Apple, que já é larga. */
+  --text-xs: calc(12px * 1.125);
+  --text-sm: calc(14px * 1.125);
+  --text-md: calc(16px * 1.125);
+
+  /* Contorno meio-termo: cantos levemente irregulares, como traço de mão. */
+  --radius-md: 48px 10px 40px 10px / 10px 40px 10px 48px;
+
+  /* Sem vidro: contorno no lugar de desfoque e sombra. */
+  --blur-glass: 0px;
+  --blur-soft: 0px;
+  --border-width: 1.5px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-selected: none;
+  --shadow-glow-accent: none;
+  --shadow-drop: drop-shadow(0 0 0 transparent);
+
+  /* Hachura de caneta: linhas de 2px na cor cheia e, entre elas, papel
+     a 18% por cima da cor, que dá a base aguada (cor a 82%). O texto
+     claro sobre ela passa pela base, a parte mais fraca (ver on-*). */
+  --fill-solid: repeating-linear-gradient(-55deg, transparent 0 2px, color-mix(in srgb, var(--bg-base) 18%, transparent) 2px 5px);
+
+  --paper-line: rgba(28, 63, 148, 0.13); /* quadriculado, na tinta da caneta */
+  /* Granulação (feTurbulence, sem imagem externa) e quadriculado de
+     24px. O .ms-page repete as camadas: a granulação é um ladrilho. */
+  --bg-texture:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(transparent 0 23px, var(--paper-line) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--paper-line) 23px 24px);
+
+  --bg-base: #f7f3ea;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-200) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-200) 30%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 25%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 30%, transparent);
+
+  --color-text: #1c3f94;                         /* 8.67 sobre o papel, 9.06 sobre a superfície */
+  --color-text-muted: rgba(28, 63, 148, 0.8);    /* 5.42 sobre a superfície */
+  --color-border: rgba(28, 63, 148, 0.75);       /* 4.64 sobre o papel */
+  --color-border-strong: var(--color-text);
+  --color-surface: rgba(251, 249, 243, 0.88);
+  --color-surface-hover: rgba(28, 63, 148, 0.08); /* texto 7.93 */
+  --color-surface-selected: rgba(251, 249, 243, 0.95);
+  --color-thumb: var(--bg-base);
+
+  /* O accent é a própria caneta: preenchimento, texto e foco (8.67). */
+  --color-accent: var(--color-text);
+  --color-accent-soft: rgba(28, 63, 148, 0.12);
+  --color-accent-text: var(--color-text);
+  /* Papel sobre a hachura: 5.54 na base da caneta (8.67 nas linhas). */
+  --color-on-accent: var(--bg-base);
+  --color-on-solid: var(--bg-base);
+  /* Caneta vermelha: 5.08/5.31 como texto. Papel sobre ela, cheia
+     (badge do sino), 5.08; sobre a hachura, só ícone, 3.95. */
+  --color-danger: #c62828;
+  --color-danger-soft: rgba(198, 40, 40, 0.12);
+  --color-on-danger: var(--bg-base);
+  --color-success: #2e7d32;                      /* 4.84 como texto (delta do StatTile) */
+  --color-success-soft: rgba(46, 125, 50, 0.12);
+  --color-highlight: #f2d400;
+  --color-highlight-soft: rgba(255, 230, 0, 0.45);
+  /* Ícone do Alert em papel sobre a hachura pede 3:1: laranja e cinza
+     de marca ficam em 2.26/2.39, o -700 dá 3.62/3.76. Violeta (3.22) e
+     rosa -600 (3.82) passam como estão. */
+  --color-orange: var(--color-orange-700);
+  --color-gray: var(--color-gray-700);
+
+  /* Os do Cream base: mesma ordem de matiz, papel parecido. Sobre papel
+     e superfície: 3.40/3.56, 3.41/3.57, 5.30/5.55, 3.92/4.10. ΔE mínimo
+     50 na visão normal, 19.7/18.8/33.9 em protan/deutan/tritan. */
+  --chart-1: #008eb9;
+  --chart-2: #9c8100;
+  --chart-3: #6f52b8;
+  --chart-4: #c2537f;
+  --chart-grid: rgba(28, 63, 148, 0.15);
+
+  /* Ativo em caneta vermelha, anel e texto: 5.08/5.31 (o hover escurece
+     a superfície até 4.65). */
+  --gradient-active: linear-gradient(var(--color-danger), var(--color-danger));
+  --gradient-active-text: var(--gradient-active);
+  --gradient-active-text-hover: var(--gradient-active);
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231c3f94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Paperpen escuro (D11, revisão de 2026-10-24) ----------
+   Caderno de papel azul escuro, na linha da caneta do base: papel tinta
+   azul, texto em off-white frio, quadriculado claro e glows em aquarela
+   escurecidos. As cores ficam, clareadas para o fundo escuro: caneta
+   azul clara, ativo em caneta vermelha, estados e gráficos. Contrastes
+   sobre o papel e sobre a superfície (papel 94% + branco). */
+[data-ms-theme="paperpen"][data-ms-mode="dark"] {
+  --paper-line: rgba(232, 237, 245, 0.08);
+
+  --bg-base: #1a2b5a;
+  --bg-glow-1: color-mix(in srgb, var(--color-accent-800) 35%, transparent);
+  --bg-glow-2: color-mix(in srgb, var(--color-pink-900) 35%, transparent);
+  --bg-glow-3: color-mix(in srgb, var(--color-accent-900) 35%, transparent);
+  --bg-glow-4: color-mix(in srgb, var(--color-orange-900) 35%, transparent);
+
+  --color-text: #e8edf5;                         /* 11.62 sobre o papel, 9.75 sobre a superfície */
+  --color-text-muted: rgba(232, 237, 245, 0.75); /* 6.26 sobre a superfície */
+  --color-border: rgba(232, 237, 245, 0.5);      /* 4.06 sobre o papel */
+  --color-surface: color-mix(in srgb, var(--bg-base) 94%, white);
+  --color-surface-hover: rgba(232, 237, 245, 0.08); /* texto 7.85 */
+  --color-surface-selected: color-mix(in srgb, var(--bg-base) 88%, white);
+
+  /* Caneta azul clara: 7.01/5.88 como texto e foco (4.73 no hover).
+     Papel sobre a hachura dela: 5.24 na base. */
+  --color-accent: #9fb8ff;
+  --color-accent-soft: rgba(159, 184, 255, 0.16);
+  --color-accent-text: var(--color-accent);
+
+  /* Caneta vermelha clara: 6.02 como texto e 4.85 no hover (item perigoso
+     do DropdownMenu); papel sobre ela, 7.18 cheia e 5.29 na hachura. */
+  --color-danger: #ffa49b;
+  --color-danger-soft: rgba(255, 164, 155, 0.16);
+  --color-success: #81c784;                      /* 5.69 como texto; ícone na hachura 5.06 */
+  --color-success-soft: rgba(129, 199, 132, 0.16);
+  --color-highlight: #ffd54f;
+  --color-highlight-soft: rgba(255, 213, 79, 0.2);
+  --color-on-highlight: var(--bg-base);          /* 6.96 na hachura */
+  /* -400 de marca, papel sobre a hachura acima de 3:1: violeta 3.49,
+     rosa 3.43, laranja 4.49, cinza 4.41. */
+  --color-violet: var(--color-violet-400);
+  --color-pink: var(--color-pink-400);
+  --color-orange: var(--color-orange-400);
+  --color-gray: var(--color-gray-400);
+  --color-violet-soft: rgba(147, 136, 224, 0.18);
+  --color-pink-soft: rgba(242, 98, 140, 0.18);
+  --color-orange-soft: rgba(245, 147, 104, 0.18);
+  --color-gray-soft: rgba(168, 168, 182, 0.18);
+
+  /* Os do Cream escuro antigo, um passo acima do Glass. Sobre papel e
+     superfície: 6.71/5.63, 6.66/5.59, 4.45/3.73, 4.49/3.76. ΔE mínimo
+     47 na visão normal, 21.9/12.6/38.7 em protan/deutan/tritan. */
+  --chart-1: var(--color-accent-400);
+  --chart-2: var(--color-highlight-600);
+  --chart-3: var(--color-violet-400);
+  --chart-4: var(--color-pink-400);
+  --chart-grid: rgba(232, 237, 245, 0.14);
+
+  /* Ativo no mesmo vermelho: anel 7.18/6.02. Como texto no hover cai
+     para 4.85 e vira a cor do texto (7.85), como no Glass base. */
+  --gradient-active: linear-gradient(var(--color-danger), var(--color-danger));
+  --gradient-active-text: var(--gradient-active);
+  --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e8edf5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 /* ---------- Ícone do ThemeSwitch ----------

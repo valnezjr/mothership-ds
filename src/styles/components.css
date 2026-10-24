@@ -53,7 +53,10 @@
   min-height: 100vh;
   background-color: var(--bg-base);
   background-image: var(--bg-page);
-  background-repeat: no-repeat;
+  /* Repete por causa da textura (a granulação do Paperpen é um
+     ladrilho); os glows ocupam a área inteira, e repetir não muda nada
+     neles. */
+  background-repeat: repeat;
   background-attachment: fixed;
 }
 
@@ -346,6 +349,16 @@
   pointer-events: none;
 }
 
+/* Paperpen: sem cor passada, o anel fica todo na caneta, sem o ciano
+   -300 de fallback. */
+[data-ms-theme="paperpen"] :is(.ms-hover-edge, .ms-gallery__item)::after {
+  background: linear-gradient(
+    var(--ms-grad-angle, 135deg),
+    var(--ms-edge-a, var(--color-accent)),
+    var(--ms-edge-b, var(--color-accent))
+  );
+}
+
 .ms-hover-edge:hover,
 .ms-hover-edge:active,
 .ms-gallery__item:hover,
@@ -426,13 +439,13 @@
 
 /* Variantes */
 .ms-button--solid {
-  background: var(--color-accent);
+  background: var(--fill-solid), var(--color-accent);
   border-color: transparent;
 }
 .ms-button--solid,
 .ms-button--solid:hover { color: var(--color-on-accent); }
 .ms-button--solid:hover {
-  background: var(--color-accent);
+  background: var(--fill-solid), var(--color-accent);
   border-color: transparent;
   filter: brightness(1.15);
 }
@@ -580,6 +593,13 @@
 }
 .ms-avatar--md.ms-avatar--placeholder { font-size: 25px; }
 .ms-avatar--sm.ms-avatar--placeholder { font-size: 15px; }
+
+/* O gradiente roxo fixo destoaria do papel: no Paperpen o avatar sem
+   foto é preenchimento de caneta, como o Button solid. */
+[data-ms-theme="paperpen"] .ms-avatar--placeholder {
+  background: var(--fill-solid), var(--color-accent);
+  color: var(--color-on-accent) !important;
+}
 
 .ms-profile {
   padding: var(--space-5);
@@ -917,6 +937,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-checkbox:checked {
   border-color: transparent;
   background:
+    var(--fill-solid) padding-box,
     linear-gradient(var(--color-text), var(--color-text)) padding-box,
     var(--gradient-active) border-box;
 }
@@ -1077,7 +1098,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   transform: translate(-50%, -50%);
   padding: var(--space-1) var(--space-4);
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: var(--fill-solid), var(--color-accent);
   color: var(--color-on-accent);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -1315,7 +1336,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   justify-content: center;
   flex-shrink: 0;
   padding: 0 var(--space-3);
-  background: var(--color-accent);
+  background: var(--fill-solid), var(--color-accent);
 }
 
 .ms-alert__icon svg {
@@ -1344,18 +1365,18 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-alert--orange    { background: var(--color-orange-soft);    border-color: var(--color-orange); }
 .ms-alert--gray      { background: var(--color-gray-soft);      border-color: var(--color-gray); }
 
-.ms-alert--neutral   .ms-alert__icon { background: var(--color-border); }
-.ms-alert--highlight .ms-alert__icon { background: var(--color-highlight); }
-.ms-alert--success   .ms-alert__icon { background: var(--color-success); }
-.ms-alert--danger    .ms-alert__icon { background: var(--color-danger); }
-.ms-alert--violet    .ms-alert__icon { background: var(--color-violet); }
+.ms-alert--neutral   .ms-alert__icon { background: var(--fill-solid), var(--color-border); }
+.ms-alert--highlight .ms-alert__icon { background: var(--fill-solid), var(--color-highlight); }
+.ms-alert--success   .ms-alert__icon { background: var(--fill-solid), var(--color-success); }
+.ms-alert--danger    .ms-alert__icon { background: var(--fill-solid), var(--color-danger); }
+.ms-alert--violet    .ms-alert__icon { background: var(--fill-solid), var(--color-violet); }
 /* pink-600 (não pink-500) só aqui: pink-500 falha 4.5:1 com texto
    branco OU escuro (4.06 / 4.20) — o único dos 8 tons sem margem
    de sobra pra nenhum dos dois lados. Um tom mais escuro da própria
    escala (já existente, não é cor nova) resolve com branco (5.39). */
-.ms-alert--pink      .ms-alert__icon { background: var(--color-pink-600); }
-.ms-alert--orange    .ms-alert__icon { background: var(--color-orange); }
-.ms-alert--gray      .ms-alert__icon { background: var(--color-gray); }
+.ms-alert--pink      .ms-alert__icon { background: var(--fill-solid), var(--color-pink-600); }
+.ms-alert--orange    .ms-alert__icon { background: var(--fill-solid), var(--color-orange); }
+.ms-alert--gray      .ms-alert__icon { background: var(--fill-solid), var(--color-gray); }
 
 /* Amarelo pede ícone escuro para manter contraste */
 .ms-alert--highlight .ms-alert__icon svg { color: var(--color-on-highlight); }
@@ -1370,6 +1391,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* No Cream escuro success e danger são -900 (para servir de texto no
    papel âmbar), escuros demais para o ícone escuro. */
 [data-ms-theme="cream"][data-ms-mode="dark"] :is(.ms-alert--success, .ms-alert--danger) .ms-alert__icon svg { color: var(--color-on-solid); }
+/* O pink-600 fica em 2.03 com o ícone no papel azul; o -400 dá 3.43. */
+[data-ms-theme="paperpen"][data-ms-mode="dark"] .ms-alert--pink .ms-alert__icon { background: var(--fill-solid), var(--color-pink); }
 
 /* ---------- Alertas como notificação (toast) ----------
    Uso via JS: MsAlerts.notify({ title, message, variant, duration })
@@ -1546,6 +1569,10 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   max-width: 720px;
 }
 
+/* Homemade Apple tem hastes longas: mais entrelinha e respiro antes do
+   subtítulo. */
+[data-ms-theme="paperpen"] .ms-hero__title { line-height: 1.45; padding-bottom: 0.25em; }
+
 /* Palavra em destaque no título: gradiente da logo como texto, única
    exceção decorativa ao "gradiente = ativo" (D4 em docs/decisoes.md). */
 .ms-hero__highlight {
@@ -1553,7 +1580,20 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent !important;
+  /* O background-clip: text só pinta dentro da caixa inline, e glifos
+     de traço longo (cursivas) vazam dela e saem cortados. Folga com
+     margem negativa: a caixa cresce, o layout não; o clone repete a
+     folga em cada linha quando a palavra quebra. Só na vertical: o
+     gradiente corre na horizontal, e folga lateral o espalharia. */
+  padding: 0.15em 0 0.3em;
+  margin: -0.15em 0 -0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
+
+/* No Paperpen o ativo é cor chapada, então a folga lateral não muda
+   nada, e a cursiva vaza dos lados também. */
+[data-ms-theme="paperpen"] .ms-hero__highlight { padding-inline: 0.35em; margin-inline: -0.35em; }
 
 .ms-hero__subtitle {
   max-width: 560px;
@@ -1834,6 +1874,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 .ms-gallery__item--new::after { opacity: 1; }
+
+/* Brilho colorido fora da escala de sombras: o Paperpen não tem sombra. */
+[data-ms-theme="paperpen"] .ms-gallery__item--new { box-shadow: none; }
 
 /* Badge "novo": é o próprio <Badge tone={...}> da categoria do item
    (fundo suave + borda colorida — o mesmo par acessível já usado pelas
@@ -2201,7 +2244,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 }
 
 /* Véu do Cream: o próprio fundo, como o do Modal (ver lá). */
-[data-ms-theme="cream"] .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
+[data-ms-theme="cream"] .ms-drawer-backdrop,
+[data-ms-theme="paperpen"] .ms-drawer-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-drawer-backdrop--open {
   opacity: 1;
@@ -2636,7 +2680,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   padding: var(--space-5);
   background-color: var(--bg-base);
   background-image: var(--bg-page);
-  background-repeat: no-repeat;
   transition: opacity 0.8s ease, visibility 0.8s;
 }
 
@@ -2694,6 +2737,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 [data-ms-theme="cream"] .ms-splash,
 [data-ms-theme="cream"] .ms-logo,
 [data-ms-theme="cream"] .ms-mascote { --ms-logo-ink: #191933; }
+/* No Paperpen o branco vira a tinta: caneta azul no base, preta no e-ink. */
+[data-ms-theme="paperpen"] :is(.ms-splash, .ms-logo, .ms-mascote) { --ms-logo-ink: var(--color-text); }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -3076,7 +3121,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    sobre fundo claro, texto escuro) precisa de um entorno mais claro que
    ele para se destacar — um véu escuro atravessaria o vidro e derrubaria
    o contraste do texto. No escuro vira o papel âmbar, sem regra própria. */
-[data-ms-theme="cream"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
+[data-ms-theme="cream"] .ms-modal-backdrop,
+[data-ms-theme="paperpen"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }
 
@@ -3373,7 +3419,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 
 /* Mesmo par cor sólida + var(--color-on-accent) do Button variant="solid". */
 .ms-pagination__page--active {
-  background: var(--color-accent);
+  background: var(--fill-solid), var(--color-accent);
   border-color: var(--color-accent);
   color: var(--color-on-accent);
 }
@@ -3711,6 +3757,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   filter: brightness(1.15) saturate(1.1);
   box-shadow: 0 0 16px color-mix(in srgb, var(--ms-fill, var(--chart-1)) 55%, transparent);
 }
+[data-ms-theme="paperpen"] .ms-meter__track:hover .ms-meter__fill { box-shadow: none; }
 
 /* ---------- Dados: anel de progresso ---------- */
 .ms-ring {
@@ -3792,6 +3839,8 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    tile; o número encolhe com a largura do próprio tile até --text-2xl.
    Peso e tamanho máximo vêm do par de exibição, junto de .ms-display. */
 .ms-stat__value { font-size: clamp(var(--text-2xl), 30cqi, var(--text-display)); }
+/* A cursiva é larga: no tamanho de display o número não cabe no tile. */
+[data-ms-theme="paperpen"] .ms-stat__value { font-size: var(--text-2xl); }
 
 .ms-stat__delta {
   display: inline-flex;

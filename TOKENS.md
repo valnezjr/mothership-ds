@@ -138,6 +138,7 @@ numa entrada — usar o par do gesto.
 --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.45);  /* Modal */
 --shadow-glow-accent: 0 12px 40px <accent 22%>; /* card em destaque (Pricing/Testimonial) */
 --shadow-drop: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45)); /* para `filter` (fatia de pizza) */
+--fill-solid: none;        /* camada por cima de preenchimento sólido: background: var(--fill-solid), <cor>. Hachura no Paperpen */
 
 --opacity-disabled: 0.4;   /* controle desabilitado */
 --opacity-dimmed: 0.55;    /* item fora de foco, ainda legível */
@@ -147,7 +148,9 @@ Escala de elevação: quanto mais alto o elemento flutua, maior o
 número. Sombra é sempre preta (não varia por tema). Exceções que
 seguem soltas de propósito: halos na própria cor do elemento
 (`drop-shadow(... currentColor)` em gráficos, brilho do `Meter`, borda
-nova da `Gallery`), porque dependem de variável do componente.
+nova da `Gallery`), porque dependem de variável do componente. O
+Paperpen zera sombras e desfoque nos tokens, e esses halos soltos por
+regra própria em `components.css`.
 
 ## Larguras de traço
 
@@ -173,9 +176,11 @@ rolagem.
 ## Cores semânticas — mudam com o tema
 
 Dois eixos no `<html>`, escritos pelo `ThemeProvider`: `data-ms-theme`
-(`glass` | `cream`) e `data-ms-mode` (`base` | `dark`). Sem atributo
+(`glass` | `cream` | `paperpen` | `flat`) e `data-ms-mode` (`base` | `dark`). Sem atributo
 nenhum vale Glass base, o `:root`. Cream base é `[data-ms-theme="cream"]`;
-o Cream escuro tem bloco reservado e herda dele. Glass escuro (o antigo
+o Cream escuro herda dele. Paperpen base é `[data-ms-theme="paperpen"]`
+(papel, caneta azul, sem vidro; fontes Patrick Hand/Homemade Apple, que
+quem usa carrega; corpo a 112,5%) e o escuro (papel azul) herda dele. Glass escuro (o antigo
 Darker) é o Glass base com vidro escuro (`--color-surface` = `--bg-base` a 60%, hover
 branco a 15%) em vez de vidro claro. Texto, bordas, marca e fundo são os
 do escuro. Aplicada pelo `ThemeProvider` com `setTheme("darker")`; o `ThemeMenu`
@@ -314,7 +319,7 @@ script, separadamente em cada tema:
 --bg-glow-1-pos … --bg-glow-4-pos      /* posição — animada em runtime */
 --bg-glow-1-size … --bg-glow-4-size    /* tamanho — animado em runtime */
 --bg-page                              /* composição pronta, definida uma vez */
---bg-texture                           /* 1ª camada do --bg-page, por cima dos glows; none nos temas de hoje */
+--bg-texture                           /* 1ª camada do --bg-page, por cima dos glows; none fora do Paperpen (granulação + quadriculado, com --paper-line) */
 ```
 
 Os tokens de posição/tamanho são exatamente o que o `LivingBackground`

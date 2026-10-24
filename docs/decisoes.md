@@ -285,6 +285,17 @@ tinta escura sobre papel. Manter só o ativo em vermelho deixa o sinal de
 "selecionado" com a mesma identidade nos dois modos. Sem cor, estado
 continua por ícone, texto e `aria`.
 
+**Revisão (2026-10-24, ticket 08).** Aplicado, o e-ink ficou estranho, e
+o Cream escuro passou a usar a paleta dele (D10): os dois escuros ficariam
+parecidos demais. O escuro do Paperpen segue a linha azulada do base:
+papel tinta azul `#1a2b5a`, texto off-white frio `#e8edf5`, caneta azul
+clara, e as cores voltam (ativo em caneta vermelha `#ffa49b`, estados,
+gráficos, glows em aquarela escurecidos). Escolhido ao vivo entre
+azul-marinho, tinta azul e ardósia azul. No mesmo passo, o corpo em
+Patrick Hand sobe para 112,5%: com o mesmo "x" da Outfit, ela é ~22%
+mais estreita e lia menor em 16px (comparado com 100% e 120%). Escolha
+do autor.
+
 ## D12 — 2026-10-23 — Mothership Flat, quarto tema, na v2.0
 
 **Pergunta.** Falta um tema neutro e plano, sem vidro, com claro e
