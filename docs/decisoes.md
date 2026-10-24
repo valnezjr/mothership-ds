@@ -254,6 +254,17 @@ cada um também com glows mais fortes; o caramelo foi o único que passava
 sem subir os tons de accent e gradiente. Escolha do autor. Contrastes no
 comentário de cada token (texto/vidro 8.23, borda/vidro 3.02).
 
+**Revisão (2026-10-24, durante o ticket 08).** Com o e-ink do Paperpen
+pronto, a paleta dele pareceu ao autor combinar mais com o Cream escuro.
+Comparadas ao vivo três variantes: o caramelo, a paleta e-ink com os
+glows do Cream e a mesma sem glows. Ficou a paleta e-ink com os glows:
+papel âmbar `#c9b998`, tinta `#1f1c18`, vidro claro
+(`rgba(236, 226, 206, 0.6)`), accent laranja lavado e gradiente da logo
+mantidos. O escuro passa a ser "baixar a luz", não inverter: texto escuro
+sobre fundo meio-tom. Por ser meio-tom, accent como texto, ativo, danger,
+success e gráficos descem de um a três passos (contrastes no comentário
+de cada token: texto/vidro 11.30, borda/papel 3.48). Escolha do autor.
+
 ## D11 — 2026-10-23 — Paperpen: papel quadriculado e e-ink
 
 **Pergunta.** Como fica o Paperpen (D9) em fontes, papel, preenchimento,

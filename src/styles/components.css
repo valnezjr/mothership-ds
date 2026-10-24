@@ -1367,6 +1367,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 .ms-alert--neutral .ms-alert__icon svg,
 .ms-alert--violet  .ms-alert__icon svg,
 .ms-alert--pink    .ms-alert__icon svg { color: var(--color-on-solid); }
+/* No Cream escuro success e danger são -900 (para servir de texto no
+   papel âmbar), escuros demais para o ícone escuro. */
+[data-ms-theme="cream"][data-ms-mode="dark"] :is(.ms-alert--success, .ms-alert--danger) .ms-alert__icon svg { color: var(--color-on-solid); }
 
 /* ---------- Alertas como notificação (toast) ----------
    Uso via JS: MsAlerts.notify({ title, message, variant, duration })
@@ -2691,8 +2694,6 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 [data-ms-theme="cream"] .ms-splash,
 [data-ms-theme="cream"] .ms-logo,
 [data-ms-theme="cream"] .ms-mascote { --ms-logo-ink: #191933; }
-/* No Cream escuro volta ao branco padrão. */
-[data-ms-theme="cream"][data-ms-mode="dark"] :is(.ms-splash, .ms-logo, .ms-mascote) { --ms-logo-ink: #fefefe; }
 
 .ms-splash__word,
 .ms-splash__letter,
@@ -3074,7 +3075,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* No Cream o véu é o próprio fundo: CLARO no base, onde o modal (vidro
    sobre fundo claro, texto escuro) precisa de um entorno mais claro que
    ele para se destacar — um véu escuro atravessaria o vidro e derrubaria
-   o contraste do texto. No escuro vira doce de leite, sem regra própria. */
+   o contraste do texto. No escuro vira o papel âmbar, sem regra própria. */
 [data-ms-theme="cream"] .ms-modal-backdrop { background: color-mix(in srgb, var(--bg-base) 72%, transparent); }
 
 .ms-modal-backdrop--closing { animation: ms-backdrop-out var(--motion-recolher-duration) var(--motion-recolher-ease) forwards; }

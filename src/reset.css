@@ -12,4 +12,4 @@
 /* Espelha o --bg-base de cada tema (o reset vive fora dos tokens). */
 html { background: #111114; }
 html[data-ms-theme="cream"] { background: #ffffff; }
-html[data-ms-theme="cream"][data-ms-mode="dark"] { background: #2a1f17; }
+html[data-ms-theme="cream"][data-ms-mode="dark"] { background: #c9b998; }

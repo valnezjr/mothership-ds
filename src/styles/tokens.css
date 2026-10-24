@@ -495,60 +495,62 @@
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2326201a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
-/* ---------- Cream escuro (D10) ----------
-   Painel caramelo quase opaco sobre base doce de leite. Herda do Cream
-   base o accent laranja lavado, o --color-accent-soft e a transição; o
-   resto é escuro e desfaz o que o Cream base clareou. Contrastes
-   medidos sobre o fundo e sobre o vidro já composto nele. */
+/* ---------- Cream escuro (D10, revisão de 2026-10-24) ----------
+   Paleta do e-ink do Paperpen com o que é do Cream: papel âmbar fosco
+   e tinta quase preta, mas com vidro, glows quentes, accent laranja
+   lavado e o gradiente da logo como ativo. "Escuro" aqui é baixar a
+   luz, não inverter: texto escuro sobre fundo meio-tom. Herda do Cream
+   base o accent, o --color-accent-soft e a transição. Como o papel é
+   meio-tom, accent como texto, ativo, danger, success e gráficos descem
+   de um a três passos. Contrastes sobre o papel e sobre o vidro já
+   composto nele. */
 [data-ms-theme="cream"][data-ms-mode="dark"] {
-  /* Os passos do Glass ficam abaixo de 3:1 no vidro (violeta 1.98):
-     um passo mais claro nos quatro. Sobre fundo/vidro: 7.90/4.70,
-     7.84/4.66, 5.23/3.11, 5.28/3.14. ΔE mínimo entre pares 47 na visão
-     normal, 21.9/12.6/38.7 em protan/deutan/tritan. */
-  --chart-1: var(--color-accent-400);
-  --chart-2: var(--color-highlight-600);
-  --chart-3: var(--color-violet-400);
-  --chart-4: var(--color-pink-400);
-  --chart-grid: rgba(251, 236, 214, 0.14);
+  /* Mesma ordem de matiz, dois passos abaixo do Cream base. Sobre papel
+     e vidro: 3.62/4.66, 3.88/4.99, 4.20/5.40, 3.74/4.81. ΔE mínimo 41.1
+     na visão normal, 22.1/16.4/18.6 em protan/deutan/tritan. */
+  --chart-1: var(--color-accent-800);
+  --chart-2: var(--color-highlight-900);
+  --chart-3: var(--color-violet-700);
+  --chart-4: var(--color-pink-700);
+  --chart-grid: rgba(31, 28, 24, 0.14);
 
-  --color-text: #fbecd6;                         /* 13.83 sobre o fundo, 8.23 sobre o vidro */
-  --color-text-muted: rgba(251, 236, 214, 0.76); /* 5.55 sobre o vidro */
-  --color-border: rgba(251, 236, 214, 0.45);     /* 3.91 sobre o fundo, 3.02 sobre o vidro */
+  --color-text: #1f1c18;                         /* 8.79 sobre o papel, 11.30 sobre o vidro */
+  --color-text-muted: rgba(31, 28, 24, 0.78);    /* 6.43 sobre o vidro */
+  --color-border: rgba(31, 28, 24, 0.6);         /* 3.48 sobre o papel */
   --color-border-strong: var(--color-text);
-  /* Quase opaco e saturado: é o que segura o "cremoso e sólido" do
-     Cream base num fundo escuro (um vidro translúcido acinzentado ficou
-     sem graça). O hover clareia, já que o vidro é escuro. */
-  --color-surface: rgba(96, 66, 40, 0.92);
-  --color-surface-hover: rgba(251, 236, 214, 0.14);
-  --color-surface-selected: rgba(116, 82, 52, 0.96); /* texto 6.24 */
-  --shadow-selected: none;
-  --color-thumb: #fbecd6;
+  --color-surface: rgba(236, 226, 206, 0.6);
+  --color-surface-hover: rgba(0, 0, 0, 0.1);
+  /* Como no Cream base: o item atual fica quase opaco, um pouco mais
+     claro que o painel, com sombra leve. */
+  --color-surface-selected: rgba(242, 235, 221, 0.9);
+  --shadow-selected: var(--shadow-xs);
+  --color-thumb: #f2ebdd;
 
-  /* Texto e foco: 8.88 sobre o fundo, 5.28 sobre o vidro. Sobre o
-     --color-accent-soft dá 3.79, que só pinta ícone ali (Bento). */
-  --color-accent-text: #f0b48a;
+  /* Texto e foco: 5.08 sobre o papel, 6.52 sobre o vidro (5.25 no hover). */
+  --color-accent-text: #6e330e;
   --color-on-accent: #1e1712; /* 7.25 sobre o --color-accent */
-  /* O danger de marca fica em 2.98 sobre o vidro, e é texto no item
-     perigoso do DropdownMenu e na variação negativa do StatTile. O -300
-     dá 8.71/5.18; o --color-on-danger segue valendo como preenchimento. */
-  --color-danger: var(--color-danger-300);
+  /* Os de marca somem no papel (success 1.01). Como texto: danger -900
+     e success -900, 4.55/5.85 no success; danger acima. */
+  --color-danger: var(--color-danger-900);
+  --color-success: var(--color-success-900);
+  /* Escuros assim, o preenchimento pede texto branco: 11.68 no danger
+     (badge do sino), 8.79 no success; o ícone do Alert em success/danger
+     tem regra própria. */
+  --color-on-danger: var(--color-on-solid);
 
-  /* Paradas -400 (o rosa -500 fica em 2.35 sobre o vidro), mínimo 3:1:
-     ciano 7.90/4.70, rosa 5.28/3.14, laranja 7.08/4.21. */
-  --gradient-active: linear-gradient(to left, var(--color-accent-400), var(--color-pink-400) 60%, var(--color-orange-400));
-  /* Texto: -300, 5.91/4.52/5.57 sobre o vidro. No hover o rosa cai
-     para 3.14, então vira a cor do texto (5.71), como no Glass base;
-     gradiente de uma cor só porque o background-clip: text pede imagem. */
-  --gradient-active-text: linear-gradient(to left, var(--color-accent-300), var(--color-pink-300) 60%, var(--color-orange-300));
-  --gradient-active-text-hover: linear-gradient(var(--color-text), var(--color-text));
+  /* Anel: -800/-700/-800, 3.62/3.74/4.05 sobre o papel. Texto:
+     -900/-800/-900, mínimo 5.07 sobre o papel e 5.24 no hover. */
+  --gradient-active: linear-gradient(to left, var(--color-accent-800), var(--color-pink-700) 60%, var(--color-orange-800));
+  --gradient-active-text: linear-gradient(to left, var(--color-accent-900), var(--color-pink-800) 60%, var(--color-orange-900));
+  --gradient-active-text-hover: var(--gradient-active-text);
 
-  --bg-base: #2a1f17;
+  --bg-base: #c9b998;
   --bg-glow-1: color-mix(in srgb, var(--color-orange-300) 38%, transparent);
   --bg-glow-2: color-mix(in srgb, var(--color-pink-300) 32%, transparent);
   --bg-glow-3: color-mix(in srgb, var(--color-accent-300) 22%, transparent);
   --bg-glow-4: color-mix(in srgb, var(--color-orange-200) 40%, transparent);
 
-  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23fbecd6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231f1c18' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 /* ---------- Ícone do ThemeSwitch ----------
