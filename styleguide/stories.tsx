@@ -8,7 +8,7 @@ import {
   Avatar, Profile, Field, Input, Textarea, Hero, HeroHighlight, Breadcrumbs,
   Footer, Flash, Stack, Divider, Prose, Skeleton, Checkbox, Radio, Switch, Select, Combobox, Pagination,
   // tema e utilitários
-  ThemeSwitch, ThemeMenu, HoverEdge, type Theme, type ResolvedMode,
+  ThemeSwitch, ThemeMenu, HoverEdge, useTheme, type Theme, type ResolvedMode,
   // interativos
   Navbar, Dock, Accordion, Tabs, Carousel, Gallery, Marquee,
   // marketing
@@ -101,6 +101,72 @@ function SpaceBar({ token, px }: { token: string; px: number }) {
   );
 }
 
+/* Valores que mudam com o tema (fonte, raio, desfoque) são lidos da tela,
+   não escritos à mão: a leitura refaz a cada troca de par. O rAF espera
+   o ThemeProvider, cujo efeito que escreve os atributos roda depois dos
+   efeitos dos filhos. */
+function useThemeRead<T>(read: () => T, initial: T) {
+  const { theme, resolvedMode } = useTheme();
+  const [value, setValue] = React.useState<T>(initial);
+  React.useEffect(() => {
+    const id = requestAnimationFrame(() => setValue(read()));
+    return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme, resolvedMode]);
+  return value;
+}
+
+/** O valor do token como o par atual o declara ("20px", "0px", "none"). */
+function TokenValue({ token }: { token: string }) {
+  const value = useThemeRead(
+    () => getComputedStyle(document.documentElement).getPropertyValue(token).trim(),
+    ""
+  );
+  return <code>{value}</code>;
+}
+
+/** Uma linha da escala de tipo, com tamanho, peso e família medidos no texto. */
+function TypeRow({ token, className, children }: { token: string; className?: string; children: React.ReactNode }) {
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const spec = useThemeRead(() => {
+    // Mede o primeiro filho quando há um (o <code> da linha do mono).
+    const el = ref.current?.firstElementChild ?? ref.current;
+    if (!el) return "";
+    const cs = getComputedStyle(el);
+    const size = Math.round(parseFloat(cs.fontSize) * 10) / 10;
+    const family = cs.fontFamily.split(",")[0].replace(/["']/g, "").trim();
+    return `${size}px · ${cs.fontWeight} · ${family}`;
+  }, "");
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 16 }}>
+      <span ref={ref} className={className}>{children}</span>
+      <code className="ms-text-xs ms-text-muted">{token} · {spec}</code>
+    </div>
+  );
+}
+
+function RadiusBox({ token, w, h }: { token: string; w: number; h: number }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const radius = useThemeRead(() => (ref.current ? getComputedStyle(ref.current).borderRadius : ""), "");
+  return (
+    <div style={{ textAlign: "center", maxWidth: 180 }}>
+      <div
+        ref={ref}
+        style={{
+          width: w,
+          height: h,
+          margin: "0 auto",
+          background: "var(--color-surface)",
+          border: "var(--border-width) solid var(--color-border)",
+          borderRadius: `var(${token})`,
+        }}
+      />
+      <code className="ms-text-xs">{token}</code>
+      <div className="ms-text-xs ms-text-muted">{radius}</div>
+    </div>
+  );
+}
+
 /* ---------- demos que precisam de estado ---------- */
 
 function GalleryDemo() {
@@ -140,7 +206,7 @@ function GalleryDemo() {
 function AlertsDemo() {
   const { notify } = useAlerts();
   const tones = [
-    { label: "info", tone: undefined, title: "Info.", msg: "Ciano accent — o padrão." },
+    { label: "info", tone: undefined, title: "Info.", msg: "Accent do tema — o padrão." },
     { label: "atenção", tone: "highlight" as const, title: "Atenção.", msg: "Algo pede sua atenção." },
     { label: "sucesso", tone: "success" as const, title: "Sucesso.", msg: "Operação concluída." },
     { label: "erro", tone: "danger" as const, title: "Erro.", msg: "Algo deu errado." },
@@ -149,11 +215,11 @@ function AlertsDemo() {
     <>
       <h3 className="ms-h3" style={{ marginBottom: 12 }}>Estático (em fluxo)</h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 460 }}>
-        <Alert title="Info.">Ciano accent — mesmo color code das badges.</Alert>
+        <Alert title="Info.">Accent do tema — mesmo color code das badges.</Alert>
         <Alert tone="highlight" title="Atenção.">Amarelo do ícone flash da página.</Alert>
         <Alert tone="success" title="Sucesso.">Verde, harmonizado com a paleta.</Alert>
         <Alert tone="danger" title="Erro.">Vermelho, harmonizado com a paleta.</Alert>
-        <Alert tone="neutral" title="Neutro.">Superfície de vidro padrão, sem cor.</Alert>
+        <Alert tone="neutral" title="Neutro.">Superfície padrão do tema, sem cor.</Alert>
       </div>
       <h3 className="ms-h3" style={{ margin: "24px 0 8px" }}>Como notificação (toast)</h3>
       <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 12 }}>
@@ -483,8 +549,8 @@ function LoaderDemo() {
   return (
     <>
       <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
-        O rosto da marca começa em <strong>vidro</strong> — a mesma superfície translúcida do
-        resto do sistema — e vai sendo preenchido de baixo para cima por um líquido de
+        O rosto da marca começa <strong>vazio</strong>, na mesma superfície do resto do
+        sistema (vidro no Glass e no Cream, papel no Paperpen, opaca no Flat), e vai sendo preenchido de baixo para cima por um líquido de
         superfície ondulada, que desliza continuamente. O olho pisca de tempos em tempos,
         como na splash. Sem a prop <code>value</code>, o nível oscila sozinho (indeterminado).
       </p>
@@ -992,19 +1058,21 @@ export const STORIES: Story[] = [
     id: "cores",
     group: "Fundações",
     title: "Cores",
-    subtitle: "Cores semânticas (texto, borda, superfície) mudam com o tema; as 8 cores de marca são fixas, extraídas ou harmonizadas a partir da marca Mothership, com escalas de 100 a 900 pra variar intensidade sem inventar um tom novo a cada tela.",
+    subtitle: "Cores semânticas (texto, borda, superfície, campo) mudam a cada par de tema; as 8 cores de marca, extraídas ou harmonizadas a partir da marca Mothership, têm escalas de 100 a 900 pra variar intensidade sem inventar um tom novo a cada tela. O sinal de ativo é o gradiente da logo.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
-          As semânticas mudam com o tema (alterne na navbar); as de marca são fixas.
+          Os quadrados abaixo mostram o par atual — troque no menu da navbar e eles acompanham.
         </p>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Semânticas</h3>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginBottom: 24 }}>
           <Swatch token="--color-text" label="Texto" />
           <Swatch token="--color-text-muted" label="Texto secundário" />
           <Swatch token="--color-border" label="Borda" />
-          <Swatch token="--color-surface" label="Superfície (vidro)" />
+          <Swatch token="--color-surface" label="Superfície" />
           <Swatch token="--color-surface-hover" label="Superfície hover" />
+          <Swatch token="--color-field" label="Campo" />
+          <Swatch token="--gradient-active" label="Ativo" />
         </div>
         <h3 className="ms-h3" style={{ marginBottom: 12 }}>Marca</h3>
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginBottom: 24 }}>
@@ -1023,6 +1091,14 @@ export const STORIES: Story[] = [
           Danger, Violet e Gray foram harmonizadas pra completar a paleta sem destoar
           dela. Todas com escala completa e versão <code>-soft</code> para badges e alertas.
         </p>
+        <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 24 }}>
+          O accent é o que mais muda: ciano no <strong>Glass</strong>, laranja lavado no{" "}
+          <strong>Cream</strong> (o ciano some no creme), a própria caneta azul no{" "}
+          <strong>Paperpen</strong> e tinta neutra no <strong>Flat</strong> (preta no base,
+          branca no escuro). O Paperpen também puxa danger, success e highlight para cores de
+          caneta, e o ativo vira caneta vermelha chapada no lugar do gradiente. Como texto, o
+          accent sai sempre de <code>--color-accent-text</code>, com 4.5:1 em todo par.
+        </p>
         <h3 className="ms-h3" style={{ marginBottom: 4 }}>Escalas</h3>
         <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 12 }}>
           100 mais claro → 900 mais escuro, com 500 = cor base.
@@ -1037,16 +1113,28 @@ export const STORIES: Story[] = [
     id: "tipografia",
     group: "Fundações",
     title: "Tipografia",
-    subtitle: "Uma família só (Outfit, 400 e 500, mais 600 reservado pra exibição) e uma escala fixa de tamanhos — de 12px pras badges até 48px pros números grandes e o título do herói — pra nenhuma tela inventar um font-size avulso. Escolhida por ser limpa, muito legível e versátil, com uma pegada mais orgânica e um charme que foge do óbvio de fontes mais batidas.",
+    subtitle: "Uma escala fixa de tamanhos — das badges aos números grandes e ao título do herói — pra nenhuma tela inventar um font-size avulso. No Glass, Cream e Flat, uma família só: Outfit, 400 e 500, mais 600 reservado pra exibição, escolhida por ser limpa, legível e versátil, com uma pegada mais orgânica. O Paperpen troca para letra de mão.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><span className="ms-display">Exibição — 48px</span> <code className="ms-text-xs ms-text-muted">--text-display · 600</code></div>
-        <div><span className="ms-h1">Título 2xl — 32px</span> <code className="ms-text-xs ms-text-muted">--text-2xl · 500</code></div>
-        <div><span className="ms-h2">Título xl — 24px</span> <code className="ms-text-xs ms-text-muted">--text-xl · 500</code></div>
-        <div><span className="ms-h3">Título lg — 20px</span> <code className="ms-text-xs ms-text-muted">--text-lg · 500</code></div>
-        <div><span>Corpo md — 16px. A raposa ágil salta sobre o cão preguiçoso.</span> <code className="ms-text-xs ms-text-muted">--text-md · 400</code></div>
-        <div><span className="ms-text-sm">Apoio sm — 14px, rodapé e legendas.</span> <code className="ms-text-xs ms-text-muted">--text-sm · 400</code></div>
-        <div><span className="ms-text-xs">Micro xs — 12px, badges e anotações.</span> <code className="ms-text-xs ms-text-muted">--text-xs · 400</code></div>
+        <TypeRow token="--text-display" className="ms-display">Exibição</TypeRow>
+        <TypeRow token="--text-2xl" className="ms-h1">Título 2xl</TypeRow>
+        <TypeRow token="--text-xl" className="ms-h2">Título xl</TypeRow>
+        <TypeRow token="--text-lg" className="ms-h3">Título lg</TypeRow>
+        <TypeRow token="--text-md">Corpo md. A raposa ágil salta sobre o cão preguiçoso.</TypeRow>
+        <TypeRow token="--text-sm" className="ms-text-sm">Apoio sm, rodapé e legendas.</TypeRow>
+        <TypeRow token="--text-xs" className="ms-text-xs">Micro xs, badges e anotações.</TypeRow>
+        <TypeRow token="--font-mono">
+          <code style={{ fontFamily: "var(--font-mono)", fontStyle: "var(--font-mono-style)" }}>const tema = "paperpen";</code>
+        </TypeRow>
+        <p className="ms-text-sm ms-text-muted" style={{ marginTop: 8 }}>
+          Os valores ao lado de cada linha são lidos da tela no par atual. No{" "}
+          <strong>Paperpen</strong>, títulos e exibição vão para a cursiva Homemade Apple
+          (<code>--font-family-display</code>) e o corpo, os campos e as tabelas para a Patrick
+          Hand, a 112,5% — ela tem o "x" da Outfit, mas é mais estreita e lia menor. Código fica
+          no Maple Mono itálico (<code>--font-mono-style</code>), que já é cursivo. As fontes do
+          Paperpen não vêm com a lib: quem usa o tema carrega (receita em{" "}
+          <code>docs/tokens.md</code>).
+        </p>
       </div>
     ),
   },
@@ -1054,7 +1142,7 @@ export const STORIES: Story[] = [
     id: "espacamento",
     group: "Fundações",
     title: "Espaçamento & Raios",
-    subtitle: "Escala de espaçamento (4 a 56px) e os três raios do sistema (10px, pill e círculo) — a régua que toda margem, padding e border-radius do design system usa. Os saltos fogem um pouco da progressão matemática mais comum de propósito, pra um respiro mais orgânico e característico.",
+    subtitle: "Escala de espaçamento (4 a 56px) e os três raios do sistema (padrão, pill e círculo) — a régua que toda margem, padding e border-radius do design system usa. Os saltos fogem um pouco da progressão matemática mais comum de propósito, pra um respiro mais orgânico e característico. O espaçamento é o mesmo nos oito pares; o raio padrão muda no Paperpen.",
     render: () => (
       <>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
@@ -1066,26 +1154,16 @@ export const STORIES: Story[] = [
           <SpaceBar token="--space-6" px={32} />
           <SpaceBar token="--space-7" px={56} />
         </div>
-        <div style={{ display: "flex", gap: 24, alignItems: "flex-end" }}>
-          {[
-            { r: "var(--radius-md)", w: 72, h: 72, label: "--radius-md · 10px" },
-            { r: "var(--radius-pill)", w: 110, h: 40, label: "--radius-pill · 50px" },
-            { r: "var(--radius-full)", w: 72, h: 72, label: "--radius-full · 50%" },
-          ].map((b) => (
-            <div key={b.label} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  width: b.w,
-                  height: b.h,
-                  background: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
-                  borderRadius: b.r,
-                }}
-              />
-              <code className="ms-text-xs">{b.label}</code>
-            </div>
-          ))}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 24, alignItems: "flex-end" }}>
+          <RadiusBox token="--radius-md" w={72} h={72} />
+          <RadiusBox token="--radius-pill" w={110} h={40} />
+          <RadiusBox token="--radius-full" w={72} h={72} />
         </div>
+        <p className="ms-text-sm ms-text-muted" style={{ marginTop: 16 }}>
+          No <strong>Paperpen</strong>, o <code>--radius-md</code> vira um canto irregular, com
+          raios diferentes em cada ponta, como traço de mão; a borda engrossa para{" "}
+          <code>--border-width</code> 1.5px, porque ali o contorno faz o papel do vidro.
+        </p>
       </>
     ),
   },
@@ -1113,13 +1191,20 @@ export const STORIES: Story[] = [
     group: "Fundações",
     title: "Efeitos",
     keywords: ["HoverEdge", "glass", "vidro"],
-    subtitle: "O vidro (glassmorphism), os quatro gestos de movimento (assentar, recolher, pulso, deriva) e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente.",
+    subtitle: "O vidro (glassmorphism), os quatro gestos de movimento (assentar, recolher, pulso, deriva) e o fundo animado com paralaxe — poucos efeitos recorrentes, tratados como token igual o resto dos fundamentos, pra garantir aplicação uniforme em vez de um efeito novo por componente. Paperpen e Flat desligam o vidro e as sombras pelos mesmos tokens.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Card title="Vidro">
           <CardText>
-            <code>backdrop-filter: blur(var(--blur-glass))</code> — 20px em botões, cards,
-            inputs e alertas; <code>--blur-soft</code> (4px) no trilho do switch.
+            <code>backdrop-filter: blur(var(--blur-glass))</code> em botões, cards, inputs e
+            alertas, e <code>--blur-soft</code> no trilho do switch. Glass e Cream têm vidro
+            (20px e 4px); Paperpen e Flat zeram os dois e desligam as sombras
+            (<code>--shadow-*</code> em none). No Paperpen o contorno assume o lugar do vidro; no
+            Flat, a superfície opaca se separa do fundo só pelo tom.
+            <br />
+            No par atual: <code>--blur-glass</code> <TokenValue token="--blur-glass" />,{" "}
+            <code>--blur-soft</code> <TokenValue token="--blur-soft" />,{" "}
+            <code>--shadow-md</code> <TokenValue token="--shadow-md" />.
           </CardText>
         </Card>
         <Card title="Movimento">
@@ -1134,21 +1219,26 @@ export const STORIES: Story[] = [
           <CardText>
             Quatro glows (<code>--bg-glow-1..4</code>) com cor, posição e tamanho em tokens.
             O <code>&lt;LivingBackground /&gt;</code> os move em órbitas deformadas, pulsa seus
-            tamanhos e soma um parallax do mouse — mexa o cursor.
+            tamanhos e soma um parallax do mouse — mexa o cursor. Cada par tinge os glows à sua
+            maneira: fortes no Glass, pastéis no Cream, aquarela lavada no Paperpen e quase
+            imperceptíveis no Flat. Por cima deles entra <code>--bg-texture</code>: none, exceto
+            no Paperpen, que põe a granulação do papel e o quadriculado.
           </CardText>
         </Card>
         <HoverEdge colors={["var(--color-accent)", "var(--color-success)"]}>
           <Card title="Contorno reativo (.ms-hover-edge)">
             <CardText>
-              Passe o mouse: cresce, ganha sombra e o anel em degradê gira acompanhando o
-              cursor. Cores via <code>--ms-edge-a</code> / <code>--ms-edge-b</code>.
+              Passe o mouse: cresce, ganha sombra (onde o tema tem sombra) e o anel em degradê
+              gira acompanhando o cursor. Cores via <code>--ms-edge-a</code> /{" "}
+              <code>--ms-edge-b</code>; sem elas, no Paperpen e no Flat o anel sai na tinta do tema.
             </CardText>
           </Card>
         </HoverEdge>
         <p className="ms-text-sm ms-text-muted" style={{ marginTop: 4 }}>
           Poucos efeitos, mas recorrentes: tratá-los como token garante que todo
           componente novo já nasça coerente, sem reinventar um blur ou um easing
-          próprio — e mantém a performance sob controle. Junto de uma interface
+          próprio — e é o que deixa um tema inteiro desligar o vidro sem tocar em nenhum
+          componente. Também mantém a performance sob controle. Junto de uma interface
           moderna e arrojada, os respiros mais orgânicos do espaçamento criam um
           ecossistema agradável, com uma sensação calma de uso.
         </p>
@@ -1250,7 +1340,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Hero",
     keywords: ["HeroHighlight"],
-    subtitle: "Bloco de abertura de página: eyebrow opcional, título (com destaque de uma palavra via HeroHighlight), subtítulo e uma fileira de ações.",
+    subtitle: "Bloco de abertura de página: eyebrow opcional, título (com destaque de uma palavra via HeroHighlight), subtítulo e uma fileira de ações. O título usa a fonte de exibição do tema (Outfit 600, ou a cursiva no Paperpen) e o destaque, o gradiente de ativo como texto — caneta vermelha no Paperpen.",
     render: () => (
       <Hero style={{ paddingTop: 24 }}>
         <Badge tone="accent">Disponível para projetos</Badge>
@@ -1272,7 +1362,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Navbar",
     keywords: ["NotificationBell"],
-    subtitle: "Barra de navegação flutuante em pill de vidro. spy marca o link da seção visível conforme a rolagem; abaixo de 720px os links migram pra um menu de hambúrguer.",
+    subtitle: "Barra de navegação flutuante em pill, na superfície do tema. spy marca o link da seção visível conforme a rolagem; abaixo de 720px os links migram pra um menu de hambúrguer.",
     render: () => (
       <>
         <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 16 }}>
@@ -1376,7 +1466,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Botões",
     keywords: ["Button", "ButtonLink", "botão"],
-    subtitle: "Três variantes (vidro, sólido e ghost) em três tamanhos, com estado disabled. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
+    subtitle: "Três variantes (padrão, sólido e ghost) em três tamanhos, com estado disabled. O padrão é vidro no Glass e no Cream, contorno no Paperpen e superfície opaca no Flat; o sólido pinta o accent do tema — hachura de caneta no Paperpen, tinta neutra no Flat. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
         <ButtonLink href="#botoes">Padrão (glass)</ButtonLink>
@@ -1468,7 +1558,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Campos de formulário",
     keywords: ["Field", "Input", "Select", "Textarea"],
-    subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. Select tem listbox própria (não o <select> nativo) — vidro, teclado (setas/Enter/Esc) e destaque acompanham o resto do sistema.",
+    subtitle: "Input, select e textarea com o mesmo tratamento de foco e disabled. Field junta label + controle numa única unidade acessível. Select tem listbox própria (não o <select> nativo) — superfície do tema, teclado (setas/Enter/Esc) e destaque acompanham o resto do sistema.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <Field label="Nome"><Input placeholder="Seu nome" /></Field>
@@ -1575,11 +1665,15 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Cards",
     keywords: ["Card", "CardText"],
-    subtitle: "Superfície de vidro genérica, com ou sem o contorno reativo (HoverEdge) que acompanha o mouse — a base visual por trás de StatTile, PricingCard e outros.",
+    subtitle: "Superfície genérica do tema, com ou sem o contorno reativo (HoverEdge) que acompanha o mouse — a base visual por trás de StatTile, PricingCard e outros.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <Card title="Card de vidro">
-          <CardText>Superfície translúcida, borda suave, raio de 10px e blur de 20px.</CardText>
+        <Card title="Card">
+          <CardText>
+            Superfície do tema com <code>--radius-md</code> e <code>--blur-glass</code>: vidro
+            translúcido no Glass e no Cream, papel com contorno no Paperpen, branco opaco sem
+            borda no Flat.
+          </CardText>
         </Card>
         <Card title="Card com ações">
           <CardText style={{ marginBottom: 16 }}>Combine com outros componentes.</CardText>
@@ -1627,7 +1721,7 @@ export const STORIES: Story[] = [
     id: "prose",
     group: "Componentes",
     title: "Prose",
-    subtitle: "Texto corrido já em HTML — o que sai de um conversor de markdown — com o ritmo vertical e a tipografia do sistema: títulos, parágrafos, listas, links, código e citações. Recebe html (string) ou children (JSX). Não converte nem sanitiza: HTML de terceiros passa por um sanitizador antes de chegar aqui.",
+    subtitle: "Texto corrido já em HTML — o que sai de um conversor de markdown — com o ritmo vertical e a tipografia do sistema: títulos, parágrafos, listas, links, código e citações. Recebe html (string) ou children (JSX). Não converte nem sanitiza: HTML de terceiros passa por um sanitizador antes de chegar aqui. Títulos na fonte de exibição do tema; código em --font-mono, itálico no Paperpen.",
     render: () => (
       <Card>
         <Prose html={PROSE_EXEMPLO} />
@@ -1639,7 +1733,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Card de precificação",
     keywords: ["PricingCard"],
-    subtitle: "Card de plano com preço, período e lista de recursos (com ou sem check). highlighted/badge destacam o plano recomendado com borda e glow.",
+    subtitle: "Card de plano com preço, período e lista de recursos (com ou sem check). highlighted/badge destacam o plano recomendado com borda e glow (o glow some no Paperpen e no Flat, que não têm sombra).",
     render: () => (
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch", paddingTop: 20 }}>
         <PricingCard
@@ -1785,8 +1879,8 @@ export const STORIES: Story[] = [
               <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
             </svg>
           }
-          title="Claro e escuro nativos"
-          description="Todo token de cor tem par nos dois temas — nenhum componente escreve media query própria pra isso."
+          title="Quatro temas, base e escuro"
+          description="Todo token tem valor nos oito pares — nenhum componente sabe em qual tema está nem escreve media query própria pra isso."
         />
       </BentoGrid>
     ),
@@ -2134,7 +2228,7 @@ export const STORIES: Story[] = [
     group: "Dados",
     title: "Widgets de dashboard",
     keywords: ["StatTile", "StatGrid"],
-    subtitle: "StatTile: número, delta (trend up/down/flat) e sparkline opcional, com o mesmo contorno reativo do Card. StatGrid organiza vários lado a lado num grid responsivo.",
+    subtitle: "StatTile: número, delta (trend up/down/flat) e sparkline opcional, com o mesmo contorno reativo do Card. StatGrid organiza vários lado a lado num grid responsivo. O número usa a fonte de exibição; no Paperpen fica no --text-2xl, porque a cursiva no tamanho de display não cabe no tile.",
     render: () => (
       <>
         <StatGrid>
@@ -2201,7 +2295,7 @@ export const STORIES: Story[] = [
     id: "skeleton",
     group: "Dados",
     title: "Skeleton",
-    subtitle: "Placeholder de carregamento. O pulso anima entre os dois tokens de superfície já existentes — nada de cor nova, funciona nos dois temas de graça. variant=\"text\"/\"circle\"/\"rect\" (padrão) cobrem os formatos mais comuns.",
+    subtitle: "Placeholder de carregamento. O pulso anima entre os dois tokens de superfície já existentes — nada de cor nova, funciona em todos os temas de graça. variant=\"text\"/\"circle\"/\"rect\" (padrão) cobrem os formatos mais comuns.",
     render: () => (
       <Stack gap={5} style={{ maxWidth: 360 }}>
         <Stack direction="row" gap={3} align="center">
