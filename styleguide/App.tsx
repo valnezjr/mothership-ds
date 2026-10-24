@@ -187,9 +187,12 @@ export function App() {
                   overflow-x:auto sozinho por especificação (não dá pra ter só
                   um eixo com scroll e o outro "visible") — sem esse respiro,
                   o scale(1.03) do hover reativo (.ms-hover-edge) crescia o
-                  card pra fora da caixa e a borda cortava o crescimento. */}
+                  card pra fora da caixa e a borda cortava o crescimento.
+                  tabIndex: painel que rola por dentro precisa ser alcançável
+                  pelo teclado quando a story não tem nada focável. */}
               <main
                 ref={mainRef}
+                tabIndex={0}
                 style={{ flex: 1, minWidth: 0, maxWidth: 900, overflowY: "auto", padding: "8px 32px 32px" }}
               >
                 {isFirstInGroup && (

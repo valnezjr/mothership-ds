@@ -593,7 +593,7 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       badge da `Dock`. Texto em gradiente (`background-clip: text`)
       o axe não mede; os contrastes vêm de D3/D4.
 
-### v2.0.0 — não lançada (spec em `.scratch/temas-v2/`)
+### v2.0.0 — lançada em 2026-10-24 (spec em `.scratch/temas-v2/`)
 
 - [x] Temas em dois eixos (D8): `theme` (`"glass" | "cream" |
       "paperpen" | "flat"`) × `mode` (`"base" | "dark" | "system"`).
@@ -633,6 +633,17 @@ Autor: Valnez Júnior (Mothership Studios). Repo:
       story nova com título diferente do componente precisa dele. `/` ou
       Ctrl+K focam. O Combobox remonta (`key`) depois da escolha para o
       campo voltar vazio.
+- [x] Auditoria `axe-core` (ticket 06): 58 stories nos oito pares, a
+      1280px e 390px, contra o build da v1.9.0 (pares com equivalente
+      contra o mesmo par; os novos contra a união dos três temas da
+      v1.9 na mesma story). Tema aplicado direto nos atributos do
+      `<html>` e conferido a cada story. Nenhuma violação nova. Corrigida
+      a herdada `scrollable-region-focusable` no `<main>` do styleguide
+      (`tabIndex={0}`, também na receita de SPA em docs/componentes.md):
+      sem nada focável, o painel não rolava pelo teclado. Ficam o
+      `landmark-unique` de Navbar/Breadcrumbs e o `<pre>` do `Prose` a
+      390px (rola na horizontal; o `tabIndex` teria de vir do HTML de
+      quem usa).
 
 Ícones recomendados para uso conjunto: **Lucide** (`lucide-react`) —
 decisão e exemplo em README.md § Ícones. Não é dependência do pacote,

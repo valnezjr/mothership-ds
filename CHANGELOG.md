@@ -4,7 +4,7 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e o versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
-## [2.0.0] — não lançada
+## [2.0.0] — 2026-10-24
 
 Temas em dois eixos: `theme` diz a identidade, `mode` diz se ela está
 em base ou escura. Quatro temas — Mothership Glass, Cream, Paperpen e
@@ -95,6 +95,12 @@ classes `ms-*` seguem iguais. Guia completo em
   (`#ffffff`, de antes do off-white da v1.8): o `<html>` pintava o
   fundo errado no overscroll. Agora espelha o `--bg-base` dos oito
   pares.
+- **`<main>` do styleguide alcançável pelo teclado** (`tabIndex={0}`):
+  o painel que rola por dentro do `.ms-app-shell` não rolava pelo
+  teclado nas stories sem nada focável (`scrollable-region-focusable`
+  do `axe-core`, herdada da v1.3). A receita de layout de SPA em
+  [`docs/componentes.md`](docs/componentes.md) passa a trazer o mesmo
+  `tabIndex`.
 
 ## [1.9.0] — 2026-10-16
 

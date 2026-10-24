@@ -1,7 +1,7 @@
 {
   "name": "mothership-ds",
-  "version": "1.9.0",
-  "description": "Design system em React + TypeScript: glassmorphism, temas escuro/Darker/claro, fundo animado e 57 componentes sem dependências de runtime (o Grafo3D, à parte, usa three).",
+  "version": "2.0.0",
+  "description": "Design system em React + TypeScript: glassmorphism, quatro temas (Mothership Glass, Cream, Paperpen e Flat) em base e escuro, fundo animado e 57 componentes sem dependências de runtime (o Grafo3D, à parte, usa three).",
   "keywords": [
     "design-system",
     "react",

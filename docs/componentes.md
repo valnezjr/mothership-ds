@@ -167,6 +167,11 @@ página; o `Prose` devolve os dois, só aqui dentro. A primeira e a
 (ver [tokens](tokens.md)). Para ajustar algo de uma tela só, escreva
 por cima de `.ms-prose` (ex.: `.minha-tela .ms-prose h1 { display: none }`).
 
+Bloco de código mais largo que a coluna rola na horizontal. Para ele
+rolar pelo teclado, o `<pre>` precisa de `tabindex="0"` — o `Prose` não
+reescreve o HTML que recebe, então isso vem do conversor (no `marked`,
+um `renderer.code` próprio).
+
 ### `Hero` · `HeroHighlight`
 
 | Prop | Tipo | |
@@ -299,7 +304,7 @@ import { Sun, Inbox } from "lucide-react";
         { href: "#aprovacoes", label: "Aprovações", icon: <Inbox />, badge: 3 },
       ]}
     />
-    <main style={{ flex: 1, overflowY: "auto" }}>…</main>
+    <main tabIndex={0} style={{ flex: 1, overflowY: "auto" }}>…</main>
   </div>
 </TooltipProvider>
 ```
@@ -366,7 +371,7 @@ function App() {
           active={`#${activeId}`}
           sections={IDS.map((id) => ({ href: `#${id}`, label: id }))}
         />
-        <main style={{ flex: 1, overflowY: "auto" }}>{PAGES[activeId]}</main>
+        <main tabIndex={0} style={{ flex: 1, overflowY: "auto" }}>{PAGES[activeId]}</main>
       </div>
 
       <footer>{/* também sempre visível */}</footer>
@@ -374,6 +379,10 @@ function App() {
   );
 }
 ```
+
+O `tabIndex={0}` no `<main>` não é enfeite: um painel que rola por
+dentro e não tem nada focável (um texto longo, um gráfico) não rola
+pelo teclado sem ele.
 
 `.ms-app-shell` só trava a viewport (`height: 100vh`, `overflow:
 hidden`, coluna flex) — é opt-in, sem ele uma página comum rola
