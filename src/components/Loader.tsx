@@ -51,6 +51,7 @@ export function Loader({
   const id = `ms-loader-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const maskId = `${id}-mask`;
   const gradId = `${id}-grad`;
+  const glassId = `${id}-glass`;
   const indeterminate = value == null;
   const pct = Math.min(100, Math.max(0, value ?? 0));
 
@@ -61,6 +62,7 @@ export function Loader({
     ...style,
     width: size,
     ["--ms-loader-level" as string]: `${levelY.toFixed(1)}px`,
+    ["--ms-loader-glass" as string]: `url(#${glassId})`,
   };
   if (color) {
     const v = vars as Record<string, string>;
@@ -84,6 +86,11 @@ export function Loader({
     >
       <svg className="ms-loader__mark" viewBox={VIEWBOX} aria-hidden="true">
         <defs>
+          <linearGradient id={glassId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="white" stopOpacity=".42" />
+            <stop offset=".45" stopColor="white" stopOpacity=".08" />
+            <stop offset="1" stopColor="#b4e2ff" stopOpacity=".20" />
+          </linearGradient>
           <linearGradient id={gradId} x1="0" y1="1" x2="0" y2="0">
             <stop offset="0" stopColor="var(--ms-loader-color, var(--color-accent))" />
             <stop

@@ -1,5 +1,7 @@
 "use client";
 
+import { startAerobubbleAdaptiveContrast } from "./aerobubble-adaptive";
+
 import React from "react";
 import { DropdownMenu, DropdownMenuDivider, DropdownMenuItem, DropdownMenuLabel } from "./dropdown-menu";
 import {
@@ -43,7 +45,7 @@ export function useTheme(): ThemeCtx {
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
-  /** Tema inicial (padrão: `"flat"`). */
+  /** Tema inicial (padrão: `"glass"`, Mothership Aerobubble). */
   defaultTheme?: Theme;
   /** Modo inicial (padrão: `"base"`). `"system"` acompanha o `prefers-color-scheme`. */
   defaultMode?: ThemeMode;
@@ -69,7 +71,7 @@ const getDarkServer = () => false;
  */
 export function ThemeProvider({
   children,
-  defaultTheme = "flat",
+  defaultTheme = "glass",
   defaultMode = "base",
   persist = false,
 }: ThemeProviderProps) {
@@ -382,8 +384,9 @@ export function useLivingBackground(config: Partial<Record<number, GlowConfig>> 
 }
 
 /** Liga o fundo vivo. Renderize uma vez, perto da raiz da aplicação. */
-export function LivingBackground({ config }: { config?: Partial<Record<number, GlowConfig>> }) {
+export function LivingBackground({ config, adaptiveContrast = false }: { config?: Partial<Record<number, GlowConfig>>; adaptiveContrast?: boolean }) {
   useLivingBackground(config ?? defaultGlowConfig);
+  React.useEffect(() => adaptiveContrast ? startAerobubbleAdaptiveContrast() : undefined, [adaptiveContrast]);
   return null;
 }
 

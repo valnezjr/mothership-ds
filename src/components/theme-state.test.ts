@@ -35,5 +35,6 @@ test("ícone: lua vazada no Glass base, sol no base dos outros, lua cheia em qua
 
 test("os oito pares: quatro temas com rótulo, dois modos resolvidos", () => {
   assert.deepEqual([...RESOLVED_MODES], ["base", "dark"]);
-  for (const t of THEMES) assert.match(THEME_LABELS[t], /^Mothership /);
+  assert.equal(THEME_LABELS.glass, "Mothership Aerobubble");
+  for (const t of THEMES.filter((theme) => theme !== "glass")) assert.match(THEME_LABELS[t], /^Mothership /);
 });

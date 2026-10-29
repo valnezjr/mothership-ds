@@ -1,0 +1,394 @@
+/* Material F do Mothership Aerobubble. A refração depende de cena
+   conhecida e ainda não faz parte destas superfícies. */
+
+
+/* Primeiro lote para avaliação: card e popover. O anel de seleção e
+   o efeito de hover mantêm suas regras próprias. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card:not(.ms-hover-edge):not(.estudo-vidro__material),
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-popover:not(.estudo-vidro__popup) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-shadow);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-popover:not(.estudo-vidro__popup) {
+  background: var(--glass-f-overlay);
+}
+
+/* O contorno selecionado continua sendo desenhado pelo ::before. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card--selected:not(.ms-hover-edge):not(.estudo-vidro__material) {
+  border-color: transparent;
+}
+
+
+
+/* Superfícies de conteúdo e navegação; estados de destaque e hover
+   continuam responsáveis por seus próprios contornos e sombras. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-pricing, .ms-testimonial, .ms-bento__tile, .ms-carousel, .ms-accordion__item, .ms-stat, .ms-table-wrap, .ms-navbar, .ms-sidebar, .ms-dock) {
+  background: var(--glass-f-face);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-pricing, .ms-testimonial, .ms-bento__tile, .ms-carousel, .ms-accordion__item, .ms-stat, .ms-table-wrap, .ms-navbar, .ms-sidebar, .ms-dock):not(.ms-pricing--highlighted):not(.ms-testimonial--highlighted):not(.ms-hover-edge) {
+  border-color: var(--glass-f-edge);
+  box-shadow: var(--glass-f-shadow);
+}
+
+/* Destaques mantêm a borda de accent e combinam o glow com o relevo F. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-pricing--highlighted, .ms-testimonial--highlighted):not(.ms-hover-edge) {
+  box-shadow: var(--glass-f-inset), var(--shadow-glow-accent);
+}
+
+/* Peças interativas exibem o slab em repouso; no hover o anel reativo
+   e a sombra de elevação seguem o comportamento existente. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-card, .ms-pricing, .ms-testimonial, .ms-stat, .ms-bento__tile).ms-hover-edge:not(:hover):not(:active) {
+  box-shadow: var(--glass-f-shadow);
+  border-color: var(--glass-f-edge);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-card, .ms-pricing, .ms-testimonial, .ms-stat, .ms-bento__tile).ms-hover-edge:is(:hover, :active) {
+  box-shadow: var(--glass-f-inset), var(--shadow-lg);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-pricing--highlighted, .ms-testimonial--highlighted).ms-hover-edge:not(:hover):not(:active) {
+  border-color: var(--color-accent);
+  box-shadow: var(--glass-f-inset), var(--shadow-glow-accent);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-card, .ms-pricing, .ms-testimonial, .ms-stat, .ms-bento__tile).ms-hover-edge {
+  background: var(--glass-f-face);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card--selected.ms-hover-edge:not(:hover):not(:active) {
+  border-color: transparent;
+}
+
+/* Sobreposições usam o véu do popover, preservando posicionamento,
+   animação e regras de teclado dos componentes. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-listbox, .ms-dropdown-menu, .ms-navbar__menu, .ms-drawer, .ms-sidebar__toggle, .ms-alert-history, .ms-modal, .ms-tooltip) {
+  background: var(--glass-f-overlay);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-shadow);
+}
+
+/* Controles nativos preservam seus estados de foco e hover existentes. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button:not(.ms-button--solid):not(.ms-button--ghost):not(:hover):not(:active),
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-input:not(:hover):not(:focus-visible):not([aria-expanded="true"]) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+
+/* Alertas conservam as cores semânticas e recebem apenas o relevo. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-alert {
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-alert--toast {
+  box-shadow: var(--glass-f-inset), var(--shadow-sm);
+}
+
+/* Vidro F tingido nos botões de ação sólida. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button--solid,
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button--solid:hover {
+  background: var(--glass-f-face), color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-color: var(--glass-f-edge);
+  color: var(--color-text);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+
+/* O botão Aerobubble mantém a face e o relevo ao receber hover ou pressão;
+   o véu de hover continua sinalizando a interação. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button:not(.ms-button--solid):not(.ms-button--ghost):is(:hover, :active) {
+  background: var(--glass-f-face), var(--color-surface-hover);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+
+/* O hover sólido usa brilho por filter; inclua-o na transição. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button--solid {
+  transition: background var(--transition-slow), border var(--transition-slow), filter var(--transition-slow) var(--ease-default);
+}
+
+/* Trilhos e marcas desativadas ganham relevo, preservando o sinal ativo. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-switch__track, .ms-toggle:not(:checked), .ms-checkbox:not(:checked), .ms-radio:not(:checked)) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  box-shadow: var(--glass-f-inset);
+}
+
+/* Superfícies menores seguem o mesmo material, mantendo as imagens
+   e a marcação de novidade da galeria. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-breadcrumbs--glass, .ms-grafo3d__rotulo[data-forte="1"], .ms-grafo3d__legenda, .ms-gallery__item) {
+  background: var(--glass-f-face);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-breadcrumbs--glass, .ms-grafo3d__rotulo[data-forte="1"], .ms-grafo3d__legenda) {
+  border-color: var(--glass-f-edge);
+  box-shadow: var(--glass-f-shadow);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-gallery__item:not(.ms-gallery__item--new):not(:hover):not(:active) {
+  border-color: var(--glass-f-edge);
+  box-shadow: var(--glass-f-shadow);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-gallery__item:is(:hover, :active) {
+  box-shadow: var(--glass-f-inset), var(--shadow-lg);
+}
+
+/* Marcados mantêm o gradiente semântico, com relevo interno do slab. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-toggle:checked, .ms-checkbox:checked, .ms-radio:checked) {
+  box-shadow: var(--glass-f-inset);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-grafo3d__lista:focus-within {
+  background: var(--glass-f-overlay);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-shadow);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-gallery__item--new:not(:hover):not(:active) {
+  --glass-gallery-glow: 0 12px 32px color-mix(in srgb, var(--ms-edge-a, var(--color-accent)) 26%, transparent);
+  box-shadow: var(--glass-f-inset), var(--glass-gallery-glow);
+}
+
+/* Campos preservam o vidro também no hover, sem cobrir o anel de foco. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-input:hover:not(:disabled):not(:focus-visible):not([aria-expanded="true"]) {
+  background: var(--glass-f-face), var(--color-surface-hover);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-carousel--content .ms-carousel__arrow:not(:hover) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  box-shadow: var(--glass-f-inset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-button--solid {
+    transition-duration: 0.01s;
+  }
+}
+
+/* Ícones, paginação e item ativo mantêm os sinais de navegação. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-icon-button, .ms-pagination__arrow, .ms-pagination__page:not(.ms-pagination__page--active)) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-icon-button, .ms-pagination__arrow, .ms-pagination__page:not(.ms-pagination__page--active)):hover:not(:disabled) {
+  background: var(--glass-f-face), var(--color-surface-hover);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-pagination__page--active {
+  background: var(--glass-f-face), color-mix(in srgb, var(--color-accent) 55%, transparent);
+  color: var(--color-text);
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-navbar__link--active, .ms-sidebar__section--active, .ms-sidebar__link--active, .ms-dock__item--active) {
+  background: var(--glass-f-face), var(--color-surface-selected);
+  box-shadow: var(--glass-f-inset);
+}
+
+/* As badges mantêm suas cores semânticas e recebem luz e relevo. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-badge {
+  background-image: var(--glass-f-sheen);
+  box-shadow: var(--glass-f-inset);
+}
+
+/* Relevo sobre as cores de dados; os valores e as séries permanecem. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-meter__track {
+  background: var(--glass-f-face);
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-meter__fill {
+  background-image: var(--glass-f-sheen), linear-gradient(90deg, var(--ms-fill, var(--chart-1)), color-mix(in srgb, var(--ms-fill, var(--chart-1)) 45%, white));
+  box-shadow: var(--glass-f-meter-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-ring__value {
+  filter: var(--glass-f-ring-shine);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-ring:hover .ms-ring__value {
+  filter: brightness(1.15) drop-shadow(0 0 8px currentColor) var(--glass-f-ring-shine);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-pie__slice { fill: var(--ms-pie-glass-fill); }
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-loader__glass {
+  fill: var(--ms-loader-glass);
+  stroke: var(--glass-f-edge);
+}
+
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-meter__track:hover .ms-meter__fill {
+  box-shadow: var(--glass-f-meter-inset), var(--glass-meter-glow);
+  --glass-meter-glow: 0 0 16px color-mix(in srgb, var(--ms-fill, var(--chart-1)) 55%, transparent);
+}
+
+/* Vidro colorido: contorno claro na fatia e luz no arco de progresso. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-pie__slice {
+  stroke: var(--glass-f-svg-edge);
+  stroke-width: var(--glass-f-svg-stroke);
+  paint-order: stroke fill;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-ring__value { stroke: var(--ms-ring-glass-fill); stroke-opacity: 1; }
+
+
+/* As três camadas usam a mesma geometria e o mesmo comprimento de arco. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-ring__glass-rim, .ms-ring__glass-gloss) {
+  display: inline;
+  fill: none;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: stroke-dashoffset var(--glass-f-ring-transition) var(--ease-bounce);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-ring__glass-rim { stroke: var(--glass-f-ring-rim); }
+@media (prefers-reduced-motion: reduce) {
+  :root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-ring__glass-rim, .ms-ring__glass-gloss) { transition-duration: .01s; }
+}
+
+/* Em superfícies claramente indicadas como claras, o botão transparente
+   usa texto escuro. O navegador não identifica a luminosidade do fundo. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme]))[data-ms-background="light"] .ms-button:not(.ms-button--solid):not(.ms-button--ghost),
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) [data-ms-background="light"] .ms-button:not(.ms-button--solid):not(.ms-button--ghost) {
+  color: var(--glass-f-text-on-light);
+}
+
+/* Piloto opt-in: a cor é estimada apenas para o LivingBackground conhecido. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-card.ms-card, .ms-stat.ms-stat, .ms-pricing.ms-pricing, .ms-testimonial.ms-testimonial, .ms-bento__tile.ms-bento__tile, .ms-table-wrap.ms-table-wrap, .ms-carousel.ms-carousel, .ms-navbar.ms-navbar, .ms-sidebar.ms-sidebar, .ms-dock.ms-dock)[data-ms-aerobubble-tone="light"] {
+  --color-text: #fff;
+  --color-text-muted: rgba(255, 255, 255, .86);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .02) 42%, rgba(180, 226, 255, .07)), rgba(255, 255, 255, var(--ms-aerobubble-alpha));
+  color: var(--color-text);
+  -webkit-backdrop-filter: brightness(.72) blur(var(--glass-f-blur));
+  backdrop-filter: brightness(.72) blur(var(--glass-f-blur));
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-card.ms-card, .ms-stat.ms-stat, .ms-pricing.ms-pricing, .ms-testimonial.ms-testimonial, .ms-bento__tile.ms-bento__tile, .ms-table-wrap.ms-table-wrap, .ms-carousel.ms-carousel, .ms-navbar.ms-navbar, .ms-sidebar.ms-sidebar, .ms-dock.ms-dock)[data-ms-aerobubble-tone="dark"] {
+  --color-text: #dfe5e9;
+  --color-text-muted: rgba(223, 229, 233, .88);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .02) 42%, rgba(180, 226, 255, .07)), rgba(17, 17, 20, var(--ms-aerobubble-alpha));
+  color: var(--color-text);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card[data-ms-aerobubble-tone] .ms-button:not(.ms-button--solid):not(.ms-button--ghost) {
+  color: var(--color-text);
+}
+
+/* O botão é outra camada: não deve repetir o véu claro do card. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card[data-ms-aerobubble-tone="light"] .ms-button:not(.ms-button--solid):not(.ms-button--ghost) {
+  background: var(--glass-f-face), rgba(16, 24, 38, .48);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card[data-ms-aerobubble-tone="light"] .ms-button:not(.ms-button--solid):not(.ms-button--ghost):is(:hover, :active) {
+  background: var(--glass-f-face), rgba(16, 24, 38, .38);
+}
+
+/* Leitura sobre o vidro escuro adaptativo, validada na bancada. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-card.ms-card[data-ms-aerobubble-tone="dark"] :is(.ms-card__title, .ms-card__text) {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Estatísticas compartilham o material adaptativo e preservam as cores de tendência. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-stat.ms-stat[data-ms-aerobubble-tone="dark"] {
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-stat.ms-stat[data-ms-aerobubble-tone="dark"] :is(.ms-stat__label, .ms-stat__value, .ms-stat__delta) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Texto e indicadores dos widgets adaptativos mantêm leitura sobre as duas faces. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-stat.ms-stat[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+  --color-success: #a5ffdf;
+  --color-danger: #ffc3d0;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-stat.ms-stat[data-ms-aerobubble-tone] :is(.ms-stat__label, .ms-stat__value, .ms-stat__delta) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .9), 0 0 10px rgba(0, 0, 0, .5);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-stat.ms-stat[data-ms-aerobubble-tone] .ms-stat__value {
+  color: var(--color-text);
+}
+
+/* Precificação diretamente sobre o fundo vivo, preservando destaque e estados. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-pricing.ms-pricing[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-pricing.ms-pricing[data-ms-aerobubble-tone="dark"] :is(.ms-pricing__title, .ms-pricing__description, .ms-pricing__price, .ms-pricing__feature) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Depoimentos opt-in usam a mesma superfície adaptativa e conservam as estrelas. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-testimonial.ms-testimonial[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-testimonial.ms-testimonial[data-ms-aerobubble-tone="dark"] :is(.ms-testimonial__quote, .ms-testimonial__author, .ms-testimonial__role) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Células Bento diretamente sobre o fundo vivo. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-bento__tile.ms-bento__tile[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-bento__tile.ms-bento__tile[data-ms-aerobubble-tone="dark"] :is(.ms-bento__tile-title, .ms-bento__tile-desc) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Pequenos indicadores e placeholders mantêm a cor de estado sob a luz do vidro. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-tabs__indicator, .ms-step-indicator__dot, .ms-skeleton) {
+  background-image: var(--glass-f-sheen);
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-tabs__indicator, .ms-step-indicator__dot--active) {
+  background-image: var(--glass-f-sheen), var(--gradient-active);
+}
+
+/* Tabela opt-in: mantém ordenação, ações e cores das badges. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-table-wrap.ms-table-wrap[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) .ms-table-wrap.ms-table-wrap[data-ms-aerobubble-tone="dark"] :is(th, td) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}
+
+/* Acabamentos de navegação e conteúdo que ainda usavam superfícies antigas. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-prose pre, .ms-alert--neutral, .ms-gallery__filter--active) {
+  background: var(--glass-f-face);
+  border-color: var(--glass-f-edge);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur));
+  backdrop-filter: blur(var(--glass-f-blur));
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-carousel__bullet, .ms-alert__close, .ms-modal__close) {
+  box-shadow: var(--glass-f-inset);
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-alert__close, .ms-modal__close):hover {
+  background: var(--glass-f-face), var(--color-surface-hover);
+}
+
+/* Superfícies opt-in de navegação e carrossel sobre o fundo conhecido. */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-carousel, .ms-navbar, .ms-sidebar, .ms-dock)[data-ms-aerobubble-tone] {
+  --color-text: #fff;
+  --color-text-muted: #fff;
+}
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) :is(.ms-carousel, .ms-navbar, .ms-sidebar, .ms-dock)[data-ms-aerobubble-tone="dark"] :is(.ms-navbar__brand, .ms-navbar__link, .ms-sidebar__section, .ms-sidebar__link, .ms-dock__item) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 0 10px rgba(0, 0, 0, .45);
+}

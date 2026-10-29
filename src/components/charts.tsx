@@ -3,6 +3,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { useEdgeAngle } from "./theme";
+import { glassSlice } from "./pie-geometry";
 
 /* ============================================================
    Dados: gráficos em SVG puro e widgets de dashboard.
@@ -43,6 +44,7 @@ export type ChartSlot = 1 | 2 | 3 | 4;
  */
 export function TooltipProvider({ children }: { children?: React.ReactNode }) {
   const [tip, setTip] = React.useState<{ text: string; x: number; y: number } | null>(null);
+  const ultimoTip = React.useRef<{ text: string; x: number; y: number } | null>(null);
   const [mounted, setMounted] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const describedRef = React.useRef<Element | null>(null);
@@ -63,7 +65,9 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
       let py = y + 14;
       if (px + w > window.innerWidth - 8) px = x - w - 10;
       if (py + h > window.innerHeight - 8) py = y - h - 10;
-      setTip({ text, x: px, y: py });
+      const proximo = { text, x: px, y: py };
+      ultimoTip.current = proximo;
+      setTip(proximo);
     };
     const over = (e: PointerEvent) => {
       const target = (e.target as Element)?.closest?.("[data-tip]");
@@ -155,10 +159,11 @@ export function TooltipProvider({ children }: { children?: React.ReactNode }) {
             ref={ref}
             id={tip ? tooltipId : undefined}
             role={tip ? "tooltip" : undefined}
+            aria-hidden={tip ? undefined : true}
             className={["ms-tooltip", "ms-portal-root", tip && "ms-tooltip--show"].filter(Boolean).join(" ")}
-            style={{ left: tip?.x ?? 0, top: tip?.y ?? 0 }}
+            style={{ left: (tip ?? ultimoTip.current)?.x ?? 0, top: (tip ?? ultimoTip.current)?.y ?? 0 }}
           >
-            {tip?.text}
+            {(tip ?? ultimoTip.current)?.text}
           </div>,
           document.body
         )}
@@ -338,6 +343,7 @@ export interface PieChartProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /** Fatias com respiro de 2px, rótulos diretos e legenda. */
 export function PieChart({ slices, className, ...rest }: PieChartProps) {
+  const glassId = `ms-pie-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const cx = 200;
   const cy = 106;
   const r = 84;
@@ -350,16 +356,13 @@ export function PieChart({ slices, className, ...rest }: PieChartProps) {
     const a2 = angle + sweep;
     angle = a2;
     const rad = (a: number) => (a * Math.PI) / 180;
-    const p1 = [cx + r * Math.cos(rad(a1)), cy + r * Math.sin(rad(a1))];
-    const p2 = [cx + r * Math.cos(rad(a2)), cy + r * Math.sin(rad(a2))];
     const mid = rad((a1 + a2) / 2);
+    const dVidro = glassSlice(cx, cy, r, rad(a1), rad(a2)).path;
     const lx = cx + (r + 14) * Math.cos(mid);
     const ly = cy + (r + 14) * Math.sin(mid);
     return {
       ...s,
-      d: `M${cx},${cy} L${p1[0].toFixed(1)},${p1[1].toFixed(1)} A${r},${r} 0 ${
-        sweep > 180 ? 1 : 0
-      } 1 ${p2[0].toFixed(1)},${p2[1].toFixed(1)} Z`,
+      dVidro,
       lx,
       ly,
       anchor: (Math.cos(mid) >= -0.05 ? "start" : "end") as "start" | "end",
@@ -372,11 +375,21 @@ export function PieChart({ slices, className, ...rest }: PieChartProps) {
   return (
     <div className={["ms-chart", className].filter(Boolean).join(" ")} {...rest}>
       <svg viewBox="0 0 400 216" role="img" aria-label="Distribuição por categoria">
+        <defs>
+          {[...new Set(slices.map((slice) => slice.slot))].map((slot) => (
+            <linearGradient key={slot} id={`${glassId}-${slot}`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopOpacity=".92" stopColor={`color-mix(in srgb, var(--chart-${slot}) 30%, white)`} />
+              <stop offset=".12" stopOpacity=".85" stopColor={`color-mix(in srgb, var(--chart-${slot}) 55%, white)`} />
+              <stop offset="0.52" stopOpacity=".72" stopColor={`var(--chart-${slot})`} />
+              <stop offset="1" stopOpacity=".80" stopColor={`color-mix(in srgb, var(--chart-${slot}) 75%, black)`} />
+            </linearGradient>
+          ))}
+        </defs>
         {/* uma fatia de 360° vira um arco degenerado — desenha um círculo */}
         {single && (
           <circle
             className="ms-pie__slice"
-            style={{ ["--ms-pie-origin" as string]: `${cx}px ${cy}px` }}
+            style={{ ["--ms-pie-origin" as string]: `${cx}px ${cy}px`, ["--ms-pie-glass-fill" as string]: `url(#${glassId}-${parts[0].slot})` }}
             cx={cx}
             cy={cy}
             r={r}
@@ -384,12 +397,12 @@ export function PieChart({ slices, className, ...rest }: PieChartProps) {
             data-tip={`${parts[0].label}: ${parts[0].pct}%`}
           />
         )}
-        {!single && parts.map((p) => (
+        {!single && parts.map((p, i) => (
           <path
-            key={p.label}
+            key={`${p.label}-${i}`}
             className="ms-pie__slice"
-            style={{ ["--ms-pie-origin" as string]: `${cx}px ${cy}px` }}
-            d={p.d}
+            style={{ ["--ms-pie-origin" as string]: `${cx}px ${cy}px`, ["--ms-pie-glass-fill" as string]: `url(#${glassId}-${p.slot})` }}
+            d={p.dVidro}
             fill={`var(--chart-${p.slot})`}
             stroke="var(--bg-base)"
             strokeWidth={2}
@@ -434,10 +447,18 @@ export function ProgressRing({
   const r = (size - thickness) / 2 - 2;
   const c = 2 * Math.PI * r;
   const gradId = React.useId().replace(/:/g, "");
+  const glassGradId = `${gradId}-glass`;
+  const glossGradId = `${gradId}-gloss`;
+  // O gradiente radial atravessa a espessura do tubo em qualquer ângulo.
+  const outerR = size / 2;
+  const innerEdge = (r - thickness / 2) / outerR;
+  const outerEdge = (r + thickness / 2) / outerR;
+  const edgeAt = (t: number) => Math.max(0, Math.min(1, innerEdge + (outerEdge - innerEdge) * t));
 
   const style: React.CSSProperties = {
     ...styleProp,
     color: `var(--chart-${slot})`,
+    ["--ms-ring-glass-fill" as string]: `url(#${glassGradId})`,
     ["--ms-edge-a" as string]: `var(--chart-${slot})`,
     ["--ms-edge-b" as string]: `color-mix(in srgb, var(--chart-${slot}) 40%, white)`,
   };
@@ -454,6 +475,19 @@ export function ProgressRing({
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <defs>
+          {/* A face colorida e a luz percorrem a mesma curva do progresso. */}
+          <linearGradient id={glassGradId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor={`var(--chart-${slot})`} />
+            <stop offset="1" stopColor={`color-mix(in srgb, var(--chart-${slot}) 45%, white)`} />
+          </linearGradient>
+          <radialGradient id={glossGradId} gradientUnits="userSpaceOnUse" cx={size / 2} cy={size / 2} r={outerR}>
+            <stop offset={edgeAt(0)} stopColor="#0d2c41" stopOpacity=".18" />
+            <stop offset={edgeAt(.18)} stopColor="white" stopOpacity=".17" />
+            <stop offset={edgeAt(.42)} stopColor="white" stopOpacity=".06" />
+            <stop offset={edgeAt(.62)} stopColor="white" stopOpacity=".13" />
+            <stop offset={edgeAt(.8)} stopColor="white" stopOpacity=".32" />
+            <stop offset={edgeAt(1)} stopColor="#b4e2ff" stopOpacity=".18" />
+          </radialGradient>
           {/* Degradê do traço: cor da série → versão clara e luminosa */}
           <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor={`var(--chart-${slot})`} />
@@ -462,12 +496,33 @@ export function ProgressRing({
         </defs>
         <circle className="ms-ring__track" cx={size / 2} cy={size / 2} r={r} strokeWidth={thickness} />
         <circle
+          className="ms-ring__glass-rim"
+          aria-hidden="true"
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          strokeWidth={thickness + 1}
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - value / 100)}
+        />
+        <circle
           className="ms-ring__value"
           cx={size / 2}
           cy={size / 2}
           r={r}
           strokeWidth={thickness}
           stroke={`url(#${gradId})`}
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - value / 100)}
+        />
+        <circle
+          className="ms-ring__glass-gloss"
+          aria-hidden="true"
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          strokeWidth={thickness}
+          stroke={`url(#${glossGradId})`}
           strokeDasharray={c}
           strokeDashoffset={c * (1 - value / 100)}
         />

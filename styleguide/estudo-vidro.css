@@ -1,0 +1,143 @@
+/* Amostras provisórias do styleguide; não são tokens públicos. */
+.estudo-vidro { display: grid; gap: 24px; }
+.estudo-vidro__fundo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 20px; padding: 28px; border-radius: 18px; background: radial-gradient(circle at 25% 20%, #0087a4, transparent 43%), radial-gradient(circle at 78% 75%, #a63d74, transparent 42%), linear-gradient(125deg, #11151f, #374866); }
+.estudo-vidro__fundo--claro { background: radial-gradient(circle at 20% 20%, #6bc6db, transparent 45%), radial-gradient(circle at 80% 70%, #ed98b2, transparent 42%), linear-gradient(120deg,#f3e5db,#aab9d1); }
+.estudo-vidro__item { min-width: 0; }
+.estudo-vidro__rotulo { color: white; font-size: 14px; font-weight: 600; margin: 0 0 10px; }
+.estudo-vidro__fundo--claro .estudo-vidro__rotulo { color: #18202e; }
+.estudo-vidro__placa { min-height: 190px; box-sizing: border-box; }
+/* Geometria, brilho e espessura preservam a opção F. */
+.estudo-vidro__material, .estudo-vidro__popup {
+  background: linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 42%,rgba(180,226,255,.07));
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: inset 0 2px 2px rgba(255,255,255,.9), inset 2px 0 3px rgba(255,255,255,.4), inset -2px -5px 5px rgba(9,21,38,.22), 0 18px 28px rgba(0,0,0,.34);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.estudo-vidro__material--fosco { background: linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,255,255,.16) 42%,rgba(180,226,255,.22)); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); }
+.estudo-vidro__material--tingido { background: linear-gradient(135deg,rgba(39,202,245,.58),rgba(0,146,199,.46) 42%,rgba(38,200,235,.54)); }
+.estudo-vidro__camada { margin-top: var(--space-5); }
+.estudo-vidro__acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.estudo-vidro__popup { background: linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 42%,rgba(180,226,255,.07)), rgba(16,24,38,.38); color: #fff; }
+.estudo-vidro__popup p { margin: 8px 0 0; line-height: 1.5; }
+
+/* A borda interna acompanha o raio inteiro, inclusive nos cantos. */
+.estudo-vidro__material { position: relative; }
+.estudo-vidro__material::after, .estudo-vidro__popup::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 -1px 0 rgba(235,251,255,.50), inset 0 -3px 2px rgba(127,210,235,.24), inset 0 -5px 4px rgba(22,69,99,.15);
+  pointer-events: none;
+}
+.estudo-vidro__material--tingido::after {
+  box-shadow: inset 0 -1px 0 rgba(222,251,255,.65), inset 0 -3px 2px rgba(28,196,235,.38), inset 0 -5px 4px rgba(0,74,111,.20);
+}
+
+/* Linhas de referência para observar deslocamento do fundo. */
+.estudo-vidro__fundo--linhas {
+  background: repeating-linear-gradient(90deg, transparent 0 24px, rgba(255,255,255,.7) 25px 27px, transparent 28px 48px), repeating-linear-gradient(0deg, transparent 0 24px, rgba(255,255,255,.3) 25px 27px, transparent 28px 48px), linear-gradient(125deg, #0c4059, #6f2956);
+}
+
+/* No motor Gecko, o filtro SVG experimental pode suprimir também o blur.
+   Preservar a referência legível até haver suporte verificado ao desvio. */
+@supports (-moz-appearance: none) {
+  .estudo-vidro__refracao {
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+}
+
+/* Cena controlada: a grade é conteúdo da amostra, não captura do DOM. */
+.estudo-vidro__copia { position: relative; overflow: hidden; min-height: 190px; border-radius: var(--radius-md); color: white; }
+.estudo-vidro__copia-fundo { position: absolute; width: 112%; height: 112%; inset: -6%; opacity: .55; }
+.estudo-vidro__copia-conteudo { position: relative; padding: var(--space-5); z-index: 1; }
+.estudo-vidro__copia-conteudo strong { font-size: var(--text-lg); }
+.estudo-vidro__copia-conteudo p { margin-top: var(--space-2); }
+
+.estudo-vidro__cena-wrap { display: grid; gap: var(--space-3); }
+.estudo-vidro__cena-wrap input { width: min(100%, 320px); }
+.estudo-vidro__cena { width: 100%; height: auto; border-radius: var(--radius-md); }
+
+/* Card real no mesmo lugar do recorte de refração da cena conhecida. */
+.estudo-vidro__cena-palco { position: relative; }
+.estudo-vidro__cena { display: block; }
+.estudo-vidro__cena-card { position: absolute; box-sizing: border-box; overflow: hidden; padding: clamp(8px, 2vw, 24px); }
+.estudo-vidro__cena-card .ms-card__title { font-size: clamp(12px, 1.7vw, 20px); }
+.estudo-vidro__cena-card .ms-card__text { font-size: clamp(10px, 1.2vw, 14px); }
+
+/* Cena HTML deliberadamente delimitada: espelho em Gecko, sem captura global. */
+.estudo-vidro__html-palco { position: relative; aspect-ratio: 640 / 250; overflow: hidden; border-radius: var(--radius-md); }
+.estudo-vidro__html-fundo { position: absolute; inset: 0; overflow: hidden; background: repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,.45) 39px 40px), #183b50; color: white; }
+.estudo-vidro__html-fundo p { position: absolute; top: 12%; left: 4%; }
+.estudo-vidro__html-marca { position: absolute; top: 38%; width: 90px; height: 70px; display: grid; place-items: center; border-radius: 50%; background: #b93175; color: white; font-size: 12px; }
+.estudo-vidro__html-lente { position: absolute; top: 16.8%; width: 40%; height: 66.4%; overflow: hidden; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,.8); box-sizing: border-box; }
+.estudo-vidro__html-copia { position: absolute; top: -25.3%; width: 250%; height: 150.6%; background-size: 100% 100%; background-repeat: no-repeat; }
+.estudo-vidro__html-rotulo { position: relative; display: block; margin: var(--space-3); color: white; text-shadow: 0 1px 4px black; }
+
+.estudo-vidro__html-diagnostico { width: min(100%, 400px); aspect-ratio: 640 / 250; background-color: #541020; background-size: 100% 100%; background-repeat: no-repeat; border: 2px solid white; border-radius: var(--radius-md); }
+
+/* A face F fica sobre o espelho; a refração ainda será testada à parte. */
+.estudo-vidro__html-lente { position: absolute; }
+.estudo-vidro__html-copia { filter: blur(3px); opacity: .9; }
+.estudo-vidro__html-lente::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02) 42%,rgba(180,226,255,.07));
+  pointer-events: none;
+}
+.estudo-vidro__html-lente::after { z-index: 2; }
+.estudo-vidro__html-rotulo { z-index: 3; }
+
+/* O espelho é decorativo e não bloqueia a interação com o conteúdo real. */
+.estudo-vidro__html-lente { pointer-events: none; }
+.estudo-vidro__html-rolagem { position: absolute; top: 17%; right: 4%; width: 25%; height: 60%; overflow: auto; padding: 6px; box-sizing: border-box; background: rgba(0,0,0,.38); color: white; font-size: 12px; line-height: 1.7; }
+
+/* Alternativa somente para a bancada: o LivingBackground mantém a animação. */
+:root[data-ms-estudo-fundo-claro]:is([data-ms-theme="glass"], :not([data-ms-theme])) {
+  --bg-base: #e9eef4;
+  --bg-glow-1: rgba(0, 175, 239, .3);
+  --bg-glow-2: rgba(237, 45, 102, .25);
+  --bg-glow-3: rgba(66, 142, 201, .25);
+  --bg-glow-4: rgba(255, 158, 72, .26);
+}
+.estudo-vidro__fundo-controle { display: block; width: 100%; margin-bottom: var(--space-2); padding: var(--space-2); border: 1px solid currentColor; border-radius: var(--radius-md); color: #fff; background: #243342; font: inherit; cursor: pointer; }
+
+/* Comparação de legibilidade; valores de estudo, sem mudar o botão público. */
+.estudo-vidro__contraste { display: grid; gap: var(--space-3); margin-top: var(--space-5); }
+.estudo-vidro__contraste-fundo { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: #111114; color: #fff; }
+.estudo-vidro__contraste-fundo--claro { background: #e9eef4; color: #152332; }
+.estudo-vidro__contraste-fundo > div { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+
+/* Demonstração limitada a uma cor uniforme explicitamente conhecida. */
+.estudo-vidro__automatico { display: grid; gap: var(--space-3); }
+.estudo-vidro__automatico input { width: min(100%, 320px); }
+.estudo-vidro__automatico-palco { padding: var(--space-6); border-radius: var(--radius-md); }
+.estudo-vidro__automatico-superficie { padding: var(--space-5); border-radius: var(--radius-md); color: #dfe5e9; background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(17,17,20,.38); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: var(--glass-f-shadow); border: 1px solid var(--glass-f-edge); }
+.estudo-vidro__automatico-superficie--clara { color: #fff; background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(255,255,255,.08); -webkit-backdrop-filter: brightness(.72) blur(8px); backdrop-filter: brightness(.72) blur(8px); }
+.estudo-vidro__automatico-superficie p { margin: var(--space-2) 0; }
+.estudo-vidro__automatico-superficie button { color: inherit; background: transparent; border: 1px solid currentColor; border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); font: inherit; cursor: pointer; }
+
+/* O canvas é a fonte conhecida da amostra; a lente cobre 35% da largura. */
+.estudo-vidro__media-palco { position: relative; width: 100%; aspect-ratio: 640 / 240; overflow: hidden; border-radius: var(--radius-md); }
+.estudo-vidro__media-palco canvas { display: block; width: 100%; height: 100%; }
+.estudo-vidro__media-superficie { position: absolute; top: 15%; width: 35%; height: 70%; box-sizing: border-box; padding: clamp(8px, 2vw, 20px); overflow: auto; }
+
+/* Cenas controladas para avaliar a sombra sobre o mesmo vidro escuro. */
+.estudo-vidro__fundos-leitura { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.estudo-vidro__fundo-leitura { padding: 22px; border-radius: var(--radius-md); }
+.estudo-vidro__fundo-leitura--uniforme { background: #f3f5f7; }
+.estudo-vidro__fundo-leitura--cores { background: radial-gradient(circle at 20% 25%, #6acbe8, transparent 55%), radial-gradient(circle at 80% 70%, #ed9dc1, transparent 55%), #f6edf5; }
+.estudo-vidro__fundo-leitura--variado { background: linear-gradient(125deg, #fff 0%, #cbd9ee 40%, #6886a1 70%, #f6f3e5 100%); }
+.estudo-vidro__placa-leitura {
+  min-height: 190px; padding: 20px; border-radius: var(--radius-md);
+  color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.85), 0 0 10px rgba(0,0,0,.45);
+  background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(17,17,20,.38);
+  border: 1px solid var(--glass-f-edge); box-shadow: var(--glass-f-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-f-blur)); backdrop-filter: blur(var(--glass-f-blur));
+}
+.estudo-vidro__placa-leitura p { margin: 12px 0; }

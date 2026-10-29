@@ -86,6 +86,7 @@ export class CenaGrafo {
   private camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
   private raycaster = new THREE.Raycaster();
   private nosMesh: THREE.InstancedMesh | null = null;
+  private vidroAtivo = { value: 0 };
   private linhas: THREE.LineSegments | null = null;
   private quadro = 0;
   private ultimo = 0;
@@ -191,6 +192,17 @@ export class CenaGrafo {
   /** Lê os tokens do DS (no escopo da caixa, que herda o tema) e repinta. */
   relerTema() {
     const estilo = getComputedStyle(this.caixa);
+    const tema = document.documentElement.getAttribute("data-ms-theme");
+    const vidro = tema === null || tema === "glass";
+    this.vidroAtivo.value = vidro ? 1 : 0;
+    if (this.nosMesh) {
+      const material = this.nosMesh.material as THREE.MeshBasicMaterial;
+      if (material.transparent !== vidro) {
+        material.transparent = vidro;
+        material.depthWrite = !vidro;
+        material.needsUpdate = true;
+      }
+    }
     // setStyle trata a entrada como sRGB e converte para o espaço linear de trabalho:
     // é a conversão única pedida em docs/3d.md.
     const ler = (token: string, alvo = new THREE.Color()) =>
@@ -251,7 +263,25 @@ export class CenaGrafo {
       (this.nosMesh.material as THREE.Material).dispose();
     }
     const geometria = new THREE.SphereGeometry(1, 20, 14);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: this.vidroAtivo.value === 1, depthWrite: this.vidroAtivo.value !== 1 });
+    // Relevo e reflexos de vidro são uma aproximação visual, não refração
+    // do conteúdo HTML atrás do canvas. As cores de instância continuam
+    // sinalizando grupo, foco e seleção.
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.msVidro = this.vidroAtivo;
+      shader.vertexShader = shader.vertexShader
+        .replace("#include <common>", "#include <common>\nvarying vec3 msNormal;\nvarying vec3 msVista;")
+        .replace("#include <project_vertex>", "#include <project_vertex>\nmsNormal = normalize(normalMatrix * normal);\nmsVista = normalize(-mvPosition.xyz);");
+      shader.fragmentShader = shader.fragmentShader
+        .replace("#include <common>", "#include <common>\nuniform float msVidro;\nvarying vec3 msNormal;\nvarying vec3 msVista;")
+        .replace("#include <color_fragment>", `#include <color_fragment>
+          vec3 nVidro = normalize(msNormal);
+          float bordaVidro = pow(1.0 - abs(dot(nVidro, normalize(msVista))), 2.3);
+          float reflexoVidro = pow(max(dot(nVidro, normalize(vec3(-0.45, 0.75, 0.5))), 0.0), 22.0);
+          vec3 vidroCor = mix(diffuseColor.rgb * 0.78, vec3(1.0), min(bordaVidro * 0.46 + reflexoVidro * 0.7, 0.8));
+          diffuseColor.rgb = mix(diffuseColor.rgb, vidroCor, msVidro);
+          diffuseColor.a *= mix(1.0, mix(0.76, 0.94, bordaVidro), msVidro);`);
+    };
     const mesh = new THREE.InstancedMesh(geometria, material, Math.max(nos.length, 1));
     mesh.count = nos.length;
     const matriz = new THREE.Matrix4();
