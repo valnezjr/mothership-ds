@@ -127,16 +127,6 @@ function StorySearch() {
  */
 export function App() {
   const [activeId] = useHashRoute({ ids: STORY_IDS, resolve: resolveStoryId });
-  const [fundoClaro, setFundoClaro] = React.useState(false);
-  React.useEffect(() => {
-    document.documentElement.toggleAttribute("data-ms-estudo-fundo-claro", fundoClaro);
-    if (fundoClaro) document.documentElement.setAttribute("data-ms-background", "light");
-    else document.documentElement.removeAttribute("data-ms-background");
-    return () => {
-      document.documentElement.removeAttribute("data-ms-estudo-fundo-claro");
-      document.documentElement.removeAttribute("data-ms-background");
-    };
-  }, [fundoClaro]);
   const mainRef = React.useRef<HTMLElement>(null);
   const titleRef = React.useRef<HTMLHeadingElement>(null);
   const firstRender = React.useRef(true);
@@ -186,7 +176,6 @@ export function App() {
                 </p>
               </div>
               <div role="search" style={{ flex: "1 1 260px", maxWidth: 320 }}>
-                <button className="estudo-vidro__fundo-controle" type="button" aria-pressed={fundoClaro} onClick={() => setFundoClaro((atual) => !atual)}>{fundoClaro ? "Fundo claro de teste: ligado" : "Fundo claro de teste: desligado"}</button>
                 <StorySearch />
               </div>
             </header>
