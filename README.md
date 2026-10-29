@@ -142,9 +142,13 @@ export default function Home() {
 
 Quatro temas, cada um com modo **base** e **escuro**:
 
+Mothership Aerobubble é o nome oficial do tema que substituiu o Mothership
+Glass. O identificador técnico `"glass"` permanece para compatibilidade com
+configurações, integrações e preferências salvas.
+
 | Tema | |
 |---|---|
-| **Mothership Glass** (`"glass"`) | vidro sobre o fundo vivo, a identidade original |
+| **Mothership Aerobubble** (`"glass"`) | vidro luminoso e translúcido sobre o fundo vivo |
 | **Mothership Cream** (`"cream"`) | off-white quente; o escuro baixa a luz sem inverter |
 | **Mothership Paperpen** (`"paperpen"`) | papel quadriculado e caneta azul, sem vidro, fontes manuscritas |
 | **Mothership Flat** (`"flat"`, padrão) | neutro e plano, sem vidro; cor da marca só no ativo |

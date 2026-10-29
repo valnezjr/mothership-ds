@@ -20,7 +20,7 @@ export const RESOLVED_MODES: readonly ResolvedMode[] = ["base", "dark"];
 const MODES: readonly ThemeMode[] = [...RESOLVED_MODES, "system"];
 
 export const THEME_LABELS: Record<Theme, string> = {
-  glass: "Mothership Glass",
+  glass: "Mothership Aerobubble",
   cream: "Mothership Cream",
   paperpen: "Mothership Paperpen",
   flat: "Mothership Flat",

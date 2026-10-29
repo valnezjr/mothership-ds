@@ -1,3 +1,5 @@
+@import "./glass.css";
+
 /* ============================================================
    MOTHERSHIP DS — Componentes
    Requer tokens.css. Prefixo de classe: ms-
@@ -1253,7 +1255,7 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
    alinhadas, só o tamanho (colSpan/rowSpan) varia entre eles. */
 .ms-bento {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: minmax(120px, auto);
   grid-auto-flow: dense;
   gap: var(--space-4);
@@ -1276,7 +1278,21 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
   .ms-bento__tile--row-3 { grid-row: span 1; }
 }
 
+/* Em layouts estreitos, a largura do container importa mais que a viewport. */
+@container (max-width: 680px) {
+  .ms-bento { grid-template-columns: 1fr; }
+  .ms-bento__tile--col-2, .ms-bento__tile--col-3, .ms-bento__tile--col-4 { grid-column: span 1; }
+  .ms-bento__tile--row-2, .ms-bento__tile--row-3 { grid-row: span 1; }
+}
+
+@container (min-width: 340px) and (max-width: 680px) {
+  .ms-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ms-bento__tile--col-2, .ms-bento__tile--col-3, .ms-bento__tile--col-4 { grid-column: span 2; }
+}
+
 .ms-bento__tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   padding: var(--space-5);
@@ -3792,6 +3808,9 @@ textarea.ms-input { min-height: 96px; resize: vertical; }
 /* overflow visible: sem isso o drop-shadow do hover é cortado no
    limite do viewport do SVG */
 .ms-ring svg { display: block; transform: rotate(-90deg); overflow: visible; }
+
+/* Camadas de material opcionais: só o Aerobubble as mostra. */
+.ms-ring__glass-rim, .ms-ring__glass-gloss { display: none; }
 
 .ms-ring__track {
   fill: none;

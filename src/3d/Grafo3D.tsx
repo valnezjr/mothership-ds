@@ -111,9 +111,9 @@ export function Grafo3D({
       return;
     }
     cenaRef.current = cena;
-    // O tema troca pela classe no <html>: relê os tokens quando ela muda.
+    // Relê os tokens e o material quando o tema ou modo no <html> muda.
     const observador = new MutationObserver(() => cena.relerTema());
-    observador.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
+    observador.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-ms-theme", "data-ms-mode"] });
     return () => {
       observador.disconnect();
       cena.destruir();

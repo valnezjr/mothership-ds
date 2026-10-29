@@ -414,6 +414,28 @@
   --icon-select: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
+/* Tokens do material F do Mothership Aerobubble (identificador técnico glass). */
+:root:is([data-ms-theme="glass"], :not([data-ms-theme])) {
+  /* Cantos mais arredondados reforçam a identidade Aerobubble. */
+  --radius-md: 32px;
+  --glass-f-face: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07));
+  --glass-f-overlay: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(16,24,38,.38);
+  --glass-f-edge: rgba(255,255,255,.8);
+  --glass-f-text-on-light: #26323a;
+  --glass-f-sheen: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.04) 45%, rgba(13,44,65,.20));
+  --glass-f-blur: 8px;
+  --glass-f-ring-shine: drop-shadow(0 1px 2px rgba(255,255,255,.25));
+  --glass-f-svg-highlight: rgba(255,255,255,.72);
+  --glass-f-svg-edge: rgba(255,255,255,.48);
+  --glass-f-ring-rim: rgba(255,255,255,.22);
+  --glass-f-svg-stroke: 2px;
+  --glass-f-ring-transition: .8s;
+  --glass-f-inset: inset 0 2px 2px rgba(255,255,255,.9), inset 2px 0 3px rgba(255,255,255,.4), inset 0 -1px 0 rgba(235,251,255,.5), inset 0 -3px 2px rgba(127,210,235,.24), inset 0 -5px 4px rgba(22,69,99,.15);
+  /* Relevo mais fino para acompanhar a ponta arredondada da barra. */
+  --glass-f-meter-inset: inset 0 0 0 1px rgba(235,251,255,.32), inset -1px 1px 2px rgba(255,255,255,.55), inset 0 -1px 2px rgba(13,44,65,.28);
+  --glass-f-shadow: var(--glass-f-inset), 0 18px 28px rgba(0,0,0,.34);
+}
+
 /* ---------- Glass escuro (o antigo Darker) ----------
    Mesma base, glows, texto e bordas do Glass base, mas o vidro é escuro
    (o fundo da página a 60%) em vez de claro. Lê como uma camada de
@@ -426,6 +448,12 @@
   /* Hover sutil: o branco a 50% do escuro padrão acende demais sobre o
      vidro escuro. */
   --color-surface-hover: rgba(255, 255, 255, 0.15);
+}
+
+/* O modo escuro aplica um véu ao material F. */
+:root[data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme])) {
+  --glass-f-face: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(17,17,20,.38);
+  --glass-f-overlay: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 42%, rgba(180,226,255,.07)), rgba(17,17,20,.62);
 }
 
 /* Redução de movimento: os gestos com duração encolhem até quase zero,
@@ -864,4 +892,14 @@
 
 :root[data-ms-mode="dark"] {
   --icon-switch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a1a2e'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z'/%3E%3Ccircle cx='17' cy='5' r='1'/%3E%3Ccircle cx='20.5' cy='9' r='0.8'/%3E%3C/svg%3E");
+}
+
+/* Paleta mais luminosa para gráficos sobre superfícies escuras.
+   Mantém a ordem das séries; contraste e distinção visual precisam de
+   nova validação nos componentes e não herdam os números anteriores. */
+:root[data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme]), [data-ms-theme="flat"], [data-ms-theme="paperpen"]) {
+  --chart-1: #38c9f2;
+  --chart-2: #f3d45b;
+  --chart-3: #b69aff;
+  --chart-4: #ff9cbd;
 }

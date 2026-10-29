@@ -28,15 +28,22 @@ habilitam recursos específicos.
 </ThemeProvider>
 ```
 
+### Botões Aerobubble sobre fundo claro
+
+O texto do botão de vidro padrão usa a cor escura `--glass-f-text-on-light` quando o fundo é identificado como claro. Coloque `data-ms-background="light"` no `<html>` para a página inteira ou em um ancestral da região clara. O atributo é explícito: o DS não mede automaticamente a cor atrás da superfície. A regra cobre o botão padrão em repouso e hover; a variante `solid`, overlays portados para o `body` e outras peças precisam de avaliação própria. Confira o contraste sobre o fundo real.
+
 ### `ThemeProvider`
 
 | Prop | Tipo | Padrão | |
 |---|---|---|---|
-| `defaultTheme` | `"glass" \| "cream" \| "paperpen" \| "flat"` | `"flat"` | tema inicial |
+| `defaultTheme` | `"glass" \| "cream" \| "paperpen" \| "flat"` | `"glass"` (Mothership Aerobubble) | tema inicial |
 | `defaultMode` | `"base" \| "dark" \| "system"` | `"base"` | modo inicial; `"system"` segue o `prefers-color-scheme` |
 | `persist` | `boolean` | `false` | guarda tema e modo no `localStorage` |
 
-O tema tem dois eixos: a identidade (Mothership Glass, Cream, Paperpen
+Mothership Aerobubble substitui o antigo Mothership Glass; o identificador
+técnico `"glass"` continua aceito e preservado para compatibilidade.
+
+O tema tem dois eixos: a identidade (Mothership Aerobubble, Cream, Paperpen
 ou Flat) e o modo (base ou escuro) — ver [Temas](tokens.md#temas). O
 Provider escreve `data-ms-theme` e `data-ms-mode` no `<html>`; em
 `data-ms-mode` vai sempre o modo resolvido (`"base"` ou `"dark"`),
@@ -79,6 +86,15 @@ quando já é. A forma em componente é o [`Tooltip`](#tooltip).
 
 Anima os glows do fundo. Aceita `config` para calibrar cada glow; veja
 [Movimento](movimento.md).
+
+O piloto opcional `adaptiveContrast` compartilha uma aproximação do fundo vivo
+entre cards, estatísticas, precificação, depoimentos, células Bento, tabelas,
+carrosséis e superfícies de navegação marcados com `data-ms-aerobubble-auto="living"`. Use
+a marcação apenas em superfícies diretamente sobre esse fundo, sem outras camadas intermediárias.
+O piloto está em avaliação: reconstrói os glows pelos tokens, não lê imagens ou
+pixels da tela, e a média não garante contraste em todos os pontos. Caso a
+amostra não esteja disponível, a superfície volta ao estilo normal do tema.
+
 
 ---
 
@@ -606,7 +622,7 @@ um controle (`role="radio"`, `aria-pressed`…), passe o `aria-*` dele e
 
 Seletor dos oito pares tema × modo num `DropdownMenu`. O gatilho é o
 mesmo botão redondo do `NotificationBell`, com o ícone do modo na tela
-(lua vazada no Glass base, sol no base dos outros temas, lua cheia em
+(lua vazada no Aerobubble base, sol no base dos outros temas, lua cheia em
 qualquer escuro) e `aria-label` com o par ativo — "Tema: Mothership
 Cream, Escuro", com ", seguindo o sistema" quando `mode="system"`.
 
@@ -1007,7 +1023,10 @@ independente do tamanho do texto. Já nasce com o contorno reativo
 ### `BentoGrid` · `BentoTile`
 
 `BentoGrid` é só o grid (4 colunas); os tiles são `<BentoTile>` filhos,
-como `StatGrid`/`StatTile`.
+como `StatGrid`/`StatTile`. Para adaptar o grid à largura de uma coluna
+estreita mesmo em telas largas, coloque-o em um contêiner com
+`container-type: inline-size`; de 340px a 680px o grid usa duas colunas,
+e abaixo de 340px usa uma.
 
 | Prop (`BentoTile`) | Tipo | |
 |---|---|---|

@@ -1,6 +1,7 @@
 ---
 name: product-owner
-description: Skill de decisão de produto do Mothership DS — decide o que entra na biblioteca, o que fica de fora, o que é componente vs. composição vs. só documentação, e prioriza o roadmap (ex.: o caminho até 60 componentes na v1.5). Nunca escreve código, nunca escreve CSS, nunca decide identidade visual ou tipagem. Use antes de construir algo novo ("vale a pena?", "isso pertence à lib?"), ao decidir o que priorizar no roadmap, ou ao reavaliar se algo que já existe ainda deveria existir.
+description: >-
+  Skill de decisão de produto do Mothership DS — decide o que entra na biblioteca, o que fica de fora, o que é componente vs. composição vs. só documentação, e prioriza o roadmap (ex.: o caminho até 60 componentes na v1.5). Nunca escreve código, nunca escreve CSS, nunca decide identidade visual ou tipagem. Use antes de construir algo novo ("vale a pena?", "isso pertence à lib?"), ao decidir o que priorizar no roadmap, ou ao reavaliar se algo que já existe ainda deveria existir.
 ---
 
 # Product Owner — Mothership DS

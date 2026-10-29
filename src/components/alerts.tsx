@@ -74,6 +74,9 @@ interface Toast extends NotifyOptions {
   id: number;
   duration: number;
   leaving?: boolean;
+  /** Incrementa a cada retomada, para reiniciar a barra de tempo. */
+  run?: number;
+  paused?: boolean;
 }
 
 export interface HistoryEntry {
@@ -142,6 +145,25 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     }, recolherMs());
   }, []);
 
+  // Hover/foco pausa a contagem; ao sair, ela recomeça do zero.
+  const pause = React.useCallback((id: number) => {
+    if (timers.current[-id]) return; // já saindo
+    clearTimeout(timers.current[id]);
+    delete timers.current[id];
+    setToasts((list) => list.map((t) => (t.id === id ? { ...t, paused: true } : t)));
+  }, []);
+
+  const resume = React.useCallback(
+    (id: number, duration: number) => {
+      if (timers.current[-id] || timers.current[id]) return;
+      timers.current[id] = setTimeout(() => dismiss(id), duration);
+      setToasts((list) =>
+        list.map((t) => (t.id === id ? { ...t, paused: false, run: (t.run ?? 0) + 1 } : t))
+      );
+    },
+    [dismiss]
+  );
+
   const notify = React.useCallback(
     (opts: NotifyOptions) => {
       const id = ++seq;
@@ -199,13 +221,23 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   return (
     <Ctx.Provider value={value}>
       {children}
-      <AlertsHost toasts={toasts} onDismiss={dismiss} />
+      <AlertsHost toasts={toasts} onDismiss={dismiss} onPause={pause} onResume={resume} />
       {historyPresence.present && <AlertHistory />}
     </Ctx.Provider>
   );
 }
 
-function AlertsHost({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: number) => void }) {
+function AlertsHost({
+  toasts,
+  onDismiss,
+  onPause,
+  onResume,
+}: {
+  toasts: Toast[];
+  onDismiss: (id: number) => void;
+  onPause: (id: number) => void;
+  onResume: (id: number, duration: number) => void;
+}) {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
   if (!mounted) return null;
@@ -224,6 +256,12 @@ function AlertsHost({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: nu
           ]
             .filter(Boolean)
             .join(" ")}
+          onMouseEnter={() => onPause(t.id)}
+          onMouseLeave={() => onResume(t.id, t.duration)}
+          onFocus={() => onPause(t.id)}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) onResume(t.id, t.duration);
+          }}
         >
           <span className="ms-alert__icon">{InfoIcon}</span>
           <span className="ms-alert__body">
@@ -237,7 +275,11 @@ function AlertsHost({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: nu
           >
             {CloseIcon}
           </button>
-          <span className="ms-alert__timer" style={{ animationDuration: `${t.duration}ms` }} />
+          <span
+            key={t.run ?? 0}
+            className="ms-alert__timer"
+            style={{ animationDuration: `${t.duration}ms`, animationPlayState: t.paused ? "paused" : "running" }}
+          />
         </div>
       ))}
     </div>,

@@ -25,6 +25,8 @@ import {
 import { THEMES, RESOLVED_MODES, THEME_LABELS, MODE_LABELS } from "../src/components/theme-state";
 import { Grafo3D } from "../src/3d/index";
 import type { Grafo3DNo, Grafo3DAresta, Grafo3DGrupo } from "../src/3d/index";
+import { averageOpaquePixels, chooseSurface } from "../src/components/aerobubble-contrast";
+import { sampleLivingBackground } from "./living-background-approx";
 
 /* ============================================================
    Catálogo do styleguide.
@@ -551,7 +553,7 @@ function LoaderDemo() {
     <>
       <p className="ms-text-sm ms-text-muted" style={{ marginBottom: 20 }}>
         O rosto da marca começa <strong>vazio</strong>, na mesma superfície do resto do
-        sistema (vidro no Glass e no Cream, papel no Paperpen, opaca no Flat), e vai sendo preenchido de baixo para cima por um líquido de
+        sistema (vidro no Aerobubble e no Cream, papel no Paperpen, opaca no Flat), e vai sendo preenchido de baixo para cima por um líquido de
         superfície ondulada, que desliza continuamente. O olho pisca de tempos em tempos,
         como na splash. Sem a prop <code>value</code>, o nível oscila sozinho (indeterminado).
       </p>
@@ -792,7 +794,7 @@ function StepIndicatorDemo() {
   );
 }
 
-/* Os tokens de tema valem pelo <html> (o Glass base é o :root), então um
+/* Os tokens de tema valem pelo <html> (o Aerobubble base é o :root), então um
    par não se aplica a um trecho da página: cada célula da grade é um
    iframe com os atributos no próprio <html> e o CSS da página copiado.
    O conteúdo é React normal, via portal; a altura do iframe segue a dele. */
@@ -1047,7 +1049,389 @@ const PROSE_EXEMPLO = `<h2>Nota do dia</h2>
 <hr>
 <p>Depois do divisor, o ritmo continua.</p>`;
 
+const REFRACTION_MAP = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAAAFkUlEQVR42u3a30vTexzH8f6f6qrhRVdRGV0FjbwIBL1rw0D8OZtte2/LpWaJkKh3CoEXioJXohVddSF2Vf09n/NceHXgwOy4zH2fF08MHU56Pdznu81rEZHMLqtr/ieYAE2AZgI0AZoJ0ARoJkATYEfVLZNdKkB+gHozUmOOj/O0wOcsE9XasXmV7WvN/4fxtwDWG5GarUhzbyK1ViK9WgXiOl+zTFSll2xeZvtZDFSwUGv8IYAN7qj1OtLicqS3a5GWNiMtbANyh69bJqpQic0n2X4CA9NYKGOi2ugywAYPta/R/u5dpPf8Fqx9iLS6H2n5EJSfuM1ny0Jlth5j8xG2L2LgORbGMfECG9V6lwDWqcV5v7wYaf19pE30f9iLtHUMxK+R5k+53TfLQjNsXWTzIbYfxMAwFgqYGMNGGSO1bgBsIvsNF51rb4HHw+4e8g8O+PgFhPxASz+43U/LQpNsPcTmebZ/hIE8FgYxUcTGFEYq9S4AnON8X+EhdnMp0j4XoMdbkb6g/+PHSLsnfO27w2SlUbZ+wub32f4OBvqx8BgTw9gYxchs44IBto/feVSvvoq0zVPwQy46vyL+lDs+2Y10dBRp48SjKSs9Y+sHbN7H9jkM3MbCQ0w8xcYIRmbqnR/DHQNc4JuuI3uHM/4Tyk95HegH4r/zVPxkg6N4z4vzrJRn6z42v8n2NzCQw8I9TAxgo4CRUlcA0jrt0Gf6Rj/P+nb2OV+iyEZ32foWXT+r/e/25waoQKW4JIDtr/lCbW83EH85wPZtfLuqNyvEFQG44B8o9FyluGIA6/6pUc9UCwGaAAUoQAGaAAUoQAGaAAUoQAGaAAUoQAGaAAUoQAGaAAUoQAGaAB1OgAI0AZoABWgCNAEK0ARoAhSgCdAEKEAToAlQgCZAE6AATYAmQAGaAE2AAjQBmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgBNgAI0AZoABWgCNAEK0ARoAhSgCdAEKEAToAlQgCZAE6AATYAmQAGaAE2AAjQBmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgAFKEABmgBNgAI0AZoABWgCNAEK0ARoAhSgCdAEKEAToAlQgCZAE6AATYAmQAGaAE2AAhSgAE2AAhSgAE2AAhSgAE2AAhSgAE2AAhSgAE2AAhSgAE2AAhSgAE2AjidAAZoATYB/HmDUrJe6UgCjZL3YlQAYBevl/mqAMWBZ6HIAch2wXgVgJdKncqTTmUg/JiN9H4108izSXp7b3rUslGfrPja/yfY3MJDDwj1MDGCjgJFSrQsA5/mmqy8jbXMtcDgW6WsRhEPgexLp6EGkjT5ue8uy0DO2fsDmfWyfw8BtLDzExFNsjGBk5qIBtptD9grKNxG/PxLpmDv+wm/Cx/uRdvmBVm5yu+uWhUbZ+gmb32f7Oxjox8JjTAxjYxQjs9XOX+LpGGAT1W9mI61NRPqA+L3BSAeP+Hgn0lYu0tINh8lKk2w9xOZ5tn+EgTwWBjFRxMYURiq1LgBsH8Mtzvjlaa4Fn/NIOAxE9G/1g/I2R3TOoykrzbB1kc2H2H4QA8NYKGBiDBvlSufH77kAtmsg+zUPse/GI73nKfka8lcfg/IhOO95cZ6Vymw9xuYjbF/EwHMsjGPiBTaqtfO9y3IugL8Qcr63XkRa5KLzLQ+7S+hfeMoR7csTmalCJTafZPsJDExjoYyJajXO/TbfuQH+Oo65oyba56bAyFPxV1yANnyRNjNV6SWbl9l+FgMVLNSqv/c+828BjLP3euuc9w0uOuu8DlT3rarMVGvH5lW2r1XO3i+OPw3wXxgtg12AnYsBaCZAE6CZAE2AZgI0AZoJ0ARo9h/9A0obqpg3HpgAAAAAAElFTkSuQmCC";
+
+/* Mapa acompanha o tamanho e o raio da placa móvel. */
+const SCENE_REFRACTION_MAP = "data:image/png;base64,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";
+
+/* Fundo conhecido e cópia usam a mesma cena e coordenadas. */
+function RefractionScene() {
+  const [x, setX] = React.useState(150);
+  const prefix = `ms-cena-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  const paint = (key: string) => (
+    <g key={key}>
+      <rect width="640" height="250" fill="#183b50" />
+      <rect width="640" height="250" fill={`url(#${prefix}-grade)`} />
+      <circle cx="310" cy="120" r="62" fill="#ef3980" opacity=".7" />
+      <circle cx="365" cy="105" r="38" fill="#12bcd7" opacity=".8" />
+    </g>
+  );
+  return (
+    <div className="estudo-vidro__cena-wrap">
+      <label htmlFor={`${prefix}-posicao`}>Posição do vidro</label>
+      <input id={`${prefix}-posicao`} type="range" min="35" max="305" value={x} onChange={(e) => setX(Number(e.target.value))} />
+      <div className="estudo-vidro__cena-palco">
+      <svg className="estudo-vidro__cena" viewBox="0 0 640 250" role="img" aria-label="Vidro móvel sobre grade e círculos coloridos">
+        <defs>
+          <pattern id={`${prefix}-grade`} width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#d3f2fb" strokeWidth="2" opacity=".65" /></pattern>
+          <clipPath id={`${prefix}-recorte`}><rect x={x} y="42" width="300" height="166" rx="10" /></clipPath>
+          <filter id={`${prefix}-distorcao`} filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x={x - 24} y="18" width="348" height="214" colorInterpolationFilters="sRGB">
+            <feImage href={SCENE_REFRACTION_MAP} x={x - 19} y="32" width="338" height="186" preserveAspectRatio="none" result="mapa" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" edgeMode="duplicate" result="fundo" />
+            <feDisplacementMap in="fundo" in2="mapa" scale="20" xChannelSelector="R" yChannelSelector="G" result="refratado" />
+            <feGaussianBlur in="refratado" stdDeviation="3" edgeMode="duplicate" />
+          </filter>
+        </defs>
+        {paint("fundo")}
+        <g clipPath={`url(#${prefix}-recorte)`}><g filter={`url(#${prefix}-distorcao)`}>{paint("copia")}</g></g>
+      </svg>
+      <Card className="estudo-vidro__material estudo-vidro__cena-card" style={{ left: `${x / 640 * 100}%`, top: `${42 / 250 * 100}%`, width: `${300 / 640 * 100}%`, height: `${166 / 250 * 100}%` }} title="Vidro F sobre fundo conhecido">
+        <CardText>Observe a borda ao mover a placa.</CardText>
+      </Card>
+      </div>
+      <p className="ms-text-sm">Card F real sobre a cópia refratada da cena. A refração funciona apenas neste fundo conhecido; a avaliação de contraste e de conteúdo arbitrário permanece pendente.</p>
+    </div>
+  );
+}
+
+/* Testa o espelho vivo do Gecko antes de combinar refração e fundo HTML. */
+function LiveDomStudy() {
+  const id = `ms-html-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  const [x, setX] = React.useState(35);
+  const [value, setValue] = React.useState(35);
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const [size, setSize] = React.useState({ width: 640, height: 250 });
+  React.useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new ResizeObserver(([entry]) => setSize({ width: entry.contentRect.width, height: entry.contentRect.height }));
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+  const lensWidth = size.width * .4;
+  const lensHeight = size.height * .664;
+  const mapX = size.width * x / 100 - lensWidth * 19 / 300;
+  const mapY = size.height * .168 - lensHeight * 10 / 166;
+  return (
+    <div className="estudo-vidro__cena-wrap">
+      <label htmlFor={`${id}-vidro`}>Mover o vidro</label>
+      <input id={`${id}-vidro`} type="range" min="5" max="55" value={x} onChange={(e) => setX(Number(e.target.value))} />
+      <label htmlFor={`${id}-fundo`}>Mover elemento do fundo</label>
+      <input id={`${id}-fundo`} type="range" min="5" max="80" value={value} onChange={(e) => setValue(Number(e.target.value))} />
+      <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
+        <filter id={`${id}-filtro`} filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="0" y="0" width={size.width} height={size.height} colorInterpolationFilters="sRGB">
+          <feImage href={SCENE_REFRACTION_MAP} x={mapX} y={mapY} width={lensWidth * 338 / 300} height={lensHeight * 186 / 166} preserveAspectRatio="none" result="mapa" />
+          <feDisplacementMap in="SourceGraphic" in2="mapa" scale={20 * lensWidth / 300} xChannelSelector="R" yChannelSelector="G" result="refratado" />
+          <feGaussianBlur in="refratado" stdDeviation="3" edgeMode="duplicate" />
+        </filter>
+      </svg>
+      <div ref={stageRef} className="estudo-vidro__html-palco">
+        <div id={id} className="estudo-vidro__html-fundo">
+          <div className="estudo-vidro__html-marca" style={{ left: `${value}%` }}>Fundo vivo</div>
+          <p>Texto HTML no fundo</p>
+          <div className="estudo-vidro__html-rolagem" tabIndex={0} aria-label="Lista rolável do fundo">
+            <strong>Lista rolável</strong>
+            <div>Primeiro item</div><div>Segundo item</div><div>Terceiro item</div><div>Quarto item</div><div>Quinto item</div><div>Sexto item</div>
+          </div>
+        </div>
+        <div className="estudo-vidro__material estudo-vidro__html-lente" style={{ left: `${x}%` }} aria-hidden="true">
+          <div className="estudo-vidro__html-copia" style={{ left: `${-x / 40 * 100}%`, backgroundImage: `-moz-element(#${id})`, filter: `url(#${id}-filtro)` }} />
+          <span className="estudo-vidro__html-rotulo">Vidro F</span>
+        </div>
+      </div>
+      <p className="ms-text-sm">Role a lista no fundo e mova os dois controles. A miniatura deve acompanhar o texto, o círculo e a rolagem.</p>
+      <div className="estudo-vidro__html-diagnostico" style={{ backgroundImage: `-moz-element(#${id})` }} role="img" aria-label="Cópia visual do fundo HTML" />
+      <p className="ms-text-sm">Teste experimental: refração aplicada à cópia do fundo HTML no Zen. Confira alinhamento, bordas e atualização ao mover os dois controles.</p>
+    </div>
+  );
+}
+
+/* Mapa de deslocamento neutro no centro e mais intenso nas bordas.
+   É uma experiência isolada: o suporte de filtros SVG em backdrop varia. */
+function RefractionStudy() {
+  const filterId = `ms-refracao-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
+  return (
+    <>
+      <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
+        <filter id={filterId} colorInterpolationFilters="sRGB" x="0%" y="0%" width="100%" height="100%">
+          <feImage href={REFRACTION_MAP} x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="mapa" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" edgeMode="duplicate" result="fundo" />
+          <feDisplacementMap in="fundo" in2="mapa" scale="12" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+      <div className="estudo-vidro__fundo estudo-vidro__fundo--linhas">
+        {[false, true].map((refracao) => (
+          <div key={String(refracao)} className="estudo-vidro__item">
+            <p className="estudo-vidro__rotulo">{refracao ? "F · refração experimental" : "F · referência"}</p>
+            <Card className={`estudo-vidro__placa estudo-vidro__material ${refracao ? "estudo-vidro__refracao" : ""}`} style={refracao ? { backdropFilter: `url(#${filterId}) blur(8px)`, WebkitBackdropFilter: `url(#${filterId}) blur(8px)` } : undefined} title="Superfície de vidro">
+              <CardText>Observe as linhas perto das bordas e compare com a referência.</CardText>
+            </Card>
+          </div>
+        ))}
+      </div>
+      <p className="ms-text-sm" style={{ margin: "20px 0 12px" }}>Teste para Zen: uma cópia da grade é distorcida dentro do vidro. Esta amostra não lê o conteúdo arbitrário atrás de um componente.</p>
+      <div className="estudo-vidro__fundo estudo-vidro__fundo--linhas">
+        {[false, true].map((refracao) => (
+          <div key={String(refracao)} className="estudo-vidro__item">
+            <p className="estudo-vidro__rotulo">{refracao ? "F · cópia distorcida" : "F · cópia sem distorção"}</p>
+            <div className="estudo-vidro__material estudo-vidro__copia" role="img" aria-label={refracao ? "Grade de referência com filtro de distorção" : "Grade de referência sem filtro de distorção"}>
+              <svg className="estudo-vidro__copia-fundo" viewBox="-18 -11 336 202" preserveAspectRatio="none" aria-hidden="true" style={refracao ? { filter: `url(#${filterId})` } : undefined}>
+                <rect x="-18" y="-11" width="336" height="202" fill="#26445c" />
+                {Array.from({ length: 13 }, (_, i) => <line key={`v${i}`} x1={(i - 1) * 30} y1="-11" x2={(i - 1) * 30} y2="191" stroke="#a7d4e3" strokeWidth="3" />)}
+                {Array.from({ length: 9 }, (_, i) => <line key={`h${i}`} x1="-18" y1={(i - 1) * 30} x2="318" y2={(i - 1) * 30} stroke="#a7d4e3" strokeWidth="2" />)}
+              </svg>
+              <div className="estudo-vidro__copia-conteudo" aria-hidden="true"><strong>Superfície de vidro</strong><p>Compare as linhas nas bordas.</p></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* A cor fornecida é conhecida; não lê pixels da página. */
+function AutoContrastStudy() {
+  const [level, setLevel] = React.useState(48);
+  const color = Math.round(level * 255 / 100);
+  const result = chooseSurface([color, color, color]);
+  const light = result.variant === "light";
+  return (
+    <div className="estudo-vidro__automatico">
+      <label htmlFor="estudo-luminosidade">Luminosidade do fundo: {level}%</label>
+      <input id="estudo-luminosidade" type="range" min="0" max="100" value={level} onChange={(e) => setLevel(Number(e.target.value))} />
+      <div className="estudo-vidro__automatico-palco" style={{ backgroundColor: `rgb(${color}, ${color}, ${color})` }}>
+        <div className={`estudo-vidro__automatico-superficie ${light ? "estudo-vidro__automatico-superficie--clara" : ""}`} style={{ backgroundColor: light ? `rgba(255,255,255,${result.alpha})` : `rgba(17,17,20,${result.alpha})` }}>
+          <strong>Exemplo de superfície</strong>
+          <p>O texto e o véu são escolhidos a partir da cor uniforme fornecida.</p>
+          <button type="button">Botão de exemplo</button>
+        </div>
+      </div>
+      <p className="ms-text-sm">Estimativa para esta cor uniforme: {result.ratio.toFixed(1)}:1; opacidade do véu: {Math.round(result.alpha * 100)}%. O vidro claro escurece um pouco o fundo; o cálculo não mede gradientes, imagens ou os pixels reais de outras partes da página.</p>
+    </div>
+  );
+}
+
+/* Cena controlada em canvas: a amostragem não acessa a página arbitrária. */
+function AverageContrastStudy() {
+  const canvas = React.useRef<HTMLCanvasElement>(null);
+  const [position, setPosition] = React.useState(10);
+  const [mean, setMean] = React.useState<readonly [number, number, number] | null>(null);
+  React.useEffect(() => {
+    const ctx = canvas.current?.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
+    const gradient = ctx.createLinearGradient(0, 0, 640, 0);
+    gradient.addColorStop(0, "#111524");
+    gradient.addColorStop(.48, "#727f99");
+    gradient.addColorStop(1, "#f4e9df");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 640, 240);
+    ctx.fillStyle = "rgba(0, 175, 239, .26)";
+    ctx.beginPath(); ctx.arc(230, 90, 90, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "rgba(237, 45, 102, .23)";
+    ctx.beginPath(); ctx.arc(440, 150, 75, 0, Math.PI * 2); ctx.fill();
+    const x = Math.round(position * 640 / 100);
+    const data = ctx.getImageData(x, 36, 224, 168).data;
+    setMean(averageOpaquePixels(data));
+  }, [position]);
+  const result = mean ? chooseSurface(mean) : null;
+  const light = result?.variant === "light";
+  return (
+    <div className="estudo-vidro__automatico">
+      <label htmlFor="estudo-media-posicao">Posição da superfície no fundo</label>
+      <input id="estudo-media-posicao" type="range" min="0" max="65" value={position} onChange={(e) => setPosition(Number(e.target.value))} />
+      <div className="estudo-vidro__media-palco">
+        <canvas ref={canvas} width={640} height={240} aria-label="Fundo de teste com gradiente e manchas coloridas" />
+        {result && <div className={`estudo-vidro__automatico-superficie estudo-vidro__media-superficie ${light ? "estudo-vidro__automatico-superficie--clara" : ""}`} style={{ left: `${position}%`, backgroundColor: light ? `rgba(255,255,255,${result.alpha})` : `rgba(17,17,20,${result.alpha})` }}>
+          <strong>Superfície adaptativa</strong><p>O vidro acompanha a média da região atrás dele.</p>
+        </div>}
+      </div>
+      <p className="ms-text-sm">{mean && result ? `Média RGB: ${mean.map(Math.round).join(", ")}. Contraste estimado sobre a média: ${result.ratio.toFixed(1)}:1.` : "Não foi possível ler o fundo de teste."} O vidro claro escurece um pouco o fundo. A média pode esconder regiões claras ou escuras e não garante a leitura de todo o texto.</p>
+    </div>
+  );
+}
+
+/* Apenas uma aproximação dos tokens do fundo vivo, sem leitura da tela. */
+function LivingContrastStudy() {
+  const surface = React.useRef<HTMLDivElement>(null);
+  const [mean, setMean] = React.useState<readonly [number, number, number] | null>(null);
+  React.useEffect(() => {
+    const sample = () => {
+      if (document.visibilityState !== "visible" || !surface.current) return;
+      setMean(sampleLivingBackground(surface.current));
+    };
+    sample();
+    const timer = window.setInterval(sample, 700);
+    window.addEventListener("scroll", sample, true);
+    window.addEventListener("resize", sample);
+    return () => { window.clearInterval(timer); window.removeEventListener("scroll", sample, true); window.removeEventListener("resize", sample); };
+  }, []);
+  const result = mean ? chooseSurface(mean) : null;
+  const light = result?.variant === "light";
+  return (
+    <div className="estudo-vidro__automatico">
+      <div ref={surface} className={`estudo-vidro__automatico-superficie ${light ? "estudo-vidro__automatico-superficie--clara" : ""}`} style={result ? { backgroundColor: light ? `rgba(255,255,255,${result.alpha})` : `rgba(17,17,20,${result.alpha})` } : undefined}>
+        <strong>Amostra sobre o fundo vivo</strong>
+        <p>Alterne o fundo claro de teste e role a página para testar a escolha.</p>
+        <button type="button">Botão de exemplo</button>
+      </div>
+      <p className="ms-text-sm">{mean && result ? `Média aproximada RGB: ${mean.map(Math.round).join(", ")}. Contraste estimado sobre a média: ${result.ratio.toFixed(1)}:1.` : "Selecione Mothership Aerobubble e deixe a amostra visível para calcular."} A aproximação reconstrói os glows a partir dos tokens; não lê imagens, outras camadas ou pixels reais da tela.</p>
+    </div>
+  );
+}
+
 export const STORIES: Story[] = [
+  {
+    id: "estudo-vidro",
+    group: "Fundações",
+    title: "Estudo de vidro espesso",
+    subtitle: "Estudo de materiais sobre a direção F: vidro transparente, fosco e tingido.",
+    render: () => (
+      <div className="estudo-vidro">
+        <p>Compare as três superfícies em cada fundo. A opção F é a base transparente; as demais variam seu acabamento. As amostras não simulam refração.</p>
+        {[{ nome: "Fundo escuro", classe: "" }, { nome: "Fundo claro", classe: "estudo-vidro__fundo--claro" }].map((fundo) => (
+          <section key={fundo.nome} aria-label={fundo.nome}>
+            <h3 className="ms-h3" style={{ marginBottom: 12 }}>{fundo.nome}</h3>
+            <div className={`estudo-vidro__fundo ${fundo.classe}`}>
+              {[
+                { nome: "Transparente · F", classe: "" },
+                { nome: "Fosco", classe: "estudo-vidro__material--fosco" },
+                { nome: "Tingido · ciano", classe: "estudo-vidro__material--tingido" },
+              ].map((amostra) => (
+                <div className="estudo-vidro__item" key={amostra.nome}>
+                  <p className="estudo-vidro__rotulo">{amostra.nome}</p>
+                  <Card className={`estudo-vidro__placa estudo-vidro__material ${amostra.classe}`} title="Superfície de vidro">
+                    <CardText>O mesmo conteúdo para comparar a transparência, a cor e a leitura do fundo.</CardText>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Experimento de refração</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Compare a referência com a versão experimental. As linhas atrás do vidro ajudam a perceber o desvio. No Zen e em outros navegadores baseados em Firefox, o teste mantém o desfoque sem refração; o filtro experimental pode funcionar de modo diferente em outros navegadores.</p>
+          <RefractionStudy />
+          <h4 className="ms-h3" style={{ marginTop: 24, marginBottom: 12 }}>Fundo conhecido em movimento</h4>
+          <RefractionScene />
+          <h4 className="ms-h3" style={{ marginTop: 24, marginBottom: 12 }}>Fundo HTML vivo no Zen</h4>
+          <LiveDomStudy />
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Estudo de contraste automático</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Mova o controle para experimentar a seleção usando uma cor de fundo conhecida.</p>
+          <AutoContrastStudy />
+          <h4 className="ms-h3" style={{ marginTop: 24, marginBottom: 12 }}>Média de uma região do fundo</h4>
+          <AverageContrastStudy />
+          <h4 className="ms-h3" style={{ marginTop: 24, marginBottom: 12 }}>Amostra sobre o LivingBackground</h4>
+          <LivingContrastStudy />
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Cards adaptativos sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo claro de teste e role a página para observar os cards. No vidro escuro, os textos usam a sombra suave aprovada. A adaptação considera somente o fundo vivo aproximado.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 20 }}>
+            {["Primeiro card", "Segundo card", "Terceiro card"].map((title) => (
+              <Card key={title} data-ms-aerobubble-auto="living" title={title}>
+                <CardText>O vidro e o texto acompanham a região do fundo vivo atrás deste card.</CardText>
+                <Button inline>Experimentar</Button>
+              </Card>
+            ))}
+          </div>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Estatísticas adaptativas sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo claro de teste, role a página e observe os valores, legendas, tendências e hover.</p>
+          <StatGrid>
+            <StatTile data-ms-aerobubble-auto="living" label="Visitas no mês" value="34k" trend="up" delta="21%" sparkline={[3, 5, 4, 6, 7, 6, 9]} />
+            <StatTile data-ms-aerobubble-auto="living" label="Projetos ativos" value="27" trend="flat" delta="estável" sparkline={[4, 4, 5, 5, 4, 5, 5]} />
+            <StatTile data-ms-aerobubble-auto="living" label="Pendências" value="12" trend="down" delta="9%" sparkline={[9, 8, 7, 8, 6, 5, 4]} />
+          </StatGrid>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Precificação adaptativa sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo claro e compare os textos, os preços, as ações e o destaque do plano.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: 20 }}>
+            <PricingCard data-ms-aerobubble-auto="living" title="Starter" description="Para começar" price="Grátis" features={[{ text: "Projetos pessoais" }, { text: "Componentes essenciais" }]} cta={<Button variant="solid" inline>Começar</Button>} />
+            <PricingCard data-ms-aerobubble-auto="living" title="Pro" description="Para times em produção" price="R$49" period="/mês" badge="Popular" features={[{ text: "Projetos ilimitados" }, { text: "Todos os componentes" }]} cta={<Button variant="solid" inline>Assinar Pro</Button>} />
+          </div>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Depoimentos adaptativos sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo claro e confira a leitura, as estrelas e o contorno no hover.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: 20 }}>
+            <TestimonialCard data-ms-aerobubble-auto="living" quote="O sistema trouxe mais clareza para o nosso trabalho." author="Marina Alves" role="Lead Frontend, Órbita" rating={5} />
+            <TestimonialCard data-ms-aerobubble-auto="living" quote="As superfícies deram uma identidade própria ao produto." author="Diego Nascimento" role="Founder, Nebulosa" rating={4} highlighted />
+          </div>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Bento adaptativo sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo e observe as superfícies de tamanhos diferentes e seus contornos no hover.</p>
+          <div style={{ containerType: "inline-size" }}>
+            <BentoGrid>
+              <BentoTile data-ms-aerobubble-auto="living" colSpan={2} title="Crie com liberdade" description="Uma superfície maior para apresentar sua ideia." />
+              <BentoTile data-ms-aerobubble-auto="living" title="Organize" description="Acompanhe o que importa." />
+              <BentoTile data-ms-aerobubble-auto="living" title="Compartilhe" description="Conecte pessoas e projetos." />
+            </BentoGrid>
+          </div>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Tabela adaptativa sobre o fundo vivo</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Alterne o fundo e confira os textos, as badges, a ordenação e o hover das linhas.</p>
+          <Table data-ms-aerobubble-auto="living"
+            rows={[{ id: 1, nome: "Órbita", fase: "Produção" }, { id: 2, nome: "Nebulosa", fase: "Planejamento" }]}
+            rowKey={(row) => row.id}
+            status={(row) => ({ label: row.id === 1 ? "Ativo" : "Em andamento", tone: row.id === 1 ? "success" : "info" })}
+            columns={[
+              { key: "nome", header: "Projeto", cell: (row) => row.nome, sortable: true, sortValue: (row) => row.nome },
+              { key: "fase", header: "Fase", cell: (row) => row.fase },
+            ]}
+          />
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Sombra suave em fundos claros</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Compare o mesmo vidro escuro e texto com sombra em três fundos de teste. Confira o título e o texto menor em cada um.</p>
+          <div className="estudo-vidro__fundos-leitura">
+            {[
+              { nome: "Claro uniforme", fundo: "uniforme" },
+              { nome: "Manchas coloridas", fundo: "cores" },
+              { nome: "Contraste variável", fundo: "variado" },
+            ].map(({ nome, fundo }) => (
+              <div key={fundo} className={`estudo-vidro__fundo-leitura estudo-vidro__fundo-leitura--${fundo}`}>
+                <div className="estudo-vidro__placa-leitura">
+                  <strong>{nome}</strong>
+                  <p>Uma superfície de vidro com texto claro sobre diferentes regiões do fundo.</p>
+                  <small>Texto menor para avaliar a leitura.</small>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="ms-text-sm" style={{ marginTop: 12 }}>Estes fundos são cenas de teste; a comparação é visual e não mede o contraste em cada ponto.</p>
+        </section>
+        <section>
+          <h3 className="ms-h3" style={{ marginBottom: 12 }}>Camadas de vidro F</h3>
+          <p className="ms-text-sm" style={{ marginBottom: 16 }}>Abra o popup sobre o card e o painel. Troque entre Aerobubble base e escuro no menu de tema.</p>
+          {[{ nome: "Fundo escuro", classe: "" }, { nome: "Fundo claro", classe: "estudo-vidro__fundo--claro" }].map((fundo) => (
+            <div key={fundo.nome}>
+              <h4 className="ms-h3" style={{ marginBottom: 12 }}>{fundo.nome}</h4>
+              <div className={`estudo-vidro__fundo ${fundo.classe}`}>
+                <Card className="estudo-vidro__material" title="Painel de vidro F">
+                  <CardText>Uma superfície apoiada sobre outra, com texto e uma ação.</CardText>
+                  <Card className="estudo-vidro__camada estudo-vidro__material" title="Card interno F">
+                    <CardText>Observe se os contornos continuam visíveis e o conteúdo continua legível.</CardText>
+                    <div className="estudo-vidro__acoes">
+                      <Popover className="estudo-vidro__popup" trigger={<Button inline>Abrir popup F</Button>}>
+                        <strong>Terceira camada · F</strong><p>Observe o brilho, a transparência e a separação das camadas.</p>
+                      </Popover>
+                    </div>
+                  </Card>
+                </Card>
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+    ),
+  },
   /* ============ Fundações ============ */
   {
     id: "cores",
@@ -1087,7 +1471,7 @@ export const STORIES: Story[] = [
           dela. Todas com escala completa e versão <code>-soft</code> para badges e alertas.
         </p>
         <p className="ms-text-xs ms-text-muted" style={{ marginBottom: 24 }}>
-          O accent é o que mais muda: ciano no <strong>Glass</strong>, laranja lavado no{" "}
+          O accent é o que mais muda: ciano no <strong>Aerobubble</strong>, laranja lavado no{" "}
           <strong>Cream</strong> (o ciano some no creme), a própria caneta azul no{" "}
           <strong>Paperpen</strong> e tinta neutra no <strong>Flat</strong> (preta no base,
           branca no escuro). O Paperpen também puxa danger, success e highlight para cores de
@@ -1108,7 +1492,7 @@ export const STORIES: Story[] = [
     id: "tipografia",
     group: "Fundações",
     title: "Tipografia",
-    subtitle: "Uma escala fixa de tamanhos — das badges aos números grandes e ao título do herói — pra nenhuma tela inventar um font-size avulso. No Glass, Cream e Flat, uma família só: Outfit, 400 e 500, mais 600 reservado pra exibição, escolhida por ser limpa, legível e versátil, com uma pegada mais orgânica. O Paperpen troca para letra de mão.",
+    subtitle: "Uma escala fixa de tamanhos — das badges aos números grandes e ao título do herói — pra nenhuma tela inventar um font-size avulso. No Aerobubble, Cream e Flat, uma família só: Outfit, 400 e 500, mais 600 reservado pra exibição, escolhida por ser limpa, legível e versátil, com uma pegada mais orgânica. O Paperpen troca para letra de mão.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <TypeRow token="--text-display" className="ms-display">Exibição</TypeRow>
@@ -1155,7 +1539,7 @@ export const STORIES: Story[] = [
           <RadiusBox token="--radius-full" w={72} h={72} />
         </div>
         <p className="ms-text-sm ms-text-muted" style={{ marginTop: 16 }}>
-          No <strong>Paperpen</strong>, o <code>--radius-md</code> vira um canto irregular, com
+          No <strong>Aerobubble</strong>, o <code>--radius-md</code> é 32px. No <strong>Paperpen</strong>, ele vira um canto irregular, com
           raios diferentes em cada ponta, como traço de mão; a borda engrossa para{" "}
           <code>--border-width</code> 1.5px, porque ali o contorno faz o papel do vidro.
         </p>
@@ -1166,13 +1550,13 @@ export const STORIES: Story[] = [
     id: "temas",
     group: "Fundações",
     title: "Temas",
-    keywords: ["ThemeProvider", "useTheme", "Glass", "Cream", "Paperpen", "Flat", "modo escuro"],
-    subtitle: "Dois eixos independentes: o tema (Mothership Glass, Cream, Paperpen e Flat) e o modo (base ou escuro). Os oito pares saem dos mesmos tokens — nenhum componente sabe em qual tema está. O ThemeProvider escreve data-ms-theme e data-ms-mode no <html>; sem atributo nenhum, vale o Glass base.",
+    keywords: ["ThemeProvider", "useTheme", "Aerobubble", "Glass", "Cream", "Paperpen", "Flat", "modo escuro"],
+    subtitle: "Dois eixos independentes: o tema (Mothership Aerobubble, Cream, Paperpen e Flat) e o modo (base ou escuro). Os oito pares saem dos mesmos tokens — nenhum componente sabe em qual tema está. O ThemeProvider escreve data-ms-theme e data-ms-mode no <html>; sem atributo nenhum, vale o Aerobubble base.",
     render: () => (
       <>
         <ThemeGrid />
         <p className="ms-text-sm ms-text-muted" style={{ marginTop: 16 }}>
-          <strong>Glass</strong> é o vidro sobre o fundo vivo, a identidade original.{" "}
+          <strong>Mothership Aerobubble</strong> é o vidro sobre o fundo vivo, a identidade original.{" "}
           <strong>Cream</strong> troca o fundo escuro por creme quente, e o escuro dele baixa a
           luz sem inverter. <strong>Paperpen</strong> é papel quadriculado e caneta azul, sem
           vidro, com fontes manuscritas. <strong>Flat</strong> é neutro e plano: cor da marca só
@@ -1192,7 +1576,7 @@ export const STORIES: Story[] = [
         <Card title="Vidro">
           <CardText>
             <code>backdrop-filter: blur(var(--blur-glass))</code> em botões, cards, inputs e
-            alertas, e <code>--blur-soft</code> no trilho do switch. Glass e Cream têm vidro
+            alertas, e <code>--blur-soft</code> no trilho do switch. Aerobubble e Cream têm vidro
             (20px e 4px); Paperpen e Flat zeram os dois e desligam as sombras
             (<code>--shadow-*</code> em none). No Paperpen o contorno assume o lugar do vidro; no
             Flat, a superfície opaca se separa do fundo só pelo tom.
@@ -1215,7 +1599,7 @@ export const STORIES: Story[] = [
             Quatro glows (<code>--bg-glow-1..4</code>) com cor, posição e tamanho em tokens.
             O <code>&lt;LivingBackground /&gt;</code> os move em órbitas deformadas, pulsa seus
             tamanhos e soma um parallax do mouse — mexa o cursor. Cada par tinge os glows à sua
-            maneira: fortes no Glass, pastéis no Cream, aquarela lavada no Paperpen e quase
+            maneira: fortes no Aerobubble, pastéis no Cream, aquarela lavada no Paperpen e quase
             imperceptíveis no Flat. Por cima deles entra <code>--bg-texture</code>: none, exceto
             no Paperpen, que põe a granulação do papel e o quadriculado.
           </CardText>
@@ -1461,7 +1845,7 @@ export const STORIES: Story[] = [
     group: "Componentes",
     title: "Botões",
     keywords: ["Button", "ButtonLink", "botão"],
-    subtitle: "Três variantes (padrão, sólido e ghost) em três tamanhos, com estado disabled. O padrão é vidro no Glass e no Cream, contorno no Paperpen e superfície opaca no Flat; o sólido pinta o accent do tema — hachura de caneta no Paperpen, tinta neutra no Flat. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
+    subtitle: "Três variantes (padrão, sólido e ghost) em três tamanhos, com estado disabled. O padrão é vidro no Aerobubble e no Cream, contorno no Paperpen e superfície opaca no Flat; o sólido pinta o accent do tema — hachura de caneta no Paperpen, tinta neutra no Flat. ButtonLink é a mesma aparência num link de verdade, pra ações que navegam em vez de disparar uma função.",
     render: () => (
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420, margin: "0 auto" }}>
         <ButtonLink href="#botoes">Padrão (glass)</ButtonLink>
@@ -1473,6 +1857,18 @@ export const STORIES: Story[] = [
           <ButtonLink href="#botoes" inline>Médio</ButtonLink>
           <ButtonLink href="#botoes" inline size="lg">Grande</ButtonLink>
         </div>
+        <section className="estudo-vidro__contraste">
+          <h3 className="ms-h3">Estudo: botão tingido sobre fundos</h3>
+          <p>Compare a opção atual com duas alternativas. Estas amostras não são valores definitivos.</p>
+          {[{ nome: "Fundo escuro", classe: "" }, { nome: "Fundo claro", classe: "estudo-vidro__contraste-fundo--claro" }].map((fundo) => (
+            <div key={fundo.nome} className={`estudo-vidro__contraste-fundo ${fundo.classe}`}>
+              <strong>{fundo.nome}</strong>
+              <div><span>Atual</span><Button variant="solid" inline>Continuar</Button></div>
+              <div><span>A · texto escuro</span><Button variant="solid" inline style={{ color: "#102332", background: "var(--glass-f-face), color-mix(in srgb, var(--color-accent) 85%, transparent)" }}>Continuar</Button></div>
+              <div><span>B · vidro mais escuro</span><Button variant="solid" inline style={{ color: "#fff", background: "var(--glass-f-face), color-mix(in srgb, #00405c 85%, transparent)" }}>Continuar</Button></div>
+            </div>
+          ))}
+        </section>
       </div>
     ),
   },
@@ -1666,7 +2062,7 @@ export const STORIES: Story[] = [
         <Card title="Card">
           <CardText>
             Superfície do tema com <code>--radius-md</code> e <code>--blur-glass</code>: vidro
-            translúcido no Glass e no Cream, papel com contorno no Paperpen, branco opaco sem
+            translúcido no Aerobubble e no Cream, papel com contorno no Paperpen, branco opaco sem
             borda no Flat.
           </CardText>
         </Card>

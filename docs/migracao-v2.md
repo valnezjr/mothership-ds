@@ -7,7 +7,7 @@ diz a identidade e `mode` diz se ela está em base ou escura:
 
 | | `mode="base"` | `mode="dark"` |
 |---|---|---|
-| `theme="glass"` — Mothership Glass | o antigo escuro | o antigo Darker |
+| `theme="glass"` — Mothership Aerobubble | o antigo escuro | o antigo Darker |
 | `theme="cream"` — Mothership Cream | o antigo claro | novo |
 | `theme="paperpen"` — Mothership Paperpen | novo | novo |
 | `theme="flat"` — Mothership Flat | novo | novo |
@@ -42,9 +42,9 @@ Sem `defaultTheme`, o padrão **muda**: passa a ser o Mothership Flat
 ```
 
 Sem `ThemeProvider` nenhum, só com o CSS, nada muda: sem atributo no
-`<html>`, vale o Glass base. Por isso, com SSR, ponha o par padrão
+`<html>`, vale o Aerobubble base. Por isso, com SSR, ponha o par padrão
 direto no `<html>` (`data-ms-theme="flat" data-ms-mode="base"`) para a
-página não abrir no Glass e trocar para o Flat ao hidratar. `defaultMode="system"` é novo e segue o
+página não abrir no Aerobubble e trocar para o Flat ao hidratar. `defaultMode="system"` é novo e segue o
 `prefers-color-scheme` do SO.
 
 ## 2. `useTheme()`
@@ -57,11 +57,11 @@ página não abrir no Glass e trocar para o Flat ao hidratar. `defaultMode="syst
 | `toggle()` | `toggleMode()` — ver abaixo |
 | `theme === "light"` | `theme === "cream"` |
 | `theme === "darker"` | `theme === "glass" && resolvedMode === "dark"` |
-| "está escuro?" | `resolvedMode === "dark"` só diz o modo; o Glass base também tem fundo escuro |
+| "está escuro?" | `resolvedMode === "dark"` só diz o modo; o Aerobubble base também tem fundo escuro |
 
 `toggle` alternava entre o antigo claro e o antigo escuro, ou seja,
 trocava de **tema**. `toggleMode` alterna o **modo** dentro do tema
-atual: no Cream, vai de Cream base para Cream escuro, não para o Glass.
+atual: no Cream, vai de Cream base para Cream escuro, não para o Aerobubble.
 Se você quer o comportamento antigo:
 
 ```tsx
@@ -96,8 +96,8 @@ quem instala a lib:
 ```
 
 `data-ms-mode` é sempre o modo resolvido (`"base"` ou `"dark"`). Sem
-atributo nenhum, vale o Glass base — é o que está na tela antes da
-hidratação, por isso os seletores do Glass abaixo cobrem também o
+atributo nenhum, vale o Aerobubble base — é o que está na tela antes da
+hidratação, por isso os seletores do Aerobubble abaixo cobrem também o
 `<html>` sem `data-ms-theme`.
 
 Se o seu CSS mirava as classes:

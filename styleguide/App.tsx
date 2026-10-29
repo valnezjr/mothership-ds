@@ -127,6 +127,16 @@ function StorySearch() {
  */
 export function App() {
   const [activeId] = useHashRoute({ ids: STORY_IDS, resolve: resolveStoryId });
+  const [fundoClaro, setFundoClaro] = React.useState(false);
+  React.useEffect(() => {
+    document.documentElement.toggleAttribute("data-ms-estudo-fundo-claro", fundoClaro);
+    if (fundoClaro) document.documentElement.setAttribute("data-ms-background", "light");
+    else document.documentElement.removeAttribute("data-ms-background");
+    return () => {
+      document.documentElement.removeAttribute("data-ms-estudo-fundo-claro");
+      document.documentElement.removeAttribute("data-ms-background");
+    };
+  }, [fundoClaro]);
   const mainRef = React.useRef<HTMLElement>(null);
   const titleRef = React.useRef<HTMLHeadingElement>(null);
   const firstRender = React.useRef(true);
@@ -148,10 +158,10 @@ export function App() {
   const isFirstInGroup = STORIES.find((s) => s.group === story.group)?.id === story.id;
 
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="glass">
       <AlertsProvider>
         <TooltipProvider>
-          <LivingBackground />
+          <LivingBackground adaptiveContrast />
 
           <Navbar brand=".valnezJunior()" brandHref="#topo">
             <NotificationBell />
@@ -170,12 +180,13 @@ export function App() {
                 <h1 className="ms-h1">Mothership DS</h1>
                 <p className="ms-text-sm ms-text-muted">
                   Biblioteca React do design system — cada bloco abaixo renderiza o componente
-                  real, importado de <code>mothership-ds</code>. Quatro temas (Mothership Glass,
+                  real, importado de <code>mothership-ds</code>. Quatro temas (Mothership Aerobubble,
                   Cream, Paperpen e Flat), cada um em base e escuro; alterne no menu da navbar. Busque ao lado ou clique no
                   sumário à esquerda pra trocar de componente.
                 </p>
               </div>
               <div role="search" style={{ flex: "1 1 260px", maxWidth: 320 }}>
+                <button className="estudo-vidro__fundo-controle" type="button" aria-pressed={fundoClaro} onClick={() => setFundoClaro((atual) => !atual)}>{fundoClaro ? "Fundo claro de teste: ligado" : "Fundo claro de teste: desligado"}</button>
                 <StorySearch />
               </div>
             </header>

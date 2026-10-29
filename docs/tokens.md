@@ -38,21 +38,21 @@ somam oito pares:
 
 | `theme` | Base | Escuro |
 |---|---|---|
-| `"glass"` — **Mothership Glass** | vidro claro sobre fundo escuro, glows da marca | vidro escuro, o fundo da página a 60%, hover mais sutil — para a noite |
+| `"glass"` — **Mothership Aerobubble** | vidro claro sobre fundo escuro, glows da marca | vidro escuro, o fundo da página a 60%, hover mais sutil — para a noite |
 | `"cream"` — **Mothership Cream** | off-white quente, accent laranja lavado | papel âmbar meio-tom com tinta escura: baixa a luz em vez de inverter |
 | `"paperpen"` — **Mothership Paperpen** | papel quadriculado, caneta esferográfica azul, sem vidro, fontes manuscritas | papel azul-tinta, caneta azul clara |
 | `"flat"` — **Mothership Flat** | cinzas neutros, superfície opaca, sem vidro nem sombra (o padrão do `ThemeProvider`) | o mesmo, em zinco escuro |
 
 O `ThemeProvider` escreve os dois eixos no `<html>`, como
 `data-ms-theme` e `data-ms-mode` (o modo já resolvido, `"base"` ou
-`"dark"`). Sem atributo nenhum, vale o Glass base — o `:root`. O padrão do
-`ThemeProvider`, porém, é o Flat: com SSR, escreva
-`data-ms-theme="flat" data-ms-mode="base"` no `<html>` do servidor para
+`"dark"`). Sem atributo nenhum, vale o Aerobubble base — o `:root`. O padrão do
+`ThemeProvider` também usa Aerobubble por padrão: com SSR, escreva
+`data-ms-theme="glass" data-ms-mode="base"` no `<html>` do servidor para
 o primeiro frame já sair no par certo. O CSS de
 cada par fica num seletor de atributo:
 
 ```css
-:root                                                /* Glass base */
+:root                                                /* Aerobubble base */
 [data-ms-mode="dark"]:is([data-ms-theme="glass"], :not([data-ms-theme]))
 [data-ms-theme="cream"]                              /* Cream base */
 [data-ms-theme="cream"][data-ms-mode="dark"]         /* Cream escuro */
@@ -141,7 +141,7 @@ destoar dela — nenhuma é um tom escolhido de forma solta.
 
 Para o accent como **texto ou anel de foco** há o `--color-accent-text`:
 o `--color-accent` é de preenchimento e borda, e como texto não chega a
-AA em todo tema. No Glass ele é o `--color-accent-400`; no Cream,
+AA em todo tema. No Aerobubble ele é o `--color-accent-400`; no Cream,
 `#984a16` (`#6e330e` no escuro) — o laranja do Cream escurecido até AA;
 no Paperpen e no Flat, o próprio accent, que já é tinta.
 
@@ -187,7 +187,7 @@ marca o estado em `aria-current`, `aria-selected` ou `checked`.
 
 | Tema | Paradas (direita → esquerda) |
 |---|---|
-| Glass (base e escuro), Flat escuro | `accent-500` → `pink-500` → `orange-500` |
+| Aerobubble (base e escuro), Flat escuro | `accent-500` → `pink-500` → `orange-500` |
 | Cream base, Flat base | `accent-700` → `pink-600` → `orange-600` |
 | Cream escuro | `accent-800` → `pink-700` → `orange-800` |
 | Paperpen (base e escuro) | sem gradiente: caneta vermelha (`--color-danger`) chapada |
@@ -213,6 +213,13 @@ três verificações computacionais:
 - separação sob daltonismo (protanopia e deuteranopia), ΔE ≥ 8
 - distinção em visão normal, ΔE ≥ 15
 - contraste contra a superfície do tema, ≥ 3:1
+
+A paleta luminosa dos modos escuros de Aerobubble, Flat e Paperpen foi
+avaliada em cores sólidas pelo script `tools/avaliar-paleta-escura.py`:
+ΔE76 mínimo de 46,71 em visão normal, 19,28 em protanopia e 11,97 em
+deuteranopia simuladas; contraste mínimo de 4,92:1 nas superfícies de
+referência. A simulação não cobre os efeitos de transparência, gradientes
+ou fundos animados, nem substitui avaliação visual.
 
 Verde e vermelho ficam **reservados para status** — nunca viram "série 5".
 
@@ -277,7 +284,7 @@ característico do que "canônico".
 
 | Token | Valor | Uso |
 |---|---|---|
-| `--radius-md` | 10px | botões, cards, superfícies |
+| `--radius-md` | 10px; Aerobubble: 32px | botões, cards, superfícies |
 | `--radius-pill` | 50px | navbar, badges, barras |
 | `--radius-full` | 50% | avatar, botões de ícone, anéis |
 
